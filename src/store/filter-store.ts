@@ -1,11 +1,11 @@
-import type { FilterMediaType, FilterMediaView } from "@/types";
+import type { FilterMediaView, MediaType } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type FilterStore = {
-  type: FilterMediaType;
+  type: MediaType;
   view: FilterMediaView;
-  setType: (type: FilterMediaType) => void;
+  setType: (type: MediaType) => void;
   setView: (view: FilterMediaView) => void;
 };
 
@@ -14,7 +14,7 @@ export const useFilterStore = create<FilterStore>()(
     (set) => ({
       type: "anime",
       view: "kanban",
-      setType: (type: FilterMediaType) => set({ type }),
+      setType: (type: MediaType) => set({ type }),
       setView: (view: FilterMediaView) => set({ view }),
     }),
     { name: "epilog-filters" }

@@ -20,12 +20,10 @@ function Home() {
   const view = useFilterStore((store) => store.view);
 
   return (
-    <div className="col-span-3 w-full py-4 px-8">
-      <Suspense fallback={<p>Loading...</p>}>
-        {view === "grid" && <GridView />}
-        {view === "kanban" && <KanbanView />}
-        {view === "list" && <ListView />}
-      </Suspense>
-    </div>
+    <Suspense fallback={<p>Loading...</p>}>
+      {view === "grid" && <GridView />}
+      {view === "kanban" && <KanbanView />}
+      {view === "list" && <ListView />}
+    </Suspense>
   );
 }

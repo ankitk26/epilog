@@ -26,7 +26,7 @@ function RouteComponent() {
   return (
     <div className="grid h-screen grid-cols-6">
       <Sidebar />
-      <main className="col-span-5">
+      <main className="col-span-5 w-full py-6 px-8">
         <Outlet />
       </main>
     </div>
