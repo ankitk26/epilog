@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth.index'
 import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
+import { Route as AuthSearchRouteImport } from './routes/_auth.search'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -27,27 +28,35 @@ const SignInSplatRoute = SignInSplatRouteImport.update({
   path: '/sign-in/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthSearchRoute = AuthSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/search': typeof AuthSearchRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/': typeof AuthIndexRoute
 }
 export interface FileRoutesByTo {
+  '/search': typeof AuthSearchRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
+  '/_auth/search': typeof AuthSearchRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/_auth/': typeof AuthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/sign-in/$' | '/'
+  fullPaths: '/search' | '/sign-in/$' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in/$' | '/'
-  id: '__root__' | '/_auth' | '/sign-in/$' | '/_auth/'
+  to: '/search' | '/sign-in/$' | '/'
+  id: '__root__' | '/_auth' | '/_auth/search' | '/sign-in/$' | '/_auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,14 +87,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/search': {
+      id: '/_auth/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthSearchRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthSearchRoute: typeof AuthSearchRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthSearchRoute: AuthSearchRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
 

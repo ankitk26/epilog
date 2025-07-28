@@ -1,3 +1,4 @@
+import appCss from "@/styles/app.css?url";
 import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
 import { getAuth } from "@clerk/tanstack-react-start/server";
 import { ConvexQueryClient } from "@convex-dev/react-query";
@@ -12,9 +13,8 @@ import {
 import { createServerFn } from "@tanstack/react-start";
 import { getWebRequest } from "@tanstack/react-start/server";
 import { ConvexReactClient } from "convex/react";
-import type { ReactNode } from "react";
-import appCss from "@/app.css?url";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
+import type { ReactNode } from "react";
 
 const fetchClerkAuth = createServerFn({ method: "GET" }).handler(async () => {
   try {
