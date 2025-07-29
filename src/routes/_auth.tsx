@@ -1,4 +1,5 @@
 import Sidebar from "@/components/sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { getAuth } from "@clerk/tanstack-react-start/server";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
@@ -26,9 +27,9 @@ function AuthWrapper() {
   return (
     <div className="grid h-screen grid-cols-6">
       <Sidebar />
-      <main className="col-span-5 w-full py-6 px-8">
+      <ScrollArea className="col-span-5 h-screen w-full py-6 px-8">
         <Outlet />
-      </main>
+      </ScrollArea>
     </div>
   );
 }
