@@ -1,9 +1,12 @@
+import { useFilterStore } from "@/store/filter-store";
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import GridViewSection from "./grid-view-section";
+import MediaSectionByStatus from "./media-section-by-status";
 
 export default function GridView() {
+  const mediaType = useFilterStore((store) => store.type);
+
   const { data: mediaLogs } = useSuspenseQuery(
     convexQuery(api.mediaLogs.all, {})
   );
@@ -26,13 +29,19 @@ export default function GridView() {
     },
   ];
 
+  const logsFilteredByMediaType = mediaLogs.filter(
+    (log) => log.metadata.type === mediaType
+  );
+
   return (
     <div className="space-y-16 p-4">
       {sections.map((section) => {
         return (
-          <GridViewSection
+          <MediaSectionByStatus
             key={section.status}
-            logs={mediaLogs.filter((log) => log.status === section.status)}
+            logs={logsFilteredByMediaType.filter(
+              (log) => log.status === section.status
+            )}
             section={section}
           />
         );

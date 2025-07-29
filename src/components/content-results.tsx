@@ -45,7 +45,9 @@ export default function ContentResults() {
           <MediaCard
             key={media.id}
             media={{
-              imageUrl: `https://image.tmdb.org/t/p/w500${media.poster_path}`,
+              imageUrl:
+                media.poster_path &&
+                `https://image.tmdb.org/t/p/w500${media.poster_path}`,
               name: media.name ?? media.title ?? "NA",
               releaseYear: media.first_air_date
                 ? new Date(media.first_air_date).getFullYear()

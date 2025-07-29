@@ -1,6 +1,8 @@
+import { useFilterStore } from "@/store/filter-store";
 import { api } from "@convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { ClapperboardIcon } from "lucide-react";
+import ListCard from "./list-card";
 import MediaCard from "./media-card";
 import { Badge } from "./ui/badge";
 
@@ -13,7 +15,9 @@ type Props = {
   };
 };
 
-export default function GridViewSection(props: Props) {
+export default function MediaSectionByStatus(props: Props) {
+  const view = useFilterStore((store) => store.view);
+
   return (
     <div key={props.section.status} className="space-y-3">
       {/* Section title */}
@@ -31,20 +35,30 @@ export default function GridViewSection(props: Props) {
 
       {/* Grid cards for media */}
       {props.logs.length !== 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-          {props.logs.map((log) => (
-            <MediaCard
-              key={log._id}
-              media={{
-                imageUrl: log.metadata.image,
-                name: log.metadata.name || "NA",
-                releaseYear: log.metadata.releaseYear,
-                sourceId: log.metadata.sourceMediaId,
-                type: log.metadata.type,
-              }}
-              displayOnly
-            />
-          ))}
+        <div
+          className={
+            view === "list"
+              ? "flex flex-col gap-3"
+              : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"
+          }
+        >
+          {props.logs.map((log) =>
+            view === "list" ? (
+              <ListCard log={log} />
+            ) : (
+              <MediaCard
+                key={log._id}
+                media={{
+                  imageUrl: log.metadata.image,
+                  name: log.metadata.name || "NA",
+                  releaseYear: log.metadata.releaseYear,
+                  sourceId: log.metadata.sourceMediaId,
+                  type: log.metadata.type,
+                }}
+                displayOnly
+              />
+            )
+          )}
         </div>
       )}
 

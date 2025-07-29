@@ -11,15 +11,12 @@ export const getContentSearchResults = createServerFn({ method: "GET" })
     })
   )
   .handler(async ({ data }) => {
-    console.log(data);
-
     let searchType = "tv";
     if (data.mediaType === "movie") {
       searchType = "movie";
     }
 
     const TMDB_TOKEN = process.env.TMDB_TOKEN;
-    console.log(TMDB_TOKEN);
 
     const { data: mediaContent, error } = await betterFetch(
       `https://api.themoviedb.org/3/search/${searchType}`,
