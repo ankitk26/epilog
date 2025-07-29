@@ -1,10 +1,10 @@
+import { Link } from "@tanstack/react-router";
 import { PlusIcon } from "lucide-react";
+import { Suspense } from "react";
 import CardsViewFilter from "./cards-view-filter";
 import MediaTypeFilter from "./media-type-filter";
 import SidebarFooter from "./sidebar-footer";
 import { Button } from "./ui/button";
-import { Suspense } from "react";
-import { Link } from "@tanstack/react-router";
 
 export default function Sidebar() {
   return (

@@ -1,8 +1,9 @@
 import { getContentSearchResults } from "@/actions/get-content-search-results";
 import { useSearchStore } from "@/store/search-store";
 import { useQuery } from "@tanstack/react-query";
-import { Clapperboard, Loader2 } from "lucide-react";
-import SearchResultCard from "./search-result-card";
+import MediaCard from "./media-card";
+import NoSearchFound from "./no-search-found";
+import SearchLoading from "./search-loading";
 import { Badge } from "./ui/badge";
 
 export default function ContentResults() {
@@ -21,26 +22,11 @@ export default function ContentResults() {
   });
 
   if (isEnabled && isPending) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          <span className="text-sm">Searching...</span>
-        </div>
-      </div>
-    );
+    return <SearchLoading />;
   }
 
   if (!mediaContent || mediaContent.results.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-8 text-center">
-        <Clapperboard className="h-8 w-8 text-muted-foreground mb-2" />
-        <p className="text-sm text-muted-foreground">No results found</p>
-        <p className="text-xs text-muted-foreground">
-          Try a different search term
-        </p>
-      </div>
-    );
+    return <NoSearchFound />;
   }
 
   return (
@@ -53,18 +39,24 @@ export default function ContentResults() {
           {mediaContent.results.length} found
         </Badge>
       </div>
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-        {mediaType === "anime"
-          ? mediaContent.results
-              .filter(
-                (result) =>
-                  result.original_language === "ja" ||
-                  result.original_language === "zh"
-              )
-              .map((media) => <SearchResultCard key={media.id} media={media} />)
-          : mediaContent.results.map((media) => (
-              <SearchResultCard key={media.id} media={media} />
-            ))}
+        {mediaContent.results.map((media) => (
+          <MediaCard
+            key={media.id}
+            media={{
+              imageUrl: `https://image.tmdb.org/t/p/w500${media.poster_path}`,
+              name: media.name ?? media.title ?? "NA",
+              releaseYear: media.first_air_date
+                ? new Date(media.first_air_date).getFullYear()
+                : media.release_date
+                ? new Date(media.release_date).getFullYear()
+                : null,
+              sourceId: media.id,
+              type: mediaType,
+            }}
+          />
+        ))}
       </div>
     </div>
   );

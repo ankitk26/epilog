@@ -15,12 +15,16 @@ export const all = query({
       .withIndex("user_and_media", (q) => q.eq("userId", identity.subject))
       .collect();
 
-    const fullMediaLogs = await Promise.all(
+    const rawMediaLogs = await Promise.all(
       mediaLogs.map(async (log) => {
         const media = await ctx.db.get(log.dbMediaId);
         return { ...log, metadata: media };
       })
     );
+
+    const fullMediaLogs = rawMediaLogs
+      .filter((log) => log.metadata !== null)
+      .map((log) => ({ ...log, metadata: log.metadata! }));
 
     return fullMediaLogs;
   },

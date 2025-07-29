@@ -27,7 +27,7 @@ export default function GridView() {
   ];
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-16 p-4">
       {sections.map((section) => {
         return (
           <GridViewSection

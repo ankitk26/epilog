@@ -1,7 +1,7 @@
 import { api } from "@convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { ClapperboardIcon } from "lucide-react";
-import GridCard from "./grid-card";
+import MediaCard from "./media-card";
 import { Badge } from "./ui/badge";
 
 type Props = {
@@ -33,7 +33,17 @@ export default function GridViewSection(props: Props) {
       {props.logs.length !== 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {props.logs.map((log) => (
-            <GridCard key={log._id} log={log} />
+            <MediaCard
+              key={log._id}
+              media={{
+                imageUrl: log.metadata.image,
+                name: log.metadata.name || "NA",
+                releaseYear: log.metadata.releaseYear,
+                sourceId: log.metadata.sourceMediaId,
+                type: log.metadata.type,
+              }}
+              displayOnly
+            />
           ))}
         </div>
       )}
