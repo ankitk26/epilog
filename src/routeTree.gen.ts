@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as SignInIndexRouteImport } from './routes/sign-in.index'
 import { Route as AuthIndexRouteImport } from './routes/_auth.index'
-import { Route as SignInSplatRouteImport } from './routes/sign-in.$'
+import { Route as SignInSsoCallbackRouteImport } from './routes/sign-in.sso-callback'
 import { Route as AuthSearchRouteImport } from './routes/_auth.search'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInIndexRoute = SignInIndexRouteImport.update({
+  id: '/sign-in/',
+  path: '/sign-in/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
@@ -23,9 +29,9 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
-const SignInSplatRoute = SignInSplatRouteImport.update({
-  id: '/sign-in/$',
-  path: '/sign-in/$',
+const SignInSsoCallbackRoute = SignInSsoCallbackRouteImport.update({
+  id: '/sign-in/sso-callback',
+  path: '/sign-in/sso-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSearchRoute = AuthSearchRouteImport.update({
@@ -36,32 +42,42 @@ const AuthSearchRoute = AuthSearchRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/search': typeof AuthSearchRoute
-  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/': typeof AuthIndexRoute
+  '/sign-in': typeof SignInIndexRoute
 }
 export interface FileRoutesByTo {
   '/search': typeof AuthSearchRoute
-  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/': typeof AuthIndexRoute
+  '/sign-in': typeof SignInIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_auth/search': typeof AuthSearchRoute
-  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/_auth/': typeof AuthIndexRoute
+  '/sign-in/': typeof SignInIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/search' | '/sign-in/$' | '/'
+  fullPaths: '/search' | '/sign-in/sso-callback' | '/' | '/sign-in'
   fileRoutesByTo: FileRoutesByTo
-  to: '/search' | '/sign-in/$' | '/'
-  id: '__root__' | '/_auth' | '/_auth/search' | '/sign-in/$' | '/_auth/'
+  to: '/search' | '/sign-in/sso-callback' | '/' | '/sign-in'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_auth/search'
+    | '/sign-in/sso-callback'
+    | '/_auth/'
+    | '/sign-in/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
-  SignInSplatRoute: typeof SignInSplatRoute
+  SignInSsoCallbackRoute: typeof SignInSsoCallbackRoute
+  SignInIndexRoute: typeof SignInIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -73,6 +89,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sign-in/': {
+      id: '/sign-in/'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth/': {
       id: '/_auth/'
       path: '/'
@@ -80,11 +103,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/sign-in/$': {
-      id: '/sign-in/$'
-      path: '/sign-in/$'
-      fullPath: '/sign-in/$'
-      preLoaderRoute: typeof SignInSplatRouteImport
+    '/sign-in/sso-callback': {
+      id: '/sign-in/sso-callback'
+      path: '/sign-in/sso-callback'
+      fullPath: '/sign-in/sso-callback'
+      preLoaderRoute: typeof SignInSsoCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/search': {
@@ -111,7 +134,8 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
-  SignInSplatRoute: SignInSplatRoute,
+  SignInSsoCallbackRoute: SignInSsoCallbackRoute,
+  SignInIndexRoute: SignInIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
