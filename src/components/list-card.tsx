@@ -68,10 +68,8 @@ export default function ListCard({ log }: Props) {
                 {log.metadata?.name || "Untitled"}
               </h3>
               <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                {log.metadata?.releaseDate && (
-                  <span>
-                    {new Date(log.metadata.releaseDate).getFullYear()}
-                  </span>
+                {log.metadata?.releaseYear && (
+                  <span>{log.metadata.releaseYear}</span>
                 )}
                 {log.metadata?.type && (
                   <span className="capitalize">{log.metadata.type}</span>

@@ -3,6 +3,7 @@ import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
 import { getAuth } from "@clerk/tanstack-react-start/server";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/sonner";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -106,6 +107,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           </head>
           <body className="dark">
             {children}
+            <Toaster />
             <Scripts />
           </body>
         </html>

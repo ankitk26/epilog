@@ -9,7 +9,7 @@ export default function SearchResults() {
   return (
     <div>
       {mediaType === "book" && <BookResults />}
-      {mediaType !== "book" && mediaType !== "anime" && <ContentResults />}
+      {(mediaType === "movie" || mediaType === "tv") && <ContentResults />}
       {mediaType === "anime" && <AnimeResults />}
     </div>
   );

@@ -6,10 +6,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/search")({
-  component: RouteComponent,
+  component: SearchPage,
 });
 
-function RouteComponent() {
+function SearchPage() {
   return (
     <div className="space-y-8 flex flex-col">
       <Link to="/">

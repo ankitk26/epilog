@@ -26,6 +26,9 @@ export const animeSearchAPIOutput = z.object({
     z.object({
       mal_id: z.number(),
       images: z.object({
+        jpg: z.object({
+          large_image_url: z.string(),
+        }),
         webp: z.object({
           large_image_url: z.string(),
         }),

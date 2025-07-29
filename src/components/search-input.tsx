@@ -1,5 +1,5 @@
 import { useSearchStore } from "@/store/search-store";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
 export default function SearchInput() {
@@ -13,6 +13,10 @@ export default function SearchInput() {
     e.stopPropagation();
     setSearchQuery(query);
   }
+
+  useEffect(() => {
+    setQuery(searchQuery);
+  }, [searchQuery]);
 
   return (
     <form onSubmit={handleQuerySubmit}>

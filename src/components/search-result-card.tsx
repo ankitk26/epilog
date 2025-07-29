@@ -1,5 +1,10 @@
+import { useSearchStore } from "@/store/search-store";
 import { MediaSearchOutput } from "@/types";
+import { useConvexMutation } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
+import { useMutation } from "@tanstack/react-query";
 import { Clapperboard, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
@@ -8,12 +13,33 @@ type Props = {
 };
 
 export default function SearchResultCard(props: Props) {
-  const handleAddToStaging = () => {
-    // Add your staging logic here
-    console.log("Adding to staging:", props.media);
-  };
+  const mediaType = useSearchStore((store) => store.mediaType);
 
+  const releaseYear = props.media.first_air_date
+    ? new Date(props.media.first_air_date).getFullYear()
+    : props.media.release_date
+    ? new Date(props.media.release_date).getFullYear()
+    : null;
   const fullPosterPath = `https://image.tmdb.org/t/p/w500${props.media.poster_path}`;
+
+  const addToPlanningMutation = useMutation({
+    mutationFn: useConvexMutation(api.mediaLogs.addToPlanning),
+    onSuccess: () => {
+      toast.success("Added to planning");
+    },
+  });
+
+  const handleAddToPlanning = () => {
+    addToPlanningMutation.mutate({
+      media: {
+        name: props.media.name ?? "NA",
+        releaseYear: releaseYear,
+        sourceMediaId: props.media.id,
+        type: mediaType,
+        image: fullPosterPath,
+      },
+    });
+  };
 
   return (
     <Card
@@ -34,7 +60,7 @@ export default function SearchResultCard(props: Props) {
         )}
         {/* Add button overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-sm">
-          <Button variant="secondary" size="sm" onClick={handleAddToStaging}>
+          <Button variant="secondary" size="sm" onClick={handleAddToPlanning}>
             <Plus className="h-3 w-3" />
             Add
           </Button>
@@ -50,9 +76,7 @@ export default function SearchResultCard(props: Props) {
           </p>
         )}
         {props.media.first_air_date && (
-          <p className="text-xs text-muted-foreground">
-            {new Date(props.media.first_air_date).getFullYear()}
-          </p>
+          <p className="text-xs text-muted-foreground">{releaseYear}</p>
         )}
       </CardContent>
     </Card>

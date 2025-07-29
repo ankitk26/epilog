@@ -49,9 +49,9 @@ export default function GridCard({ log }: Props) {
         <h4 className="font-medium text-xs line-clamp-2 mb-1">
           {log.metadata?.name || "Untitled"}
         </h4>
-        {log.metadata?.releaseDate && (
+        {log.metadata?.releaseYear && (
           <p className="text-xs text-muted-foreground">
-            {new Date(log.metadata.releaseDate).getFullYear()}
+            {log.metadata.releaseYear}
           </p>
         )}
         <p className="text-xs text-muted-foreground capitalize">

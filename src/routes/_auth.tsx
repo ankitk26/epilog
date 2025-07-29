@@ -18,11 +18,11 @@ const authStateFn = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/_auth")({
-  component: RouteComponent,
+  component: AuthWrapper,
   beforeLoad: async () => await authStateFn(),
 });
 
-function RouteComponent() {
+function AuthWrapper() {
   return (
     <div className="grid h-screen grid-cols-6">
       <Sidebar />
