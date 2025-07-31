@@ -4,14 +4,20 @@ import { Suspense } from "react";
 import CardsViewFilter from "./cards-view-filter";
 import MediaTypeFilter from "./media-type-filter";
 import SidebarFooter from "./sidebar-footer";
+import { ThemeToggle } from "./theme-toggler";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
   return (
     <aside className="flex flex-col h-full col-span-1 bg-background border-r">
+      <div className="flex items-center justify-between">
+
       <Link to="/" className="p-6">
         <h1 className="text-lg font-semibold tracking-wide">epilog</h1>
       </Link>
+      <ThemeToggle />
+
+      </div>
 
       <div className="px-6 pb-6">
         <Link to="/search">

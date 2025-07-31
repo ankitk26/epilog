@@ -27,17 +27,17 @@ export default function SidebarFooter() {
             <span className="text-muted-foreground">{session?.user.email}</span>
           </div>
         </div>
-        <Button
-          size="icon"
-          variant="secondary"
-          className="size-8"
-          onClick={async () => {
-            await authClient.signOut();
-            navigate({ to: "/sign-in" });
-          }}
-        >
-          <LogOutIcon className="size-4" />
-        </Button>
+          <Button
+            size="icon"
+            variant="secondary"
+            className="size-8"
+            onClick={async () => {
+              await authClient.signOut();
+              navigate({ to: "/sign-in" });
+            }}
+          >
+            <LogOutIcon className="size-4" />
+          </Button>
       </div>
     </div>
   );

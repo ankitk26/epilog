@@ -13,6 +13,7 @@ import {
   useRouteContext,
 } from "@tanstack/react-router";
 import { ConvexReactClient } from "convex/react";
+import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 
 export const Route = createRootRouteWithContext<{
@@ -70,14 +71,21 @@ function RootComponent() {
   const context = useRouteContext({ from: Route.id });
 
   return (
-    <ConvexBetterAuthProvider
-      client={context.convexClient}
-      authClient={authClient}
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
     >
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
-    </ConvexBetterAuthProvider>
+      <ConvexBetterAuthProvider
+        client={context.convexClient}
+        authClient={authClient}
+      >
+        <RootDocument>
+          <Outlet />
+        </RootDocument>
+      </ConvexBetterAuthProvider>
+    </ThemeProvider>
   );
 }
 
@@ -89,7 +97,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body className="dark">
+      <body>
         {children}
         <Toaster />
         <Scripts />
