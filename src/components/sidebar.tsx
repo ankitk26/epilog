@@ -9,9 +9,9 @@ import { Button } from "./ui/button";
 export default function Sidebar() {
   return (
     <aside className="flex flex-col h-full col-span-1 bg-background border-r">
-      <div className="p-6">
+      <Link to="/" className="p-6">
         <h1 className="text-lg font-semibold tracking-wide">epilog</h1>
-      </div>
+      </Link>
 
       <div className="px-6 pb-6">
         <Link to="/search">

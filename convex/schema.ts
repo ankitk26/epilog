@@ -2,6 +2,10 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  users: defineTable({
+    // this table will only have _id and _creationTime
+  }),
+
   media: defineTable({
     name: v.string(),
     image: v.optional(v.string()),
@@ -18,7 +22,7 @@ export default defineSchema({
     .index("sourceId", ["sourceMediaId"]),
 
   mediaLogs: defineTable({
-    userId: v.string(),
+    userId: v.id("users"),
     dbMediaId: v.id("media"),
     status: v.union(
       v.literal("planned"),

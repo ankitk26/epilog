@@ -8,20 +8,24 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as SignInIndexRouteImport } from './routes/sign-in.index'
-import { Route as AuthIndexRouteImport } from './routes/_auth.index'
-import { Route as SignInSsoCallbackRouteImport } from './routes/sign-in.sso-callback'
-import { Route as AuthSearchRouteImport } from './routes/_auth.search'
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AuthIndexRouteImport } from './routes/_auth.index'
+import { Route as AuthSearchRouteImport } from './routes/_auth.search'
+import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api.auth.$'
+
+const rootServerRouteImport = createServerRootRoute()
+
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignInIndexRoute = SignInIndexRouteImport.update({
-  id: '/sign-in/',
-  path: '/sign-in/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
@@ -29,71 +33,82 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
-const SignInSsoCallbackRoute = SignInSsoCallbackRouteImport.update({
-  id: '/sign-in/sso-callback',
-  path: '/sign-in/sso-callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthSearchRoute = AuthSearchRouteImport.update({
   id: '/search',
   path: '/search',
   getParentRoute: () => AuthRoute,
 } as any)
+const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/sign-in': typeof SignInRoute
   '/search': typeof AuthSearchRoute
-  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/': typeof AuthIndexRoute
-  '/sign-in': typeof SignInIndexRoute
 }
 export interface FileRoutesByTo {
+  '/sign-in': typeof SignInRoute
   '/search': typeof AuthSearchRoute
-  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/': typeof AuthIndexRoute
-  '/sign-in': typeof SignInIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/_auth/search': typeof AuthSearchRoute
-  '/sign-in/sso-callback': typeof SignInSsoCallbackRoute
   '/_auth/': typeof AuthIndexRoute
-  '/sign-in/': typeof SignInIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/search' | '/sign-in/sso-callback' | '/' | '/sign-in'
+  fullPaths: '/sign-in' | '/search' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/search' | '/sign-in/sso-callback' | '/' | '/sign-in'
-  id:
-    | '__root__'
-    | '/_auth'
-    | '/_auth/search'
-    | '/sign-in/sso-callback'
-    | '/_auth/'
-    | '/sign-in/'
+  to: '/sign-in' | '/search' | '/'
+  id: '__root__' | '/_auth' | '/sign-in' | '/_auth/search' | '/_auth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
-  SignInSsoCallbackRoute: typeof SignInSsoCallbackRoute
-  SignInIndexRoute: typeof SignInIndexRoute
+  SignInRoute: typeof SignInRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api/auth/$'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api/auth/$'
+  id: '__root__' | '/api/auth/$'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sign-in/': {
-      id: '/sign-in/'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/': {
@@ -103,19 +118,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/sign-in/sso-callback': {
-      id: '/sign-in/sso-callback'
-      path: '/sign-in/sso-callback'
-      fullPath: '/sign-in/sso-callback'
-      preLoaderRoute: typeof SignInSsoCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth/search': {
       id: '/_auth/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof AuthSearchRouteImport
       parentRoute: typeof AuthRoute
+    }
+  }
+}
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
     }
   }
 }
@@ -134,9 +153,14 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
-  SignInSsoCallbackRoute: SignInSsoCallbackRoute,
-  SignInIndexRoute: SignInIndexRoute,
+  SignInRoute: SignInRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+}
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

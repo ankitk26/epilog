@@ -1,9 +1,10 @@
+import { Toaster } from "@/components/ui/sonner";
+import { authClient } from "@/lib/auth-client";
+import { authQueryOptions } from "@/queries/auth";
 import appCss from "@/styles/app.css?url";
-import { ClerkProvider, useAuth } from "@clerk/tanstack-react-start";
-import { getAuth } from "@clerk/tanstack-react-start/server";
+import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/sonner";
 import {
   createRootRouteWithContext,
   HeadContent,
@@ -11,25 +12,8 @@ import {
   Scripts,
   useRouteContext,
 } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { getWebRequest } from "@tanstack/react-start/server";
 import { ConvexReactClient } from "convex/react";
-import { ConvexProviderWithClerk } from "convex/react-clerk";
 import type { ReactNode } from "react";
-
-const fetchClerkAuth = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const auth = await getAuth(getWebRequest());
-    const token = await auth.getToken({ template: "convex" });
-
-    return {
-      userId: auth.userId,
-      token,
-    };
-  } catch (e) {
-    return { userId: null, token: null };
-  }
-});
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -37,19 +21,14 @@ export const Route = createRootRouteWithContext<{
   convexQueryClient: ConvexQueryClient;
 }>()({
   beforeLoad: async (ctx) => {
-    const auth = await fetchClerkAuth();
-    const { userId, token } = auth;
+    const auth = await ctx.context.queryClient.fetchQuery(authQueryOptions);
+    const { session, token } = auth;
 
-    // During SSR only (the only time serverHttpClient exists),
-    // set the Clerk auth token to make HTTP queries with.
     if (token) {
       ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
     }
 
-    return {
-      userId,
-      token,
-    };
+    return { session, token };
   },
   head: () => ({
     meta: [
@@ -88,10 +67,17 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootComponent() {
+  const context = useRouteContext({ from: Route.id });
+
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <ConvexBetterAuthProvider
+      client={context.convexClient}
+      authClient={authClient}
+    >
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </ConvexBetterAuthProvider>
   );
 }
 
@@ -99,19 +85,15 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   const context = useRouteContext({ from: Route.id });
 
   return (
-    <ClerkProvider>
-      <ConvexProviderWithClerk client={context.convexClient} useAuth={useAuth}>
-        <html>
-          <head>
-            <HeadContent />
-          </head>
-          <body className="dark">
-            {children}
-            <Toaster />
-            <Scripts />
-          </body>
-        </html>
-      </ConvexProviderWithClerk>
-    </ClerkProvider>
+    <html>
+      <head>
+        <HeadContent />
+      </head>
+      <body className="dark">
+        {children}
+        <Toaster />
+        <Scripts />
+      </body>
+    </html>
   );
 }

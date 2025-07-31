@@ -1,18 +1,16 @@
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
+import { getCurrentUserOrThrow } from "./model/users";
 
 export const all = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Unauthorized");
-    }
+    const userId = await getCurrentUserOrThrow(ctx);
 
     const mediaLogs = await ctx.db
       .query("mediaLogs")
-      .withIndex("user_and_media", (q) => q.eq("userId", identity.subject))
+      .withIndex("user_and_media", (q) => q.eq("userId", userId))
       .collect();
 
     const rawMediaLogs = await Promise.all(
@@ -46,10 +44,7 @@ export const addToPlanning = mutation({
     }),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Unauthorized");
-    }
+    const userId = await getCurrentUserOrThrow(ctx);
 
     let mediaId: Id<"media">;
 
@@ -63,7 +58,6 @@ export const addToPlanning = mutation({
 
     if (existingMedia.length > 0) {
       mediaId = existingMedia[0]._id;
-      console.log("Media already exists => ", mediaId);
     } else {
       // create new media row and get its ID
       const newMediaId = await ctx.db.insert("media", {
@@ -73,7 +67,6 @@ export const addToPlanning = mutation({
         sourceMediaId: args.media.sourceMediaId,
         type: args.media.type,
       });
-      console.log("Media created => ", newMediaId);
       mediaId = newMediaId;
     }
 
@@ -81,7 +74,7 @@ export const addToPlanning = mutation({
     const mediaLogCheck = await ctx.db
       .query("mediaLogs")
       .withIndex("user_and_media", (q) =>
-        q.eq("userId", identity.subject).eq("dbMediaId", mediaId)
+        q.eq("userId", userId).eq("dbMediaId", mediaId)
       )
       .collect();
 
@@ -91,12 +84,10 @@ export const addToPlanning = mutation({
       return;
     }
 
-    console.log("Inserting new log");
-
     await ctx.db.insert("mediaLogs", {
       dbMediaId: mediaId,
       status: "planned",
-      userId: identity.subject,
+      userId,
     });
   },
 });
@@ -106,6 +97,15 @@ export const remove = mutation({
     mediaLogId: v.id("mediaLogs"),
   },
   handler: async (ctx, args) => {
+    const userId = await getCurrentUserOrThrow(ctx);
+
+    const mediaLogDoc = await ctx.db.get(args.mediaLogId);
+
+    // check if user trying to delete the doc is the doc's owner
+    if (mediaLogDoc?.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
     await ctx.db.delete(args.mediaLogId);
   },
 });
@@ -120,6 +120,15 @@ export const updateStatus = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const userId = await getCurrentUserOrThrow(ctx);
+
+    const mediaLogDoc = await ctx.db.get(args.mediaLogId);
+
+    // check if user trying to delete the doc is the doc's owner
+    if (mediaLogDoc?.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
     await ctx.db.patch(args.mediaLogId, {
       status: args.status,
     });
