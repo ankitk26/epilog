@@ -1,10 +1,11 @@
-import { useSearchStore } from "@/store/search-store";
+import { searchStore } from "@/store/search-store";
+import { useStore } from "@tanstack/react-store";
 import AnimeResults from "./anime-results";
 import BookResults from "./book-results";
 import ContentResults from "./content-results";
 
 export default function SearchResults() {
-  const mediaType = useSearchStore((store) => store.mediaType);
+  const mediaType = useStore(searchStore, (state) => state.mediaType);
 
   return (
     <div>

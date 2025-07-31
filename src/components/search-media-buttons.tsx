@@ -1,9 +1,13 @@
-import { useSearchStore } from "@/store/search-store";
+import { searchStore } from "@/store/search-store";
+import { useStore } from "@tanstack/react-store";
 import { Button } from "./ui/button";
 
 export default function SearchMediaButtons() {
-  const mediaType = useSearchStore((store) => store.mediaType);
-  const setMediaType = useSearchStore((store) => store.setMediaType);
+  const mediaType = useStore(searchStore, (state) => state.mediaType);
+
+  const setMediaType = (type: typeof mediaType) => {
+    searchStore.setState((state) => ({ ...state, mediaType: type }));
+  };
 
   return (
     <div className="flex flex-col space-y-2">

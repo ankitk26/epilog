@@ -1,14 +1,15 @@
 import { getContentSearchResults } from "@/actions/get-content-search-results";
-import { useSearchStore } from "@/store/search-store";
+import { searchStore } from "@/store/search-store";
 import { useQuery } from "@tanstack/react-query";
+import { useStore } from "@tanstack/react-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
 import SearchLoading from "./search-loading";
 import { Badge } from "./ui/badge";
 
 export default function ContentResults() {
-  const searchQuery = useSearchStore((store) => store.searchQuery);
-  const mediaType = useSearchStore((store) => store.mediaType);
+  const searchQuery = useStore(searchStore, (state) => state.searchQuery);
+  const mediaType = useStore(searchStore, (state) => state.mediaType);
 
   const {
     data: mediaContent,

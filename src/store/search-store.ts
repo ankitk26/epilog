@@ -1,16 +1,12 @@
 import { MediaType } from "@/types";
-import { create } from "zustand";
+import { Store } from "@tanstack/react-store";
 
 type SearchStore = {
   searchQuery: string;
   mediaType: MediaType;
-  setSearchQuery: (query: string) => void;
-  setMediaType: (type: MediaType) => void;
 };
 
-export const useSearchStore = create<SearchStore>((set) => ({
+export const searchStore = new Store<SearchStore>({
   searchQuery: "",
-  setSearchQuery: (query: string) => set({ searchQuery: query }),
   mediaType: "anime",
-  setMediaType: (type: MediaType) => set({ mediaType: type }),
-}));
+});
