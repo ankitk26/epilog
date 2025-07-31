@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { LogOutIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { authQueryOptions } from "@/queries/auth";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 
 export default function SidebarFooter() {
@@ -21,6 +21,7 @@ export default function SidebarFooter() {
               alt={session?.user.name ?? ""}
               src={session?.user.image ?? ""}
             />
+            <AvatarFallback>{session?.user.name[0]}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col text-xs">
             <span>{session?.user.name}</span>
