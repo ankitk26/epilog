@@ -10,8 +10,8 @@ import { Button } from "./ui/button";
 export default function Sidebar() {
   return (
     <aside className="col-span-1 flex h-full flex-col border-r bg-background">
-      <div className="flex items-center justify-between">
-        <Link className="p-6" to="/">
+      <div className="flex items-center justify-between p-6">
+        <Link to="/">
           <h1 className="font-semibold text-lg tracking-wide">epilog</h1>
         </Link>
         <ThemeToggle />

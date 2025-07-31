@@ -30,8 +30,8 @@ export default function SidebarFooter() {
         <Button
           className="size-8"
           onClick={async () => {
+            await navigate({ to: "/sign-in" });
             await authClient.signOut();
-            navigate({ to: "/sign-in" });
           }}
           size="icon"
           variant="secondary"

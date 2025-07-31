@@ -15,8 +15,8 @@ export default function CardsViewFilter() {
       <div className="space-y-1">
         {[
           { value: "list", label: "List View", icon: ListIcon },
-          { value: "kanban", label: "Kanban Board", icon: KanbanIcon },
           { value: "grid", label: "Grid Layout", icon: LayoutGridIcon },
+          { value: "kanban", label: "Kanban Board", icon: KanbanIcon },
         ].map((option) => {
           const Icon = option.icon;
           const isActive = view === option.value;
