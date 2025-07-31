@@ -1,5 +1,6 @@
-import { useFilterStore } from "@/store/filter-store";
 import { KanbanIcon, LayoutGridIcon, ListIcon } from "lucide-react";
+import { useFilterStore } from "@/store/filter-store";
+import type { FilterMediaView } from "@/types";
 import { Button } from "./ui/button";
 
 export default function CardsViewFilter() {
@@ -8,7 +9,7 @@ export default function CardsViewFilter() {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+      <h3 className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
         View Mode
       </h3>
       <div className="space-y-1">
@@ -22,14 +23,14 @@ export default function CardsViewFilter() {
 
           return (
             <Button
-              key={option.value}
-              variant={isActive ? "secondary" : "ghost"}
-              className={`w-full justify-start h-8 px-2 text-xs ${
+              className={`h-8 w-full justify-start px-2 text-xs ${
                 isActive
                   ? "bg-accent text-accent-foreground"
                   : "hover:bg-accent/50"
               }`}
-              onClick={() => setView(option.value as any)}
+              key={option.value}
+              onClick={() => setView(option.value as FilterMediaView)}
+              variant={isActive ? "secondary" : "ghost"}
             >
               <div className="flex items-center gap-2">
                 <Icon className="h-3 w-3" />

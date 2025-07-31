@@ -1,6 +1,6 @@
-import { searchStore } from "@/store/search-store";
 import { useStore } from "@tanstack/react-store";
-import { FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
+import { searchStore } from "@/store/search-store";
 import { Input } from "./ui/input";
 
 export default function SearchInput() {
@@ -21,9 +21,9 @@ export default function SearchInput() {
   return (
     <form onSubmit={handleQuerySubmit}>
       <Input
-        value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search title"
+        value={query}
       />
     </form>
   );

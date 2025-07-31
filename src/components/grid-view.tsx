@@ -1,8 +1,8 @@
-import { useFilterStore } from "@/store/filter-store";
-import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import MediaSectionByStatus from "./media-section-by-status";
+import MediaSectionByStatus from "@/components/media-section-by-status";
+import { useFilterStore } from "@/store/filter-store";
 
 export default function GridView() {
   const mediaType = useFilterStore((store) => store.type);

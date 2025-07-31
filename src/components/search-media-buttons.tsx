@@ -1,5 +1,5 @@
-import { searchStore } from "@/store/search-store";
 import { useStore } from "@tanstack/react-store";
+import { searchStore } from "@/store/search-store";
 import { Button } from "./ui/button";
 
 export default function SearchMediaButtons() {
@@ -14,34 +14,34 @@ export default function SearchMediaButtons() {
       <p>Select media type</p>
       <div className="flex items-center space-x-4">
         <Button
+          className="text-xs"
+          onClick={() => setMediaType("anime")}
           size="sm"
           variant={mediaType === "anime" ? "default" : "outline"}
-          onClick={() => setMediaType("anime")}
-          className="text-xs"
         >
           Anime
         </Button>
         <Button
+          className="text-xs"
+          onClick={() => setMediaType("tv")}
           size="sm"
           variant={mediaType === "tv" ? "default" : "outline"}
-          onClick={() => setMediaType("tv")}
-          className="text-xs"
         >
           TV
         </Button>
         <Button
+          className="text-xs"
+          onClick={() => setMediaType("movie")}
           size="sm"
           variant={mediaType === "movie" ? "default" : "outline"}
-          onClick={() => setMediaType("movie")}
-          className="text-xs"
         >
           Movies
         </Button>
         <Button
+          className="text-xs"
+          onClick={() => setMediaType("book")}
           size="sm"
           variant={mediaType === "book" ? "default" : "outline"}
-          onClick={() => setMediaType("book")}
-          className="text-xs"
         >
           Books
         </Button>

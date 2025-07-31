@@ -1,7 +1,7 @@
-import { mediaSearchAPIOutput, mediaTypes } from "@/types";
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
+import { mediaSearchAPIOutput, mediaTypes } from "@/types";
 
 export const getContentSearchResults = createServerFn({ method: "GET" })
   .validator(
@@ -18,7 +18,7 @@ export const getContentSearchResults = createServerFn({ method: "GET" })
 
     const TMDB_TOKEN = process.env.TMDB_TOKEN;
 
-    const { data: mediaContent, error } = await betterFetch(
+    const { data: mediaContent } = await betterFetch(
       `https://api.themoviedb.org/3/search/${searchType}`,
       {
         method: "GET",

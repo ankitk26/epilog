@@ -1,9 +1,9 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowLeftIcon } from "lucide-react";
 import SearchInput from "@/components/search-input";
 import SearchMediaButtons from "@/components/search-media-buttons";
 import SearchResults from "@/components/search-results";
 import { Button } from "@/components/ui/button";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeftIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_auth/search")({
   component: SearchPage,
@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_auth/search")({
 
 function SearchPage() {
   return (
-    <div className="space-y-8 flex flex-col">
+    <div className="flex flex-col space-y-8">
       <Link to="/">
-        <Button size="sm" className="text-xs" variant="secondary">
+        <Button className="text-xs" size="sm" variant="secondary">
           <ArrowLeftIcon />
           Go back
         </Button>

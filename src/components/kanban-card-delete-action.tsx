@@ -1,9 +1,9 @@
-import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { Id } from "@convex/_generated/dataModel";
+import type { Id } from "@convex/_generated/dataModel";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { DropdownMenuItem } from "./ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type Props = {
   mediaLogId: Id<"mediaLogs">;

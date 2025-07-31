@@ -1,7 +1,7 @@
-import { animeSearchAPIOutput, AnimeSearchOutput } from "@/types";
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
+import { type AnimeSearchOutput, animeSearchAPIOutput } from "@/types";
 
 export const getAnimeSearchResults = createServerFn({ method: "GET" })
   .validator(z.object({ searchQuery: z.string() }))

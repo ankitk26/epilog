@@ -9,14 +9,12 @@ import { Button } from "./ui/button";
 
 export default function Sidebar() {
   return (
-    <aside className="flex flex-col h-full col-span-1 bg-background border-r">
+    <aside className="col-span-1 flex h-full flex-col border-r bg-background">
       <div className="flex items-center justify-between">
-
-      <Link to="/" className="p-6">
-        <h1 className="text-lg font-semibold tracking-wide">epilog</h1>
-      </Link>
-      <ThemeToggle />
-
+        <Link className="p-6" to="/">
+          <h1 className="font-semibold text-lg tracking-wide">epilog</h1>
+        </Link>
+        <ThemeToggle />
       </div>
 
       <div className="px-6 pb-6">
@@ -28,7 +26,7 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className="flex-1 px-6 space-y-6">
+      <div className="flex-1 space-y-6 px-6">
         <CardsViewFilter />
         <Suspense fallback={<p>Loading...</p>}>
           <MediaTypeFilter />

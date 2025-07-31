@@ -1,5 +1,5 @@
-import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { Clapperboard, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -40,23 +40,23 @@ export default function MediaCard(props: Props) {
   };
 
   return (
-    <Card className="group overflow-hidden transition-shadow duration-200 hover:shadow-md p-0">
-      <div className="aspect-[3/4] relative overflow-hidden">
+    <Card className="group overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
+      <div className="relative aspect-[3/4] overflow-hidden">
         {props.media.imageUrl ? (
           <img
-            src={props.media.imageUrl}
             alt={props.media.name}
-            className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+            className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+            src={props.media.imageUrl}
           />
         ) : (
-          <div className="w-full h-full bg-muted flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center bg-muted">
             <Clapperboard className="h-8 w-8 text-muted-foreground" />
           </div>
         )}
         {/* Add button overlay */}
         {!displayOnly && (
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center backdrop-blur-sm">
-            <Button variant="secondary" size="sm" onClick={handleAddToPlanning}>
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+            <Button onClick={handleAddToPlanning} size="sm" variant="secondary">
               <Plus className="h-3 w-3" />
               Add
             </Button>
@@ -64,11 +64,11 @@ export default function MediaCard(props: Props) {
         )}
       </div>
       <CardContent className="p-3 pt-0">
-        <h4 className="font-medium text-xs line-clamp-2 mb-1">
+        <h4 className="mb-1 line-clamp-2 font-medium text-xs">
           {props.media.name}
         </h4>
         {props.media.releaseYear && (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {props.media.releaseYear}
           </p>
         )}

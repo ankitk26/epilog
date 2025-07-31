@@ -1,6 +1,6 @@
-import { searchStore } from "@/store/search-store";
 import { useQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
+import { searchStore } from "@/store/search-store";
 
 export default function BookResults() {
   const searchQuery = useStore(searchStore, (state) => state.searchQuery);
@@ -12,7 +12,9 @@ export default function BookResults() {
     isEnabled,
   } = useQuery({
     queryKey: ["search", "books", mediaType, searchQuery],
-    queryFn: () => {},
+    queryFn: () => {
+      console.log("Hello");
+    },
     enabled: searchQuery.length !== 0 && mediaType === "book",
   });
 

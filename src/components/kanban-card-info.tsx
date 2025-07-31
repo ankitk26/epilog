@@ -5,8 +5,8 @@ type Props = {
 
 export default function KanbanCardInfo(props: Props) {
   return (
-    <div className="flex-1 min-w-0">
-      <h4 className="font-semibold text-foreground text-sm line-clamp-2 leading-tight mb-1 drop-shadow-lg">
+    <div className="min-w-0 flex-1">
+      <h4 className="mb-1 line-clamp-2 font-semibold text-foreground text-sm leading-tight drop-shadow-lg">
         {props.name}
       </h4>
       <p className="text-foreground/90 text-xs drop-shadow-md">

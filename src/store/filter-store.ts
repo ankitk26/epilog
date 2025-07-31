@@ -1,6 +1,6 @@
-import type { FilterMediaView, MediaType } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { FilterMediaView, MediaType } from "@/types";
 
 type FilterStore = {
   type: MediaType;

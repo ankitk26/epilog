@@ -1,6 +1,6 @@
 import {
-  BetterAuth,
   type AuthFunctions,
+  BetterAuth,
   type PublicAuthFunctions,
 } from "@convex-dev/better-auth";
 import { api, components, internal } from "./_generated/api";
@@ -25,7 +25,7 @@ export const {
   isAuthenticated,
 } = betterAuthComponent.createAuthFunctions<DataModel>({
   // Must create a user and return the user id
-  onCreateUser: async (ctx, user) => {
+  onCreateUser: (ctx) => {
     return ctx.db.insert("users", {});
   },
 

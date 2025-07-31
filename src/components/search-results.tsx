@@ -1,5 +1,5 @@
-import { searchStore } from "@/store/search-store";
 import { useStore } from "@tanstack/react-store";
+import { searchStore } from "@/store/search-store";
 import AnimeResults from "./anime-results";
 import BookResults from "./book-results";
 import ContentResults from "./content-results";

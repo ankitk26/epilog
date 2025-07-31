@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { Id } from "./_generated/dataModel";
+import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUserOrThrow } from "./model/users";
 
@@ -21,8 +21,12 @@ export const all = query({
     );
 
     const fullMediaLogs = rawMediaLogs
-      .filter((log) => log.metadata !== null)
-      .map((log) => ({ ...log, metadata: log.metadata! }));
+      .filter((log) => log.metadata != null)
+      .map((log) => ({
+        ...log,
+        // biome-ignore lint/style/noNonNullAssertion: assert metadata not to be null
+        metadata: log.metadata!,
+      }));
 
     return fullMediaLogs;
   },

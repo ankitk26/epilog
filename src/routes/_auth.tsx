@@ -1,10 +1,10 @@
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import Sidebar from "@/components/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth")({
   component: AuthWrapper,
-  beforeLoad: async ({ context }) => {
+  beforeLoad: ({ context }) => {
     const userId = context.session?.user;
     if (!userId) {
       throw redirect({ to: "/sign-in" });

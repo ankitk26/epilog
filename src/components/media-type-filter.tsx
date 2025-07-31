@@ -1,7 +1,8 @@
-import { useFilterStore } from "@/store/filter-store";
-import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useFilterStore } from "@/store/filter-store";
+import type { MediaType } from "@/types";
 import { Button } from "./ui/button";
 
 export default function MediaTypeFilter() {
@@ -11,7 +12,7 @@ export default function MediaTypeFilter() {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+      <h3 className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
         Media Types
       </h3>
       <div className="space-y-1">
@@ -45,14 +46,14 @@ export default function MediaTypeFilter() {
 
           return (
             <Button
-              key={item.label}
-              variant={isActive ? "secondary" : "ghost"}
-              className={`w-full justify-between h-8 px-2 text-xs ${
+              className={`h-8 w-full justify-between px-2 text-xs ${
                 isActive
                   ? "bg-accent text-accent-foreground"
                   : "hover:bg-accent/50"
               }`}
-              onClick={() => setType(item.value as any)}
+              key={item.label}
+              onClick={() => setType(item.value as MediaType)}
+              variant={isActive ? "secondary" : "ghost"}
             >
               <div className="flex items-center gap-2">
                 <div className={`h-1.5 w-1.5 rounded-full ${item.color}`} />

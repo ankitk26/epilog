@@ -1,5 +1,5 @@
-import { MediaType } from "@/types";
 import { Store } from "@tanstack/react-store";
+import type { MediaType } from "@/types";
 
 type SearchStore = {
   searchQuery: string;

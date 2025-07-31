@@ -1,5 +1,5 @@
-import { reactStartHandler } from "@/lib/sever-auth-utils";
 import { createServerFileRoute } from "@tanstack/react-start/server";
+import { reactStartHandler } from "@/lib/sever-auth-utils";
 
 export const ServerRoute = createServerFileRoute("/api/auth/$").methods({
   GET: ({ request }) => {

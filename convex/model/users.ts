@@ -1,6 +1,6 @@
-import { Id } from "@convex/_generated/dataModel";
+import type { Id } from "@convex/_generated/dataModel";
 import { betterAuthComponent } from "@convex/auth";
-import { QueryCtx } from "../_generated/server";
+import type { QueryCtx } from "../_generated/server";
 
 export async function getCurrentUserOrThrow(ctx: QueryCtx) {
   const userMetadata = await betterAuthComponent.getAuthUser(ctx);

@@ -1,3 +1,10 @@
+import { api } from "@convex/_generated/api";
+import { useConvexMutation } from "@convex-dev/react-query";
+import { useMutation } from "@tanstack/react-query";
+import type { FunctionReturnType } from "convex/server";
+import { MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
+import KanbanCardDeleteAction from "@/components/kanban-card-delete-action";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -5,13 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useConvexMutation } from "@convex-dev/react-query";
-import { api } from "@convex/_generated/api";
-import { useMutation } from "@tanstack/react-query";
-import type { FunctionReturnType } from "convex/server";
-import { MoreHorizontal } from "lucide-react";
-import { toast } from "sonner";
-import KanbanCardDeleteAction from "./kanban-card-delete-action";
 
 type Props = {
   log: FunctionReturnType<typeof api.mediaLogs.all>[0];
@@ -35,9 +35,9 @@ export default function KanbanCardActions(props: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          className="h-8 w-8 rounded-full bg-foreground/20 p-0 text-foreground opacity-0 transition-opacity hover:bg-foreground/30 group-hover:opacity-100"
           size="sm"
-          className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity bg-foreground/20 hover:bg-foreground/30 text-foreground rounded-full"
+          variant="ghost"
         >
           <MoreHorizontal className="h-4 w-4" />
         </Button>

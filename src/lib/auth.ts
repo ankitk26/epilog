@@ -1,8 +1,8 @@
+import { betterAuthComponent } from "@convex/auth";
 import { convexAdapter } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { betterAuthComponent } from "@convex/auth";
 import { betterAuth } from "better-auth";
-import { type GenericCtx } from "../../convex/_generated/server";
+import type { GenericCtx } from "../../convex/_generated/server";
 
 export const createAuth = (ctx: GenericCtx) =>
   betterAuth({
