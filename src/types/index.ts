@@ -42,3 +42,25 @@ export const animeSearchAPIOutput = z.object({
   ),
 });
 export type AnimeSearchOutput = z.infer<typeof animeSearchAPIOutput>;
+
+export const bookSearchAPIOutput = z.object({
+  data: z.array(
+    z.object({
+      mal_id: z.number(),
+      images: z.object({
+        jpg: z.object({
+          large_image_url: z.string(),
+        }),
+        webp: z.object({
+          large_image_url: z.string(),
+        }),
+      }),
+      title: z.string().nullable().optional(),
+      title_english: z.string().nullable().optional(),
+      published: z.object({
+        from: z.string().nullable().optional(),
+      }),
+    })
+  ),
+});
+export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
