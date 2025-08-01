@@ -38,7 +38,7 @@ export const addToPlanning = mutation({
       name: v.string(),
       image: v.optional(v.string()),
       releaseYear: v.union(v.number(), v.null()),
-      sourceMediaId: v.number(),
+      sourceMediaId: v.string(),
       type: v.union(
         v.literal("anime"),
         v.literal("movie"),

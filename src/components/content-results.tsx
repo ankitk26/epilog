@@ -60,7 +60,7 @@ export default function ContentResults() {
                   `https://image.tmdb.org/t/p/w500${media.poster_path}`,
                 name: media.name ?? media.title ?? "NA",
                 releaseYear,
-                sourceId: media.id,
+                sourceId: media.id.toString(),
                 type: mediaType,
               }}
             />

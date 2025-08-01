@@ -49,7 +49,7 @@ export default function AnimeResults() {
               releaseYear: anime.aired.from
                 ? new Date(anime.aired.from).getFullYear()
                 : null,
-              sourceId: anime.mal_id,
+              sourceId: anime.mal_id.toString(),
               type: "anime",
             }}
           />

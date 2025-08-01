@@ -15,12 +15,12 @@ export default function KanbanView() {
   const columns = [
     {
       status: "planned",
-      title: "To Watch",
+      title: mediaType === "book" ? "To read" : "To watch",
       icon: CalendarIcon,
     },
     {
       status: "in_progress",
-      title: "Watching",
+      title: mediaType === "book" ? "Reading" : "Watching",
       icon: ClockIcon,
     },
     {

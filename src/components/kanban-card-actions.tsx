@@ -12,12 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useFilterStore } from "@/store/filter-store";
 
 type Props = {
   log: FunctionReturnType<typeof api.mediaLogs.all>[0];
 };
 
 export default function KanbanCardActions(props: Props) {
+  const mediaType = useFilterStore((store) => store.type);
+
   const updateStatusMutation = useMutation({
     mutationFn: useConvexMutation(api.mediaLogs.updateStatus),
     onSuccess: () => {
@@ -47,13 +50,13 @@ export default function KanbanCardActions(props: Props) {
           className="text-xs"
           onClick={() => handleUpdateStatus("planned")}
         >
-          Move to Planned
+          Move to Planning
         </DropdownMenuItem>
         <DropdownMenuItem
           className="text-xs"
           onClick={() => handleUpdateStatus("in_progress")}
         >
-          Move to Watching
+          Move to {mediaType === "book" ? "Reading" : "Watching"}
         </DropdownMenuItem>
         <DropdownMenuItem
           className="text-xs"

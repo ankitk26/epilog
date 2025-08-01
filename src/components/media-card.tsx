@@ -1,7 +1,7 @@
 import { api } from "@convex/_generated/api";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { Clapperboard, Plus } from "lucide-react";
+import { BookIcon, Clapperboard, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
@@ -11,7 +11,7 @@ type Props = {
     imageUrl: string | undefined | null;
     name: string;
     releaseYear: number | null;
-    sourceId: number;
+    sourceId: string;
     type: "anime" | "tv" | "movie" | "book";
   };
   displayOnly?: boolean;
@@ -50,7 +50,11 @@ export default function MediaCard(props: Props) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-muted">
-            <Clapperboard className="h-8 w-8 text-muted-foreground" />
+            {props.media.type === "book" ? (
+              <BookIcon className="h-8 w-8 text-muted-foreground" />
+            ) : (
+              <Clapperboard className="h-8 w-8 text-muted-foreground" />
+            )}
           </div>
         )}
         {/* Add button overlay */}

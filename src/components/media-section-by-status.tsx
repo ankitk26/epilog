@@ -11,7 +11,6 @@ type Props = {
   section: {
     title: string;
     status: string;
-    description: string;
   };
 };
 
@@ -28,9 +27,6 @@ export default function MediaSectionByStatus(props: Props) {
             {props.logs.length}
           </Badge>
         </div>
-        <p className="text-muted-foreground text-xs">
-          {props.section.description}
-        </p>
       </div>
 
       {/* Grid cards for media */}

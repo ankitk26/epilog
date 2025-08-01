@@ -13,19 +13,16 @@ export default function GridView() {
 
   const sections = [
     {
-      title: "To Watch",
+      title: mediaType === "book" ? "To read" : "To watch",
       status: "planned",
-      description: "Items you're planning to watch",
     },
     {
-      title: "Currently Watching",
+      title: mediaType === "book" ? "Reading" : "Watching",
       status: "in_progress",
-      description: "Items you're currently watching",
     },
     {
       title: "Completed",
       status: "completed",
-      description: "Items you've finished watching",
     },
   ];
 
