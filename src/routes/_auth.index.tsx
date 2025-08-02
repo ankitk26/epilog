@@ -1,5 +1,3 @@
-import { api } from "@convex/_generated/api";
-import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import GridView from "@/components/grid-view";
@@ -8,11 +6,6 @@ import ListView from "@/components/list-view";
 import { useFilterStore } from "@/store/filter-store";
 
 export const Route = createFileRoute("/_auth/")({
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      convexQuery(api.mediaLogs.all, {})
-    );
-  },
   component: Home,
 });
 

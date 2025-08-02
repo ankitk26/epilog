@@ -1,3 +1,5 @@
+import { api } from "@convex/_generated/api";
+import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import Sidebar from "@/components/sidebar";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -6,9 +8,15 @@ export const Route = createFileRoute("/_auth")({
   component: AuthWrapper,
   beforeLoad: ({ context }) => {
     const userId = context.session?.user;
-    if (!userId) {
+    const token = context.token;
+    if (!(token && userId)) {
       throw redirect({ to: "/sign-in" });
     }
+  },
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData(
+      convexQuery(api.mediaLogs.all, {})
+    );
   },
 });
 

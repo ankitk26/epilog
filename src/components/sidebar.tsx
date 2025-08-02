@@ -28,9 +28,28 @@ export default function Sidebar() {
 
       <div className="flex-1 space-y-6 px-6">
         <CardsViewFilter />
-        <Suspense fallback={<p>Loading...</p>}>
-          <MediaTypeFilter />
-        </Suspense>
+        <div className="space-y-3">
+          <h3 className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
+            Media Types
+          </h3>
+          <Suspense
+            fallback={
+              <div className="space-y-1">
+                {["anime", "movie", "tv", "book"].map((type) => (
+                  <div
+                    className="flex h-8 w-full animate-pulse items-center justify-between rounded bg-muted px-2"
+                    key={type}
+                  >
+                    <span className="h-3 w-20 rounded bg-muted-foreground/20" />
+                    <span className="h-3 w-6 rounded bg-muted-foreground/10" />
+                  </div>
+                ))}
+              </div>
+            }
+          >
+            <MediaTypeFilter />
+          </Suspense>
+        </div>
       </div>
 
       <SidebarFooter />

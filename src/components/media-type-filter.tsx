@@ -11,67 +11,60 @@ export default function MediaTypeFilter() {
   const { data: logs } = useSuspenseQuery(convexQuery(api.mediaLogs.all, {}));
 
   return (
-    <div className="space-y-3">
-      <h3 className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
-        Media Types
-      </h3>
-      <div className="space-y-1">
-        {[
-          {
-            value: "anime",
-            label: "Anime",
-            color: "bg-foreground",
-            count: logs.filter((log) => log.metadata?.type === "anime").length,
-          },
-          {
-            value: "movie",
-            label: "Movies",
-            color: "bg-muted-foreground",
-            count: logs.filter((log) => log.metadata?.type === "movie").length,
-          },
-          {
-            value: "tv",
-            label: "TV Shows",
-            color: "bg-muted-foreground/70",
-            count: logs.filter((log) => log.metadata?.type === "tv").length,
-          },
-          {
-            value: "book",
-            label: "Books",
-            color: "bg-muted-foreground/50",
-            count: logs.filter((log) => log.metadata?.type === "book").length,
-          },
-        ].map((item) => {
-          const isActive = type === item.value;
+    <div className="space-y-1">
+      {[
+        {
+          value: "anime",
+          label: "Anime",
+          color: "bg-foreground",
+          count: logs.filter((log) => log.metadata?.type === "anime").length,
+        },
+        {
+          value: "movie",
+          label: "Movies",
+          color: "bg-muted-foreground",
+          count: logs.filter((log) => log.metadata?.type === "movie").length,
+        },
+        {
+          value: "tv",
+          label: "TV Shows",
+          color: "bg-muted-foreground/70",
+          count: logs.filter((log) => log.metadata?.type === "tv").length,
+        },
+        {
+          value: "book",
+          label: "Books",
+          color: "bg-muted-foreground/50",
+          count: logs.filter((log) => log.metadata?.type === "book").length,
+        },
+      ].map((item) => {
+        const isActive = type === item.value;
 
-          return (
-            <Button
-              className={`h-8 w-full justify-between px-2 text-xs ${
-                isActive
-                  ? "bg-accent text-accent-foreground"
-                  : "hover:bg-accent/50"
-              }`}
-              key={item.label}
-              onClick={() => setType(item.value as MediaType)}
-              variant={isActive ? "secondary" : "ghost"}
+        return (
+          <Button
+            className={`h-8 w-full justify-between px-2 text-xs ${
+              isActive
+                ? "bg-accent text-accent-foreground"
+                : "hover:bg-accent/50"
+            }`}
+            key={item.label}
+            onClick={() => setType(item.value as MediaType)}
+            variant={isActive ? "secondary" : "ghost"}
+          >
+            <div className="flex items-center gap-2">
+              <div className={`h-1.5 w-1.5 rounded-full ${item.color}`} />
+              <span>{item.label}</span>
+            </div>
+            <span
+              className={
+                isActive ? "text-accent-foreground/70" : "text-muted-foreground"
+              }
             >
-              <div className="flex items-center gap-2">
-                <div className={`h-1.5 w-1.5 rounded-full ${item.color}`} />
-                <span>{item.label}</span>
-              </div>
-              <span
-                className={
-                  isActive
-                    ? "text-accent-foreground/70"
-                    : "text-muted-foreground"
-                }
-              >
-                {item.count}
-              </span>
-            </Button>
-          );
-        })}
-      </div>
+              {item.count}
+            </span>
+          </Button>
+        );
+      })}
     </div>
   );
 }

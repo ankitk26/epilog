@@ -1,5 +1,3 @@
-import { api } from "@convex/_generated/api";
-import { convexQuery } from "@convex-dev/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 import SearchInput from "@/components/search-input";
@@ -8,11 +6,6 @@ import SearchResults from "@/components/search-results";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_auth/search")({
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      convexQuery(api.mediaLogs.all, {})
-    );
-  },
   component: SearchPage,
 });
 
