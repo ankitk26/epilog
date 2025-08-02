@@ -1,22 +1,12 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { Store } from "@tanstack/react-store";
 import type { FilterMediaView, MediaType } from "@/types";
 
 type FilterStore = {
   type: MediaType;
   view: FilterMediaView;
-  setType: (type: MediaType) => void;
-  setView: (view: FilterMediaView) => void;
 };
 
-export const useFilterStore = create<FilterStore>()(
-  persist(
-    (set) => ({
-      type: "anime",
-      view: "kanban",
-      setType: (type: MediaType) => set({ type }),
-      setView: (view: FilterMediaView) => set({ view }),
-    }),
-    { name: "epilog-filters" }
-  )
-);
+export const filterStore = new Store<FilterStore>({
+  type: "anime",
+  view: "kanban",
+});

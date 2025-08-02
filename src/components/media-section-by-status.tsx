@@ -1,7 +1,8 @@
 import type { api } from "@convex/_generated/api";
+import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { ClapperboardIcon } from "lucide-react";
-import { useFilterStore } from "@/store/filter-store";
+import { filterStore } from "@/store/filter-store";
 import ListCard from "./list-card";
 import MediaCard from "./media-card";
 import { Badge } from "./ui/badge";
@@ -15,7 +16,7 @@ type Props = {
 };
 
 export default function MediaSectionByStatus(props: Props) {
-  const view = useFilterStore((store) => store.view);
+  const view = useStore(filterStore, (state) => state.view);
 
   return (
     <div className="space-y-3" key={props.section.status}>

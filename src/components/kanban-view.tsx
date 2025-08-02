@@ -1,12 +1,13 @@
 import { api } from "@convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useStore } from "@tanstack/react-store";
 import { CalendarIcon, CheckCircleIcon, ClockIcon } from "lucide-react";
-import { useFilterStore } from "@/store/filter-store";
+import { filterStore } from "@/store/filter-store";
 import KanbanColumn from "./kanban-column";
 
 export default function KanbanView() {
-  const mediaType = useFilterStore((store) => store.type);
+  const mediaType = useStore(filterStore, (state) => state.type);
 
   const { data: mediaLogs } = useSuspenseQuery(
     convexQuery(api.mediaLogs.all, {})

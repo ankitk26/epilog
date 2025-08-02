@@ -1,13 +1,13 @@
 import { api } from "@convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useFilterStore } from "@/store/filter-store";
+import { useStore } from "@tanstack/react-store";
+import { filterStore } from "@/store/filter-store";
 import type { MediaType } from "@/types";
 import { Button } from "./ui/button";
 
 export default function MediaTypeFilter() {
-  const type = useFilterStore((store) => store.type);
-  const setType = useFilterStore((store) => store.setType);
+  const type = useStore(filterStore, (state) => state.type);
   const { data: logs } = useSuspenseQuery(convexQuery(api.mediaLogs.all, {}));
 
   return (
@@ -48,7 +48,12 @@ export default function MediaTypeFilter() {
                 : "hover:bg-accent/50"
             }`}
             key={item.label}
-            onClick={() => setType(item.value as MediaType)}
+            onClick={() =>
+              filterStore.setState((state) => ({
+                ...state,
+                type: item.value as MediaType,
+              }))
+            }
             variant={isActive ? "secondary" : "ghost"}
           >
             <div className="flex items-center gap-2">
