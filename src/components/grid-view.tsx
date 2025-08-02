@@ -14,7 +14,7 @@ export default function GridView() {
 
   const sections = [
     {
-      title: mediaType === "book" ? "To read" : "To watch",
+      title: mediaType === "book" ? "To Read" : "To Watch",
       status: "planned",
     },
     {

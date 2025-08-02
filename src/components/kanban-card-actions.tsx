@@ -47,24 +47,30 @@ export default function KanbanCardActions(props: Props) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
-        <DropdownMenuItem
-          className="text-xs"
-          onClick={() => handleUpdateStatus("planned")}
-        >
-          Move to Planning
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-xs"
-          onClick={() => handleUpdateStatus("in_progress")}
-        >
-          Move to {mediaType === "book" ? "Reading" : "Watching"}
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="text-xs"
-          onClick={() => handleUpdateStatus("completed")}
-        >
-          Mark Completed
-        </DropdownMenuItem>
+        {props.log.status !== "planned" && (
+          <DropdownMenuItem
+            className="text-xs"
+            onClick={() => handleUpdateStatus("planned")}
+          >
+            Move to Planning
+          </DropdownMenuItem>
+        )}
+        {props.log.status !== "in_progress" && (
+          <DropdownMenuItem
+            className="text-xs"
+            onClick={() => handleUpdateStatus("in_progress")}
+          >
+            Move to {mediaType === "book" ? "Reading" : "Watching"}
+          </DropdownMenuItem>
+        )}
+        {props.log.status !== "completed" && (
+          <DropdownMenuItem
+            className="text-xs"
+            onClick={() => handleUpdateStatus("completed")}
+          >
+            Mark Completed
+          </DropdownMenuItem>
+        )}
         <KanbanCardDeleteAction mediaLogId={props.log._id} />
       </DropdownMenuContent>
     </DropdownMenu>

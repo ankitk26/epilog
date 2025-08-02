@@ -16,7 +16,7 @@ export default function KanbanView() {
   const columns = [
     {
       status: "planned",
-      title: mediaType === "book" ? "To read" : "To watch",
+      title: mediaType === "book" ? "To Read" : "To Watch",
       icon: CalendarIcon,
     },
     {

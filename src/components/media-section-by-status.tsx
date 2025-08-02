@@ -1,7 +1,7 @@
 import type { api } from "@convex/_generated/api";
 import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { ClapperboardIcon } from "lucide-react";
+import { BookIcon, ClapperboardIcon } from "lucide-react";
 import { filterStore } from "@/store/filter-store";
 import ListCard from "./list-card";
 import MediaCard from "./media-card";
@@ -17,6 +17,7 @@ type Props = {
 
 export default function MediaSectionByStatus(props: Props) {
   const view = useStore(filterStore, (state) => state.view);
+  const mediaType = useStore(filterStore, (state) => state.type);
 
   return (
     <div className="space-y-3" key={props.section.status}>
@@ -62,7 +63,11 @@ export default function MediaSectionByStatus(props: Props) {
       {/* No data section */}
       {props.logs.length === 0 && (
         <div className="flex flex-col items-center justify-center space-y-1.5 rounded-lg border-2 border-muted-foreground/25 border-dashed py-8 text-center">
-          <ClapperboardIcon className="size-4 text-muted-foreground" />
+          {mediaType === "book" ? (
+            <BookIcon className="size-4 text-muted-foreground" />
+          ) : (
+            <ClapperboardIcon className="size-4 text-muted-foreground" />
+          )}
           <p className="text-muted-foreground text-xs">
             No items in this section
           </p>
