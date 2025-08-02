@@ -4,11 +4,11 @@
   "linter": {
     "rules": {
       "suspicious": {
-        "noConsole": "off"
+        "noConsole": "warn"
       },
       "performance": {
-        "noImgElement": "off",
-        "noNamespaceImport": "off"
+        "noImgElement": "warn",
+        "noNamespaceImport": "warn"
       }
     }
   },
