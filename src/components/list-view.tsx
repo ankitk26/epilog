@@ -32,7 +32,7 @@ export default function ListView() {
   );
 
   return (
-    <div className="space-y-16 p-4">
+    <div className="space-y-12 pt-4 lg:space-y-16 lg:pt-0">
       {sections.map((section) => {
         return (
           <MediaSectionByStatus

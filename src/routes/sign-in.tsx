@@ -12,10 +12,10 @@ function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-8 rounded-xl border bg-card p-8 shadow-sm">
-        <div className="space-y-3 text-center">
-          <h1 className="font-semibold text-3xl text-card-foreground tracking-tight">
+    <div className="flex min-h-screen w-full items-center justify-center bg-background p-4">
+      <div className="w-full max-w-sm space-y-6 rounded-xl border bg-card p-6 shadow-sm lg:space-y-8 lg:p-8">
+        <div className="space-y-2 text-center lg:space-y-3">
+          <h1 className="font-semibold text-2xl text-card-foreground tracking-tight lg:text-3xl">
             Welcome back
           </h1>
           <p className="text-muted-foreground text-sm leading-relaxed">
@@ -24,7 +24,7 @@ function SignInPage() {
         </div>
 
         <Button
-          className="h-12 w-full gap-3 font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          className="h-11 w-full gap-3 font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] lg:h-12"
           disabled={isLoading}
           onClick={async () => {
             setIsLoading(true);
@@ -34,13 +34,13 @@ function SignInPage() {
         >
           {isLoading ? (
             <>
-              <LoaderIcon className="h-5 w-5 animate-spin" />
+              <LoaderIcon className="h-4 w-4 animate-spin lg:h-5 lg:w-5" />
               Signing in...
             </>
           ) : (
             <>
               <svg
-                className="h-5 w-5"
+                className="h-4 w-4 lg:h-5 lg:w-5"
                 role="img"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
