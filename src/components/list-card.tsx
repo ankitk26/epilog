@@ -11,7 +11,7 @@ export default function ListCard({ log }: Props) {
     <Card className="p-3 transition-shadow hover:shadow-md">
       <div className="flex items-center gap-3">
         {/* Poster */}
-        <div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-md">
+        <div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-md">
           {log.metadata?.image ? (
             <img
               alt={log.metadata.name || "Media poster"}
