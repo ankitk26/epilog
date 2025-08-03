@@ -9,6 +9,15 @@ export const createAuth = (ctx: GenericCtx) =>
     baseURL: process.env.BETTER_AUTH_URL,
     database: convexAdapter(ctx, betterAuthComponent),
 
+    session: {
+      cookieCache: {
+        enabled: true,
+        maxAge: 5 * 60,
+      },
+      expiresIn: 60 * 60 * 24 * 7,
+      updateAge: 60 * 60 * 24,
+    },
+
     socialProviders: {
       google: {
         clientId: process.env.GOOGLE_CLIENT_ID as string,
