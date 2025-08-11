@@ -3,11 +3,13 @@ import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { filterStore } from "@/store/filter-store";
+import { useSidebarStore } from "@/store/sidebar-store";
 import type { MediaType } from "@/types";
 import { Button } from "./ui/button";
 
 export default function MediaTypeFilter() {
   const type = useStore(filterStore, (state) => state.type);
+  const toggleSidebar = useSidebarStore((store) => store.toggle);
   const { data: logs } = useSuspenseQuery(convexQuery(api.mediaLogs.all, {}));
 
   return (
@@ -48,12 +50,13 @@ export default function MediaTypeFilter() {
                 : "hover:bg-accent/50"
             }`}
             key={item.label}
-            onClick={() =>
+            onClick={() => {
+              toggleSidebar();
               filterStore.setState((state) => ({
                 ...state,
                 type: item.value as MediaType,
-              }))
-            }
+              }));
+            }}
             variant={isActive ? "secondary" : "ghost"}
           >
             <div className="flex items-center gap-2">

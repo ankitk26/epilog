@@ -1,11 +1,13 @@
 import { useStore } from "@tanstack/react-store";
 import { KanbanIcon, LayoutGridIcon, ListIcon } from "lucide-react";
 import { filterStore } from "@/store/filter-store";
+import { useSidebarStore } from "@/store/sidebar-store";
 import type { FilterMediaView } from "@/types";
 import { Button } from "./ui/button";
 
 export default function CardsViewFilter() {
   const view = useStore(filterStore, (state) => state.view);
+  const toggleSidebar = useSidebarStore((store) => store.toggle);
 
   return (
     <div className="space-y-3">
@@ -29,12 +31,13 @@ export default function CardsViewFilter() {
                   : "hover:bg-accent/50"
               }`}
               key={option.value}
-              onClick={() =>
+              onClick={() => {
+                toggleSidebar();
                 filterStore.setState((state) => ({
                   ...state,
                   view: option.value as FilterMediaView,
-                }))
-              }
+                }));
+              }}
               variant={isActive ? "secondary" : "ghost"}
             >
               <div className="flex items-center gap-2">
