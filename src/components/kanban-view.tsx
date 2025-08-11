@@ -105,11 +105,14 @@ export default function KanbanView() {
       >
         <div
           className="flex h-full transition-transform duration-300 ease-in-out"
-          style={{ transform: `translateX(-${activeTab * 100}%)` }}
+          style={{
+            width: `${columns.length * 100}%`,
+            transform: `translateX(-${(activeTab * 100) / columns.length}%)`,
+          }}
         >
           {columns.map((column) => (
             <div
-              className="mt-2 h-full w-full flex-shrink-0 overflow-y-auto overflow-x-hidden"
+              className="mt-2 h-full min-w-0 flex-1 overflow-y-auto overflow-x-hidden"
               key={column.status}
             >
               <KanbanColumn

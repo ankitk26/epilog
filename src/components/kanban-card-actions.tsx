@@ -39,7 +39,7 @@ export default function KanbanCardActions(props: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="h-8 w-8 rounded-full bg-foreground/20 p-0 text-foreground opacity-0 transition-opacity hover:bg-foreground/30 group-hover:opacity-100"
+          className="h-8 w-8 rounded-full bg-foreground/20 p-0 text-foreground opacity-100 transition-opacity hover:bg-foreground/30 sm:opacity-0 sm:group-hover:opacity-100"
           size="sm"
           variant="ghost"
         >

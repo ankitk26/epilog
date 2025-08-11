@@ -32,7 +32,7 @@ export default function KanbanColumn(props: Props) {
       </div>
 
       {/* Column Content */}
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="min-w-0 flex-1 overflow-y-auto p-2">
         {props.logs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-8 text-center opacity-50">
             <p className="text-muted-foreground text-xs">No items</p>

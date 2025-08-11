@@ -93,7 +93,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <HeadContent />
-      <body>
+      <body style={{ overflowX: "hidden" }}>
         {children}
         <Toaster />
         <Scripts />
