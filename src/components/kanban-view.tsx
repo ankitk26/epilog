@@ -70,7 +70,7 @@ export default function KanbanView() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-50px)] flex-col">
+    <div className="-mx-4 h[calc(100vh-50px)] flex flex-col overflow-hidden lg:mx-0">
       {/* Sticky tabs for mobile and tablet */}
       <div className="sticky top-0 z-10 border-b bg-background lg:hidden">
         <div className="flex">
@@ -104,15 +104,15 @@ export default function KanbanView() {
         ref={containerRef}
       >
         <div
-          className="flex h-full transition-transform duration-300 ease-in-out"
+          className="flex h-full transition-transform duration-300 ease-in-out will-change-transform"
           style={{
-            width: `${columns.length * 100}%`,
-            transform: `translateX(-${(activeTab * 100) / columns.length}%)`,
+            width: `${columns.length * 100}vw`,
+            transform: `translateX(-${activeTab * 100}vw)`,
           }}
         >
           {columns.map((column) => (
             <div
-              className="mt-2 h-full min-w-0 flex-1 overflow-y-auto overflow-x-hidden"
+              className="mt-2 h-full w-[100vw] max-w-[100vw] shrink-0 overflow-y-auto overflow-x-hidden"
               key={column.status}
             >
               <KanbanColumn

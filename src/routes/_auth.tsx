@@ -43,9 +43,9 @@ function AuthWrapper() {
   }, [setCollapsed]);
 
   return (
-    <div className="grid h-screen grid-cols-1 lg:grid-cols-6">
+    <div className="grid h-screen grid-cols-1 overflow-x-hidden lg:grid-cols-6">
       <Sidebar />
-      <ScrollArea className="col-span-1 h-screen w-full lg:col-span-5">
+      <ScrollArea className="col-span-1 h-screen w-full overflow-x-hidden lg:col-span-5">
         <div className="px-4 py-4 lg:px-6 lg:py-6">
           <div className="mb-4 flex items-center justify-between lg:hidden">
             <Button
