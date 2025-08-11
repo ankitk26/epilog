@@ -19,7 +19,7 @@ export default function KanbanCardDeleteAction(props: Props) {
 
   return (
     <DropdownMenuItem
-      className="text-destructive text-xs"
+      className="text-destructive"
       onClick={() => removeLogMutation.mutate({ mediaLogId: props.mediaLogId })}
     >
       Delete

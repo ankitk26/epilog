@@ -19,7 +19,7 @@ export default function KanbanColumn(props: Props) {
   const Icon = props.column.icon;
 
   return (
-    <div className="flex flex-col space-y-2 rounded-lg border border-border/50 bg-muted/30">
+    <div className="flex h-full min-h-0 flex-col space-y-2 rounded-none border border-border/50 bg-muted/30 lg:rounded-lg">
       {/* Column Header */}
       <div className="flex items-center justify-between border-b border-b-border/30 p-3 text-sm">
         <div className="flex items-center gap-2">

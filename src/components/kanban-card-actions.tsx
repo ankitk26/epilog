@@ -39,7 +39,7 @@ export default function KanbanCardActions(props: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="h-8 w-8 rounded-full bg-foreground/20 p-0 text-foreground opacity-100 transition-opacity hover:bg-foreground/30 sm:opacity-0 sm:group-hover:opacity-100"
+          className="h-8 w-8 rounded-full bg-foreground/20 p-0 text-foreground opacity-100 transition-opacity group-hover:opacity-100 lg:opacity-0 lg:hover:bg-foreground/30"
           size="sm"
           variant="ghost"
         >
@@ -48,26 +48,17 @@ export default function KanbanCardActions(props: Props) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-40">
         {props.log.status !== "planned" && (
-          <DropdownMenuItem
-            className="text-xs"
-            onClick={() => handleUpdateStatus("planned")}
-          >
+          <DropdownMenuItem onClick={() => handleUpdateStatus("planned")}>
             Move to Planning
           </DropdownMenuItem>
         )}
         {props.log.status !== "in_progress" && (
-          <DropdownMenuItem
-            className="text-xs"
-            onClick={() => handleUpdateStatus("in_progress")}
-          >
+          <DropdownMenuItem onClick={() => handleUpdateStatus("in_progress")}>
             Move to {mediaType === "book" ? "Reading" : "Watching"}
           </DropdownMenuItem>
         )}
         {props.log.status !== "completed" && (
-          <DropdownMenuItem
-            className="text-xs"
-            onClick={() => handleUpdateStatus("completed")}
-          >
+          <DropdownMenuItem onClick={() => handleUpdateStatus("completed")}>
             Mark Completed
           </DropdownMenuItem>
         )}
