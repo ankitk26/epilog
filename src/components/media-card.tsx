@@ -23,8 +23,8 @@ export default function MediaCard(props: Props) {
 
   const addToPlanningMutation = useMutation({
     mutationFn: useConvexMutation(api.mediaLogs.addToPlanning),
-    onSuccess: () => {
-      toast.success("Added to planning");
+    onSuccess: (response: string) => {
+      toast.success(response);
     },
   });
 

@@ -84,7 +84,7 @@ export const addToPlanning = mutation({
 
     // do nothing if everything already exists
     if (mediaLogCheck.length > 0) {
-      return;
+      return "Already added";
     }
 
     await ctx.db.insert("mediaLogs", {
@@ -92,6 +92,7 @@ export const addToPlanning = mutation({
       status: "planned",
       userId,
     });
+    return "Added to planning";
   },
 });
 
