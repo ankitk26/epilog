@@ -121,7 +121,15 @@ export default function ListView() {
         <Button
           aria-pressed={editMode}
           className="gap-2 text-xs"
-          onClick={() => setEditMode((v) => !v)}
+          onClick={() => {
+            setEditMode((prev) => {
+              const next = !prev;
+              if (!next) {
+                clearSelection();
+              }
+              return next;
+            });
+          }}
           size="sm"
           variant={editMode ? "secondary" : "ghost"}
         >
