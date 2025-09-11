@@ -105,15 +105,16 @@ export default function KanbanView() {
       </div>
 
       {/* Desktop: Three column grid */}
-      <div className="hidden min-h-0 lg:grid lg:h-full lg:min-h-0 lg:grid-cols-3 lg:gap-4">
+      <div className="hidden min-h-0 lg:grid lg:h-[calc(100vh-50px)] lg:min-h-0 lg:grid-cols-3 lg:gap-4">
         {columns.map((column) => (
-          <KanbanColumn
-            column={column}
-            key={column.status}
-            logs={logsFilteredByMediaType.filter(
-              (log) => log.status === column.status
-            )}
-          />
+          <div className="min-h-0 overflow-hidden" key={column.status}>
+            <KanbanColumn
+              column={column}
+              logs={logsFilteredByMediaType.filter(
+                (log) => log.status === column.status
+              )}
+            />
+          </div>
         ))}
       </div>
     </div>
