@@ -172,3 +172,26 @@ export const bulkUpdateStatus = mutation({
     );
   },
 });
+
+export const bulkDelete = mutation({
+  args: {
+    mediaLogIds: v.array(v.id("mediaLogs")),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getCurrentUserOrThrow(ctx);
+
+    const mediaLogs = await Promise.all(
+      args.mediaLogIds.map((id) => ctx.db.get(id))
+    );
+
+    // Verify all media logs belong to the user
+    for (const mediaLog of mediaLogs) {
+      if (!mediaLog || mediaLog.userId !== userId) {
+        throw new Error("Unauthorized");
+      }
+    }
+
+    // Delete all media logs in parallel
+    await Promise.all(args.mediaLogIds.map((id) => ctx.db.delete(id)));
+  },
+});

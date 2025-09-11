@@ -8,6 +8,7 @@ import type { Id } from "@convex/_generated/dataModel";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { Card } from "@/components/ui/card";
+import { Checkbox } from "./ui/checkbox";
 
 type Props = {
   log: FunctionReturnType<typeof api.mediaLogs.all>[0];
@@ -37,13 +38,10 @@ export default function ListCard({
       >
         {/* Selector */}
         {showCheckbox && (
-          <input
-            aria-label="Select item"
+          <Checkbox
             checked={!!selected}
-            className="h-4 w-4 accent-foreground"
             onChange={() => onToggleSelect?.(log._id)}
             onClick={(e) => e.stopPropagation()}
-            type="checkbox"
           />
         )}
         {/* Poster */}

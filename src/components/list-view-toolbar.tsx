@@ -4,7 +4,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { PencilIcon, XIcon } from "lucide-react";
+import { PencilIcon, TrashIcon, XIcon } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { filterStore } from "@/store/filter-store";
@@ -35,6 +35,18 @@ export default function ListViewToolbar({
     onSuccess: () => {
       clearSelection();
       toast.success("Status updated");
+    },
+    onError: () => {
+      toast.error("Something went wrong!", { description: "Please try again" });
+    },
+  });
+
+  // mutation to bulk delete multiple IDs
+  const bulkDeleteMutation = useMutation({
+    mutationFn: useConvexMutation(api.mediaLogs.bulkDelete),
+    onSuccess: () => {
+      clearSelection();
+      toast.success("Items deleted");
     },
     onError: () => {
       toast.error("Something went wrong!", { description: "Please try again" });
@@ -75,6 +87,16 @@ export default function ListViewToolbar({
     }
     toast.info("Updating status...");
     bulkUpdateStatusMutation.mutate({ mediaLogIds: ids, status });
+  };
+
+  // call delete mutation
+  const bulkDelete = () => {
+    const ids = Array.from(selectedIds).filter((id) => visibleIds.has(id));
+    if (ids.length === 0) {
+      return;
+    }
+    toast.info("Deleting items...");
+    bulkDeleteMutation.mutate({ mediaLogIds: ids });
   };
 
   return (
@@ -174,6 +196,20 @@ export default function ListViewToolbar({
           Mark Completed
         </Button>
       )}
+
+      <div className="h-4 w-px bg-border" />
+
+      {/* Delete button */}
+      <Button
+        className="text-xs"
+        disabled={!editMode || numSelectedVisible === 0}
+        onClick={bulkDelete}
+        size="sm"
+        variant="destructive"
+      >
+        <TrashIcon className="h-3 w-3" />
+        Delete
+      </Button>
     </div>
   );
 }
