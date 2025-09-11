@@ -13,17 +13,19 @@ import { Button } from "./ui/button";
 type Props = {
   editMode: boolean;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-  logsFilteredByMediaType: FunctionReturnType<typeof api.mediaLogs.all>;
+  logs: FunctionReturnType<typeof api.mediaLogs.all>;
   selectedIds: Set<Id<"mediaLogs">>;
   setSelectedIds: React.Dispatch<React.SetStateAction<Set<Id<"mediaLogs">>>>;
+  sectionStatus: string;
 };
 
 export default function ListViewToolbar({
   editMode,
   setEditMode,
-  logsFilteredByMediaType,
+  logs,
   selectedIds,
   setSelectedIds,
+  sectionStatus,
 }: Props) {
   const mediaType = useStore(filterStore, (state) => state.type);
 
@@ -40,8 +42,8 @@ export default function ListViewToolbar({
   });
 
   const visibleIds = useMemo(
-    () => new Set(logsFilteredByMediaType.map((l) => l._id as Id<"mediaLogs">)),
-    [logsFilteredByMediaType]
+    () => new Set(logs.map((log) => log._id as Id<"mediaLogs">)),
+    [logs]
   );
 
   const numVisible = visibleIds.size;
@@ -71,13 +73,14 @@ export default function ListViewToolbar({
     if (ids.length === 0) {
       return;
     }
+    toast.info("Updating status...");
     bulkUpdateStatusMutation.mutate({ mediaLogIds: ids, status });
   };
 
   return (
-    <div className="-mx-4 sticky top-0 z-10 mb-3 flex items-center gap-3 border bg-background/90 px-4 py-2 shadow-sm backdrop-blur lg:mx-0 lg:rounded-lg">
-      {/* Items selected counter */}
-      <div className="mr-auto text-muted-foreground text-xs">
+    <div className="ml-auto flex items-center gap-2">
+      {/* Selection counter */}
+      <div className="text-muted-foreground text-xs">
         {numSelectedVisible > 0
           ? `${numSelectedVisible} selected`
           : `${numVisible} items`}
@@ -86,7 +89,7 @@ export default function ListViewToolbar({
       {/* Edit toggle button */}
       <Button
         aria-pressed={editMode}
-        className="gap-2 text-xs"
+        className="gap-1 text-xs"
         onClick={() => {
           setEditMode((prev) => {
             const next = !prev;
@@ -100,9 +103,9 @@ export default function ListViewToolbar({
         variant={editMode ? "secondary" : "ghost"}
       >
         {editMode ? (
-          <XIcon className="h-3.5 w-3.5" />
+          <XIcon className="h-3 w-3" />
         ) : (
-          <PencilIcon className="h-3.5 w-3.5" />
+          <PencilIcon className="h-3 w-3" />
         )}
         {editMode ? "Done" : "Edit"}
       </Button>
@@ -133,38 +136,44 @@ export default function ListViewToolbar({
 
       <div className="h-4 w-px bg-border" />
 
-      {/* Move to planning button */}
-      <Button
-        className="text-xs"
-        disabled={!editMode || numSelectedVisible === 0}
-        onClick={() => bulkUpdate("planned")}
-        size="sm"
-        variant="secondary"
-      >
-        Move to Planning
-      </Button>
+      {/* Move to planning button - hide if current section is planning */}
+      {sectionStatus !== "planned" && (
+        <Button
+          className="text-xs"
+          disabled={!editMode || numSelectedVisible === 0}
+          onClick={() => bulkUpdate("planned")}
+          size="sm"
+          variant="secondary"
+        >
+          Move to Planning
+        </Button>
+      )}
 
-      {/* Move to progress button */}
-      <Button
-        className="text-xs"
-        disabled={!editMode || numSelectedVisible === 0}
-        onClick={() => bulkUpdate("in_progress")}
-        size="sm"
-        variant="secondary"
-      >
-        {mediaType === "book" ? "Move to Reading" : "Move to Watching"}
-      </Button>
+      {/* Move to progress button - hide if current section is in_progress */}
+      {sectionStatus !== "in_progress" && (
+        <Button
+          className="text-xs"
+          disabled={!editMode || numSelectedVisible === 0}
+          onClick={() => bulkUpdate("in_progress")}
+          size="sm"
+          variant="secondary"
+        >
+          {mediaType === "book" ? "Move to Reading" : "Move to Watching"}
+        </Button>
+      )}
 
-      {/* Move to completed button */}
-      <Button
-        className="text-xs"
-        disabled={!editMode || numSelectedVisible === 0}
-        onClick={() => bulkUpdate("completed")}
-        size="sm"
-        variant="secondary"
-      >
-        Mark Completed
-      </Button>
+      {/* Move to completed button - hide if current section is completed */}
+      {sectionStatus !== "completed" && (
+        <Button
+          className="text-xs"
+          disabled={!editMode || numSelectedVisible === 0}
+          onClick={() => bulkUpdate("completed")}
+          size="sm"
+          variant="secondary"
+        >
+          Mark Completed
+        </Button>
+      )}
     </div>
   );
 }

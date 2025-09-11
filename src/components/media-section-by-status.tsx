@@ -7,6 +7,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
 import ListCard from "./list-card";
+import ListViewToolbar from "./list-view-toolbar";
 import MediaCard from "./media-card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -17,15 +18,28 @@ type Props = {
     title: string;
     status: string;
   };
-  selectedIds?: Set<Id<"mediaLogs">>;
-  onToggleSelect?: (id: Id<"mediaLogs">) => void;
-  editMode?: boolean;
 };
 
 export default function MediaSectionByStatus(props: Props) {
   const view = useStore(filterStore, (state) => state.view);
   const mediaType = useStore(filterStore, (state) => state.type);
   const [collapsed, setCollapsed] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<Id<"mediaLogs">>>(
+    new Set()
+  );
+
+  const toggleOne = (id: Id<"mediaLogs">) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
 
   return (
     <div className="space-y-3" key={props.section.status}>
@@ -49,6 +63,15 @@ export default function MediaSectionByStatus(props: Props) {
           <Badge className="bg-muted text-muted-foreground" variant="secondary">
             {props.logs.length}
           </Badge>
+          {/* Section toolbar */}
+          <ListViewToolbar
+            editMode={editMode}
+            logs={props.logs}
+            sectionStatus={props.section.status}
+            selectedIds={selectedIds}
+            setEditMode={setEditMode}
+            setSelectedIds={setSelectedIds}
+          />
         </div>
       </div>
 
@@ -66,9 +89,9 @@ export default function MediaSectionByStatus(props: Props) {
               <ListCard
                 key={log._id}
                 log={log}
-                onToggleSelect={props.onToggleSelect}
-                selected={props.selectedIds?.has(log._id)}
-                showCheckbox={props.editMode}
+                onToggleSelect={toggleOne}
+                selected={selectedIds.has(log._id)}
+                showCheckbox={editMode}
               />
             ) : (
               <MediaCard
