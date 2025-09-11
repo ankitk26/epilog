@@ -1,5 +1,5 @@
 node_modules/
-
 .env
 .tanstack
 .env.local
+tasks.md
