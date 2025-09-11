@@ -65,7 +65,7 @@ export default function MediaSectionByStatus(props: Props) {
           </Badge>
 
           {/* Section toolbar */}
-          {props.logs.length > 0 && (
+          {props.logs.length > 0 && view === "list" && (
             <ListViewToolbar
               editMode={editMode}
               logs={props.logs}
