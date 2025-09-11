@@ -63,15 +63,18 @@ export default function MediaSectionByStatus(props: Props) {
           <Badge className="bg-muted text-muted-foreground" variant="secondary">
             {props.logs.length}
           </Badge>
+
           {/* Section toolbar */}
-          <ListViewToolbar
-            editMode={editMode}
-            logs={props.logs}
-            sectionStatus={props.section.status}
-            selectedIds={selectedIds}
-            setEditMode={setEditMode}
-            setSelectedIds={setSelectedIds}
-          />
+          {props.logs.length > 0 && (
+            <ListViewToolbar
+              editMode={editMode}
+              logs={props.logs}
+              sectionStatus={props.section.status}
+              selectedIds={selectedIds}
+              setEditMode={setEditMode}
+              setSelectedIds={setSelectedIds}
+            />
+          )}
         </div>
       </div>
 
