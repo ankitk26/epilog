@@ -5,6 +5,7 @@
 
 import type { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
+import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { Card } from "@/components/ui/card";
 
@@ -48,10 +49,12 @@ export default function ListCard({
         {/* Poster */}
         <div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-md">
           {log.metadata?.image ? (
-            <img
+            <Image
               alt={log.metadata.name || "Media poster"}
               className="h-full w-full object-cover"
+              height={120}
               src={log.metadata.image || "/placeholder.svg"}
+              width={80}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-muted">

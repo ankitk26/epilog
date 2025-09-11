@@ -84,7 +84,6 @@ export const addToPlanning = mutation({
 
     // do nothing if everything already exists
     if (mediaLogCheck.length > 0) {
-      console.log("Already exists");
       return;
     }
 

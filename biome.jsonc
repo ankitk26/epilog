@@ -1,14 +1,18 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
   "extends": ["ultracite"],
+  "files": {
+    "includes": [
+      "**",
+      "!**/convex/_generated",
+      "!**/src/components/ui",
+      "!**/src/routeTree.gen.ts"
+    ]
+  },
   "linter": {
     "rules": {
       "suspicious": {
         "noConsole": "warn"
-      },
-      "performance": {
-        "noImgElement": "warn",
-        "noNamespaceImport": "warn"
       }
     }
   },

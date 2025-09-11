@@ -1,6 +1,7 @@
 import { api } from "@convex/_generated/api";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { Image } from "@unpic/react";
 import { BookIcon, Clapperboard, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
@@ -43,10 +44,12 @@ export default function MediaCard(props: Props) {
     <Card className="group overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
       <div className="relative aspect-[3/4] overflow-hidden">
         {props.media.imageUrl ? (
-          <img
+          <Image
             alt={props.media.name}
             className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
+            height={200}
             src={props.media.imageUrl}
+            width={300}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-muted">

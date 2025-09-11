@@ -18,7 +18,7 @@ export const getAnimeSearchResults = createServerFn({ method: "GET" })
     );
 
     if (error) {
-      console.log(error.message);
+      console.error(error.message);
       return { data: [] } as AnimeSearchOutput;
     }
 
