@@ -10,7 +10,7 @@ import { ThemeToggle } from "./theme-toggler";
 import { Button } from "./ui/button";
 
 export default function Sidebar() {
-  const { isCollapsed, toggle } = useSidebarStore();
+  const { isCollapsed, toggle: toggleSidebar } = useSidebarStore();
 
   return (
     <>
@@ -19,7 +19,7 @@ export default function Sidebar() {
         <button
           aria-label="Close sidebar"
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={toggle}
+          onClick={toggleSidebar}
           type="button"
         />
       )}
@@ -47,7 +47,7 @@ export default function Sidebar() {
             <ThemeToggle />
             <Button
               className="h-8 w-8 p-0 lg:hidden"
-              onClick={toggle}
+              onClick={toggleSidebar}
               size="sm"
               variant="ghost"
             >
@@ -58,7 +58,15 @@ export default function Sidebar() {
 
         <div className="px-4 pb-8 lg:px-6">
           <Link to="/search">
-            <Button className="w-full text-xs">
+            <Button
+              className="w-full text-xs"
+              onClick={() => {
+                // Only toggle sidebar on mobile/tablet (lg and below)
+                if (window.innerWidth < 1024) {
+                  toggleSidebar();
+                }
+              }}
+            >
               <PlusIcon className="mr-2 h-3 w-3 lg:h-4 lg:w-4" />
               <span className={cn(isCollapsed && "lg:hidden")}>
                 Add New Media
@@ -69,6 +77,7 @@ export default function Sidebar() {
 
         <div className="flex-1 space-y-8 px-4 lg:space-y-8 lg:px-6">
           <CardsViewFilter />
+
           <div className="space-y-2 lg:space-y-3">
             <h3
               className={cn(

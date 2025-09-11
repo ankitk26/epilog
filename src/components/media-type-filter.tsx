@@ -51,7 +51,10 @@ export default function MediaTypeFilter() {
             }`}
             key={item.label}
             onClick={() => {
-              toggleSidebar();
+              // Only toggle sidebar on mobile/tablet (lg and below)
+              if (window.innerWidth < 1024) {
+                toggleSidebar();
+              }
               filterStore.setState((state) => ({
                 ...state,
                 type: item.value as MediaType,
