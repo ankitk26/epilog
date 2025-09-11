@@ -1,4 +1,5 @@
 import type { api } from "@convex/_generated/api";
+import type { Id } from "@convex/_generated/dataModel";
 import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { BookIcon, ClapperboardIcon } from "lucide-react";
@@ -13,6 +14,9 @@ type Props = {
     title: string;
     status: string;
   };
+  selectedIds?: Set<Id<"mediaLogs">>;
+  onToggleSelect?: (id: Id<"mediaLogs">) => void;
+  editMode?: boolean;
 };
 
 export default function MediaSectionByStatus(props: Props) {
@@ -42,7 +46,13 @@ export default function MediaSectionByStatus(props: Props) {
         >
           {props.logs.map((log) =>
             view === "list" ? (
-              <ListCard key={log._id} log={log} />
+              <ListCard
+                key={log._id}
+                log={log}
+                onToggleSelect={props.onToggleSelect}
+                selected={props.selectedIds?.has(log._id)}
+                showCheckbox={props.editMode}
+              />
             ) : (
               <MediaCard
                 displayOnly

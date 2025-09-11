@@ -138,3 +138,37 @@ export const updateStatus = mutation({
     });
   },
 });
+
+export const bulkUpdateStatus = mutation({
+  args: {
+    mediaLogIds: v.array(v.id("mediaLogs")),
+    status: v.union(
+      v.literal("planned"),
+      v.literal("in_progress"),
+      v.literal("completed")
+    ),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getCurrentUserOrThrow(ctx);
+
+    // Verify all media logs belong to the user
+    const mediaLogs = await Promise.all(
+      args.mediaLogIds.map((id) => ctx.db.get(id))
+    );
+
+    for (const mediaLog of mediaLogs) {
+      if (!mediaLog || mediaLog.userId !== userId) {
+        throw new Error("Unauthorized");
+      }
+    }
+
+    // Update all media logs in parallel
+    await Promise.all(
+      args.mediaLogIds.map((id) =>
+        ctx.db.patch(id, {
+          status: args.status,
+        })
+      )
+    );
+  },
+});
