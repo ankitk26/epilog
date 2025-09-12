@@ -21,18 +21,6 @@ export default defineSchema({
     .index("media", ["sourceMediaId", "type"])
     .index("sourceId", ["sourceMediaId"]),
 
-  mediaLogs: defineTable({
-    userId: v.id("users"),
-    dbMediaId: v.id("media"),
-    status: v.union(
-      v.literal("planned"),
-      v.literal("in_progress"),
-      v.literal("completed")
-    ),
-  })
-    .index("media", ["dbMediaId", "status"])
-    .index("user_and_media", ["userId", "dbMediaId"]),
-
   logs: defineTable({
     userId: v.id("users"),
     dbMediaId: v.id("media"),
