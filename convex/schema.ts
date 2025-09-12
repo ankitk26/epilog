@@ -17,9 +17,7 @@ export default defineSchema({
       v.literal("tv"),
       v.literal("book")
     ),
-  })
-    .index("media", ["sourceMediaId", "type"])
-    .index("sourceId", ["sourceMediaId"]),
+  }).index("by_sourceId", ["sourceMediaId"]),
 
   logs: defineTable({
     userId: v.id("users"),

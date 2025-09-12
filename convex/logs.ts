@@ -55,7 +55,7 @@ export const addToPlanning = mutation({
     // check if media entry exists
     const existingMedia = await ctx.db
       .query("media")
-      .withIndex("sourceId", (q) =>
+      .withIndex("by_sourceId", (q) =>
         q.eq("sourceMediaId", args.media.sourceMediaId)
       )
       .first();
