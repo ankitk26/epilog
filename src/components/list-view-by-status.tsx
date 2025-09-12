@@ -6,17 +6,15 @@ import { useMemo } from "react";
 import { filterStore } from "@/store/filter-store";
 import MediaSectionByStatus from "./media-section-by-status";
 
-export default function ListView() {
+export default function ListViewByStatus() {
   const mediaType = useStore(filterStore, (state) => state.type);
 
-  const { data: mediaLogs } = useSuspenseQuery(
-    convexQuery(api.mediaLogs.all, {})
-  );
+  const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
-  // logs filtered by media type - anime/movie/tv/book
+  // logs filtered by media type
   const logsFilteredByMediaType = useMemo(
-    () => mediaLogs.filter((log) => log.metadata.type === mediaType),
-    [mediaLogs, mediaType]
+    () => logs.filter((log) => log.metadata.type === mediaType),
+    [logs, mediaType]
   );
 
   const sections = [
@@ -35,7 +33,7 @@ export default function ListView() {
   ];
 
   return (
-    <div className="space-y-12 pt-4 lg:space-y-30 lg:pt-0">
+    <div className="space-y-12 pt-4 lg:space-y-16 lg:pt-0">
       {sections.map((section) => {
         return (
           <MediaSectionByStatus

@@ -25,6 +25,10 @@ export default function AnimeResults() {
     return <SearchLoading />;
   }
 
+  if (!searchQuery) {
+    return null;
+  }
+
   if (!animeContent || animeContent.data.length === 0) {
     return <NoSearchFound />;
   }

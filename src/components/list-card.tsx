@@ -11,9 +11,9 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "./ui/checkbox";
 
 type Props = {
-  log: FunctionReturnType<typeof api.mediaLogs.all>[0];
+  log: FunctionReturnType<typeof api.logs.all>[0];
   selected?: boolean;
-  onToggleSelect?: (id: Id<"mediaLogs">) => void;
+  onToggleSelect?: (id: Id<"logs">) => void;
   showCheckbox?: boolean;
 };
 

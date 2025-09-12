@@ -11,9 +11,7 @@ import { Button } from "./ui/button";
 export default function SidebarFooter() {
   const navigate = useNavigate();
   const { isCollapsed } = useSidebarStore();
-  const {
-    data: { session },
-  } = useSuspenseQuery(authQueryOptions);
+  const { data } = useSuspenseQuery(authQueryOptions);
 
   return (
     <div className="border-t px-4 py-3 lg:px-6 lg:py-4">
@@ -21,20 +19,24 @@ export default function SidebarFooter() {
         <div className="flex items-center gap-2">
           <Avatar className="size-7 lg:size-8">
             <AvatarImage
-              alt={session?.user.name ?? ""}
-              src={session?.user.image ?? ""}
+              alt={data.session?.user.name ?? ""}
+              src={data.session?.user.image ?? ""}
             />
-            <AvatarFallback>{session?.user.name[0]}</AvatarFallback>
+            <AvatarFallback>{data.session?.user.name[0]}</AvatarFallback>
           </Avatar>
+
+          {/* Name and email */}
           <div
             className={cn("flex flex-col text-xs", isCollapsed && "lg:hidden")}
           >
-            <span className="truncate">{session?.user.name}</span>
+            <span className="truncate">{data.session?.user.name}</span>
             <span className="truncate text-muted-foreground">
-              {session?.user.email}
+              {data.session?.user.email}
             </span>
           </div>
         </div>
+
+        {/* Logout button */}
         <Button
           className="size-7 lg:size-8"
           onClick={async () => {
@@ -42,7 +44,7 @@ export default function SidebarFooter() {
             await authClient.signOut();
           }}
           size="icon"
-          variant="secondary"
+          variant="outline"
         >
           <LogOutIcon className="size-3 lg:size-4" />
         </Button>

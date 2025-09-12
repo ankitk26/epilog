@@ -22,7 +22,7 @@ export default function MediaCard(props: Props) {
   const { displayOnly = false } = props;
 
   const addToPlanningMutation = useMutation({
-    mutationFn: useConvexMutation(api.mediaLogs.addToPlanning),
+    mutationFn: useConvexMutation(api.logs.addToPlanning),
     onSuccess: (response: string) => {
       toast.success(response);
     },

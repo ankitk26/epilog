@@ -4,36 +4,41 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { PencilIcon, TrashIcon, XIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { filterStore } from "@/store/filter-store";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 type Props = {
-  editMode: boolean;
-  setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-  logs: FunctionReturnType<typeof api.mediaLogs.all>;
-  selectedIds: Set<Id<"mediaLogs">>;
-  setSelectedIds: React.Dispatch<React.SetStateAction<Set<Id<"mediaLogs">>>>;
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  logs: FunctionReturnType<typeof api.logs.all>;
+  selectedLogIds: Set<Id<"logs">>;
+  setSelectedLogIds: React.Dispatch<React.SetStateAction<Set<Id<"logs">>>>;
   sectionStatus: string;
 };
 
 export default function ListViewToolbar({
-  editMode,
-  setEditMode,
+  isEditing,
+  setIsEditing,
   logs,
-  selectedIds,
-  setSelectedIds,
+  selectedLogIds,
+  setSelectedLogIds,
   sectionStatus,
 }: Props) {
   const mediaType = useStore(filterStore, (state) => state.type);
 
+  // clear selection
+  const clearSelection = () => setSelectedLogIds(new Set());
+
   // mutation to bulk update status of multiple IDs
   const bulkUpdateStatusMutation = useMutation({
-    mutationFn: useConvexMutation(api.mediaLogs.bulkUpdateStatus),
+    mutationFn: useConvexMutation(api.logs.bulkUpdateStatus),
     onSuccess: () => {
       clearSelection();
+      setIsEditing(false);
       toast.success("Status updated");
     },
     onError: () => {
@@ -43,7 +48,7 @@ export default function ListViewToolbar({
 
   // mutation to bulk delete multiple IDs
   const bulkDeleteMutation = useMutation({
-    mutationFn: useConvexMutation(api.mediaLogs.bulkDelete),
+    mutationFn: useConvexMutation(api.logs.bulkDelete),
     onSuccess: () => {
       clearSelection();
       toast.success("Items deleted");
@@ -53,86 +58,54 @@ export default function ListViewToolbar({
     },
   });
 
-  const visibleIds = useMemo(
-    () => new Set(logs.map((log) => log._id as Id<"mediaLogs">)),
-    [logs]
-  );
-
-  const numVisible = visibleIds.size;
-  const numSelectedVisible = useMemo(
-    () => Array.from(selectedIds).filter((id) => visibleIds.has(id)).length,
-    [selectedIds, visibleIds]
-  );
-
   // select all items
   const selectAllVisible = () => {
-    setSelectedIds((prev) => {
+    setSelectedLogIds((prev) => {
       const next = new Set(prev);
       for (const id of visibleIds) {
         next.add(id);
       }
       return next;
     });
-    setEditMode(true);
+    setIsEditing(true);
   };
-
-  // clear selection
-  const clearSelection = () => setSelectedIds(new Set());
 
   // call mutation here
   const bulkUpdate = (status: "planned" | "in_progress" | "completed") => {
-    const ids = Array.from(selectedIds).filter((id) => visibleIds.has(id));
+    const ids = Array.from(selectedLogIds).filter((id) => visibleIds.has(id));
     if (ids.length === 0) {
       return;
     }
     toast.info("Updating status...");
-    bulkUpdateStatusMutation.mutate({ mediaLogIds: ids, status });
+    bulkUpdateStatusMutation.mutate({ logIds: ids, status });
   };
 
   // call delete mutation
   const bulkDelete = () => {
-    const ids = Array.from(selectedIds).filter((id) => visibleIds.has(id));
+    const ids = Array.from(selectedLogIds).filter((id) => visibleIds.has(id));
     if (ids.length === 0) {
       return;
     }
     toast.info("Deleting items...");
-    bulkDeleteMutation.mutate({ mediaLogIds: ids });
+    bulkDeleteMutation.mutate({ logIds: ids });
   };
+
+  const visibleIds = useMemo(() => new Set(logs.map((log) => log._id)), [logs]);
+
+  const numVisible = visibleIds.size;
+  const numSelectedVisible = useMemo(
+    () => Array.from(selectedLogIds).filter((id) => visibleIds.has(id)).length,
+    [selectedLogIds, visibleIds]
+  );
 
   return (
     <div className="ml-auto flex items-center gap-2">
       {/* Selection counter */}
       <div className="text-muted-foreground text-xs">
-        {numSelectedVisible > 0
-          ? `${numSelectedVisible} selected`
-          : `${numVisible} items`}
+        {numSelectedVisible} selected
       </div>
 
-      {/* Edit toggle button */}
-      <Button
-        aria-pressed={editMode}
-        className="gap-1 text-xs"
-        onClick={() => {
-          setEditMode((prev) => {
-            const next = !prev;
-            if (!next) {
-              clearSelection();
-            }
-            return next;
-          });
-        }}
-        size="sm"
-        variant={editMode ? "secondary" : "ghost"}
-      >
-        {editMode ? (
-          <XIcon className="h-3 w-3" />
-        ) : (
-          <PencilIcon className="h-3 w-3" />
-        )}
-        {editMode ? "Done" : "Edit"}
-      </Button>
-
-      <div className="h-4 w-px bg-border" />
+      <Separator orientation="vertical" />
 
       {/* Select all button */}
       <Button
@@ -156,13 +129,13 @@ export default function ListViewToolbar({
         Clear
       </Button>
 
-      <div className="h-4 w-px bg-border" />
+      <Separator orientation="vertical" />
 
       {/* Move to planning button - hide if current section is planning */}
       {sectionStatus !== "planned" && (
         <Button
           className="text-xs"
-          disabled={!editMode || numSelectedVisible === 0}
+          disabled={!isEditing || numSelectedVisible === 0}
           onClick={() => bulkUpdate("planned")}
           size="sm"
           variant="secondary"
@@ -175,7 +148,7 @@ export default function ListViewToolbar({
       {sectionStatus !== "in_progress" && (
         <Button
           className="text-xs"
-          disabled={!editMode || numSelectedVisible === 0}
+          disabled={!isEditing || numSelectedVisible === 0}
           onClick={() => bulkUpdate("in_progress")}
           size="sm"
           variant="secondary"
@@ -188,7 +161,7 @@ export default function ListViewToolbar({
       {sectionStatus !== "completed" && (
         <Button
           className="text-xs"
-          disabled={!editMode || numSelectedVisible === 0}
+          disabled={!isEditing || numSelectedVisible === 0}
           onClick={() => bulkUpdate("completed")}
           size="sm"
           variant="secondary"
@@ -197,17 +170,17 @@ export default function ListViewToolbar({
         </Button>
       )}
 
-      <div className="h-4 w-px bg-border" />
+      <Separator orientation="vertical" />
 
       {/* Delete button */}
       <Button
         className="text-xs"
-        disabled={!editMode || numSelectedVisible === 0}
+        disabled={!isEditing || numSelectedVisible === 0}
         onClick={bulkDelete}
         size="sm"
         variant="destructive"
       >
-        <TrashIcon className="h-3 w-3" />
+        <TrashIcon className="size-3" />
         Delete
       </Button>
     </div>

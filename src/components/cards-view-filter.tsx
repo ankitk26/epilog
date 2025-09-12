@@ -1,5 +1,8 @@
+/** biome-ignore-all lint/style/noNestedTernary: ignore it */
+
 import { useStore } from "@tanstack/react-store";
 import { KanbanIcon, LayoutGridIcon, ListIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { filterStore } from "@/store/filter-store";
 import { useSidebarStore } from "@/store/sidebar-store";
 import type { FilterMediaView } from "@/types";
@@ -8,6 +11,7 @@ import { Button } from "./ui/button";
 export default function CardsViewFilter() {
   const view = useStore(filterStore, (state) => state.view);
   const toggleSidebar = useSidebarStore((store) => store.toggle);
+  const { theme } = useTheme();
 
   return (
     <div className="space-y-3">
@@ -41,7 +45,13 @@ export default function CardsViewFilter() {
                   view: option.value as FilterMediaView,
                 }));
               }}
-              variant={isActive ? "secondary" : "ghost"}
+              variant={
+                isActive
+                  ? theme === "dark"
+                    ? "secondary"
+                    : "outline"
+                  : "ghost"
+              }
             >
               <div className="flex items-center gap-2">
                 <Icon className="h-3 w-3" />

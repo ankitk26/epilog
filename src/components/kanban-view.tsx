@@ -3,20 +3,19 @@ import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import { CalendarIcon, CheckCircleIcon, ClockIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { filterStore } from "@/store/filter-store";
 import KanbanColumn from "./kanban-column";
 
 export default function KanbanView() {
   const mediaType = useStore(filterStore, (state) => state.type);
+
   const [activeTab, setActiveTab] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { data: mediaLogs } = useSuspenseQuery(
-    convexQuery(api.mediaLogs.all, {})
-  );
+  const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
   const columns = [
     {
@@ -36,8 +35,10 @@ export default function KanbanView() {
     },
   ];
 
-  const logsFilteredByMediaType = mediaLogs.filter(
-    (log) => log.metadata.type === mediaType
+  // logs filtered by media type
+  const logsFilteredByMediaType = useMemo(
+    () => logs.filter((log) => log.metadata.type === mediaType),
+    [logs, mediaType]
   );
 
   // Swipe functionality

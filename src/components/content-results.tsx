@@ -26,6 +26,10 @@ export default function ContentResults() {
     return <SearchLoading />;
   }
 
+  if (!searchQuery) {
+    return null;
+  }
+
   if (!mediaContent || mediaContent.results.length === 0) {
     return <NoSearchFound />;
   }

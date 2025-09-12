@@ -10,7 +10,9 @@
 
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as logs from "../logs.js";
 import type * as mediaLogs from "../mediaLogs.js";
+import type * as migrations_migrateToLogs from "../migrations/migrateToLogs.js";
 import type * as model_users from "../model/users.js";
 
 import type {
@@ -30,7 +32,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
+  logs: typeof logs;
   mediaLogs: typeof mediaLogs;
+  "migrations/migrateToLogs": typeof migrations_migrateToLogs;
   "model/users": typeof model_users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

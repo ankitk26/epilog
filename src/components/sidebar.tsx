@@ -43,8 +43,10 @@ export default function Sidebar() {
               epilog
             </h1>
           </Link>
+
           <div className="flex items-center gap-2">
             <ThemeToggle />
+
             <Button
               className="h-8 w-8 p-0 lg:hidden"
               onClick={toggleSidebar}
@@ -67,7 +69,7 @@ export default function Sidebar() {
                 }
               }}
             >
-              <PlusIcon className="mr-2 h-3 w-3 lg:h-4 lg:w-4" />
+              <PlusIcon className="size-3 lg:size-4" />
               <span className={cn(isCollapsed && "lg:hidden")}>
                 Add New Media
               </span>

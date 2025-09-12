@@ -2,10 +2,9 @@ import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import KanbanCardActions from "./kanban-card-actions";
-import KanbanCardInfo from "./kanban-card-info";
 
 type Props = {
-  log: FunctionReturnType<typeof api.mediaLogs.all>[0];
+  log: FunctionReturnType<typeof api.logs.all>[0];
 };
 
 export default function KanbanCard({ log }: Props) {
@@ -31,10 +30,14 @@ export default function KanbanCard({ log }: Props) {
           <KanbanCardActions log={log} />
         </div>
 
-        <KanbanCardInfo
-          name={log.metadata?.name ?? ""}
-          releaseYear={log.metadata?.releaseYear ?? 2025}
-        />
+        <div className="min-w-0 flex-1">
+          <h4 className="mb-1 line-clamp-2 font-semibold text-sm text-white leading-tight drop-shadow-lg">
+            {log.metadata.name}
+          </h4>
+          <p className="text-white/90 text-xs drop-shadow-md">
+            {log.metadata.releaseYear}
+          </p>
+        </div>
       </div>
     </div>
   );

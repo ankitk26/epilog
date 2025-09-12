@@ -18,9 +18,7 @@ export const Route = createFileRoute("/_auth")({
     }
   },
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      convexQuery(api.mediaLogs.all, {})
-    );
+    await context.queryClient.ensureQueryData(convexQuery(api.logs.all, {}));
   },
 });
 

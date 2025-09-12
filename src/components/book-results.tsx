@@ -25,6 +25,10 @@ export default function BookResults() {
     return <SearchLoading />;
   }
 
+  if (!searchQuery) {
+    return null;
+  }
+
   if (!books || books.data.length === 0) {
     return <NoSearchFound />;
   }

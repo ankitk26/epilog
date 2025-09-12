@@ -1,6 +1,7 @@
 import type { api } from "@convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
 import type { LucideProps } from "lucide-react";
+import EmptyStateMessage from "./empty-state-message";
 import KanbanCard from "./kanban-card";
 import { Badge } from "./ui/badge";
 
@@ -12,7 +13,7 @@ type Props = {
       Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
     >;
   };
-  logs: FunctionReturnType<typeof api.mediaLogs.all>;
+  logs: FunctionReturnType<typeof api.logs.all>;
 };
 
 export default function KanbanColumn(props: Props) {
@@ -35,7 +36,9 @@ export default function KanbanColumn(props: Props) {
       <div className="min-w-0 flex-1 overflow-y-auto p-2">
         {props.logs.length === 0 && (
           <div className="flex flex-col items-center justify-center py-8 text-center opacity-50">
-            <p className="text-muted-foreground text-xs">No items</p>
+            <p className="text-muted-foreground text-xs">
+              <EmptyStateMessage />
+            </p>
           </div>
         )}
 

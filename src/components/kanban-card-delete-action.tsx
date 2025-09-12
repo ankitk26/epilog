@@ -6,12 +6,12 @@ import { toast } from "sonner";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 type Props = {
-  mediaLogId: Id<"mediaLogs">;
+  logId: Id<"logs">;
 };
 
 export default function KanbanCardDeleteAction(props: Props) {
   const removeLogMutation = useMutation({
-    mutationFn: useConvexMutation(api.mediaLogs.remove),
+    mutationFn: useConvexMutation(api.logs.remove),
     onSuccess: () => {
       toast.success("Removed log");
     },
@@ -19,8 +19,8 @@ export default function KanbanCardDeleteAction(props: Props) {
 
   return (
     <DropdownMenuItem
-      className="text-destructive"
-      onClick={() => removeLogMutation.mutate({ mediaLogId: props.mediaLogId })}
+      className="text-destructive text-xs"
+      onClick={() => removeLogMutation.mutate({ logId: props.logId })}
     >
       Delete
     </DropdownMenuItem>
