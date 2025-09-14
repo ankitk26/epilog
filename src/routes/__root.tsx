@@ -43,8 +43,17 @@ export const Route = createRootRouteWithContext<{
       {
         title: "epilog",
       },
+      {
+        name: "color-scheme",
+        content: "light dark",
+      },
     ],
     links: [
+      {
+        rel: "preload",
+        href: appCss,
+        as: "style",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -92,7 +101,10 @@ function RootComponent() {
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
-      <HeadContent />
+      {/** biome-ignore lint/style/noHeadElement: avoiding console errors */}
+      <head>
+        <HeadContent />
+      </head>
       <body style={{ overflowX: "hidden" }}>
         {children}
         <Toaster style={{ fontFamily: "inherit" }} />

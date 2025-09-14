@@ -165,7 +165,7 @@ export const bulkUpdateStatus = mutation({
       }
     }
 
-    // Update all media logs in parallel
+    // Update all media logs
     await Promise.all(
       args.logIds.map((id) =>
         ctx.db.patch(id, {
@@ -192,7 +192,7 @@ export const bulkDelete = mutation({
       }
     }
 
-    // Delete all media logs in parallel
+    // Delete all media logs
     await Promise.all(args.logIds.map((id) => ctx.db.delete(id)));
   },
 });
