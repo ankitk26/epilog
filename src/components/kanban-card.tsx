@@ -1,6 +1,7 @@
 import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
+import IconByType from "./icon-by-type";
 import KanbanCardActions from "./kanban-card-actions";
 
 type Props = {
@@ -12,13 +13,22 @@ export default function KanbanCard({ log }: Props) {
     <div className="group relative h-24 w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
       {/* Background Image */}
       <div className="h-full w-full">
-        <Image
-          alt={log.metadata?.name || "Media"}
-          className="h-full w-full object-cover"
-          height={96}
-          src={log.metadata?.image || "/placeholder.svg"}
-          width={150}
-        />
+        {log.metadata?.image ? (
+          <Image
+            alt={log.metadata?.name || "Media"}
+            className="h-full w-full object-cover"
+            height={96}
+            src={log.metadata.image}
+            width={150}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-muted">
+            <IconByType
+              className="size-8 text-muted-foreground"
+              type={log.metadata?.type}
+            />
+          </div>
+        )}
       </div>
 
       {/* Overlay */}
