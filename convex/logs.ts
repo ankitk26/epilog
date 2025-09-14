@@ -62,7 +62,7 @@ export const addToPlanning = mutation({
 
     if (existingMedia) {
       // assign alredy existing id to mediaId
-      mediaId = existingMedia[0]._id;
+      mediaId = existingMedia._id;
     } else {
       // create new media entry and get its ID
       const newMediaId = await ctx.db.insert("media", {
