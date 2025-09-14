@@ -10,7 +10,7 @@ type Props = {
 
 export default function KanbanCard({ log }: Props) {
   return (
-    <div className="group relative h-24 w-full cursor-pointer overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
+    <div className="group relative h-24 w-full overflow-hidden rounded-lg transition-all duration-300 hover:shadow-lg">
       {/* Background Image */}
       <div className="h-full w-full">
         {log.metadata?.image ? (
@@ -32,7 +32,7 @@ export default function KanbanCard({ log }: Props) {
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/65" />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-between p-2">
