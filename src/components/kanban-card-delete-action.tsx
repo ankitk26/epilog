@@ -20,7 +20,10 @@ export default function KanbanCardDeleteAction(props: Props) {
   return (
     <DropdownMenuItem
       className="text-destructive text-xs"
-      onClick={() => removeLogMutation.mutate({ logId: props.logId })}
+      onClick={() => {
+        toast.info("Removing log...");
+        removeLogMutation.mutate({ logId: props.logId });
+      }}
     >
       Delete
     </DropdownMenuItem>

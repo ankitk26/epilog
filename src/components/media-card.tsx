@@ -30,6 +30,7 @@ export default function MediaCard(props: Props) {
   });
 
   const handleAddToPlanning = () => {
+    toast.info("Adding...");
     addToPlanningMutation.mutate({
       media: {
         name: props.media.name,

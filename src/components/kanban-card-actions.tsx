@@ -33,6 +33,7 @@ export default function KanbanCardActions(props: Props) {
   const handleUpdateStatus = (
     status: "planned" | "in_progress" | "completed"
   ) => {
+    toast.info("Updating status...");
     updateStatusMutation.mutate({ logId: props.log._id, status });
   };
 
