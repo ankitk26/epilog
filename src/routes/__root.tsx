@@ -95,7 +95,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <HeadContent />
       <body style={{ overflowX: "hidden" }}>
         {children}
-        <Toaster />
+        <Toaster style={{ fontFamily: "inherit" }} />
         <Scripts />
       </body>
     </html>
