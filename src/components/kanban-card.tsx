@@ -16,7 +16,7 @@ export default function KanbanCard({ log }: Props) {
           alt={log.metadata?.name || "Media"}
           className="h-full w-full object-cover"
           height={96}
-          src={log.metadata?.image || "/placeholder.svg?height=80&width=200"}
+          src={log.metadata?.image || "/placeholder.svg"}
           width={150}
         />
       </div>
