@@ -2,18 +2,12 @@ import type { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
 import { useStore } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import {
-  BookIcon,
-  ChevronDown,
-  ClapperboardIcon,
-  PencilIcon,
-  PencilOffIcon,
-  Tv2Icon,
-} from "lucide-react";
+import { ChevronDown, PencilIcon, PencilOffIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
 import EmptyStateMessage from "./empty-state-message";
+import IconByType from "./icon-by-type";
 import ListCard from "./list-card";
 import ListViewToolbar from "./list-view-toolbar";
 import MediaCard from "./media-card";
@@ -146,15 +140,10 @@ export default function MediaSectionByStatus(props: Props) {
       {/* No data section */}
       {props.logs.length === 0 && (
         <div className="flex flex-col items-center justify-center space-y-3 rounded-lg border-2 border-muted-foreground/25 border-dashed py-8 text-center">
-          {mediaType === "book" && (
-            <BookIcon className="size-8 text-muted-foreground" />
-          )}
-          {mediaType === "movie" && (
-            <ClapperboardIcon className="size-8 text-muted-foreground" />
-          )}
-          {mediaType === "tv" && (
-            <Tv2Icon className="size-8 text-muted-foreground" />
-          )}
+          <IconByType
+            className="size-8 text-muted-foreground"
+            type={mediaType}
+          />
           <p className="text-muted-foreground text-xs">
             <EmptyStateMessage />
           </p>

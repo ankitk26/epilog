@@ -8,6 +8,7 @@ import type { Id } from "@convex/_generated/dataModel";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { Card } from "@/components/ui/card";
+import IconByType from "./icon-by-type";
 import { Checkbox } from "./ui/checkbox";
 
 type Props = {
@@ -56,7 +57,7 @@ export default function ListCard({
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-muted">
-              <span className="text-sm">🎬</span>
+              <IconByType className="size-5" type={log.metadata.type} />
             </div>
           )}
         </div>

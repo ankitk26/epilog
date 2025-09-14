@@ -2,8 +2,9 @@ import { api } from "@convex/_generated/api";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import { BookIcon, Clapperboard, Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
+import IconByType from "./icon-by-type";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
@@ -53,18 +54,17 @@ export default function MediaCard(props: Props) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-muted">
-            {props.media.type === "book" ? (
-              <BookIcon className="h-8 w-8 text-muted-foreground" />
-            ) : (
-              <Clapperboard className="h-8 w-8 text-muted-foreground" />
-            )}
+            <IconByType
+              className="size-8 text-muted-foreground"
+              type={props.media.type}
+            />
           </div>
         )}
         {/* Add button overlay */}
         {!displayOnly && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
             <Button onClick={handleAddToPlanning} size="sm" variant="secondary">
-              <Plus className="h-3 w-3" />
+              <PlusIcon className="h-3 w-3" />
               Add
             </Button>
           </div>
