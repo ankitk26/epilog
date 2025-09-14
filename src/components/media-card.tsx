@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
+import type { MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
@@ -14,7 +15,7 @@ type Props = {
     name: string;
     releaseYear: number | null;
     sourceId: string;
-    type: "anime" | "tv" | "movie" | "book";
+    type: MediaType;
   };
   displayOnly?: boolean;
 };
