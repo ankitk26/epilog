@@ -2,7 +2,6 @@ import { api } from "@convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
-import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
 import { useSidebarStore } from "@/store/sidebar-store";
@@ -12,7 +11,6 @@ import { Button } from "./ui/button";
 export default function MediaTypeFilter() {
   const type = useStore(filterStore, (state) => state.type);
   const toggleSidebar = useSidebarStore((store) => store.toggle);
-  const { theme } = useTheme();
 
   const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -53,8 +51,8 @@ export default function MediaTypeFilter() {
             className={cn(
               "h-8 w-full justify-between px-2 text-xs",
               isActive
-                ? "bg-accent text-accent-foreground"
-                : "hover:bg-accent/50"
+                ? "border bg-accent text-accent-foreground dark:border-accent"
+                : "hover:bg-foreground/5"
             )}
             key={logTypeItem.label}
             onClick={() => {
@@ -68,9 +66,7 @@ export default function MediaTypeFilter() {
                 type: logTypeItem.type as MediaType,
               }));
             }}
-            variant={
-              isActive ? (theme === "dark" ? "secondary" : "outline") : "ghost"
-            }
+            variant={isActive ? "secondary" : "ghost"}
           >
             <div className="flex items-center gap-2">
               <div className={`size-1.5 rounded-full ${logTypeItem.color}`} />
