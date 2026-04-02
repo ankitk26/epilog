@@ -1,10 +1,10 @@
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { MenuIcon } from "lucide-react";
+import { useEffect } from "react";
 import Sidebar from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSidebarStore } from "@/store/sidebar-store";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { MenuIcon } from "lucide-react";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -47,7 +47,7 @@ function AuthWrapper() {
 						>
 							<MenuIcon className="h-4 w-4" />
 						</Button>
-						<h1 className="font-semibold text-lg">epilog</h1>
+						<h1 className="text-lg font-semibold">epilog</h1>
 						<div className="h-9 w-9" />
 					</div>
 					<Outlet />

@@ -5,13 +5,15 @@ import BookResults from "./book-results";
 import ContentResults from "./content-results";
 
 export default function SearchResults() {
-  const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const mediaType = useStore(searchStore, (state) => state.mediaType);
 
-  return (
-    <div>
-      {mediaType === "book" && <BookResults />}
-      {(mediaType === "movie" || mediaType === "tv") && <ContentResults />}
-      {mediaType === "anime" && <AnimeResults />}
-    </div>
-  );
+	return (
+		<div>
+			{mediaType === "book" && <BookResults />}
+			{(mediaType === "movie" || mediaType === "tv") && (
+				<ContentResults />
+			)}
+			{mediaType === "anime" && <AnimeResults />}
+		</div>
+	);
 }

@@ -1,8 +1,8 @@
+import { useNavigate } from "@tanstack/react-router";
+import { LogOutIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useSidebarStore } from "@/store/sidebar-store";
-import { useNavigate } from "@tanstack/react-router";
-import { LogOutIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 

@@ -1,7 +1,3 @@
-import { getAuth } from "@/actions/get-auth";
-import { Toaster } from "@/components/ui/sonner";
-import { authClient } from "@/lib/auth-client";
-import appCss from "@/styles/app.css?url";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
@@ -14,6 +10,10 @@ import {
 } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { getAuth } from "@/actions/get-auth";
+import { Toaster } from "@/components/ui/sonner";
+import { authClient } from "@/lib/auth-client";
+import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
 	queryClient: QueryClient;

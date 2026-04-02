@@ -9,7 +9,7 @@
 		"strictNullChecks": true,
 		"paths": {
 			"@/*": ["./src/*"],
-			"@convex/*": ["./convex/*"],
-		},
-	},
+			"@convex/*": ["./convex/*"]
+		}
+	}
 }

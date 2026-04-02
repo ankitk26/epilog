@@ -1,11 +1,11 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-store";
 import { Suspense } from "react";
 import KanbanView from "@/components/kanban-view";
 import ListViewByStatus from "@/components/list-view-by-status";
 import { filterStore } from "@/store/filter-store";
-import { convexQuery } from "@convex-dev/react-query";
-import { api } from "@convex/_generated/api";
 
 export const Route = createFileRoute("/_auth/")({
 	component: Home,

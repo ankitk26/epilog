@@ -1,5 +1,5 @@
-import { getAuth } from "@/actions/get-auth";
 import { queryOptions } from "@tanstack/react-query";
+import { getAuth } from "@/actions/get-auth";
 
 export const authQueryOptions = queryOptions({
 	queryKey: ["auth"],

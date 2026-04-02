@@ -1,0 +1,18 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"ignorePatterns": [
+		"pnpm-lock.yaml",
+		"convex/_generated/*",
+		"src/routeTree.gen.ts"
+	],
+	"useTabs": true,
+	"tabWidth": 4,
+	"printWidth": 80,
+	"sortImports": {
+		"newlinesBetween": false
+	},
+	"sortTailwindcss": {
+		"stylesheet": "./src/styles/app.css",
+		"functions": ["clsx", "cn"]
+	}
+}

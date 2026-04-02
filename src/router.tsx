@@ -1,8 +1,8 @@
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { notifyManager, QueryClient } from "@tanstack/react-query";
+import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 import { routeTree } from "./routeTree.gen";
-import { createRouter } from "@tanstack/react-router";
 
 export function getRouter() {
 	if (typeof document !== "undefined") {
