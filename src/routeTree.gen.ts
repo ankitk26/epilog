@@ -13,6 +13,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AuthIndexRouteImport } from './routes/_auth.index'
 import { Route as AuthSearchRouteImport } from './routes/_auth.search'
+import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
 
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
@@ -33,16 +34,23 @@ const AuthSearchRoute = AuthSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => AuthRoute,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/sign-in': typeof SignInRoute
   '/search': typeof AuthSearchRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/search': typeof AuthSearchRoute
   '/': typeof AuthIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -50,18 +58,26 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/_auth/search': typeof AuthSearchRoute
   '/_auth/': typeof AuthIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/search'
+  fullPaths: '/' | '/sign-in' | '/search' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/search' | '/'
-  id: '__root__' | '/_auth' | '/sign-in' | '/_auth/search' | '/_auth/'
+  to: '/sign-in' | '/search' | '/' | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/sign-in'
+    | '/_auth/search'
+    | '/_auth/'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SignInRoute: typeof SignInRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -94,6 +110,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSearchRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -112,6 +135,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SignInRoute: SignInRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

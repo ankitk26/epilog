@@ -4,17 +4,22 @@ import { Suspense } from "react";
 import KanbanView from "@/components/kanban-view";
 import ListViewByStatus from "@/components/list-view-by-status";
 import { filterStore } from "@/store/filter-store";
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 
 export const Route = createFileRoute("/_auth/")({
-  component: Home,
+	component: Home,
+	loader: async ({ context }) => {
+		context.queryClient.ensureQueryData(convexQuery(api.logs.all, {}));
+	},
 });
 
 function Home() {
-  const view = useStore(filterStore, (state) => state.view);
+	const view = useStore(filterStore, (state) => state.view);
 
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      {view === "kanban" ? <KanbanView /> : <ListViewByStatus />}
-    </Suspense>
-  );
+	return (
+		<Suspense fallback={<p>Loading...</p>}>
+			{view === "kanban" ? <KanbanView /> : <ListViewByStatus />}
+		</Suspense>
+	);
 }

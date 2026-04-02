@@ -1,115 +1,112 @@
+import { getAuth } from "@/actions/get-auth";
+import { Toaster } from "@/components/ui/sonner";
+import { authClient } from "@/lib/auth-client";
+import appCss from "@/styles/app.css?url";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
 import {
-  createRootRouteWithContext,
-  HeadContent,
-  Outlet,
-  Scripts,
-  useRouteContext,
+	createRootRouteWithContext,
+	HeadContent,
+	Outlet,
+	Scripts,
+	useRouteContext,
 } from "@tanstack/react-router";
-import type { ConvexReactClient } from "convex/react";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
-import { Toaster } from "@/components/ui/sonner";
-import { authClient } from "@/lib/auth-client";
-import { authQueryOptions } from "@/queries/auth";
-import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
-  convexClient: ConvexReactClient;
-  convexQueryClient: ConvexQueryClient;
+	queryClient: QueryClient;
+	convexQueryClient: ConvexQueryClient;
 }>()({
-  beforeLoad: async (ctx) => {
-    const auth = await ctx.context.queryClient.fetchQuery(authQueryOptions);
-    const { session, token } = auth;
-
-    if (token) {
-      ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
-    }
-
-    return { session, token };
-  },
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "epilog",
-      },
-      {
-        name: "color-scheme",
-        content: "light dark",
-      },
-    ],
-    links: [
-      {
-        rel: "preload",
-        href: appCss,
-        as: "style",
-      },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
-        crossOrigin: "anonymous",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap",
-      },
-    ],
-  }),
-  component: RootComponent,
+	beforeLoad: async (ctx) => {
+		const token = await getAuth();
+		if (token) {
+			ctx.context.convexQueryClient.serverHttpClient?.setAuth(token);
+		}
+		return {
+			isAuthenticated: !!token,
+			token,
+		};
+	},
+	head: () => ({
+		meta: [
+			{
+				charSet: "utf-8",
+			},
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1",
+			},
+			{
+				title: "epilog",
+			},
+			{
+				name: "color-scheme",
+				content: "light dark",
+			},
+		],
+		links: [
+			{
+				rel: "preload",
+				href: appCss,
+				as: "style",
+			},
+			{
+				rel: "stylesheet",
+				href: appCss,
+			},
+			{
+				rel: "preconnect",
+				href: "https://fonts.googleapis.com",
+			},
+			{
+				rel: "preconnect",
+				href: "https://fonts.gstatic.com",
+				crossOrigin: "anonymous",
+			},
+			{
+				rel: "stylesheet",
+				href: "https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap",
+			},
+		],
+	}),
+	component: RootComponent,
 });
 
 function RootComponent() {
-  const context = useRouteContext({ from: Route.id });
+	const context = useRouteContext({ from: Route.id });
 
-  return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
-      <ConvexBetterAuthProvider
-        authClient={authClient}
-        client={context.convexClient}
-      >
-        <RootDocument>
-          <Outlet />
-        </RootDocument>
-      </ConvexBetterAuthProvider>
-    </ThemeProvider>
-  );
+	return (
+		<ConvexBetterAuthProvider
+			authClient={authClient}
+			client={context.convexQueryClient.convexClient}
+		>
+			<RootDocument>
+				<Outlet />
+			</RootDocument>
+		</ConvexBetterAuthProvider>
+	);
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
-  return (
-    <html lang="en">
-      {/** biome-ignore lint/style/noHeadElement: avoiding console errors */}
-      <head>
-        <HeadContent />
-      </head>
-      <body style={{ overflowX: "hidden" }}>
-        {children}
-        <Toaster style={{ fontFamily: "inherit" }} />
-        <Scripts />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<head>
+				<HeadContent />
+			</head>
+			<body style={{ overflowX: "hidden" }}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					disableTransitionOnChange
+					enableSystem
+				>
+					{children}
+					<Toaster style={{ fontFamily: "inherit" }} />
+				</ThemeProvider>
+				<Scripts />
+			</body>
+		</html>
+	);
 }
