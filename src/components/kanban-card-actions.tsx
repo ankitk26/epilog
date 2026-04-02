@@ -39,15 +39,18 @@ export default function KanbanCardActions(props: Props) {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button
-					className="size-8 rounded-full bg-background/50 p-0 text-foreground opacity-100 transition-opacity group-hover:opacity-100 lg:opacity-0"
-					size="sm"
-					variant="ghost"
-				>
-					<MoreHorizontal className="size-4" />
-				</Button>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger
+				render={
+					<Button
+						className="size-8 rounded-full bg-background/50 p-0 text-foreground opacity-100 transition-opacity group-hover:opacity-100 lg:opacity-0"
+						size="sm"
+						variant="ghost"
+					>
+						<MoreHorizontal className="size-4" />
+					</Button>
+				}
+			/>
+
 			<DropdownMenuContent align="end" className="w-40">
 				{props.log.status !== "planned" && (
 					<DropdownMenuItem
