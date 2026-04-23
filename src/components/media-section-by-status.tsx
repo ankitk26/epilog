@@ -115,7 +115,7 @@ export default function MediaSectionByStatus(props: Props) {
 					className={
 						view === "list"
 							? "flex flex-col gap-4"
-							: "grid grid-cols-8 gap-4"
+							: "grid grid-cols-3 gap-4 lg:grid-cols-8"
 					}
 				>
 					{props.logs.map((log) =>

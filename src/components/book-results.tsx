@@ -45,7 +45,7 @@ export default function BookResults() {
 				</Badge>
 			</div>
 
-			<div className="grid grid-cols-8 gap-4">
+			<div className="grid grid-cols-3 gap-4 lg:grid-cols-8">
 				{books.data.map((book) => {
 					let publishYear: number | null = null;
 					if (book.published.from) {

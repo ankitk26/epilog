@@ -45,7 +45,7 @@ export default function ContentResults() {
 				</Badge>
 			</div>
 
-			<div className="grid grid-cols-8 gap-4">
+			<div className="grid grid-cols-3 gap-4 lg:grid-cols-8">
 				{mediaContent.results.map((media) => {
 					let releaseYear: number | null = null;
 					if (media.release_date) {
