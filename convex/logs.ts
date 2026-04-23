@@ -24,7 +24,6 @@ export const all = query({
 			.filter((log) => log.metadata !== null)
 			.map((log) => ({
 				...log,
-				// biome-ignore lint/style/noNonNullAssertion: metadata will never be null
 				metadata: log.metadata!,
 			}));
 

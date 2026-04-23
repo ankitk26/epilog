@@ -81,7 +81,7 @@ export default function MediaSectionByStatus(props: Props) {
 				</div>
 
 				{/* Section toolbar */}
-				{props.logs.length > 0 && view === "list" && (
+				{props.logs.length > 0 && (
 					<Button
 						className="size-7"
 						onClick={() => setIsEditing((prev) => !prev)}
@@ -98,7 +98,7 @@ export default function MediaSectionByStatus(props: Props) {
 			</div>
 
 			<div className="flex w-full justify-start sm:justify-end">
-				{isEditing && props.logs.length > 0 && view === "list" && (
+				{isEditing && props.logs.length > 0 && (
 					<ListViewToolbar
 						isEditing={isEditing}
 						logs={props.logs}
@@ -131,6 +131,7 @@ export default function MediaSectionByStatus(props: Props) {
 							<MediaCard
 								displayOnly
 								key={log._id}
+								id={log._id}
 								media={{
 									imageUrl: log.metadata.image,
 									name: log.metadata.name || "NA",
@@ -138,6 +139,9 @@ export default function MediaSectionByStatus(props: Props) {
 									sourceId: log.metadata.sourceMediaId,
 									type: log.metadata.type,
 								}}
+								onToggleSelect={onToggleSelect}
+								selected={selectedLogIds.has(log._id)}
+								showCheckbox={isEditing}
 							/>
 						),
 					)}

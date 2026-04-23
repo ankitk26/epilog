@@ -1,13 +1,9 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: ignore here */
-/** biome-ignore-all lint/nursery/noNoninteractiveElementInteractions: ignore here */
-/** biome-ignore-all lint/a11y/useAriaPropsSupportedByRole: ignore here */
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: ignore here */
-
 import type { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import IconByType from "./icon-by-type";
 import { Checkbox } from "./ui/checkbox";
 
@@ -25,12 +21,7 @@ export default function ListCard({
 	showCheckbox,
 }: Props) {
 	return (
-		<Card
-			className={
-				"p-3 transition-shadow hover:shadow-md " +
-				(selected ? "ring-2 ring-ring/60" : "")
-			}
-		>
+		<Card className={cn("p-3", selected ? "ring-2 ring-ring/60" : "")}>
 			<div
 				aria-pressed={showCheckbox ? !!selected : undefined}
 				className="flex items-center gap-3"
@@ -43,7 +34,7 @@ export default function ListCard({
 				{showCheckbox && (
 					<Checkbox
 						checked={!!selected}
-						onChange={() => onToggleSelect?.(log._id)}
+						onCheckedChange={() => onToggleSelect?.(log._id)}
 						onClick={(e) => e.stopPropagation()}
 					/>
 				)}
