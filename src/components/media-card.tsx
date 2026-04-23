@@ -44,7 +44,7 @@ export default function MediaCard(props: Props) {
 	};
 
 	return (
-		<Card className="group w-full max-w-44 justify-self-center overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
+		<Card className="group w-full max-w-44 overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
 			<div className="relative aspect-[2/3] overflow-hidden">
 				{props.media.imageUrl ? (
 					<Image

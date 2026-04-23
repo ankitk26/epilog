@@ -73,7 +73,7 @@ export default function KanbanView() {
 	};
 
 	return (
-		<div className="-mx-4 space-y-6 lg:mx-0">
+		<div className="-mx-4 space-y-6 overflow-x-hidden lg:mx-0">
 			{/* Mobile and tablet: Single column with swipe */}
 			<div
 				className="lg:hidden"
