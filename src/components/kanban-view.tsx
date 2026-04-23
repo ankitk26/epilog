@@ -73,17 +73,17 @@ export default function KanbanView() {
 	};
 
 	return (
-		<div className="-mx-4 space-y-6 overflow-x-hidden lg:mx-0">
+		<div className="flex h-full flex-col overflow-x-hidden lg:mx-0">
 			{/* Mobile and tablet: Single column with swipe */}
 			<div
-				className="lg:hidden"
+				className="h-full lg:hidden"
 				onTouchEnd={handleTouchEnd}
 				onTouchMove={handleTouchMove}
 				onTouchStart={handleTouchStart}
 				ref={containerRef}
 			>
 				<div
-					className="flex transition-transform duration-300 ease-in-out will-change-transform"
+					className="flex h-full transition-transform duration-300 ease-in-out will-change-transform"
 					style={{
 						width: `${columns.length * 100}vw`,
 						transform: `translateX(-${activeTab * 100}vw)`,
@@ -91,7 +91,7 @@ export default function KanbanView() {
 				>
 					{columns.map((column) => (
 						<div
-							className="w-[100vw] max-w-[100vw] shrink-0 px-4"
+							className="h-full w-[100vw] max-w-[100vw] shrink-0 overflow-y-auto px-4"
 							key={column.status}
 						>
 							<KanbanColumn
