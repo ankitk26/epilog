@@ -44,20 +44,20 @@ export default function MediaCard(props: Props) {
 	};
 
 	return (
-		<Card className="group overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
-			<div className="relative aspect-[3/4] overflow-hidden">
+		<Card className="group w-full max-w-44 justify-self-center overflow-hidden p-0 transition-shadow duration-200 hover:shadow-md">
+			<div className="relative aspect-[2/3] overflow-hidden">
 				{props.media.imageUrl ? (
 					<Image
 						alt={props.media.name}
 						className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
-						height={200}
+						height={176}
 						src={props.media.imageUrl}
-						width={300}
+						width={264}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center bg-muted">
 						<IconByType
-							className="size-8 text-muted-foreground"
+							className="size-6 text-muted-foreground"
 							type={props.media.type}
 						/>
 					</div>
@@ -76,8 +76,8 @@ export default function MediaCard(props: Props) {
 					</div>
 				)}
 			</div>
-			<CardContent className="p-3 pt-0">
-				<h4 className="mb-1 line-clamp-2 text-xs font-medium">
+			<CardContent className="space-y-0.5 p-2 pt-1">
+				<h4 className="line-clamp-2 text-xs font-medium">
 					{props.media.name}
 				</h4>
 				{props.media.releaseYear && (
