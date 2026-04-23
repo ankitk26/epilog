@@ -3,3 +3,4 @@ node_modules/
 .tanstack
 .env.local
 tasks.md
+.output

@@ -7,6 +7,6 @@ type FilterStore = {
 };
 
 export const filterStore = new Store<FilterStore>({
-	type: "anime",
-	view: "kanban",
+	type: "movie",
+	view: "grid",
 });
