@@ -78,26 +78,26 @@ export default function MediaSectionByStatus(props: Props) {
 					>
 						{props.logs.length}
 					</Badge>
-				</div>
 
-				{/* Section toolbar */}
-				{props.logs.length > 0 && (
-					<Button
-						className="size-7"
-						onClick={() => setIsEditing((prev) => !prev)}
-						size="icon"
-						variant="outline"
-					>
-						{isEditing ? (
-							<PencilOffIcon className="size-3" />
-						) : (
-							<PencilIcon className="size-3" />
-						)}
-					</Button>
-				)}
+					{/* Edit button */}
+					{props.logs.length > 0 && (
+						<Button
+							className="size-7"
+							onClick={() => setIsEditing((prev) => !prev)}
+							size="icon"
+							variant="outline"
+						>
+							{isEditing ? (
+								<PencilOffIcon className="size-3" />
+							) : (
+								<PencilIcon className="size-3" />
+							)}
+						</Button>
+					)}
+				</div>
 			</div>
 
-			<div className="flex w-full justify-start sm:justify-end">
+			<div className="flex w-full justify-start">
 				{isEditing && props.logs.length > 0 && (
 					<ListViewToolbar
 						isEditing={isEditing}

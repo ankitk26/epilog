@@ -112,7 +112,7 @@ export default function ListViewToolbar({
 	);
 
 	return (
-		<div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+		<div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-start">
 			{/* Row 1: selection info */}
 			<div className="flex flex-wrap items-center gap-2">
 				<div className="text-xs text-muted-foreground">
