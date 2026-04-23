@@ -44,7 +44,7 @@ export default function AnimeResults() {
 					{animeContent.data.length} found
 				</Badge>
 			</div>
-			<div className="grid grid-cols-3 gap-4 lg:flex lg:flex-wrap">
+			<div className="grid grid-cols-8 gap-4">
 				{animeContent.data.map((anime) => (
 					<MediaCard
 						key={anime.mal_id}
