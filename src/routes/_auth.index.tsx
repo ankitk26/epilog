@@ -7,7 +7,6 @@ import { KanbanIcon, LayoutGridIcon, ListIcon } from "lucide-react";
 import { Suspense } from "react";
 import KanbanView from "@/components/kanban-view";
 import ListViewByStatus from "@/components/list-view-by-status";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
@@ -87,11 +86,11 @@ function HomeToolbar() {
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
-						<Button
+						<button
 							className={cn(
-								"h-8 gap-1.5 rounded-full px-3 text-xs",
+								"flex h-8 cursor-pointer items-center gap-1.5 rounded-full border-0 px-3 text-xs leading-none font-medium transition-colors",
 								isActive
-									? "bg-primary text-primary-foreground hover:bg-primary/90"
+									? "bg-primary text-primary-foreground hover:bg-primary/80"
 									: "bg-muted text-muted-foreground hover:bg-muted/80",
 							)}
 							key={item.type}
@@ -101,22 +100,20 @@ function HomeToolbar() {
 									type: item.type as MediaType,
 								}))
 							}
-							size="sm"
-							variant="ghost"
+							type="button"
 						>
-							{item.label}
-							<Badge
+							<span className="leading-none">{item.label}</span>
+							<span
 								className={cn(
-									"ml-0.5 text-[10px]",
+									"flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs leading-none font-medium",
 									isActive
-										? "bg-primary-foreground/20 text-primary-foreground"
+										? "bg-primary-foreground/25 text-primary-foreground"
 										: "bg-background/60 text-muted-foreground",
 								)}
-								variant="secondary"
 							>
 								{item.count}
-							</Badge>
-						</Button>
+							</span>
+						</button>
 					);
 				})}
 			</div>

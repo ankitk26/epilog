@@ -1,6 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import Header from "@/components/header";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -13,13 +12,11 @@ export const Route = createFileRoute("/_auth")({
 
 function AuthWrapper() {
 	return (
-		<div className="flex h-screen min-h-0 flex-col overflow-hidden">
+		<div className="flex min-h-screen flex-col">
 			<Header />
-			<ScrollArea className="flex-1">
-				<div className="px-4 py-4 lg:px-6 lg:py-6">
-					<Outlet />
-				</div>
-			</ScrollArea>
+			<main className="flex-1 px-4 py-4 lg:px-6 lg:py-6">
+				<Outlet />
+			</main>
 		</div>
 	);
 }

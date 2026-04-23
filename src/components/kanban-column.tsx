@@ -20,7 +20,7 @@ export default function KanbanColumn(props: Props) {
 	const Icon = props.column.icon;
 
 	return (
-		<div className="flex h-full min-h-0 flex-col space-y-2 rounded-none border border-border/50 bg-muted/30 lg:rounded-lg">
+		<div className="flex flex-col space-y-2 rounded-none border border-border/50 bg-muted/30 lg:rounded-lg">
 			{/* Column Header */}
 			<div className="flex items-center justify-between border-b border-b-border/30 p-3 text-sm">
 				<div className="flex items-center gap-2">
@@ -33,7 +33,7 @@ export default function KanbanColumn(props: Props) {
 			</div>
 
 			{/* Column Content */}
-			<div className="min-w-0 flex-1 overflow-y-auto p-2">
+			<div className="min-w-0 p-2">
 				{props.logs.length === 0 && (
 					<div className="flex flex-col items-center justify-center py-8 text-center opacity-50">
 						<p className="text-xs text-muted-foreground">
