@@ -18,8 +18,8 @@ function SearchPage() {
 					Go back
 				</Button>
 			</Link>
-			<SearchMediaButtons />
 			<SearchInput />
+			<SearchMediaButtons />
 			<SearchResults />
 		</div>
 	);
