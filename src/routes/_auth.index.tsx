@@ -22,11 +22,9 @@ export const Route = createFileRoute("/_auth/")({
 function Home() {
 	return (
 		<Suspense fallback={<p>Loading...</p>}>
-			<div className="flex min-h-0 flex-1 flex-col gap-6">
+			<div className="space-y-6">
 				<HomeToolbar />
-				<div className="min-h-0 flex-1">
-					<HomeContent />
-				</div>
+				<HomeContent />
 			</div>
 		</Suspense>
 	);
