@@ -82,7 +82,7 @@ function HomeToolbar() {
 	return (
 		<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 			{/* Media type filter */}
-			<div className="flex flex-wrap items-center gap-2">
+			<div className="grid grid-cols-2 gap-2 md:flex md:items-center">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
@@ -119,14 +119,14 @@ function HomeToolbar() {
 			</div>
 
 			{/* View switcher */}
-			<div className="flex items-center gap-1 rounded-lg border p-1">
+			<div className="flex w-full items-center gap-1 rounded-lg border p-1 sm:w-auto">
 				{viewOptions.map((option) => {
 					const Icon = option.icon;
 					const isActive = view === option.value;
 					return (
 						<Button
 							className={cn(
-								"h-7 w-7 p-0",
+								"h-7 w-7 flex-1 p-0 sm:w-7 sm:flex-none",
 								isActive
 									? "bg-accent text-accent-foreground"
 									: "text-muted-foreground hover:text-foreground",

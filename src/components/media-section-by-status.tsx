@@ -97,7 +97,7 @@ export default function MediaSectionByStatus(props: Props) {
 				)}
 			</div>
 
-			<div className="flex justify-end">
+			<div className="flex w-full justify-start sm:justify-end">
 				{isEditing && props.logs.length > 0 && view === "list" && (
 					<ListViewToolbar
 						isEditing={isEditing}

@@ -112,92 +112,91 @@ export default function ListViewToolbar({
 	);
 
 	return (
-		<div className="ml-auto flex items-center gap-2">
-			{/* Selection counter */}
-			<div className="text-xs text-muted-foreground">
-				{numSelectedVisible} selected
+		<div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+			{/* Row 1: selection info */}
+			<div className="flex flex-wrap items-center gap-2">
+				<div className="text-xs text-muted-foreground">
+					{numSelectedVisible} selected
+				</div>
+
+				<Separator orientation="vertical" />
+
+				<Button
+					className="text-xs"
+					disabled={
+						numVisible === 0 || numSelectedVisible === numVisible
+					}
+					onClick={selectAllVisible}
+					size="sm"
+					variant="ghost"
+				>
+					Select all
+				</Button>
+
+				<Button
+					className="text-xs"
+					disabled={numSelectedVisible === 0}
+					onClick={clearSelection}
+					size="sm"
+					variant="ghost"
+				>
+					Clear
+				</Button>
+
+				<Separator orientation="vertical" className="hidden sm:block" />
 			</div>
 
-			<Separator orientation="vertical" />
+			{/* Row 2: bulk actions */}
+			<div className="flex flex-wrap items-center gap-2">
+				{sectionStatus !== "planned" && (
+					<Button
+						className="text-xs"
+						disabled={!isEditing || numSelectedVisible === 0}
+						onClick={() => bulkUpdate("planned")}
+						size="sm"
+						variant="secondary"
+					>
+						Move to Planning
+					</Button>
+				)}
 
-			{/* Select all button */}
-			<Button
-				className="text-xs"
-				disabled={numVisible === 0 || numSelectedVisible === numVisible}
-				onClick={selectAllVisible}
-				size="sm"
-				variant="ghost"
-			>
-				Select all
-			</Button>
+				{sectionStatus !== "in_progress" && (
+					<Button
+						className="text-xs"
+						disabled={!isEditing || numSelectedVisible === 0}
+						onClick={() => bulkUpdate("in_progress")}
+						size="sm"
+						variant="secondary"
+					>
+						{mediaType === "book"
+							? "Move to Reading"
+							: "Move to Watching"}
+					</Button>
+				)}
 
-			{/* Clear all button */}
-			<Button
-				className="text-xs"
-				disabled={numSelectedVisible === 0}
-				onClick={clearSelection}
-				size="sm"
-				variant="ghost"
-			>
-				Clear
-			</Button>
+				{sectionStatus !== "completed" && (
+					<Button
+						className="text-xs"
+						disabled={!isEditing || numSelectedVisible === 0}
+						onClick={() => bulkUpdate("completed")}
+						size="sm"
+						variant="secondary"
+					>
+						Mark Completed
+					</Button>
+				)}
 
-			<Separator orientation="vertical" />
-
-			{/* Move to planning button - hide if current section is planning */}
-			{sectionStatus !== "planned" && (
 				<Button
 					className="text-xs"
 					disabled={!isEditing || numSelectedVisible === 0}
-					onClick={() => bulkUpdate("planned")}
+					onClick={bulkDelete}
 					size="sm"
-					variant="secondary"
+					variant="destructive"
 				>
-					Move to Planning
+					<TrashIcon className="size-3" />
+					Delete
 				</Button>
-			)}
-
-			{/* Move to progress button - hide if current section is in_progress */}
-			{sectionStatus !== "in_progress" && (
-				<Button
-					className="text-xs"
-					disabled={!isEditing || numSelectedVisible === 0}
-					onClick={() => bulkUpdate("in_progress")}
-					size="sm"
-					variant="secondary"
-				>
-					{mediaType === "book"
-						? "Move to Reading"
-						: "Move to Watching"}
-				</Button>
-			)}
-
-			{/* Move to completed button - hide if current section is completed */}
-			{sectionStatus !== "completed" && (
-				<Button
-					className="text-xs"
-					disabled={!isEditing || numSelectedVisible === 0}
-					onClick={() => bulkUpdate("completed")}
-					size="sm"
-					variant="secondary"
-				>
-					Mark Completed
-				</Button>
-			)}
-
-			<Separator orientation="vertical" />
-
-			{/* Delete button */}
-			<Button
-				className="text-xs"
-				disabled={!isEditing || numSelectedVisible === 0}
-				onClick={bulkDelete}
-				size="sm"
-				variant="destructive"
-			>
-				<TrashIcon className="size-3" />
-				Delete
-			</Button>
+			</div>
 		</div>
 	);
 }
