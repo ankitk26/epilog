@@ -7,6 +7,7 @@ import {
 	LayoutGridIcon,
 	KanbanIcon,
 	TheaterIcon,
+	CalendarIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
@@ -51,7 +52,7 @@ export default function MediaContentFilters() {
 		{ value: "list", label: "List", icon: ListIcon },
 		{ value: "grid", label: "Grid", icon: LayoutGridIcon },
 		{ value: "kanban", label: "Kanban", icon: KanbanIcon },
-		{ value: "theatre", label: "Theatre", icon: TheaterIcon },
+		{ value: "calendar", label: "Calendar", icon: CalendarIcon },
 	];
 
 	return (
@@ -69,12 +70,21 @@ export default function MediaContentFilters() {
 									: "bg-muted text-muted-foreground hover:bg-muted/80",
 							)}
 							key={item.type}
-							onClick={() =>
+							onClick={() => {
+								if (
+									item.type !== "movie" &&
+									view === "calendar"
+								) {
+									filterStore.setState((state) => ({
+										...state,
+										view: "grid" as FilterMediaView,
+									}));
+								}
 								filterStore.setState((state) => ({
 									...state,
 									type: item.type as MediaType,
-								}))
-							}
+								}));
+							}}
 							type="button"
 						>
 							<span className="leading-none">{item.label}</span>
@@ -96,7 +106,7 @@ export default function MediaContentFilters() {
 			{/* View switcher */}
 			<div className="flex w-full items-center gap-1 rounded-lg border p-1 sm:w-auto">
 				{viewOptions.map((option) => {
-					if (type !== "movie" && option.value === "theatre") {
+					if (type !== "movie" && option.value === "calendar") {
 						return null;
 					}
 
