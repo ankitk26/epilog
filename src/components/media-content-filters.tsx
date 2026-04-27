@@ -113,7 +113,7 @@ export default function MediaContentFilters() {
 					const Icon = option.icon;
 					const isActive = view === option.value;
 					return (
-						<Tooltip>
+						<Tooltip key={`${option.value}_filter`}>
 							<TooltipTrigger
 								render={
 									<Button

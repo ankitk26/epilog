@@ -118,6 +118,7 @@ export default function MonthCalendar() {
 					{Array.from({ length: currentMonthFirstDayWeekDay }).map(
 						(_, index) => (
 							<CalendarDay
+								key={`${index + 1}_${selectedMonth - 1}_${selectedYear}`}
 								label={
 									totalDaysInPreviousMonth +
 									index -
@@ -130,14 +131,21 @@ export default function MonthCalendar() {
 					{/*Fill current month days*/}
 					{Array.from({ length: totalDaysInCurrentMonth }).map(
 						(_, index) => (
-							<CalendarDay label={index + 1} isCurrentMonth />
+							<CalendarDay
+								key={`${index + 1}_${selectedMonth}_${selectedYear}`}
+								label={index + 1}
+								isCurrentMonth
+							/>
 						),
 					)}
 
 					{/*Fill next month's days*/}
 					{Array.from({ length: 6 - currentMonthLastDayWeekDay }).map(
 						(_, index) => (
-							<CalendarDay label={index + 1} />
+							<CalendarDay
+								key={`${index + 1}_${selectedMonth + 1}_${selectedYear}`}
+								label={index + 1}
+							/>
 						),
 					)}
 				</div>
