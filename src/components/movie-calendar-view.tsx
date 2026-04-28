@@ -1,4 +1,3 @@
-import CalendarMoviesList from "./calendar-movies-list";
 import MonthCalendar from "./month-calendar";
 
 export default function MovieCalendarView() {

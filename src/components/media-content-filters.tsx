@@ -3,11 +3,10 @@ import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useStore } from "@tanstack/react-store";
 import {
-	ListIcon,
-	LayoutGridIcon,
-	KanbanIcon,
-	TheaterIcon,
 	CalendarIcon,
+	KanbanIcon,
+	LayoutGridIcon,
+	ListIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";

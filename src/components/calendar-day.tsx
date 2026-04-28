@@ -1,14 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { FormEvent, useState } from "react";
+import { SubmitEvent, useState } from "react";
 import { getContentSearchResults } from "@/actions/get-content-search-results";
 import { cn } from "@/lib/utils";
 import MovieSearchResultItem from "./movie-search-result-item";
-import { Button } from "./ui/button";
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -35,8 +32,8 @@ export default function CalendarDay({
 
 	const {
 		data: movieSearchResults,
-		isPending,
-		isEnabled,
+		// isPending,
+		// isEnabled,
 	} = useQuery({
 		queryKey: ["search", "media-content", "movie", query],
 		queryFn: async () =>
@@ -73,7 +70,7 @@ export default function CalendarDay({
 		});
 	}
 
-	function handleQuerySubmit(e: FormEvent) {
+	function handleQuerySubmit(e: SubmitEvent) {
 		e.preventDefault();
 		e.stopPropagation();
 		setIsFormSubmitted(true);
@@ -121,10 +118,6 @@ export default function CalendarDay({
 						</div>
 					</div>
 				</div>
-				<DialogFooter>
-					<DialogClose>Cancel</DialogClose>
-					<Button>Submit</Button>
-				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
