@@ -3,6 +3,16 @@ import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUserOrThrow } from "./model/users";
 
+function normalizeEventDate(eventDate: string) {
+	const normalizedEventDate = eventDate.replaceAll("-", "");
+
+	if (!/^\d{8}$/.test(normalizedEventDate)) {
+		throw new Error("eventDate must be in YYYYMMDD format");
+	}
+
+	return normalizedEventDate;
+}
+
 export const add = mutation({
 	args: {
 		media: v.object({
@@ -15,11 +25,7 @@ export const add = mutation({
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
-		const normalizedEventDate = args.eventDate.replaceAll("-", "");
-
-		if (!/^\d{8}$/.test(normalizedEventDate)) {
-			throw new Error("eventDate must be in YYYYMMDD format");
-		}
+		const normalizedEventDate = normalizeEventDate(args.eventDate);
 
 		let mediaId: Id<"media">;
 
@@ -69,6 +75,66 @@ export const add = mutation({
 		});
 
 		return "Event added";
+	},
+});
+
+export const updateEventDate = mutation({
+	args: {
+		movieEventId: v.id("movieEvents"),
+		eventDate: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+		const normalizedEventDate = normalizeEventDate(args.eventDate);
+
+		const existingEvent = await ctx.db.get(args.movieEventId);
+
+		if (!existingEvent || existingEvent.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		if (existingEvent.eventDate === normalizedEventDate) {
+			return "No changes";
+		}
+
+		const conflictingEvent = await ctx.db
+			.query("movieEvents")
+			.withIndex("by_user_and_mediaId_and_eventDate", (q) =>
+				q
+					.eq("userId", userId)
+					.eq("dbMediaId", existingEvent.dbMediaId)
+					.eq("eventDate", normalizedEventDate),
+			)
+			.unique();
+
+		if (conflictingEvent && conflictingEvent._id !== existingEvent._id) {
+			return "Already added";
+		}
+
+		await ctx.db.patch(args.movieEventId, {
+			eventDate: normalizedEventDate,
+		});
+
+		return "Event date updated";
+	},
+});
+
+export const remove = mutation({
+	args: {
+		movieEventId: v.id("movieEvents"),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const existingEvent = await ctx.db.get(args.movieEventId);
+
+		if (!existingEvent || existingEvent.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		await ctx.db.delete(args.movieEventId);
+
+		return "Event deleted";
 	},
 });
 

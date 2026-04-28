@@ -1,16 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { SubmitEvent, useState } from "react";
-import { getContentSearchResults } from "@/actions/get-content-search-results";
+import { PlusIcon } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import MovieSearchResultItem from "./movie-search-result-item";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
+import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
+import CalendarDayAddMovieDialog from "./calendar-day-add-movie-dialog";
+import CalendarDayMovieEventChip from "./calendar-day-movie-event-chip";
+import MovieEventDetailsDialog from "./movie-event-details-dialog";
 
 type Props = {
 	label: number;
@@ -18,7 +12,7 @@ type Props = {
 	month: number;
 	year: number;
 	isCurrentMonth?: boolean;
-	movieTitles?: string[];
+	events?: CalendarMovieEvent[];
 };
 
 export default function CalendarDay({
@@ -27,24 +21,10 @@ export default function CalendarDay({
 	month,
 	year,
 	isCurrentMonth = false,
-	movieTitles = [],
+	events = [],
 }: Props) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [query, setQuery] = useState("");
-	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-	const {
-		data: movieSearchResults,
-		// isPending,
-		// isEnabled,
-	} = useQuery({
-		queryKey: ["search", "media-content", "movie", query],
-		queryFn: async () =>
-			await getContentSearchResults({
-				data: { searchQuery: query, mediaType: "movie" },
-			}),
-		enabled: query.length !== 0 && isFormSubmitted,
-	});
+	const [selectedEvent, setSelectedEvent] =
+		useState<CalendarMovieEvent | null>(null);
 
 	const today = new Date();
 
@@ -56,72 +36,57 @@ export default function CalendarDay({
 		currentDay === day && currentMonth === month && currentYear === year;
 	const isCurrentDayCell = isDayToday && isCurrentMonth;
 
-	function handleQuerySubmit(e: SubmitEvent) {
-		e.preventDefault();
-		e.stopPropagation();
-		setIsFormSubmitted(true);
-	}
-
 	return (
-		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogTrigger
-				render={
-					<button
-						className={cn(
-							"col-span-1 flex min-h-24 w-full flex-col gap-2 border p-3 text-left text-xs",
-							isCurrentMonth ? "" : "text-muted-foreground",
-							isCurrentDayCell
-								? "bg-primary text-primary-foreground"
-								: "",
-						)}
+		<>
+			<div
+				className={cn(
+					"col-span-1 flex min-h-24 w-full flex-col gap-2 border p-3 text-left text-xs",
+					isCurrentMonth ? "" : "text-muted-foreground",
+					isCurrentDayCell
+						? "bg-primary text-primary-foreground"
+						: "",
+				)}
+			>
+				<div className="flex items-center justify-between gap-2">
+					<span>{label}</span>
+					<CalendarDayAddMovieDialog
+						day={day}
+						month={month}
+						year={year}
 					>
-						<span>{label}</span>
-						<div className="flex flex-col gap-1">
-							{movieTitles.map((title, index) => (
-								<p
-									key={`${title}-${index}`}
-									className={cn(
-										"truncate rounded-sm px-1.5 py-1 text-[11px] leading-tight",
-										isCurrentDayCell
-											? "bg-primary-foreground text-primary"
-											: "bg-primary text-primary-foreground",
-									)}
-								>
-									{title}
-								</p>
-							))}
-						</div>
-					</button>
-				}
-			/>
-			<DialogContent className="flex max-h-[80vh] flex-col overflow-hidden sm:max-w-md">
-				<DialogHeader>
-					<DialogTitle>Add movie</DialogTitle>
-				</DialogHeader>
-				<div className="flex min-h-0 flex-1 flex-col gap-3">
-					<form onSubmit={handleQuerySubmit}>
-						<Input
-							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search movie"
-							value={query}
-						/>
-					</form>
-					<div className="min-h-0 flex-1 overflow-y-auto pr-1">
-						<div className="flex flex-col gap-1">
-							{movieSearchResults?.results.map((movie) => (
-								<MovieSearchResultItem
-									key={movie.id}
-									movie={movie}
-									day={day}
-									month={month}
-									year={year}
-									closeDialog={() => setIsOpen(false)}
-								/>
-							))}
-						</div>
-					</div>
+						<button
+							type="button"
+							className={cn(
+								"inline-flex size-5 items-center justify-center rounded-sm transition-colors hover:bg-muted",
+								isCurrentDayCell
+									? "hover:bg-primary-foreground/20"
+									: "hover:bg-muted",
+							)}
+						>
+							<PlusIcon className="size-3" />
+						</button>
+					</CalendarDayAddMovieDialog>
 				</div>
-			</DialogContent>
-		</Dialog>
+				<div className="flex flex-col gap-1">
+					{events.map((event) => (
+						<CalendarDayMovieEventChip
+							key={event.movieEventId}
+							event={event}
+							isCurrentDayCell={isCurrentDayCell}
+							onClick={() => setSelectedEvent(event)}
+						/>
+					))}
+				</div>
+			</div>
+			<MovieEventDetailsDialog
+				event={selectedEvent}
+				open={selectedEvent !== null}
+				onOpenChange={(open) => {
+					if (!open) {
+						setSelectedEvent(null);
+					}
+				}}
+			/>
+		</>
 	);
 }

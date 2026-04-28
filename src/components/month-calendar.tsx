@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
+import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDay from "./calendar-day";
 import { Button } from "./ui/button";
 
@@ -35,7 +36,7 @@ export default function MonthCalendar() {
 		convexQuery(api.movieEvents.getAll),
 	);
 
-	const movieTitlesByDate = new Map<string, string[]>();
+	const movieEventsByDate = new Map<string, CalendarMovieEvent[]>();
 
 	for (const eventGroup of movieEvents as FunctionReturnType<
 		typeof api.movieEvents.getAll
@@ -46,10 +47,7 @@ export default function MonthCalendar() {
 			continue;
 		}
 
-		movieTitlesByDate.set(
-			eventDate,
-			movies.map((movie) => movie.name),
-		);
+		movieEventsByDate.set(eventDate, movies as CalendarMovieEvent[]);
 	}
 
 	const totalDaysInPreviousMonth = new Date(
@@ -166,8 +164,8 @@ export default function MonthCalendar() {
 											? selectedYear - 1
 											: selectedYear
 									}
-									movieTitles={
-										movieTitlesByDate.get(
+									events={
+										movieEventsByDate.get(
 											getEventDateKey(
 												selectedMonth === 0
 													? selectedYear - 1
@@ -194,8 +192,8 @@ export default function MonthCalendar() {
 								month={selectedMonth}
 								year={selectedYear}
 								isCurrentMonth
-								movieTitles={
-									movieTitlesByDate.get(
+								events={
+									movieEventsByDate.get(
 										getEventDateKey(
 											selectedYear,
 											selectedMonth,
@@ -222,8 +220,8 @@ export default function MonthCalendar() {
 										? selectedYear + 1
 										: selectedYear
 								}
-								movieTitles={
-									movieTitlesByDate.get(
+								events={
+									movieEventsByDate.get(
 										getEventDateKey(
 											selectedMonth === 11
 												? selectedYear + 1
