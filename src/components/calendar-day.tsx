@@ -68,7 +68,7 @@ export default function CalendarDay({
 				render={
 					<button
 						className={cn(
-							"col-span-1 flex h-24 w-full flex-col gap-2 overflow-hidden border p-3 text-left text-xs",
+							"col-span-1 flex min-h-24 w-full flex-col gap-2 border p-3 text-left text-xs",
 							isCurrentMonth ? "" : "text-muted-foreground",
 							isCurrentDayCell
 								? "bg-primary text-primary-foreground"
@@ -76,8 +76,8 @@ export default function CalendarDay({
 						)}
 					>
 						<span>{label}</span>
-						<div className="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden">
-							{movieTitles.slice(0, 3).map((title, index) => (
+						<div className="flex flex-col gap-1">
+							{movieTitles.map((title, index) => (
 								<p
 									key={`${title}-${index}`}
 									className={cn(
@@ -90,18 +90,6 @@ export default function CalendarDay({
 									{title}
 								</p>
 							))}
-							{movieTitles.length > 3 && (
-								<p
-									className={cn(
-										"rounded-sm px-1.5 py-1 text-[11px] leading-tight opacity-90",
-										isCurrentDayCell
-											? "bg-primary-foreground text-primary"
-											: "bg-primary text-primary-foreground",
-									)}
-								>
-									+{movieTitles.length - 3} more
-								</p>
-							)}
 						</div>
 					</button>
 				}
