@@ -68,6 +68,25 @@ export const add = mutation({
 			return "Already added";
 		}
 
+		const existingLog = await ctx.db
+			.query("logs")
+			.withIndex("by_user_and_mediaId", (q) =>
+				q.eq("userId", userId).eq("dbMediaId", mediaId),
+			)
+			.unique();
+
+		if (existingLog) {
+			await ctx.db.patch(existingLog._id, {
+				status: "completed",
+			});
+		} else {
+			await ctx.db.insert("logs", {
+				userId,
+				dbMediaId: mediaId,
+				status: "completed",
+			});
+		}
+
 		await ctx.db.insert("movieEvents", {
 			userId,
 			dbMediaId: mediaId,
