@@ -18,6 +18,7 @@ type Props = {
 	month: number;
 	year: number;
 	isCurrentMonth?: boolean;
+	movieTitles?: string[];
 };
 
 export default function CalendarDay({
@@ -26,7 +27,9 @@ export default function CalendarDay({
 	month,
 	year,
 	isCurrentMonth = false,
+	movieTitles = [],
 }: Props) {
+	const [isOpen, setIsOpen] = useState(false);
 	const [query, setQuery] = useState("");
 	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -51,24 +54,7 @@ export default function CalendarDay({
 
 	const isDayToday =
 		currentDay === day && currentMonth === month && currentYear === year;
-
-	const addMovieEvent = () => {
-		const actualMonth = month + 1;
-		console.log(`Date = ${day}-${actualMonth}-${year}`);
-	};
-
-	function handleMovieClick(movie: {
-		id: number;
-		name?: string | null;
-		title?: string | null;
-	}) {
-		const actualMonth = month + 1;
-		console.log({
-			date: `${day}-${actualMonth}-${year}`,
-			movieId: movie.id,
-			movieTitle: movie.name ?? movie.title ?? "N/A",
-		});
-	}
+	const isCurrentDayCell = isDayToday && isCurrentMonth;
 
 	function handleQuerySubmit(e: SubmitEvent) {
 		e.preventDefault();
@@ -77,20 +63,46 @@ export default function CalendarDay({
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger
 				render={
 					<button
 						className={cn(
-							"col-span-1 flex h-20 w-full border p-4 text-xs",
+							"col-span-1 flex h-24 w-full flex-col gap-2 overflow-hidden border p-3 text-left text-xs",
 							isCurrentMonth ? "" : "text-muted-foreground",
-							isDayToday && isCurrentMonth
+							isCurrentDayCell
 								? "bg-primary text-primary-foreground"
 								: "",
 						)}
-						onClick={addMovieEvent}
 					>
-						{label}
+						<span>{label}</span>
+						<div className="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden">
+							{movieTitles.slice(0, 3).map((title, index) => (
+								<p
+									key={`${title}-${index}`}
+									className={cn(
+										"truncate rounded-sm px-1.5 py-1 text-[11px] leading-tight",
+										isCurrentDayCell
+											? "bg-primary-foreground text-primary"
+											: "bg-primary text-primary-foreground",
+									)}
+								>
+									{title}
+								</p>
+							))}
+							{movieTitles.length > 3 && (
+								<p
+									className={cn(
+										"rounded-sm px-1.5 py-1 text-[11px] leading-tight opacity-90",
+										isCurrentDayCell
+											? "bg-primary-foreground text-primary"
+											: "bg-primary text-primary-foreground",
+									)}
+								>
+									+{movieTitles.length - 3} more
+								</p>
+							)}
+						</div>
 					</button>
 				}
 			/>
@@ -112,7 +124,10 @@ export default function CalendarDay({
 								<MovieSearchResultItem
 									key={movie.id}
 									movie={movie}
-									onClick={handleMovieClick}
+									day={day}
+									month={month}
+									year={year}
+									closeDialog={() => setIsOpen(false)}
 								/>
 							))}
 						</div>

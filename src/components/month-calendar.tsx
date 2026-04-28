@@ -1,3 +1,7 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
+import { useQuery } from "@tanstack/react-query";
+import type { FunctionReturnType } from "convex/server";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import CalendarDay from "./calendar-day";
@@ -27,6 +31,26 @@ export default function MonthCalendar() {
 
 	const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 	const [selectedYear, setSelectedYear] = useState(currentYear);
+	const { data: movieEvents = [] } = useQuery(
+		convexQuery(api.movieEvents.getAll),
+	);
+
+	const movieTitlesByDate = new Map<string, string[]>();
+
+	for (const eventGroup of movieEvents as FunctionReturnType<
+		typeof api.movieEvents.getAll
+	>) {
+		const [eventDate, movies] = Object.entries(eventGroup)[0] ?? [];
+
+		if (!eventDate || !movies) {
+			continue;
+		}
+
+		movieTitlesByDate.set(
+			eventDate,
+			movies.map((movie) => movie.name),
+		);
+	}
 
 	const totalDaysInPreviousMonth = new Date(
 		selectedYear,
@@ -74,6 +98,11 @@ export default function MonthCalendar() {
 		setSelectedMonth(new Date().getMonth());
 		setSelectedYear(new Date().getFullYear());
 	};
+
+	const getEventDateKey = (year: number, month: number, day: number) =>
+		`${year.toString().padStart(4, "0")}${(month + 1)
+			.toString()
+			.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
 
 	return (
 		<div className="col-span-12 h-full">
@@ -137,6 +166,19 @@ export default function MonthCalendar() {
 											? selectedYear - 1
 											: selectedYear
 									}
+									movieTitles={
+										movieTitlesByDate.get(
+											getEventDateKey(
+												selectedMonth === 0
+													? selectedYear - 1
+													: selectedYear,
+												selectedMonth === 0
+													? 11
+													: selectedMonth - 1,
+												day,
+											),
+										) ?? []
+									}
 								/>
 							);
 						},
@@ -152,6 +194,15 @@ export default function MonthCalendar() {
 								month={selectedMonth}
 								year={selectedYear}
 								isCurrentMonth
+								movieTitles={
+									movieTitlesByDate.get(
+										getEventDateKey(
+											selectedYear,
+											selectedMonth,
+											index + 1,
+										),
+									) ?? []
+								}
 							/>
 						),
 					)}
@@ -170,6 +221,19 @@ export default function MonthCalendar() {
 									selectedMonth === 11
 										? selectedYear + 1
 										: selectedYear
+								}
+								movieTitles={
+									movieTitlesByDate.get(
+										getEventDateKey(
+											selectedMonth === 11
+												? selectedYear + 1
+												: selectedYear,
+											selectedMonth === 11
+												? 0
+												: selectedMonth + 1,
+											index + 1,
+										),
+									) ?? []
 								}
 							/>
 						),
