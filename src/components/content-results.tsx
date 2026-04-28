@@ -5,6 +5,7 @@ import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
 import { Badge } from "@/components/ui/badge";
+import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
 import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { searchStore } from "@/store/search-store";
 
@@ -53,13 +54,15 @@ export default function ContentResults() {
 						media.first_air_date,
 					);
 
+					const posterImage = getFullImageFromPosterPath(
+						media.poster_path,
+					);
+
 					return (
 						<MediaCard
 							key={media.id}
 							media={{
-								imageUrl:
-									media.poster_path &&
-									`https://image.tmdb.org/t/p/w500${media.poster_path}`,
+								imageUrl: posterImage,
 								name: media.name ?? media.title ?? "NA",
 								releaseYear,
 								sourceId: media.id.toString(),

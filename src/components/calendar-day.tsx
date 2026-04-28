@@ -1,21 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
-import { Image } from "@unpic/react";
 import { FormEvent, useState } from "react";
 import { getContentSearchResults } from "@/actions/get-content-search-results";
-import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { cn } from "@/lib/utils";
-import { searchStore } from "@/store/search-store";
-import IconByType from "./icon-by-type";
+import MovieSearchResultItem from "./movie-search-result-item";
+import { Button } from "./ui/button";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { ScrollArea } from "./ui/scroll-area";
 
 type Props = {
 	label: number;
@@ -62,6 +60,19 @@ export default function CalendarDay({
 		console.log(`Date = ${day}-${actualMonth}-${year}`);
 	};
 
+	function handleMovieClick(movie: {
+		id: number;
+		name?: string | null;
+		title?: string | null;
+	}) {
+		const actualMonth = month + 1;
+		console.log({
+			date: `${day}-${actualMonth}-${year}`,
+			movieId: movie.id,
+			movieTitle: movie.name ?? movie.title ?? "N/A",
+		});
+	}
+
 	function handleQuerySubmit(e: FormEvent) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -86,62 +97,34 @@ export default function CalendarDay({
 					</button>
 				}
 			/>
-			<DialogContent>
+			<DialogContent className="flex max-h-[80vh] flex-col overflow-hidden sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>Add movie</DialogTitle>
 				</DialogHeader>
-				<div>
+				<div className="flex min-h-0 flex-1 flex-col gap-3">
 					<form onSubmit={handleQuerySubmit}>
 						<Input
 							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Search title"
+							placeholder="Search movie"
 							value={query}
 						/>
 					</form>
-					<ScrollArea className="col-span-2 h-full">
+					<div className="min-h-0 flex-1 overflow-y-auto pr-1">
 						<div className="flex flex-col gap-1">
-							{movieSearchResults?.results.map((movie) => {
-								const releaseYear = getReleaseYear(
-									movie.release_date,
-									movie.first_air_date,
-								);
-
-								return (
-									<div className="flex items-start gap-2 rounded-lg border p-2">
-										<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden">
-											{movie.poster_path ? (
-												<Image
-													src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-													className="h-full w-full object-cover object-top"
-													height={120}
-													width={80}
-													alt={movie.name ?? "movie"}
-												/>
-											) : (
-												<div className="flex h-full w-full items-center justify-center bg-muted">
-													<IconByType
-														className="size-6 text-muted-foreground"
-														type="movie"
-													/>
-												</div>
-											)}
-										</div>
-										<div className="min-w-0 flex-1">
-											<h4 className="truncate text-xs font-medium">
-												{movie.name}
-											</h4>
-											{releaseYear && (
-												<p className="text-xs text-muted-foreground">
-													{releaseYear}
-												</p>
-											)}
-										</div>
-									</div>
-								);
-							})}
+							{movieSearchResults?.results.map((movie) => (
+								<MovieSearchResultItem
+									key={movie.id}
+									movie={movie}
+									onClick={handleMovieClick}
+								/>
+							))}
 						</div>
-					</ScrollArea>
+					</div>
 				</div>
+				<DialogFooter>
+					<DialogClose>Cancel</DialogClose>
+					<Button>Submit</Button>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
