@@ -8,9 +8,9 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
-import KanbanColumn from "./kanban-column";
+import ShelfColumn from "./shelf-column";
 
-export default function KanbanView() {
+export default function ShelfView() {
 	const { type: mediaType } = useMediaFilters();
 
 	const [activeTab, setActiveTab] = useState(0);
@@ -97,7 +97,7 @@ export default function KanbanView() {
 							className="w-[100vw] max-w-[100vw] shrink-0 px-4"
 							key={column.status}
 						>
-							<KanbanColumn
+							<ShelfColumn
 								column={column}
 								logs={logsFilteredByMediaType.filter(
 									(log) => log.status === column.status,
@@ -112,7 +112,7 @@ export default function KanbanView() {
 			<div className="hidden lg:grid lg:grid-cols-3 lg:gap-4">
 				{columns.map((column) => (
 					<div key={column.status}>
-						<KanbanColumn
+						<ShelfColumn
 							column={column}
 							logs={logsFilteredByMediaType.filter(
 								(log) => log.status === column.status,

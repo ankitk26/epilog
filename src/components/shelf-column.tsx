@@ -2,7 +2,7 @@ import type { api } from "@convex/_generated/api";
 import type { Icon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
 import EmptyStateMessage from "./empty-state-message";
-import KanbanCard from "./kanban-card";
+import ShelfCard from "./shelf-card";
 import { Badge } from "./ui/badge";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 	logs: FunctionReturnType<typeof api.logs.all>;
 };
 
-export default function KanbanColumn(props: Props) {
+export default function ShelfColumn(props: Props) {
 	const Icon = props.column.icon;
 
 	return (
@@ -43,7 +43,7 @@ export default function KanbanColumn(props: Props) {
 				<div className="space-y-3">
 					{props.logs.length > 0 &&
 						props.logs.map((log) => (
-							<KanbanCard key={log._id} log={log} />
+							<ShelfCard key={log._id} log={log} />
 						))}
 				</div>
 			</div>

@@ -4,7 +4,7 @@ import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { toast } from "sonner";
-import KanbanCardDeleteAction from "@/components/kanban-card-delete-action";
+import ShelfCardDeleteAction from "@/components/shelf-card-delete-action";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -19,7 +19,7 @@ type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
 };
 
-export default function KanbanCardActions(props: Props) {
+export default function ShelfCardActions(props: Props) {
 	const { type: mediaType } = useMediaFilters();
 
 	const updateStatusMutation = useMutation({
@@ -76,7 +76,7 @@ export default function KanbanCardActions(props: Props) {
 					</DropdownMenuItem>
 				)}
 				<DropdownMenuSeparator />
-				<KanbanCardDeleteAction logId={props.log._id} />
+				<ShelfCardDeleteAction logId={props.log._id} />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

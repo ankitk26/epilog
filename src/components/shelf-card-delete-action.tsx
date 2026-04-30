@@ -9,7 +9,7 @@ type Props = {
 	logId: Id<"logs">;
 };
 
-export default function KanbanCardDeleteAction(props: Props) {
+export default function ShelfCardDeleteAction(props: Props) {
 	const removeLogMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.remove),
 		onSuccess: () => {

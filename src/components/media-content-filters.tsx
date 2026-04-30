@@ -48,7 +48,7 @@ export default function MediaContentFilters() {
 	}[] = [
 		{ value: "list", label: "List", icon: ListIcon },
 		{ value: "grid", label: "Grid", icon: SquaresFourIcon },
-		{ value: "kanban", label: "Kanban", icon: KanbanIcon },
+		{ value: "shelf", label: "Shelf", icon: KanbanIcon },
 		{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
 	];
 

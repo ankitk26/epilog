@@ -2,13 +2,13 @@ import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import IconByType from "./icon-by-type";
-import KanbanCardActions from "./kanban-card-actions";
+import ShelfCardActions from "./shelf-card-actions";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
 };
 
-export default function KanbanCard({ log }: Props) {
+export default function ShelfCard({ log }: Props) {
 	return (
 		<div className="group flex items-center gap-3 overflow-hidden rounded-lg bg-card p-2.5 transition-all duration-300 hover:shadow-lg">
 			{/* Poster Thumbnail */}
@@ -43,7 +43,7 @@ export default function KanbanCard({ log }: Props) {
 
 			{/* Actions */}
 			<div className="flex-shrink-0 self-start opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-				<KanbanCardActions log={log} />
+				<ShelfCardActions log={log} />
 			</div>
 		</div>
 	);
