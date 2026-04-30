@@ -6,13 +6,12 @@ import {
 	ClockIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
 import { useMemo, useRef, useState } from "react";
-import { filterStore } from "@/store/filter-store";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 import KanbanColumn from "./kanban-column";
 
 export default function KanbanView() {
-	const mediaType = useSelector(filterStore, (state) => state.type);
+	const { type: mediaType } = useMediaFilters();
 
 	const [activeTab, setActiveTab] = useState(0);
 	const [touchStart, setTouchStart] = useState(0);

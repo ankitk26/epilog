@@ -1,6 +1,7 @@
 import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
+import { defaultMediaFilters } from "@/lib/media-filters";
 import { ThemeToggle } from "./theme-toggler";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -18,7 +19,11 @@ export default function Header() {
 
 	return (
 		<header className="flex items-center justify-between border-b px-4 py-3 lg:px-6 lg:py-4">
-			<Link className="text-lg font-semibold tracking-wide" to="/">
+			<Link
+				className="text-lg font-semibold tracking-wide"
+				search={defaultMediaFilters}
+				to="/"
+			>
 				epilog
 			</Link>
 

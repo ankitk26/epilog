@@ -4,8 +4,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import MainMediaContent from "@/components/main-media-content";
 import MediaContentFilters from "@/components/media-content-filters";
+import { mediaFiltersSearchValidator } from "@/lib/media-filters";
 
 export const Route = createFileRoute("/_auth/")({
+	validateSearch: mediaFiltersSearchValidator,
 	component: Home,
 	loader: async ({ context }) => {
 		context.queryClient.ensureQueryData(convexQuery(api.logs.all, {}));

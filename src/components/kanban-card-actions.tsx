@@ -2,7 +2,6 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { toast } from "sonner";
 import KanbanCardDeleteAction from "@/components/kanban-card-delete-action";
@@ -14,14 +13,14 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { filterStore } from "@/store/filter-store";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
 };
 
 export default function KanbanCardActions(props: Props) {
-	const mediaType = useSelector(filterStore, (state) => state.type);
+	const { type: mediaType } = useMediaFilters();
 
 	const updateStatusMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.updateStatus),

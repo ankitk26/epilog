@@ -7,16 +7,14 @@ import {
 	ListIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 import { cn } from "@/lib/utils";
-import { filterStore } from "@/store/filter-store";
 import { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaContentFilters() {
-	const view = useSelector(filterStore, (state) => state.view);
-	const type = useSelector(filterStore, (state) => state.type);
+	const { setType, setView, type, view } = useMediaFilters();
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -70,19 +68,7 @@ export default function MediaContentFilters() {
 							)}
 							key={item.type}
 							onClick={() => {
-								if (
-									item.type !== "movie" &&
-									view === "calendar"
-								) {
-									filterStore.setState((state) => ({
-										...state,
-										view: "grid" as FilterMediaView,
-									}));
-								}
-								filterStore.setState((state) => ({
-									...state,
-									type: item.type as MediaType,
-								}));
+								setType(item.type as MediaType);
 							}}
 							type="button"
 						>
@@ -123,12 +109,7 @@ export default function MediaContentFilters() {
 												: "text-muted-foreground hover:text-foreground",
 										)}
 										key={option.value}
-										onClick={() =>
-											filterStore.setState((state) => ({
-												...state,
-												view: option.value,
-											}))
-										}
+										onClick={() => setView(option.value)}
 										size="icon"
 										variant="ghost"
 										title={option.label}

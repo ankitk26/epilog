@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export type FilterMediaView = "grid" | "kanban" | "list" | "calendar";
+export const filterMediaViews = ["grid", "kanban", "list", "calendar"] as const;
+export type FilterMediaView = (typeof filterMediaViews)[number];
 
 export const mediaTypes = ["anime", "movie", "tv", "book"] as const;
 export type MediaType = (typeof mediaTypes)[number];

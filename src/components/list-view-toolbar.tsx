@@ -3,11 +3,10 @@ import { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
 import { TrashIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { filterStore } from "@/store/filter-store";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 
@@ -28,7 +27,7 @@ export default function ListViewToolbar({
 	setSelectedLogIds,
 	sectionStatus,
 }: Props) {
-	const mediaType = useSelector(filterStore, (state) => state.type);
+	const { type: mediaType } = useMediaFilters();
 
 	// clear selection
 	const clearSelection = () => setSelectedLogIds(new Set());

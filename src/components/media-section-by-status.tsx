@@ -5,11 +5,10 @@ import {
 	PencilSimpleIcon,
 	PencilSimpleSlashIcon,
 } from "@phosphor-icons/react";
-import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 import { cn } from "@/lib/utils";
-import { filterStore } from "@/store/filter-store";
 import EmptyStateMessage from "./empty-state-message";
 import IconByType from "./icon-by-type";
 import ListCard from "./list-card";
@@ -27,8 +26,7 @@ type Props = {
 };
 
 export default function MediaSectionByStatus(props: Props) {
-	const view = useSelector(filterStore, (state) => state.view);
-	const mediaType = useSelector(filterStore, (state) => state.type);
+	const { type: mediaType, view } = useMediaFilters();
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);

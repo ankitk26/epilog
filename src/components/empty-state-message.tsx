@@ -1,8 +1,7 @@
-import { useSelector } from "@tanstack/react-store";
-import { filterStore } from "@/store/filter-store";
+import { useMediaFilters } from "@/hooks/use-media-filters";
 
 export default function EmptyStateMessage() {
-	const mediaType = useSelector(filterStore, (state) => state.type);
+	const { type: mediaType } = useMediaFilters();
 	if (mediaType === "book") {
 		return "No books yet. Add one to begin your reading list";
 	}
