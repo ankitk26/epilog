@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { getAnimeSearchResults } from "@/actions/get-anime-search-results";
 import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
@@ -8,8 +8,8 @@ import SearchLoading from "./search-loading";
 import { Badge } from "./ui/badge";
 
 export default function AnimeResults() {
-	const searchQuery = useStore(searchStore, (state) => state.searchQuery);
-	const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
+	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	const {
 		data: animeContent,

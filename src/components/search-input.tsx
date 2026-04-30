@@ -1,4 +1,4 @@
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { type FormEvent, useEffect, useState } from "react";
 import { searchStore } from "@/store/search-store";
 import { Input } from "./ui/input";
@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 export default function SearchInput() {
 	const [query, setQuery] = useState("");
 
-	const searchQuery = useStore(searchStore, (state) => state.searchQuery);
+	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
 
 	function handleQuerySubmit(e: FormEvent) {
 		e.preventDefault();

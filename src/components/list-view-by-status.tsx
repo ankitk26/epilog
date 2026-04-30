@@ -1,13 +1,13 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { useMemo } from "react";
 import { filterStore } from "@/store/filter-store";
 import MediaSectionByStatus from "./media-section-by-status";
 
 export default function ListViewByStatus() {
-	const mediaType = useStore(filterStore, (state) => state.type);
+	const mediaType = useSelector(filterStore, (state) => state.type);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 

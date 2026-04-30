@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { getBookSearchResults } from "@/actions/get-book-search-results";
 import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { searchStore } from "@/store/search-store";
 
 export default function BookResults() {
-	const searchQuery = useStore(searchStore, (state) => state.searchQuery);
-	const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
+	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	const {
 		data: books,

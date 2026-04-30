@@ -1,9 +1,9 @@
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { searchStore } from "@/store/search-store";
 import { Button } from "./ui/button";
 
 export default function SearchMediaButtons() {
-	const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	const setMediaType = (type: typeof mediaType) => {
 		searchStore.setState((state) => ({ ...state, mediaType: type }));

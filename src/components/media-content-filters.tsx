@@ -1,7 +1,7 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import {
 	CalendarIcon,
 	KanbanIcon,
@@ -15,8 +15,8 @@ import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaContentFilters() {
-	const view = useStore(filterStore, (state) => state.view);
-	const type = useStore(filterStore, (state) => state.type);
+	const view = useSelector(filterStore, (state) => state.view);
+	const type = useSelector(filterStore, (state) => state.type);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 

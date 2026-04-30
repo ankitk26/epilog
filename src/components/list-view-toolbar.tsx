@@ -2,7 +2,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
 import { useMutation } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { TrashIcon } from "lucide-react";
 import { useMemo } from "react";
@@ -28,7 +28,7 @@ export default function ListViewToolbar({
 	setSelectedLogIds,
 	sectionStatus,
 }: Props) {
-	const mediaType = useStore(filterStore, (state) => state.type);
+	const mediaType = useSelector(filterStore, (state) => state.type);
 
 	// clear selection
 	const clearSelection = () => setSelectedLogIds(new Set());

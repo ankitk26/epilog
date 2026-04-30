@@ -1,11 +1,11 @@
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { searchStore } from "@/store/search-store";
 import AnimeResults from "./anime-results";
 import BookResults from "./book-results";
 import ContentResults from "./content-results";
 
 export default function SearchResults() {
-	const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	return (
 		<div>

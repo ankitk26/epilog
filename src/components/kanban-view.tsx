@@ -1,14 +1,14 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { CalendarIcon, CheckCircleIcon, ClockIcon } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { filterStore } from "@/store/filter-store";
 import KanbanColumn from "./kanban-column";
 
 export default function KanbanView() {
-	const mediaType = useStore(filterStore, (state) => state.type);
+	const mediaType = useSelector(filterStore, (state) => state.type);
 
 	const [activeTab, setActiveTab] = useState(0);
 	const [touchStart, setTouchStart] = useState(0);

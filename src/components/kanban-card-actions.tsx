@@ -1,7 +1,7 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 export default function KanbanCardActions(props: Props) {
-	const mediaType = useStore(filterStore, (state) => state.type);
+	const mediaType = useSelector(filterStore, (state) => state.type);
 
 	const updateStatusMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.updateStatus),

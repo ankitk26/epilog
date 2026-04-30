@@ -1,6 +1,6 @@
 import type { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
 import { ChevronDown, PencilIcon, PencilOffIcon } from "lucide-react";
 import { useState } from "react";
@@ -23,8 +23,8 @@ type Props = {
 };
 
 export default function MediaSectionByStatus(props: Props) {
-	const view = useStore(filterStore, (state) => state.view);
-	const mediaType = useStore(filterStore, (state) => state.type);
+	const view = useSelector(filterStore, (state) => state.view);
+	const mediaType = useSelector(filterStore, (state) => state.type);
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);

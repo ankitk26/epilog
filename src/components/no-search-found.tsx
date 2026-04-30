@@ -1,9 +1,9 @@
-import { useStore } from "@tanstack/react-store";
+import { useSelector } from "@tanstack/react-store";
 import { searchStore } from "@/store/search-store";
 import IconByType from "./icon-by-type";
 
 export default function NoSearchFound() {
-	const mediaType = useStore(searchStore, (state) => state.mediaType);
+	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	return (
 		<div className="flex flex-col items-center justify-center py-8 text-center">
