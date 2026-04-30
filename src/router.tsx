@@ -2,6 +2,8 @@ import { ConvexQueryClient } from "@convex-dev/react-query";
 import { notifyManager, QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
+import DefaultErrorComponent from "./components/default-error-component";
+import DefaultNotFoundComponent from "./components/default-not-found-component";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -32,8 +34,8 @@ export function getRouter() {
 		routeTree,
 		defaultPreload: "intent",
 		context: { queryClient, convexQueryClient },
-		defaultErrorComponent: (err) => <p>{err.error.stack}</p>,
-		defaultNotFoundComponent: () => <p>not found</p>,
+		defaultErrorComponent: () => <DefaultErrorComponent />,
+		defaultNotFoundComponent: () => <DefaultNotFoundComponent />,
 	});
 
 	setupRouterSsrQueryIntegration({
