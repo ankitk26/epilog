@@ -1,0 +1,216 @@
+import { v } from "convex/values";
+import { Id } from "./_generated/dataModel";
+import { mutation, query } from "./_generated/server";
+import { getCurrentUserOrThrow } from "./model/users";
+
+function normalizeEventDate(eventDate: string) {
+	const normalizedEventDate = eventDate.replaceAll("-", "");
+
+	if (!/^\d{8}$/.test(normalizedEventDate)) {
+		throw new Error("eventDate must be in YYYYMMDD format");
+	}
+
+	return normalizedEventDate;
+}
+
+export const add = mutation({
+	args: {
+		media: v.object({
+			name: v.string(),
+			image: v.optional(v.union(v.string(), v.null())),
+			releaseYear: v.union(v.number(), v.null()),
+			sourceMediaId: v.string(),
+		}),
+		eventDate: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+		const normalizedEventDate = normalizeEventDate(args.eventDate);
+
+		let mediaId: Id<"media">;
+
+		// check if media entry exists
+		const existingMedia = await ctx.db
+			.query("media")
+			.withIndex("by_sourceId", (q) =>
+				q.eq("sourceMediaId", args.media.sourceMediaId),
+			)
+			.first();
+
+		if (existingMedia) {
+			// assign alredy existing id to mediaId
+			mediaId = existingMedia._id;
+		} else {
+			// create new media entry and get its ID
+			const newMediaId = await ctx.db.insert("media", {
+				image: args.media.image,
+				name: args.media.name,
+				releaseYear: args.media.releaseYear,
+				sourceMediaId: args.media.sourceMediaId,
+				type: "movie",
+			});
+			mediaId = newMediaId;
+		}
+
+		const existingEvent = await ctx.db
+			.query("movieEvents")
+			.withIndex("by_user_and_mediaId_and_eventDate", (q) =>
+				q
+					.eq("userId", userId)
+					.eq("dbMediaId", mediaId)
+					.eq("eventDate", normalizedEventDate),
+			)
+			.unique();
+
+		// do nothing if give movie is already entered
+		if (existingEvent) {
+			// return message to display in sonner
+			return "Already added";
+		}
+
+		const existingLog = await ctx.db
+			.query("logs")
+			.withIndex("by_user_and_mediaId", (q) =>
+				q.eq("userId", userId).eq("dbMediaId", mediaId),
+			)
+			.unique();
+
+		if (existingLog) {
+			await ctx.db.patch(existingLog._id, {
+				status: "completed",
+			});
+		} else {
+			await ctx.db.insert("logs", {
+				userId,
+				dbMediaId: mediaId,
+				status: "completed",
+			});
+		}
+
+		await ctx.db.insert("movieEvents", {
+			userId,
+			dbMediaId: mediaId,
+			eventDate: normalizedEventDate,
+		});
+
+		return "Event added";
+	},
+});
+
+export const updateEventDate = mutation({
+	args: {
+		movieEventId: v.id("movieEvents"),
+		eventDate: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+		const normalizedEventDate = normalizeEventDate(args.eventDate);
+
+		const existingEvent = await ctx.db.get(args.movieEventId);
+
+		if (!existingEvent || existingEvent.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		if (existingEvent.eventDate === normalizedEventDate) {
+			return "No changes";
+		}
+
+		const conflictingEvent = await ctx.db
+			.query("movieEvents")
+			.withIndex("by_user_and_mediaId_and_eventDate", (q) =>
+				q
+					.eq("userId", userId)
+					.eq("dbMediaId", existingEvent.dbMediaId)
+					.eq("eventDate", normalizedEventDate),
+			)
+			.unique();
+
+		if (conflictingEvent && conflictingEvent._id !== existingEvent._id) {
+			return "Already added";
+		}
+
+		await ctx.db.patch(args.movieEventId, {
+			eventDate: normalizedEventDate,
+		});
+
+		return "Event date updated";
+	},
+});
+
+export const remove = mutation({
+	args: {
+		movieEventId: v.id("movieEvents"),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const existingEvent = await ctx.db.get(args.movieEventId);
+
+		if (!existingEvent || existingEvent.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		await ctx.db.delete(args.movieEventId);
+
+		return "Event deleted";
+	},
+});
+
+export const getAll = query({
+	handler: async (ctx) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const movieEvents = await ctx.db
+			.query("movieEvents")
+			.withIndex("by_user_and_mediaId_and_eventDate", (q) =>
+				q.eq("userId", userId),
+			)
+			.collect();
+
+		const groupedByEventDate = new Map<
+			string,
+			Array<{
+				_id: Id<"media">;
+				_creationTime: number;
+				name: string;
+				image?: string | null;
+				releaseYear: number | null;
+				sourceMediaId: string;
+				type: "anime" | "movie" | "tv" | "book";
+				movieEventId: Id<"movieEvents">;
+				eventDate: string;
+			}>
+		>();
+
+		const mediaEntries = await Promise.all(
+			movieEvents.map(async (movieEvent) => {
+				const media = await ctx.db.get(movieEvent.dbMediaId);
+				return { movieEvent, media };
+			}),
+		);
+
+		for (const { movieEvent, media } of mediaEntries) {
+			if (!media) {
+				continue;
+			}
+
+			const existingGroup =
+				groupedByEventDate.get(movieEvent.eventDate) ?? [];
+
+			existingGroup.push({
+				...media,
+				movieEventId: movieEvent._id,
+				eventDate: movieEvent.eventDate,
+			});
+
+			groupedByEventDate.set(movieEvent.eventDate, existingGroup);
+		}
+
+		return Array.from(groupedByEventDate.entries()).map(
+			([eventDate, movies]) => ({
+				[eventDate]: movies,
+			}),
+		);
+	},
+});

@@ -12,6 +12,7 @@ import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
 import { getAuth } from "@/actions/get-auth";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
 import appCss from "@/styles/app.css?url";
 
@@ -79,7 +80,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 					disableTransitionOnChange
 					enableSystem
 				>
-					{children}
+					<TooltipProvider>{children}</TooltipProvider>
 					<Toaster style={{ fontFamily: "inherit" }} />
 				</ThemeProvider>
 				<Scripts />

@@ -5,6 +5,8 @@ import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
 import { Badge } from "@/components/ui/badge";
+import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
+import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { searchStore } from "@/store/search-store";
 
 export default function ContentResults() {
@@ -47,25 +49,20 @@ export default function ContentResults() {
 
 			<div className="grid grid-cols-3 gap-4 lg:grid-cols-8">
 				{mediaContent.results.map((media) => {
-					let releaseYear: number | null = null;
-					if (media.release_date) {
-						releaseYear = new Date(
-							media.release_date,
-						).getFullYear();
-					}
-					if (media.first_air_date) {
-						releaseYear = new Date(
-							media.first_air_date,
-						).getFullYear();
-					}
+					const releaseYear = getReleaseYear(
+						media.release_date,
+						media.first_air_date,
+					);
+
+					const posterImage = getFullImageFromPosterPath(
+						media.poster_path,
+					);
 
 					return (
 						<MediaCard
 							key={media.id}
 							media={{
-								imageUrl:
-									media.poster_path &&
-									`https://image.tmdb.org/t/p/w500${media.poster_path}`,
+								imageUrl: posterImage,
 								name: media.name ?? media.title ?? "NA",
 								releaseYear,
 								sourceId: media.id.toString(),

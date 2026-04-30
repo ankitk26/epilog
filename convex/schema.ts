@@ -9,7 +9,7 @@ export default defineSchema({
 
 	media: defineTable({
 		name: v.string(),
-		image: v.optional(v.string()),
+		image: v.optional(v.union(v.string(), v.null())),
 		releaseYear: v.union(v.number(), v.null()),
 		sourceMediaId: v.string(),
 		type: v.union(
@@ -31,4 +31,14 @@ export default defineSchema({
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
 		.index("by_user_and_mediaId", ["userId", "dbMediaId"]),
+
+	movieEvents: defineTable({
+		userId: v.id("users"),
+		dbMediaId: v.id("media"),
+		eventDate: v.string(),
+	}).index("by_user_and_mediaId_and_eventDate", [
+		"userId",
+		"dbMediaId",
+		"eventDate",
+	]),
 });

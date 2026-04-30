@@ -39,7 +39,11 @@ export default function Header() {
 				<DropdownMenu>
 					<DropdownMenuTrigger
 						render={
-							<div className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten">
+							<button
+								type="button"
+								className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 outline-none select-none"
+							>
+								<span className="absolute inset-0 rounded-full border border-border mix-blend-darken dark:mix-blend-lighten" />
 								<Avatar className="size-8">
 									<AvatarImage
 										alt={data?.user.name}
@@ -49,7 +53,7 @@ export default function Header() {
 										{data?.user.name[0]}
 									</AvatarFallback>
 								</Avatar>
-							</div>
+							</button>
 						}
 					/>
 					<DropdownMenuContent align="end" className="w-48">
