@@ -147,7 +147,8 @@ export default function MonthCalendar() {
 							const day =
 								totalDaysInPreviousMonth +
 								index -
-								currentMonthFirstDayWeekDay;
+								currentMonthFirstDayWeekDay +
+								1;
 
 							return (
 								<CalendarDay

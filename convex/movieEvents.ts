@@ -183,9 +183,14 @@ export const getAll = query({
 			}>
 		>();
 
-		for (const movieEvent of movieEvents) {
-			const media = await ctx.db.get(movieEvent.dbMediaId);
+		const mediaEntries = await Promise.all(
+			movieEvents.map(async (movieEvent) => {
+				const media = await ctx.db.get(movieEvent.dbMediaId);
+				return { movieEvent, media };
+			}),
+		);
 
+		for (const { movieEvent, media } of mediaEntries) {
 			if (!media) {
 				continue;
 			}

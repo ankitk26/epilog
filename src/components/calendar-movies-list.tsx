@@ -15,7 +15,10 @@ export default function CalendarMoviesList() {
 					.filter((log) => log.metadata.type === "movie")
 					.map((log) => {
 						return (
-							<div className="flex items-start gap-2 rounded-lg border p-2">
+							<div
+								key={log._id}
+								className="flex items-start gap-2 rounded-lg border p-2"
+							>
 								<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden">
 									{log.metadata.image ? (
 										<Image
