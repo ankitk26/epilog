@@ -1,9 +1,9 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
+import { PlusIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import { PlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";

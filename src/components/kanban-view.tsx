@@ -1,8 +1,12 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import {
+	CalendarBlankIcon,
+	CheckCircleIcon,
+	ClockIcon,
+} from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
-import { CalendarIcon, CheckCircleIcon, ClockIcon } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { filterStore } from "@/store/filter-store";
 import KanbanColumn from "./kanban-column";
@@ -21,7 +25,7 @@ export default function KanbanView() {
 		{
 			status: "planned",
 			title: mediaType === "book" ? "To Read" : "To Watch",
-			icon: CalendarIcon,
+			icon: CalendarBlankIcon,
 		},
 		{
 			status: "in_progress",

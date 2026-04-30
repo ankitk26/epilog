@@ -1,9 +1,9 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import KanbanCardDeleteAction from "@/components/kanban-card-delete-action";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ export default function KanbanCardActions(props: Props) {
 						size="sm"
 						variant="ghost"
 					>
-						<MoreHorizontal className="size-4" />
+						<DotsThreeIcon className="size-4" />
 					</Button>
 				}
 			/>

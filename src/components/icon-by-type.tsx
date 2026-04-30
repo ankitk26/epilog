@@ -1,8 +1,6 @@
-import { BookIcon, ClapperboardIcon, Tv2Icon } from "lucide-react";
-import type { ComponentProps } from "react";
+import { BookIcon, FilmSlateIcon, TelevisionIcon } from "@phosphor-icons/react";
+import type { IconProps } from "@phosphor-icons/react";
 import type { MediaType } from "@/types";
-
-type IconProps = ComponentProps<typeof BookIcon>;
 
 export default function IconByType({
 	type,
@@ -15,8 +13,8 @@ export default function IconByType({
 	}
 
 	if (type === "movie") {
-		return <ClapperboardIcon {...props} />;
+		return <FilmSlateIcon {...props} />;
 	}
 
-	return <Tv2Icon {...props} />;
+	return <TelevisionIcon {...props} />;
 }

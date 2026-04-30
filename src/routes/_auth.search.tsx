@@ -1,5 +1,5 @@
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeftIcon } from "lucide-react";
 import SearchInput from "@/components/search-input";
 import SearchMediaButtons from "@/components/search-media-buttons";
 import SearchResults from "@/components/search-results";

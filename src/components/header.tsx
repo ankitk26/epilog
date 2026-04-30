@@ -1,5 +1,5 @@
+import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { SearchIcon, LogOutIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { ThemeToggle } from "./theme-toggler";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -29,7 +29,7 @@ export default function Header() {
 						size="sm"
 						variant="outline"
 					>
-						<SearchIcon className="size-3.5" />
+						<MagnifyingGlassIcon className="size-3.5" />
 						Search
 					</Button>
 				</Link>
@@ -78,7 +78,7 @@ export default function Header() {
 								});
 							}}
 						>
-							<LogOutIcon className="size-3.5" />
+							<SignOutIcon className="size-3.5" />
 							Log out
 						</DropdownMenuItem>
 					</DropdownMenuContent>

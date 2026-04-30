@@ -1,6 +1,6 @@
 import type { api } from "@convex/_generated/api";
+import type { Icon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
-import type { LucideProps } from "lucide-react";
 import EmptyStateMessage from "./empty-state-message";
 import KanbanCard from "./kanban-card";
 import { Badge } from "./ui/badge";
@@ -9,9 +9,7 @@ type Props = {
 	column: {
 		status: string;
 		title: string;
-		icon: React.ForwardRefExoticComponent<
-			Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-		>;
+		icon: Icon;
 	};
 	logs: FunctionReturnType<typeof api.logs.all>;
 };

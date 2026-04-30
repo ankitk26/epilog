@@ -1,5 +1,5 @@
+import { SpinnerIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
-import { LoaderIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
@@ -34,7 +34,7 @@ function SignInPage() {
 				>
 					{isLoading ? (
 						<>
-							<LoaderIcon className="h-4 w-4 animate-spin lg:h-5 lg:w-5" />
+							<SpinnerIcon className="h-4 w-4 animate-spin lg:h-5 lg:w-5" />
 							Signing in...
 						</>
 					) : (

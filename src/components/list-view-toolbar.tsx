@@ -1,10 +1,10 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
+import { TrashIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { TrashIcon } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { filterStore } from "@/store/filter-store";

@@ -1,8 +1,12 @@
 import type { api } from "@convex/_generated/api";
 import type { Id } from "@convex/_generated/dataModel";
+import {
+	CaretDownIcon,
+	PencilSimpleIcon,
+	PencilSimpleSlashIcon,
+} from "@phosphor-icons/react";
 import { useSelector } from "@tanstack/react-store";
 import type { FunctionReturnType } from "convex/server";
-import { ChevronDown, PencilIcon, PencilOffIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
@@ -60,7 +64,7 @@ export default function MediaSectionByStatus(props: Props) {
 							size="icon"
 							variant="outline"
 						>
-							<ChevronDown
+							<CaretDownIcon
 								className={cn(
 									"size-3 transition-transform",
 									isCollapsed ? "-rotate-90" : "rotate-0",
@@ -88,9 +92,9 @@ export default function MediaSectionByStatus(props: Props) {
 							variant="outline"
 						>
 							{isEditing ? (
-								<PencilOffIcon className="size-3" />
+								<PencilSimpleSlashIcon className="size-3" />
 							) : (
-								<PencilIcon className="size-3" />
+								<PencilSimpleIcon className="size-3" />
 							)}
 						</Button>
 					)}

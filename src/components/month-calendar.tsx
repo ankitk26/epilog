@@ -1,8 +1,8 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDay from "./calendar-day";
@@ -114,14 +114,14 @@ export default function MonthCalendar() {
 						variant="outline"
 						onClick={goToPreviousMonth}
 					>
-						<ChevronLeftIcon />
+						<CaretLeftIcon />
 					</Button>
 					<Button
 						size="icon"
 						variant="outline"
 						onClick={goToNextMonth}
 					>
-						<ChevronRightIcon />
+						<CaretRightIcon />
 					</Button>
 				</div>
 

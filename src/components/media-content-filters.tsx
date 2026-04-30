@@ -1,13 +1,13 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import {
+	CalendarBlankIcon,
+	KanbanIcon,
+	SquaresFourIcon,
+	ListIcon,
+} from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
-import {
-	CalendarIcon,
-	KanbanIcon,
-	LayoutGridIcon,
-	ListIcon,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { filterStore } from "@/store/filter-store";
 import { FilterMediaView, MediaType } from "@/types";
@@ -49,9 +49,9 @@ export default function MediaContentFilters() {
 		icon: typeof ListIcon;
 	}[] = [
 		{ value: "list", label: "List", icon: ListIcon },
-		{ value: "grid", label: "Grid", icon: LayoutGridIcon },
+		{ value: "grid", label: "Grid", icon: SquaresFourIcon },
 		{ value: "kanban", label: "Kanban", icon: KanbanIcon },
-		{ value: "calendar", label: "Calendar", icon: CalendarIcon },
+		{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
 	];
 
 	return (
