@@ -1,6 +1,7 @@
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import type { ConvexQueryClient } from "@convex-dev/react-query";
 import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
 	createRootRouteWithContext,
 	HeadContent,
@@ -82,6 +83,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 				>
 					<TooltipProvider>{children}</TooltipProvider>
 					<Toaster style={{ fontFamily: "inherit" }} />
+					<ReactQueryDevtools
+						position="bottom"
+						buttonPosition="bottom-right"
+					/>
 				</ThemeProvider>
 				<Scripts />
 			</body>
