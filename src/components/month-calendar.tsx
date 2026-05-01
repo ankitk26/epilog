@@ -4,6 +4,7 @@ import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDay from "./calendar-day";
 import CalendarDayAddMovieDialog from "./calendar-day-add-movie-dialog";
@@ -31,6 +32,7 @@ export default function MonthCalendar() {
 	const today = new Date();
 	const currentMonth = today.getMonth();
 	const currentYear = today.getFullYear();
+	const isMobile = useIsMobile();
 
 	const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 	const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -151,18 +153,22 @@ export default function MonthCalendar() {
 		<div className="col-span-12 flex h-full flex-col space-y-4">
 			<div className="flex items-center justify-start">
 				<div className="flex items-center gap-2">
-					<Button variant="outline" onClick={goToCurrentMonth}>
+					<Button
+						size={isMobile ? "sm" : "default"}
+						variant="outline"
+						onClick={goToCurrentMonth}
+					>
 						Current month
 					</Button>
 					<Button
-						size="icon"
+						size={isMobile ? "icon-sm" : "icon"}
 						variant="outline"
 						onClick={goToPreviousMonth}
 					>
 						<CaretLeftIcon />
 					</Button>
 					<Button
-						size="icon"
+						size={isMobile ? "icon-sm" : "icon"}
 						variant="outline"
 						onClick={goToNextMonth}
 					>
@@ -170,7 +176,7 @@ export default function MonthCalendar() {
 					</Button>
 				</div>
 
-				<h1 className="p-2">
+				<h1 className="ml-auto p-2 sm:ml-0">
 					{months[selectedMonth]} {selectedYear}
 				</h1>
 			</div>
