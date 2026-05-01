@@ -40,14 +40,14 @@ export default function CalendarDay({
 		<>
 			<div
 				className={cn(
-					"col-span-1 flex min-h-24 w-full flex-col gap-2 border p-3 text-left text-xs",
+					"col-span-1 flex min-h-14 w-full flex-col gap-1 border p-1 text-left text-[10px] sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
 					isCurrentMonth ? "" : "text-muted-foreground",
 					isCurrentDayCell
 						? "bg-primary text-primary-foreground"
 						: "",
 				)}
 			>
-				<div className="flex items-center justify-between gap-2">
+				<div className="flex items-center justify-between gap-1 sm:gap-2">
 					<span>{label}</span>
 					<CalendarDayAddMovieDialog
 						day={day}
@@ -57,7 +57,7 @@ export default function CalendarDay({
 						<button
 							type="button"
 							className={cn(
-								"inline-flex size-5 items-center justify-center rounded-sm transition-colors hover:bg-muted",
+								"inline-flex size-4 items-center justify-center rounded-sm transition-colors hover:bg-muted sm:size-5",
 								isCurrentDayCell
 									? "hover:bg-primary-foreground/20"
 									: "hover:bg-muted",
@@ -67,7 +67,7 @@ export default function CalendarDay({
 						</button>
 					</CalendarDayAddMovieDialog>
 				</div>
-				<div className="flex flex-col gap-1">
+				<div className="flex flex-col gap-0.5 sm:gap-1">
 					{events.map((event) => (
 						<CalendarDayMovieEventChip
 							key={event.movieEventId}

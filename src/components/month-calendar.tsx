@@ -135,7 +135,7 @@ export default function MonthCalendar() {
 					{weekDays.map((weekDay) => (
 						<span
 							key={weekDay}
-							className="col-span-1 mb-2 text-center text-xs text-muted-foreground"
+							className="col-span-1 mb-1 text-center text-xs text-muted-foreground sm:mb-2"
 						>
 							{weekDay}
 						</span>
