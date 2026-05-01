@@ -41,12 +41,13 @@ export default function CalendarDay({
 	const isCurrentDayCell = isDayToday && isCurrentMonth;
 
 	const handleDayClick = () => {
-		// On mobile: only select the day to show events below
-		// On desktop: also open add movie dialog
-		onSelect?.();
-		// Only open dialog on desktop (screen width >= 640px)
-		if (window.innerWidth >= 640) {
+		// On mobile: select the day to show events below (and highlight the cell)
+		// On desktop: only open add movie dialog (no cell highlight)
+		const isDesktop = window.innerWidth >= 640;
+		if (isDesktop) {
 			onAddMovie?.();
+		} else {
+			onSelect?.();
 		}
 	};
 
