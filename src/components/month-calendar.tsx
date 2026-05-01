@@ -6,6 +6,7 @@ import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDay from "./calendar-day";
+import CalendarDayAddMovieDialog from "./calendar-day-add-movie-dialog";
 import MobileDayEventsList from "./mobile-day-events-list";
 import { Button } from "./ui/button";
 
@@ -34,6 +35,11 @@ export default function MonthCalendar() {
 	const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 	const [selectedYear, setSelectedYear] = useState(currentYear);
 	const [selectedDate, setSelectedDate] = useState<{
+		day: number;
+		month: number;
+		year: number;
+	} | null>(null);
+	const [addMovieDate, setAddMovieDate] = useState<{
 		day: number;
 		month: number;
 		year: number;
@@ -137,6 +143,10 @@ export default function MonthCalendar() {
 	const isTodayInSelectedMonth =
 		selectedMonth === currentMonth && selectedYear === currentYear;
 
+	const handleAddMovie = (day: number, month: number, year: number) => {
+		setAddMovieDate({ day, month, year });
+	};
+
 	return (
 		<div className="col-span-12 flex h-full flex-col space-y-4">
 			<div className="flex items-center justify-start">
@@ -206,6 +216,9 @@ export default function MonthCalendar() {
 									onSelect={() =>
 										handleSelectDate(day, month, year)
 									}
+									onAddMovie={() =>
+										handleAddMovie(day, month, year)
+									}
 									events={
 										movieEventsByDate.get(
 											getEventDateKey(year, month, day),
@@ -235,6 +248,13 @@ export default function MonthCalendar() {
 									)}
 									onSelect={() =>
 										handleSelectDate(
+											day,
+											selectedMonth,
+											selectedYear,
+										)
+									}
+									onAddMovie={() =>
+										handleAddMovie(
 											day,
 											selectedMonth,
 											selectedYear,
@@ -280,6 +300,9 @@ export default function MonthCalendar() {
 									onSelect={() =>
 										handleSelectDate(day, month, year)
 									}
+									onAddMovie={() =>
+										handleAddMovie(day, month, year)
+									}
 									events={
 										movieEventsByDate.get(
 											getEventDateKey(year, month, day),
@@ -299,6 +322,21 @@ export default function MonthCalendar() {
 					currentDay={today.getDate()}
 				/>
 			</div>
+
+			{/* Desktop: Add Movie Dialog */}
+			{addMovieDate && (
+				<CalendarDayAddMovieDialog
+					day={addMovieDate.day}
+					month={addMovieDate.month}
+					year={addMovieDate.year}
+					open={true}
+					onOpenChange={(open) => {
+						if (!open) {
+							setAddMovieDate(null);
+						}
+					}}
+				/>
+			)}
 		</div>
 	);
 }

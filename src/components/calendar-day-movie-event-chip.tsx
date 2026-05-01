@@ -4,7 +4,7 @@ import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 type Props = {
 	event: CalendarMovieEvent;
 	isCurrentDayCell: boolean;
-	onClick: () => void;
+	onClick: (e: React.MouseEvent) => void;
 };
 
 export default function CalendarDayMovieEventChip({
@@ -15,7 +15,7 @@ export default function CalendarDayMovieEventChip({
 	return (
 		<button
 			type="button"
-			onClick={onClick}
+			onClick={(e) => onClick(e)}
 			className={cn(
 				"truncate rounded-sm px-0.5 py-0.5 text-left text-[9px] leading-tight transition-opacity hover:opacity-90 sm:px-1.5 sm:py-1 sm:text-[11px]",
 				isCurrentDayCell

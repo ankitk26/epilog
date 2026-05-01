@@ -1,8 +1,6 @@
-import { PlusIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
-import CalendarDayAddMovieDialog from "./calendar-day-add-movie-dialog";
 import CalendarDayMovieEventChip from "./calendar-day-movie-event-chip";
 import MovieEventDetailsDialog from "./movie-event-details-dialog";
 
@@ -14,10 +12,9 @@ type Props = {
 	isCurrentMonth?: boolean;
 	isSelected?: boolean;
 	onSelect?: () => void;
+	onAddMovie?: () => void;
 	events?: CalendarMovieEvent[];
 };
-
-// Use primary color for all event bars
 
 export default function CalendarDay({
 	label,
@@ -27,6 +24,7 @@ export default function CalendarDay({
 	isCurrentMonth = false,
 	isSelected = false,
 	onSelect,
+	onAddMovie,
 	events = [],
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
@@ -43,12 +41,21 @@ export default function CalendarDay({
 	const isCurrentDayCell = isDayToday && isCurrentMonth;
 
 	const handleDayClick = () => {
+		// On mobile: only select the day to show events below
+		// On desktop: also open add movie dialog
 		onSelect?.();
+		// Only open dialog on desktop (screen width >= 640px)
+		if (window.innerWidth >= 640) {
+			onAddMovie?.();
+		}
 	};
 
-	// All event bars use primary color
-	const getEventColor = () => {
-		return "bg-primary";
+	const handleEventChipClick = (
+		e: React.MouseEvent,
+		event: CalendarMovieEvent,
+	) => {
+		e.stopPropagation();
+		setSelectedEvent(event);
 	};
 
 	return (
@@ -68,26 +75,6 @@ export default function CalendarDay({
 			>
 				<div className="flex items-center justify-between gap-1 sm:gap-2">
 					<span>{label}</span>
-					<CalendarDayAddMovieDialog
-						day={day}
-						month={month}
-						year={year}
-					>
-						<button
-							type="button"
-							onClick={(e) => {
-								e.stopPropagation();
-							}}
-							className={cn(
-								"inline-flex size-4 items-center justify-center rounded-sm transition-colors hover:bg-muted sm:size-5",
-								isCurrentDayCell
-									? "hover:bg-primary-foreground/20"
-									: "hover:bg-muted",
-							)}
-						>
-							<PlusIcon className="size-3" />
-						</button>
-					</CalendarDayAddMovieDialog>
 				</div>
 
 				{/* Mobile: Show colored bars only */}
@@ -95,10 +82,7 @@ export default function CalendarDay({
 					{events.slice(0, 3).map((_, index) => (
 						<div
 							key={index}
-							className={cn(
-								"h-1.5 w-full rounded-full",
-								getEventColor(),
-							)}
+							className="h-1.5 w-full rounded-full bg-primary"
 						/>
 					))}
 					{events.length > 3 && (
@@ -115,7 +99,7 @@ export default function CalendarDay({
 							key={event.movieEventId}
 							event={event}
 							isCurrentDayCell={isCurrentDayCell}
-							onClick={() => setSelectedEvent(event)}
+							onClick={(e) => handleEventChipClick(e, event)}
 						/>
 					))}
 				</div>

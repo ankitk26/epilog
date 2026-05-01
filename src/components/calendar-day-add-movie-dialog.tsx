@@ -12,10 +12,12 @@ import {
 import { Input } from "./ui/input";
 
 type Props = {
-	children: ReactElement;
+	children?: ReactElement;
 	day: number;
 	month: number;
 	year: number;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
 };
 
 export default function CalendarDayAddMovieDialog({
@@ -23,8 +25,18 @@ export default function CalendarDayAddMovieDialog({
 	day,
 	month,
 	year,
+	open: controlledOpen,
+	onOpenChange,
 }: Props) {
-	const [isOpen, setIsOpen] = useState(false);
+	const [internalOpen, setInternalOpen] = useState(false);
+	const isOpen = controlledOpen ?? internalOpen;
+	const setIsOpen = (value: boolean) => {
+		if (onOpenChange) {
+			onOpenChange(value);
+		} else {
+			setInternalOpen(value);
+		}
+	};
 	const [query, setQuery] = useState("");
 	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
@@ -52,7 +64,7 @@ export default function CalendarDayAddMovieDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
-			<DialogTrigger render={children} />
+			{children && <DialogTrigger render={children} />}
 			<DialogContent className="flex max-h-[80vh] flex-col overflow-hidden sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle>Add movie</DialogTitle>

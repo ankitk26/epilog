@@ -1,6 +1,8 @@
+import { PlusIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
+import CalendarDayAddMovieDialog from "./calendar-day-add-movie-dialog";
 import MovieEventDetailsDialog from "./movie-event-details-dialog";
 
 // Use primary color for all event bars
@@ -58,18 +60,32 @@ export default function MobileDayEventsList({
 	return (
 		<>
 			<div className="mt-4 border-t pt-4 sm:hidden">
-				<div className="mb-4 flex items-center gap-2 px-2">
-					<span
-						className={cn(
-							"text-3xl font-bold",
-							isToday ? "text-primary" : "text-foreground",
-						)}
+				<div className="mb-4 flex items-center justify-between px-2">
+					<div className="flex items-center gap-2">
+						<span
+							className={cn(
+								"text-3xl font-bold",
+								isToday ? "text-primary" : "text-foreground",
+							)}
+						>
+							{displayDate.day}
+						</span>
+						<span className="text-lg text-muted-foreground">
+							{dayOfWeek}
+						</span>
+					</div>
+					<CalendarDayAddMovieDialog
+						day={displayDate.day}
+						month={displayDate.month}
+						year={displayDate.year}
 					>
-						{displayDate.day}
-					</span>
-					<span className="text-lg text-muted-foreground">
-						{dayOfWeek}
-					</span>
+						<button
+							type="button"
+							className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+						>
+							<PlusIcon className="size-5" />
+						</button>
+					</CalendarDayAddMovieDialog>
 				</div>
 
 				<div className="flex flex-col">
