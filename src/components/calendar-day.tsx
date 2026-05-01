@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDayMovieEventChip from "./calendar-day-movie-event-chip";
@@ -29,6 +30,7 @@ export default function CalendarDay({
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
 		useState<CalendarMovieEvent | null>(null);
+	const isMobile = useIsMobile();
 
 	const today = new Date();
 
@@ -43,8 +45,7 @@ export default function CalendarDay({
 	const handleDayClick = () => {
 		// On mobile: select the day to show events below (and highlight the cell)
 		// On desktop: only open add movie dialog (no cell highlight)
-		const isDesktop = window.innerWidth >= 640;
-		if (isDesktop) {
+		if (!isMobile) {
 			onAddMovie?.();
 		} else {
 			onSelect?.();
