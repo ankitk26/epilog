@@ -6,6 +6,7 @@ import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import CalendarDay from "./calendar-day";
+import MobileDayEventsList from "./mobile-day-events-list";
 import { Button } from "./ui/button";
 
 const months = [
@@ -32,6 +33,11 @@ export default function MonthCalendar() {
 
 	const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 	const [selectedYear, setSelectedYear] = useState(currentYear);
+	const [selectedDate, setSelectedDate] = useState<{
+		day: number;
+		month: number;
+		year: number;
+	} | null>(null);
 	const { data: movieEvents = [] } = useQuery(
 		convexQuery(api.movieEvents.getAll),
 	);
@@ -102,8 +108,37 @@ export default function MonthCalendar() {
 			.toString()
 			.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
 
+	const getSelectedDateEvents = (): CalendarMovieEvent[] => {
+		if (!selectedDate) return [];
+		return (
+			movieEventsByDate.get(
+				getEventDateKey(
+					selectedDate.year,
+					selectedDate.month,
+					selectedDate.day,
+				),
+			) ?? []
+		);
+	};
+
+	const handleSelectDate = (day: number, month: number, year: number) => {
+		setSelectedDate({ day, month, year });
+	};
+
+	const isDateSelected = (day: number, month: number, year: number) => {
+		if (!selectedDate) return false;
+		return (
+			selectedDate.day === day &&
+			selectedDate.month === month &&
+			selectedDate.year === year
+		);
+	};
+
+	const isTodayInSelectedMonth =
+		selectedMonth === currentMonth && selectedYear === currentYear;
+
 	return (
-		<div className="col-span-12 h-full">
+		<div className="col-span-12 flex h-full flex-col space-y-4">
 			<div className="flex items-center justify-start">
 				<div className="flex items-center gap-2">
 					<Button variant="outline" onClick={goToCurrentMonth}>
@@ -149,33 +184,31 @@ export default function MonthCalendar() {
 								index -
 								currentMonthFirstDayWeekDay +
 								1;
+							const month =
+								selectedMonth === 0 ? 11 : selectedMonth - 1;
+							const year =
+								selectedMonth === 0
+									? selectedYear - 1
+									: selectedYear;
 
 							return (
 								<CalendarDay
 									key={`${index + 1}_${selectedMonth - 1}_${selectedYear}`}
 									label={day}
 									day={day}
-									month={
-										selectedMonth === 0
-											? 11
-											: selectedMonth - 1
-									}
-									year={
-										selectedMonth === 0
-											? selectedYear - 1
-											: selectedYear
+									month={month}
+									year={year}
+									isSelected={isDateSelected(
+										day,
+										month,
+										year,
+									)}
+									onSelect={() =>
+										handleSelectDate(day, month, year)
 									}
 									events={
 										movieEventsByDate.get(
-											getEventDateKey(
-												selectedMonth === 0
-													? selectedYear - 1
-													: selectedYear,
-												selectedMonth === 0
-													? 11
-													: selectedMonth - 1,
-												day,
-											),
+											getEventDateKey(year, month, day),
 										) ?? []
 									}
 								/>
@@ -185,59 +218,86 @@ export default function MonthCalendar() {
 
 					{/*Fill current month days*/}
 					{Array.from({ length: totalDaysInCurrentMonth }).map(
-						(_, index) => (
-							<CalendarDay
-								key={`${index + 1}_${selectedMonth}_${selectedYear}`}
-								label={index + 1}
-								day={index + 1}
-								month={selectedMonth}
-								year={selectedYear}
-								isCurrentMonth
-								events={
-									movieEventsByDate.get(
-										getEventDateKey(
-											selectedYear,
+						(_, index) => {
+							const day = index + 1;
+							return (
+								<CalendarDay
+									key={`${index + 1}_${selectedMonth}_${selectedYear}`}
+									label={day}
+									day={day}
+									month={selectedMonth}
+									year={selectedYear}
+									isCurrentMonth
+									isSelected={isDateSelected(
+										day,
+										selectedMonth,
+										selectedYear,
+									)}
+									onSelect={() =>
+										handleSelectDate(
+											day,
 											selectedMonth,
-											index + 1,
-										),
-									) ?? []
-								}
-							/>
-						),
+											selectedYear,
+										)
+									}
+									events={
+										movieEventsByDate.get(
+											getEventDateKey(
+												selectedYear,
+												selectedMonth,
+												day,
+											),
+										) ?? []
+									}
+								/>
+							);
+						},
 					)}
 
 					{/*Fill next month's days*/}
 					{Array.from({ length: 6 - currentMonthLastDayWeekDay }).map(
-						(_, index) => (
-							<CalendarDay
-								key={`${index + 1}_${selectedMonth + 1}_${selectedYear}`}
-								label={index + 1}
-								day={index + 1}
-								month={
-									selectedMonth === 11 ? 0 : selectedMonth + 1
-								}
-								year={
-									selectedMonth === 11
-										? selectedYear + 1
-										: selectedYear
-								}
-								events={
-									movieEventsByDate.get(
-										getEventDateKey(
-											selectedMonth === 11
-												? selectedYear + 1
-												: selectedYear,
-											selectedMonth === 11
-												? 0
-												: selectedMonth + 1,
-											index + 1,
-										),
-									) ?? []
-								}
-							/>
-						),
+						(_, index) => {
+							const day = index + 1;
+							const month =
+								selectedMonth === 11 ? 0 : selectedMonth + 1;
+							const year =
+								selectedMonth === 11
+									? selectedYear + 1
+									: selectedYear;
+
+							return (
+								<CalendarDay
+									key={`${index + 1}_${selectedMonth + 1}_${selectedYear}`}
+									label={day}
+									day={day}
+									month={month}
+									year={year}
+									isSelected={isDateSelected(
+										day,
+										month,
+										year,
+									)}
+									onSelect={() =>
+										handleSelectDate(day, month, year)
+									}
+									events={
+										movieEventsByDate.get(
+											getEventDateKey(year, month, day),
+										) ?? []
+									}
+								/>
+							);
+						},
 					)}
 				</div>
+
+				{/* Mobile Events List - Shows below calendar on mobile screens */}
+				<MobileDayEventsList
+					selectedDate={selectedDate}
+					events={getSelectedDateEvents()}
+					isTodayInSelectedMonth={isTodayInSelectedMonth}
+					currentDay={today.getDate()}
+				/>
 			</div>
 		</div>
 	);

@@ -12,8 +12,12 @@ type Props = {
 	month: number;
 	year: number;
 	isCurrentMonth?: boolean;
+	isSelected?: boolean;
+	onSelect?: () => void;
 	events?: CalendarMovieEvent[];
 };
+
+// Use primary color for all event bars
 
 export default function CalendarDay({
 	label,
@@ -21,6 +25,8 @@ export default function CalendarDay({
 	month,
 	year,
 	isCurrentMonth = false,
+	isSelected = false,
+	onSelect,
 	events = [],
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
@@ -36,14 +42,27 @@ export default function CalendarDay({
 		currentDay === day && currentMonth === month && currentYear === year;
 	const isCurrentDayCell = isDayToday && isCurrentMonth;
 
+	const handleDayClick = () => {
+		onSelect?.();
+	};
+
+	// All event bars use primary color
+	const getEventColor = () => {
+		return "bg-primary";
+	};
+
 	return (
 		<>
 			<div
+				onClick={handleDayClick}
 				className={cn(
-					"col-span-1 flex min-h-14 w-full flex-col gap-1 border p-1 text-left text-[10px] sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
+					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 border p-1 text-left text-[10px] transition-colors sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
 					isCurrentMonth ? "" : "text-muted-foreground",
 					isCurrentDayCell
 						? "bg-primary text-primary-foreground"
+						: "",
+					isSelected && !isCurrentDayCell
+						? "bg-muted ring-2 ring-primary"
 						: "",
 				)}
 			>
@@ -56,6 +75,9 @@ export default function CalendarDay({
 					>
 						<button
 							type="button"
+							onClick={(e) => {
+								e.stopPropagation();
+							}}
 							className={cn(
 								"inline-flex size-4 items-center justify-center rounded-sm transition-colors hover:bg-muted sm:size-5",
 								isCurrentDayCell
@@ -67,7 +89,27 @@ export default function CalendarDay({
 						</button>
 					</CalendarDayAddMovieDialog>
 				</div>
-				<div className="flex flex-col gap-0.5 sm:gap-1">
+
+				{/* Mobile: Show colored bars only */}
+				<div className="flex flex-col gap-0.5 sm:hidden">
+					{events.slice(0, 3).map((_, index) => (
+						<div
+							key={index}
+							className={cn(
+								"h-1.5 w-full rounded-full",
+								getEventColor(),
+							)}
+						/>
+					))}
+					{events.length > 3 && (
+						<div className="text-center text-[8px] text-muted-foreground">
+							+{events.length - 3}
+						</div>
+					)}
+				</div>
+
+				{/* Desktop/Tablet: Show event name chips */}
+				<div className="hidden flex-col gap-0.5 sm:flex sm:gap-1">
 					{events.map((event) => (
 						<CalendarDayMovieEventChip
 							key={event.movieEventId}
