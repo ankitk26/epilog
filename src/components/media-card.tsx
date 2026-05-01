@@ -32,13 +32,20 @@ export default function MediaCard(props: Props) {
 
 	const addToPlanningMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.addToPlanning),
+		onMutate: () => {
+			toast.loading("Adding...");
+		},
 		onSuccess: (response: string) => {
+			toast.dismiss();
 			toast.success(response);
+		},
+		onError: () => {
+			toast.dismiss();
+			toast.error("Something went wrong!");
 		},
 	});
 
 	const handleAddToPlanning = () => {
-		toast.info("Adding...");
 		addToPlanningMutation.mutate({
 			media: {
 				name: props.media.name,

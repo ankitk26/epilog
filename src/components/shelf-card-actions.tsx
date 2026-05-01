@@ -24,15 +24,22 @@ export default function ShelfCardActions(props: Props) {
 
 	const updateStatusMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.updateStatus),
+		onMutate: () => {
+			toast.loading("Updating status...");
+		},
 		onSuccess: () => {
+			toast.dismiss();
 			toast.success("Status updated");
+		},
+		onError: () => {
+			toast.dismiss();
+			toast.error("Something went wrong!");
 		},
 	});
 
 	const handleUpdateStatus = (
 		status: "planned" | "in_progress" | "completed",
 	) => {
-		toast.info("Updating status...");
 		updateStatusMutation.mutate({ logId: props.log._id, status });
 	};
 

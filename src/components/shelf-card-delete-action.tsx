@@ -12,18 +12,23 @@ type Props = {
 export default function ShelfCardDeleteAction(props: Props) {
 	const removeLogMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.remove),
+		onMutate: () => {
+			toast.loading("Removing log...");
+		},
 		onSuccess: () => {
+			toast.dismiss();
 			toast.success("Removed log");
+		},
+		onError: () => {
+			toast.dismiss();
+			toast.error("Something went wrong!");
 		},
 	});
 
 	return (
 		<DropdownMenuItem
 			className="text-xs text-destructive"
-			onClick={() => {
-				toast.info("Removing log...");
-				removeLogMutation.mutate({ logId: props.logId });
-			}}
+			onClick={() => removeLogMutation.mutate({ logId: props.logId })}
 		>
 			Delete
 		</DropdownMenuItem>

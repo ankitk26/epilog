@@ -35,12 +35,17 @@ export default function ListViewToolbar({
 	// mutation to bulk update status of multiple IDs
 	const bulkUpdateStatusMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.bulkUpdateStatus),
+		onMutate: () => {
+			toast.loading("Updating status...");
+		},
 		onSuccess: () => {
+			toast.dismiss();
 			clearSelection();
 			setIsEditing(false);
 			toast.success("Status updated");
 		},
 		onError: () => {
+			toast.dismiss();
 			toast.error("Something went wrong!", {
 				description: "Please try again",
 			});
@@ -50,11 +55,16 @@ export default function ListViewToolbar({
 	// mutation to bulk delete multiple IDs
 	const bulkDeleteMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.bulkDelete),
+		onMutate: () => {
+			toast.loading("Deleting items...");
+		},
 		onSuccess: () => {
+			toast.dismiss();
 			clearSelection();
 			toast.success("Items deleted");
 		},
 		onError: () => {
+			toast.dismiss();
 			toast.error("Something went wrong!", {
 				description: "Please try again",
 			});
@@ -81,7 +91,6 @@ export default function ListViewToolbar({
 		if (ids.length === 0) {
 			return;
 		}
-		toast.info("Updating status...");
 		bulkUpdateStatusMutation.mutate({ logIds: ids, status });
 	};
 
@@ -93,7 +102,6 @@ export default function ListViewToolbar({
 		if (ids.length === 0) {
 			return;
 		}
-		toast.info("Deleting items...");
 		bulkDeleteMutation.mutate({ logIds: ids });
 	};
 
