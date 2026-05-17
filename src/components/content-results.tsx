@@ -47,7 +47,7 @@ export default function ContentResults() {
 				</Badge>
 			</div>
 
-			<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-4">
+			<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4">
 				{mediaContent.results.map((media) => {
 					const releaseYear = getReleaseYear(
 						media.release_date,
