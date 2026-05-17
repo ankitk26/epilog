@@ -11,6 +11,7 @@
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as logs from "../logs.js";
+import type * as migrations from "../migrations.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
 
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   logs: typeof logs;
+  migrations: typeof migrations;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
 }>;
