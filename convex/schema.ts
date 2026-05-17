@@ -28,7 +28,7 @@ export default defineSchema({
 			v.literal("in_progress"),
 			v.literal("completed"),
 		),
-		updatedTime: v.optional(v.number()),
+		updatedTime: v.number(),
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
 		.index("by_user_and_mediaId", ["userId", "dbMediaId"])
