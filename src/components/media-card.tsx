@@ -60,7 +60,7 @@ export default function MediaCard(props: Props) {
 	return (
 		<Card
 			className={cn(
-				"group w-full max-w-44 overflow-hidden p-0",
+				"group w-full overflow-hidden p-0",
 				props.showCheckbox && "cursor-pointer",
 				props.selected ? "ring-2 ring-ring/60" : "",
 			)}
