@@ -28,9 +28,11 @@ export default defineSchema({
 			v.literal("in_progress"),
 			v.literal("completed"),
 		),
+		updatedTime: v.optional(v.number()),
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
-		.index("by_user_and_mediaId", ["userId", "dbMediaId"]),
+		.index("by_user_and_mediaId", ["userId", "dbMediaId"])
+		.index("by_user_and_updated_time", ["userId", "updatedTime"]),
 
 	movieEvents: defineTable({
 		userId: v.id("users"),

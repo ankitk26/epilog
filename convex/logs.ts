@@ -10,7 +10,10 @@ export const all = query({
 
 		const logs = await ctx.db
 			.query("logs")
-			.withIndex("by_user_and_mediaId", (q) => q.eq("userId", userId))
+			.withIndex("by_user_and_updated_time", (q) =>
+				q.eq("userId", userId),
+			)
+			.order("desc")
 			.collect();
 
 		const rawLogs = await Promise.all(
@@ -92,6 +95,7 @@ export const addToPlanning = mutation({
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
 			status: "planned",
+			updatedTime: Date.now(),
 			userId,
 		});
 
@@ -139,6 +143,7 @@ export const updateStatus = mutation({
 
 		await ctx.db.patch(args.logId, {
 			status: args.status,
+			updatedTime: Date.now(),
 		});
 	},
 });
@@ -164,11 +169,14 @@ export const bulkUpdateStatus = mutation({
 			}
 		}
 
+		const updatedTime = Date.now();
+
 		// Update all media logs
 		await Promise.all(
 			args.logIds.map((id) =>
 				ctx.db.patch(id, {
 					status: args.status,
+					updatedTime,
 				}),
 			),
 		);

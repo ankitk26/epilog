@@ -78,12 +78,14 @@ export const add = mutation({
 		if (existingLog) {
 			await ctx.db.patch(existingLog._id, {
 				status: "completed",
+				updatedTime: Date.now(),
 			});
 		} else {
 			await ctx.db.insert("logs", {
 				userId,
 				dbMediaId: mediaId,
 				status: "completed",
+				updatedTime: Date.now(),
 			});
 		}
 
