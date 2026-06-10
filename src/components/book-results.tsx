@@ -46,27 +46,19 @@ export default function BookResults() {
 			</div>
 
 			<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4">
-				{books.data.map((book) => {
-					let publishYear: number | null = null;
-					if (book.published.from) {
-						publishYear = new Date(
-							book.published.from,
-						).getFullYear();
-					}
-
-					return (
-						<MediaCard
-							key={book.mal_id}
-							media={{
-								imageUrl: book.images.webp?.large_image_url,
-								name: book.title_english ?? book.title ?? "NA",
-								releaseYear: publishYear,
-								sourceId: book.mal_id.toString(),
-								type: "book",
-							}}
-						/>
-					);
-				})}
+				{books.data.map((book) => (
+					<MediaCard
+						key={book.id}
+						media={{
+							imageUrl: book.imageUrl,
+							name: book.title,
+							secondaryText: book.author,
+							releaseYear: book.publishYear,
+							sourceId: book.id,
+							type: "book",
+						}}
+					/>
+				))}
 			</div>
 		</div>
 	);

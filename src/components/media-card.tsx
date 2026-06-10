@@ -4,6 +4,7 @@ import type { Id } from "@convex/_generated/dataModel";
 import { PlusIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
@@ -16,6 +17,7 @@ type Props = {
 	media: {
 		imageUrl: string | undefined | null;
 		name: string;
+		secondaryText?: string | null;
 		releaseYear: number | null;
 		sourceId: string;
 		type: MediaType;
@@ -29,6 +31,11 @@ type Props = {
 
 export default function MediaCard(props: Props) {
 	const { displayOnly = false } = props;
+	const [imageFailed, setImageFailed] = useState(false);
+
+	useEffect(() => {
+		setImageFailed(false);
+	}, [props.media.imageUrl]);
 
 	const addToPlanningMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.addToPlanning),
@@ -73,18 +80,19 @@ export default function MediaCard(props: Props) {
 			aria-pressed={props.showCheckbox ? !!props.selected : undefined}
 		>
 			<div className="relative aspect-[2/3] overflow-hidden">
-				{props.media.imageUrl ? (
+				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
 						className="h-full w-full object-cover object-top"
 						height={176}
+						onError={() => setImageFailed(true)}
 						src={props.media.imageUrl}
 						width={264}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center bg-muted">
 						<IconByType
-							className="size-6 text-muted-foreground"
+							className="size-16 text-muted-foreground"
 							type={props.media.type}
 						/>
 					</div>
@@ -119,6 +127,11 @@ export default function MediaCard(props: Props) {
 				<h4 className="line-clamp-2 text-xs font-medium">
 					{props.media.name}
 				</h4>
+				{props.media.secondaryText && (
+					<p className="line-clamp-1 text-xs text-muted-foreground">
+						{props.media.secondaryText}
+					</p>
+				)}
 				{props.media.releaseYear && (
 					<p className="text-xs text-muted-foreground">
 						{props.media.releaseYear}

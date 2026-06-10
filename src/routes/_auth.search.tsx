@@ -13,7 +13,11 @@ export const Route = createFileRoute("/_auth/search")({
 function SearchPage() {
 	return (
 		<div className="flex flex-col space-y-8">
-			<Link search={defaultMediaFilters} to="/">
+			<Link
+				className="inline-flex self-start"
+				search={defaultMediaFilters}
+				to="/"
+			>
 				<Button className="text-xs" size="sm" variant="secondary">
 					<ArrowLeftIcon />
 					Go back

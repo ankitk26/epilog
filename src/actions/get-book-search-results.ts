@@ -1,7 +1,7 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
-import { type BookSearchOutput, bookSearchAPIOutput } from "@/types";
+import { type BookSearchOutput, jikanMangaSearchAPIOutput } from "@/types";
 
 export const getBookSearchResults = createServerFn({ method: "GET" })
 	.inputValidator(z.object({ searchQuery: z.string() }))
@@ -15,14 +15,29 @@ export const getBookSearchResults = createServerFn({ method: "GET" })
 					limit: 25,
 					sfw: true,
 				},
-				output: bookSearchAPIOutput,
+				output: jikanMangaSearchAPIOutput,
 			},
 		);
 
 		if (error) {
-			console.error(error.message);
+			console.error("Jikan API error:", error);
 			return { data: [] } as BookSearchOutput;
 		}
 
-		return books;
+		return {
+			data: books.data.map((book) => {
+				let publishYear: number | null = null;
+				if (book.published.from) {
+					publishYear = new Date(book.published.from).getFullYear();
+				}
+
+				return {
+					id: book.mal_id.toString(),
+					title: book.title_english ?? book.title ?? "NA",
+					author: null,
+					imageUrl: book.images.webp?.large_image_url,
+					publishYear,
+				};
+			}),
+		} satisfies BookSearchOutput;
 	});

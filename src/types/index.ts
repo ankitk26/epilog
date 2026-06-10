@@ -44,7 +44,7 @@ export const animeSearchAPIOutput = z.object({
 });
 export type AnimeSearchOutput = z.infer<typeof animeSearchAPIOutput>;
 
-export const bookSearchAPIOutput = z.object({
+export const jikanMangaSearchAPIOutput = z.object({
 	data: z.array(
 		z.object({
 			mal_id: z.number(),
@@ -64,4 +64,98 @@ export const bookSearchAPIOutput = z.object({
 		}),
 	),
 });
+export type JikanMangaSearchOutput = z.infer<typeof jikanMangaSearchAPIOutput>;
+
+/*
+export const bookSearchAPIOutput = z.object({
+	items: z
+		.array(
+			z.object({
+				id: z.string(),
+				volumeInfo: z.object({
+					title: z.string().nullable().optional(),
+					subtitle: z.string().nullable().optional(),
+					imageLinks: z
+						.object({
+							thumbnail: z.string().nullable().optional(),
+							small: z.string().nullable().optional(),
+							medium: z.string().nullable().optional(),
+							large: z.string().nullable().optional(),
+						})
+						.optional(),
+					publishedDate: z.string().nullable().optional(),
+				}),
+			}),
+		)
+		.optional()
+		.default([]),
+});
+export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
+*/
+
+/*
+export const openLibraryBookSearchAPIOutput = z.object({
+	numFound: z.number(),
+		docs: z.array(
+		z.object({
+			key: z.string(),
+			title: z.string(),
+			author_name: z.array(z.string()).optional(),
+			cover_i: z.number().optional(),
+			first_publish_year: z.number().optional(),
+			editions: z
+				.object({
+					docs: z.array(
+						z.object({
+							key: z.string(),
+							title: z.string(),
+							cover_i: z.number().optional(),
+							language: z.array(z.string()).optional(),
+						}),
+					),
+				})
+				.optional(),
+		}),
+	),
+});
+
+export const hardcoverBookSearchAPIOutput = z.object({
+	data: z
+		.object({
+			search: z.object({
+				results: z.object({
+					hits: z.array(
+						z.object({
+							document: z
+								.object({
+									id: z.union([z.number(), z.string()]).optional(),
+									title: z.string().optional(),
+									author_names: z.array(z.string()).optional(),
+									release_year: z.number().nullable().optional(),
+									image: z.unknown().optional(),
+									cached_image: z.unknown().optional(),
+								})
+								.passthrough(),
+						}),
+					),
+				}),
+			}),
+		})
+		.optional(),
+	errors: z.unknown().optional(),
+});
+*/
+
+export const bookSearchAPIOutput = z.object({
+	data: z.array(
+		z.object({
+			id: z.string(),
+			title: z.string(),
+			author: z.string().nullable(),
+			imageUrl: z.string().nullable(),
+			publishYear: z.number().nullable(),
+		}),
+	),
+});
+
 export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
