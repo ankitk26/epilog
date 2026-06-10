@@ -67,9 +67,9 @@ export default function MediaCard(props: Props) {
 	return (
 		<Card
 			className={cn(
-				"group w-full overflow-hidden p-0",
+				"group w-full overflow-hidden border-border/40 p-0 transition-all duration-500 hover:border-primary/20 hover:shadow-luxury-lg",
 				props.showCheckbox && "cursor-pointer",
-				props.selected ? "ring-2 ring-ring/60" : "",
+				props.selected ? "ring-2 shadow-glow ring-primary/40" : "",
 			)}
 			onClick={
 				props.showCheckbox
@@ -83,16 +83,16 @@ export default function MediaCard(props: Props) {
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
-						className="h-full w-full object-cover object-top"
+						className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
 						height={176}
 						onError={() => setImageFailed(true)}
 						src={props.media.imageUrl}
 						width={264}
 					/>
 				) : (
-					<div className="flex h-full w-full items-center justify-center bg-muted">
+					<div className="flex h-full w-full items-center justify-center bg-secondary/50">
 						<IconByType
-							className="size-16 text-muted-foreground"
+							className="size-16 text-muted-foreground/40"
 							type={props.media.type}
 						/>
 					</div>
@@ -111,29 +111,30 @@ export default function MediaCard(props: Props) {
 				)}
 				{/* Add button overlay */}
 				{!displayOnly && !props.showCheckbox && (
-					<div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
+					<div className="absolute inset-0 flex items-center justify-center bg-background/60 opacity-0 backdrop-blur-[2px] transition-all duration-500 group-hover:opacity-100">
 						<Button
 							onClick={handleAddToPlanning}
 							size="sm"
 							variant="secondary"
+							className="rounded-full shadow-luxury-lg transition-transform duration-300 hover:scale-105"
 						>
-							<PlusIcon className="h-3 w-3" />
+							<PlusIcon className="h-3 w-3" weight="bold" />
 							Add
 						</Button>
 					</div>
 				)}
 			</div>
-			<CardContent className="space-y-0.5 p-2 pt-1">
-				<h4 className="line-clamp-2 text-xs font-medium">
+			<CardContent className="space-y-0.5 bg-card p-2.5 pt-2">
+				<h4 className="line-clamp-2 text-xs leading-snug font-semibold tracking-tight text-foreground">
 					{props.media.name}
 				</h4>
 				{props.media.secondaryText && (
-					<p className="line-clamp-1 text-xs text-muted-foreground">
+					<p className="line-clamp-1 text-[11px] text-muted-foreground">
 						{props.media.secondaryText}
 					</p>
 				)}
 				{props.media.releaseYear && (
-					<p className="text-xs text-muted-foreground">
+					<p className="text-[11px] font-medium text-muted-foreground/70">
 						{props.media.releaseYear}
 					</p>
 				)}

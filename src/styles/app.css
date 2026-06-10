@@ -50,72 +50,99 @@
 }
 
 :root {
-	--radius: 0.625rem;
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.153 0.006 107.1);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.153 0.006 107.1);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.153 0.006 107.1);
-	--primary: oklch(0.228 0.013 107.4);
-	--primary-foreground: oklch(0.988 0.003 106.5);
-	--secondary: oklch(0.966 0.005 106.5);
-	--secondary-foreground: oklch(0.228 0.013 107.4);
-	--muted: oklch(0.966 0.005 106.5);
-	--muted-foreground: oklch(0.58 0.031 107.3);
-	--accent: oklch(0.966 0.005 106.5);
-	--accent-foreground: oklch(0.228 0.013 107.4);
-	--destructive: oklch(0.577 0.245 27.325);
-	--border: oklch(0.93 0.007 106.5);
-	--input: oklch(0.93 0.007 106.5);
-	--ring: oklch(0.737 0.021 106.9);
-	--chart-1: oklch(0.88 0.011 106.6);
-	--chart-2: oklch(0.58 0.031 107.3);
-	--chart-3: oklch(0.466 0.025 107.3);
-	--chart-4: oklch(0.394 0.023 107.4);
-	--chart-5: oklch(0.286 0.016 107.4);
-	--sidebar: oklch(0.988 0.003 106.5);
-	--sidebar-foreground: oklch(0.153 0.006 107.1);
-	--sidebar-primary: oklch(0.228 0.013 107.4);
-	--sidebar-primary-foreground: oklch(0.988 0.003 106.5);
-	--sidebar-accent: oklch(0.966 0.005 106.5);
-	--sidebar-accent-foreground: oklch(0.228 0.013 107.4);
-	--sidebar-border: oklch(0.93 0.007 106.5);
-	--sidebar-ring: oklch(0.737 0.021 106.9);
+	--radius: 0.75rem;
+
+	/* Warm luxury light palette */
+	--background: #faf9f6;
+	--foreground: #1c1917;
+	--card: #ffffff;
+	--card-foreground: #1c1917;
+	--popover: #ffffff;
+	--popover-foreground: #1c1917;
+	--primary: #7c5e3c;
+	--primary-foreground: #faf9f6;
+	--secondary: #f5f0e8;
+	--secondary-foreground: #44403c;
+	--muted: #f5f0e8;
+	--muted-foreground: #78716c;
+	--accent: #e7dcc8;
+	--accent-foreground: #44403c;
+	--destructive: #b91c1c;
+	--border: #e7e5e4;
+	--input: #e7e5e4;
+	--ring: #a88b5e;
+
+	--chart-1: #7c5e3c;
+	--chart-2: #a88b5e;
+	--chart-3: #c4a97d;
+	--chart-4: #d4c4a8;
+	--chart-5: #e7dcc8;
+
+	--sidebar: #f5f0e8;
+	--sidebar-foreground: #1c1917;
+	--sidebar-primary: #7c5e3c;
+	--sidebar-primary-foreground: #faf9f6;
+	--sidebar-accent: #e7dcc8;
+	--sidebar-accent-foreground: #44403c;
+	--sidebar-border: #e7e5e4;
+	--sidebar-ring: #a88b5e;
+
+	/* Luxury shadow tokens */
+	--shadow-sm: 0 1px 2px 0 rgb(28 25 23 / 0.04);
+	--shadow-md:
+		0 4px 6px -1px rgb(28 25 23 / 0.06), 0 2px 4px -2px rgb(28 25 23 / 0.04);
+	--shadow-lg:
+		0 10px 15px -3px rgb(28 25 23 / 0.07),
+		0 4px 6px -4px rgb(28 25 23 / 0.05);
+	--shadow-xl:
+		0 20px 25px -5px rgb(28 25 23 / 0.08),
+		0 8px 10px -6px rgb(28 25 23 / 0.05);
+	--shadow-glow: 0 0 20px rgb(168 139 94 / 0.15);
 }
 
 .dark {
-	--background: oklch(0.153 0.006 107.1);
-	--foreground: oklch(0.988 0.003 106.5);
-	--card: oklch(0.228 0.013 107.4);
-	--card-foreground: oklch(0.988 0.003 106.5);
-	--popover: oklch(0.228 0.013 107.4);
-	--popover-foreground: oklch(0.988 0.003 106.5);
-	--primary: oklch(0.93 0.007 106.5);
-	--primary-foreground: oklch(0.228 0.013 107.4);
-	--secondary: oklch(0.286 0.016 107.4);
-	--secondary-foreground: oklch(0.988 0.003 106.5);
-	--muted: oklch(0.286 0.016 107.4);
-	--muted-foreground: oklch(0.737 0.021 106.9);
-	--accent: oklch(0.286 0.016 107.4);
-	--accent-foreground: oklch(0.988 0.003 106.5);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.58 0.031 107.3);
-	--chart-1: oklch(0.88 0.011 106.6);
-	--chart-2: oklch(0.58 0.031 107.3);
-	--chart-3: oklch(0.466 0.025 107.3);
-	--chart-4: oklch(0.394 0.023 107.4);
-	--chart-5: oklch(0.286 0.016 107.4);
-	--sidebar: oklch(0.228 0.013 107.4);
-	--sidebar-foreground: oklch(0.988 0.003 106.5);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.988 0.003 106.5);
-	--sidebar-accent: oklch(0.286 0.016 107.4);
-	--sidebar-accent-foreground: oklch(0.988 0.003 106.5);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.58 0.031 107.3);
+	--background: #0c0a09;
+	--foreground: #faf9f6;
+	--card: #1c1917;
+	--card-foreground: #faf9f6;
+	--popover: #1c1917;
+	--popover-foreground: #faf9f6;
+	--primary: #c4a97d;
+	--primary-foreground: #0c0a09;
+	--secondary: #292524;
+	--secondary-foreground: #d6d3d1;
+	--muted: #292524;
+	--muted-foreground: #a8a29e;
+	--accent: #292524;
+	--accent-foreground: #d6d3d1;
+	--destructive: #ef4444;
+	--border: #292524;
+	--input: #292524;
+	--ring: #c4a97d;
+
+	--chart-1: #c4a97d;
+	--chart-2: #a88b5e;
+	--chart-3: #7c5e3c;
+	--chart-4: #5c4a32;
+	--chart-5: #292524;
+
+	--sidebar: #1c1917;
+	--sidebar-foreground: #faf9f6;
+	--sidebar-primary: #c4a97d;
+	--sidebar-primary-foreground: #0c0a09;
+	--sidebar-accent: #292524;
+	--sidebar-accent-foreground: #d6d3d1;
+	--sidebar-border: #292524;
+	--sidebar-ring: #c4a97d;
+
+	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
+	--shadow-md:
+		0 4px 6px -1px rgb(0 0 0 / 0.35), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+	--shadow-lg:
+		0 10px 15px -3px rgb(0 0 0 / 0.45), 0 4px 6px -4px rgb(0 0 0 / 0.35);
+	--shadow-xl:
+		0 20px 25px -5px rgb(0 0 0 / 0.55), 0 8px 10px -6px rgb(0 0 0 / 0.45);
+	--shadow-glow: 0 0 30px rgb(196 169 125 / 0.12);
 }
 
 @layer base {
@@ -124,6 +151,11 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+		font-feature-settings:
+			"kern" 1,
+			"liga" 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
 	}
 	button {
 		@apply cursor-pointer;
@@ -131,4 +163,51 @@
 	html {
 		@apply font-sans;
 	}
+
+	/* Scrollbar styling */
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--border);
+		border-radius: 3px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--muted-foreground);
+	}
+}
+
+/* Utility classes for luxury shadows */
+@utility shadow-luxury {
+	box-shadow: var(--shadow-md);
+}
+@utility shadow-luxury-lg {
+	box-shadow: var(--shadow-lg);
+}
+@utility shadow-luxury-xl {
+	box-shadow: var(--shadow-xl);
+}
+@utility shadow-glow {
+	box-shadow: var(--shadow-glow);
+}
+
+/* Smooth transition for theme changes */
+@utility theme-transition {
+	transition:
+		background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+		color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+		border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+		box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Heading typography */
+@utility heading-luxury {
+	font-family: var(--font-heading);
+	font-weight: 500;
+	letter-spacing: -0.02em;
+	line-height: 1.1;
 }
