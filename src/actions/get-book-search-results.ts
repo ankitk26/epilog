@@ -11,8 +11,11 @@ export const getBookSearchResults = createServerFn({ method: "GET" })
 			{
 				method: "GET",
 				query: {
-					q: data.searchQuery,
-					limit: 25,
+					q: `${data.searchQuery} language:eng`,
+					lang: "en",
+					limit: "25",
+					fields:
+						"key,title,author_name,cover_i,first_publish_year,editions,editions.key,editions.title,editions.cover_i,editions.language",
 				},
 				output: openLibraryBookSearchAPIOutput,
 			},
@@ -25,13 +28,17 @@ export const getBookSearchResults = createServerFn({ method: "GET" })
 
 		return {
 			data: books.docs.map((book) => {
-				const imageUrl = book.cover_i
-					? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`
+				const englishEdition = book.editions?.docs.find((edition) =>
+					edition.language?.includes("eng"),
+				);
+				const coverId = englishEdition?.cover_i ?? book.cover_i;
+				const imageUrl = coverId
+					? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
 					: null;
 
 				return {
 					id: book.key,
-					title: book.title,
+					title: englishEdition?.title ?? book.title,
 					author: book.author_name?.[0] ?? null,
 					imageUrl,
 					publishYear: book.first_publish_year ?? null,
