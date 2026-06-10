@@ -1,15 +1,46 @@
 import { createClient } from "@convex-dev/better-auth";
-import type { GenericCtx } from "@convex-dev/better-auth";
+import type { AuthFunctions, GenericCtx } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
 import { betterAuth } from "better-auth/minimal";
-import { components } from "./_generated/api";
+import { components, internal } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import authConfig from "./auth.config";
 
 const siteUrl = process.env.SITE_URL!;
 
-export const authComponent = createClient<DataModel>(components.betterAuth);
+const authFunctions: AuthFunctions = internal.auth;
+
+export const authComponent = createClient<DataModel>(components.betterAuth, {
+	authFunctions,
+	triggers: {
+		user: {
+			onCreate: async (ctx, doc) => {
+				await ctx.db.insert("users", {
+					email: doc.email,
+					authId: doc._id,
+				});
+			},
+			onUpdate: async (ctx, newDoc) => {
+				if (!newDoc) {
+					return;
+				}
+				const user = await ctx.db
+					.query("users")
+					.withIndex("by_auth_id", (q) => q.eq("authId", newDoc._id))
+					.first();
+
+				if (!user) {
+					return;
+				}
+
+				await ctx.db.patch(user._id, {
+					email: newDoc.email,
+				});
+			},
+		},
+	},
+});
 
 export const createAuth = (ctx: GenericCtx<DataModel>) => {
 	return betterAuth({
@@ -51,3 +82,5 @@ export const getCurrentUser = query({
 		return await authComponent.getAuthUser(ctx);
 	},
 });
+
+export const { onCreate, onUpdate, onDelete } = authComponent.triggersApi();
