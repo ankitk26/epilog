@@ -18,29 +18,39 @@ export default function ShelfColumn(props: Props) {
 	const Icon = props.column.icon;
 
 	return (
-		<div className="flex flex-col space-y-2 rounded-lg border border-border/50 bg-muted/30">
+		<div className="flex flex-col space-y-2 rounded-xl border border-border/50 bg-muted/20">
 			{/* Column Header */}
-			<div className="flex items-center justify-between border-b border-b-border/30 p-3 text-sm">
-				<div className="flex items-center gap-2">
-					<Icon className="size-4" />
-					<span className="font-medium">{props.column.title}</span>
+			<div className="flex items-center justify-between border-b border-border/30 p-3.5">
+				<div className="flex items-center gap-2.5">
+					<div className="flex size-7 items-center justify-center rounded-lg bg-accent/50">
+						<Icon
+							className="size-4 text-primary"
+							weight="duotone"
+						/>
+					</div>
+					<span className="text-sm font-semibold tracking-tight text-foreground">
+						{props.column.title}
+					</span>
 				</div>
-				<Badge className="text-xs" variant="secondary">
+				<Badge
+					className="rounded-full border-0 bg-secondary px-2.5 text-xs font-semibold text-secondary-foreground"
+					variant="secondary"
+				>
 					{props.logs.length}
 				</Badge>
 			</div>
 
 			{/* Column Content */}
-			<div className="min-w-0 p-2">
+			<div className="min-w-0 p-2.5">
 				{props.logs.length === 0 && (
-					<div className="flex flex-col items-center justify-center py-8 text-center opacity-50">
+					<div className="flex flex-col items-center justify-center py-10 text-center opacity-50">
 						<p className="text-xs text-muted-foreground">
 							<EmptyStateMessage />
 						</p>
 					</div>
 				)}
 
-				<div className="space-y-3">
+				<div className="space-y-2">
 					{props.logs.length > 0 &&
 						props.logs.map((log) => (
 							<ShelfCard key={log._id} log={log} />

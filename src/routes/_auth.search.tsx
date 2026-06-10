@@ -18,8 +18,12 @@ function SearchPage() {
 				search={defaultMediaFilters}
 				to="/"
 			>
-				<Button className="text-xs" size="sm" variant="secondary">
-					<ArrowLeftIcon />
+				<Button
+					className="gap-2 rounded-full text-xs font-medium transition-all hover:bg-accent/50"
+					size="sm"
+					variant="outline"
+				>
+					<ArrowLeftIcon weight="bold" />
 					Go back
 				</Button>
 			</Link>

@@ -93,58 +93,18 @@ export const bookSearchAPIOutput = z.object({
 export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
 */
 
-/*
 export const openLibraryBookSearchAPIOutput = z.object({
 	numFound: z.number(),
-		docs: z.array(
+	docs: z.array(
 		z.object({
 			key: z.string(),
 			title: z.string(),
 			author_name: z.array(z.string()).optional(),
 			cover_i: z.number().optional(),
 			first_publish_year: z.number().optional(),
-			editions: z
-				.object({
-					docs: z.array(
-						z.object({
-							key: z.string(),
-							title: z.string(),
-							cover_i: z.number().optional(),
-							language: z.array(z.string()).optional(),
-						}),
-					),
-				})
-				.optional(),
 		}),
 	),
 });
-
-export const hardcoverBookSearchAPIOutput = z.object({
-	data: z
-		.object({
-			search: z.object({
-				results: z.object({
-					hits: z.array(
-						z.object({
-							document: z
-								.object({
-									id: z.union([z.number(), z.string()]).optional(),
-									title: z.string().optional(),
-									author_names: z.array(z.string()).optional(),
-									release_year: z.number().nullable().optional(),
-									image: z.unknown().optional(),
-									cached_image: z.unknown().optional(),
-								})
-								.passthrough(),
-						}),
-					),
-				}),
-			}),
-		})
-		.optional(),
-	errors: z.unknown().optional(),
-});
-*/
 
 export const bookSearchAPIOutput = z.object({
 	data: z.array(
