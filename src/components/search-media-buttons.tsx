@@ -15,6 +15,7 @@ export default function SearchMediaButtons() {
 		{ type: "tv" as const, label: "TV" },
 		{ type: "movie" as const, label: "Movies" },
 		{ type: "book" as const, label: "Books" },
+		{ type: "manga" as const, label: "Manga" },
 	];
 
 	return (

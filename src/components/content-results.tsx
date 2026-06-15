@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
 import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { searchStore } from "@/store/search-store";
+import type { MediaType } from "@/types";
 
 export default function ContentResults() {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
@@ -20,7 +21,9 @@ export default function ContentResults() {
 	} = useQuery({
 		queryKey: ["search", "media-content", mediaType, searchQuery],
 		queryFn: async () =>
-			await getContentSearchResults({ data: { searchQuery, mediaType } }),
+			await getContentSearchResults({
+				data: { searchQuery, mediaType: mediaType as MediaType },
+			}),
 		enabled: searchQuery.length !== 0 && mediaType !== "book",
 	});
 

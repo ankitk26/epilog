@@ -6,6 +6,9 @@ export type FilterMediaView = (typeof filterMediaViews)[number];
 export const mediaTypes = ["anime", "movie", "tv", "book"] as const;
 export type MediaType = (typeof mediaTypes)[number];
 
+export const searchMediaTypes = [...mediaTypes, "manga"] as const;
+export type SearchMediaType = (typeof searchMediaTypes)[number];
+
 export const mediaSearchAPIOutput = z.object({
 	results: z.array(
 		z.object({
