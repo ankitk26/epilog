@@ -48,7 +48,7 @@ export default function Header() {
 		<header className="border-b px-4 py-3 lg:px-6 lg:py-4">
 			<div className="mx-auto flex max-w-6xl items-center justify-between">
 				<Link
-					className="text-lg font-semibold tracking-wide"
+					className="font-heading text-lg font-semibold tracking-wide"
 					search={defaultMediaFilters}
 					to="/"
 				>

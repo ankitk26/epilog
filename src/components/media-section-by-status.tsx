@@ -71,7 +71,7 @@ export default function MediaSectionByStatus(props: Props) {
 						</Button>
 					)}
 
-					<h2 className="text-lg font-medium">
+					<h2 className="font-heading text-lg font-medium">
 						{props.section.title}
 					</h2>
 					<Badge
