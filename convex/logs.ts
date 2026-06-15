@@ -47,6 +47,10 @@ export const addToPlanning = mutation({
 				v.literal("tv"),
 				v.literal("book"),
 			),
+			seriesName: v.optional(v.string()),
+			seriesPosition: v.optional(v.number()),
+			seriesTotal: v.optional(v.number()),
+			seriesKey: v.optional(v.string()),
 		}),
 	},
 	handler: async (ctx, args) => {
@@ -73,6 +77,10 @@ export const addToPlanning = mutation({
 				releaseYear: args.media.releaseYear,
 				sourceMediaId: args.media.sourceMediaId,
 				type: args.media.type,
+				seriesName: args.media.seriesName,
+				seriesPosition: args.media.seriesPosition,
+				seriesTotal: args.media.seriesTotal,
+				seriesKey: args.media.seriesKey,
 			});
 			mediaId = newMediaId;
 		}

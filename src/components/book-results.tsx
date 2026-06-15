@@ -56,6 +56,10 @@ export default function BookResults() {
 							releaseYear: book.publishYear,
 							sourceId: book.id,
 							type: "book",
+							seriesName: book.seriesName ?? undefined,
+							seriesPosition: book.seriesPosition ?? undefined,
+							seriesTotal: book.seriesTotal ?? undefined,
+							seriesKey: book.seriesKey ?? undefined,
 						}}
 					/>
 				))}

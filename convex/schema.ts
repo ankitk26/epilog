@@ -18,6 +18,10 @@ export default defineSchema({
 			v.literal("tv"),
 			v.literal("book"),
 		),
+		seriesName: v.optional(v.string()),
+		seriesPosition: v.optional(v.number()),
+		seriesTotal: v.optional(v.number()),
+		seriesKey: v.optional(v.string()),
 	}).index("by_sourceId", ["sourceMediaId"]),
 
 	logs: defineTable({

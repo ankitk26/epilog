@@ -102,6 +102,9 @@ export const openLibraryBookSearchAPIOutput = z.object({
 			author_name: z.array(z.string()).optional(),
 			cover_i: z.number().optional(),
 			first_publish_year: z.number().optional(),
+			series_key: z.array(z.string()).optional(),
+			series_name: z.array(z.string()).optional(),
+			series_position: z.array(z.string()).optional(),
 			editions: z
 				.object({
 					docs: z.array(
@@ -110,6 +113,7 @@ export const openLibraryBookSearchAPIOutput = z.object({
 							title: z.string(),
 							cover_i: z.number().optional(),
 							language: z.array(z.string()).optional(),
+							publish_year: z.array(z.number()).optional(),
 						}),
 					),
 				})
@@ -126,6 +130,10 @@ export const bookSearchAPIOutput = z.object({
 			author: z.string().nullable(),
 			imageUrl: z.string().nullable(),
 			publishYear: z.number().nullable(),
+			seriesName: z.string().nullable(),
+			seriesPosition: z.number().nullable(),
+			seriesTotal: z.number().nullable(),
+			seriesKey: z.string().nullable(),
 		}),
 	),
 });

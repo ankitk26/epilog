@@ -21,6 +21,10 @@ type Props = {
 		releaseYear: number | null;
 		sourceId: string;
 		type: MediaType;
+		seriesName?: string;
+		seriesPosition?: number;
+		seriesTotal?: number;
+		seriesKey?: string;
 	};
 	displayOnly?: boolean;
 	id?: Id<"logs">;
@@ -60,6 +64,10 @@ export default function MediaCard(props: Props) {
 				sourceMediaId: props.media.sourceId,
 				type: props.media.type,
 				image: props.media.imageUrl ?? "",
+				seriesName: props.media.seriesName,
+				seriesPosition: props.media.seriesPosition,
+				seriesTotal: props.media.seriesTotal,
+				seriesKey: props.media.seriesKey,
 			},
 		});
 	};
