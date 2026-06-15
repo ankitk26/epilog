@@ -1,7 +1,9 @@
 import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { defaultMediaFilters } from "@/lib/media-filters";
+import { searchStore } from "@/store/search-store";
+import type { MediaType } from "@/types";
 import { ThemeToggle } from "./theme-toggler";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -15,7 +17,32 @@ import {
 
 export default function Header() {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { data } = authClient.useSession();
+
+	const isHome = location.pathname === "/";
+	const homeMediaType = (location.search as { type?: MediaType }).type;
+
+	const goToSearch = () => {
+		if (isHome && homeMediaType) {
+			searchStore.setState((state) => ({
+				...state,
+				mediaType: homeMediaType,
+			}));
+		}
+		void navigate({ to: "/search" });
+	};
+
+	const handleSignOut = async () => {
+		await navigate({ to: "/sign-in" });
+		await authClient.signOut({
+			fetchOptions: {
+				onSuccess: () => {
+					window.location.reload();
+				},
+			},
+		});
+	};
 
 	return (
 		<header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 px-4 backdrop-blur-xl lg:px-8">
@@ -30,19 +57,18 @@ export default function Header() {
 				</Link>
 
 				<div className="flex items-center gap-2.5">
-					<Link to="/search">
-						<Button
-							className="h-9 gap-2 rounded-full border-border/60 px-4 text-xs font-medium tracking-wide text-foreground/80 transition-all hover:bg-accent hover:text-foreground"
-							size="sm"
-							variant="outline"
-						>
-							<MagnifyingGlassIcon
-								className="size-3.5"
-								weight="bold"
-							/>
-							<span className="hidden sm:inline">Search</span>
-						</Button>
-					</Link>
+					<Button
+						className="h-9 gap-2 rounded-full border-border/60 px-4 text-xs font-medium tracking-wide text-foreground/80 transition-all hover:bg-accent hover:text-foreground"
+						onClick={goToSearch}
+						size="sm"
+						variant="outline"
+					>
+						<MagnifyingGlassIcon
+							className="size-3.5"
+							weight="bold"
+						/>
+						<span className="hidden sm:inline">Search</span>
+					</Button>
 
 					<ThemeToggle />
 
@@ -79,18 +105,7 @@ export default function Header() {
 								</p>
 							</div>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem
-								onClick={async () => {
-									await navigate({ to: "/sign-in" });
-									await authClient.signOut({
-										fetchOptions: {
-											onSuccess: () => {
-												location.reload();
-											},
-										},
-									});
-								}}
-							>
+							<DropdownMenuItem onClick={handleSignOut}>
 								<SignOutIcon
 									className="size-3.5"
 									weight="bold"
