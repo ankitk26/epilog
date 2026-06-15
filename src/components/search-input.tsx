@@ -20,14 +20,11 @@ export default function SearchInput() {
 
 	return (
 		<form onSubmit={handleQuerySubmit}>
-			<div className="relative">
-				<Input
-					className="h-12 rounded-2xl border-border/60 bg-card text-base shadow-sm transition-all duration-300 hover:border-border hover:shadow-md focus-visible:shadow-md md:text-sm"
-					onChange={(e) => setQuery(e.target.value)}
-					placeholder="Search for movies, shows, anime, books, manga..."
-					value={query}
-				/>
-			</div>
+			<Input
+				onChange={(e) => setQuery(e.target.value)}
+				placeholder="Search title"
+				value={query}
+			/>
 		</form>
 	);
 }

@@ -21,15 +21,10 @@ export default function ListCard({
 	showCheckbox,
 }: Props) {
 	return (
-		<Card
-			className={cn(
-				"hover:shadow-luxury-md overflow-hidden border-border/40 p-3.5 transition-all duration-300 hover:border-border/80",
-				selected ? "ring-2 shadow-glow ring-primary/40" : "",
-			)}
-		>
+		<Card className={cn("p-3", selected ? "ring-2 ring-ring/60" : "")}>
 			<div
 				aria-pressed={showCheckbox ? !!selected : undefined}
-				className="flex items-center gap-3.5"
+				className="flex items-center gap-3"
 				onClick={
 					showCheckbox ? () => onToggleSelect?.(log._id) : undefined
 				}
@@ -44,7 +39,7 @@ export default function ListCard({
 					/>
 				)}
 				{/* Poster */}
-				<div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-lg">
+				<div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-md">
 					{log.metadata?.image ? (
 						<Image
 							alt={log.metadata.name || "Media poster"}
@@ -54,9 +49,9 @@ export default function ListCard({
 							width={80}
 						/>
 					) : (
-						<div className="flex h-full w-full items-center justify-center bg-secondary/50">
+						<div className="flex h-full w-full items-center justify-center bg-muted">
 							<IconByType
-								className="size-5 text-muted-foreground/50"
+								className="size-5"
 								type={log.metadata.type}
 							/>
 						</div>
@@ -67,10 +62,10 @@ export default function ListCard({
 				<div className="min-w-0 flex-1">
 					<div className="flex items-start justify-between">
 						<div className="space-y-1">
-							<h3 className="text-sm leading-tight font-semibold tracking-tight text-foreground">
+							<h3 className="text-sm leading-tight font-medium">
 								{log.metadata?.name || "Untitled"}
 							</h3>
-							<div className="flex items-center gap-3 text-xs font-medium text-muted-foreground/70">
+							<div className="flex items-center gap-3 text-xs text-muted-foreground">
 								{log.metadata?.releaseYear && (
 									<span>{log.metadata.releaseYear}</span>
 								)}

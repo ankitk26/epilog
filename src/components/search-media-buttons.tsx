@@ -1,5 +1,4 @@
 import { useSelector } from "@tanstack/react-store";
-import { cn } from "@/lib/utils";
 import { searchStore } from "@/store/search-store";
 import { Button } from "./ui/button";
 
@@ -10,36 +9,50 @@ export default function SearchMediaButtons() {
 		searchStore.setState((state) => ({ ...state, mediaType: type }));
 	};
 
-	const options = [
-		{ type: "anime" as const, label: "Anime" },
-		{ type: "tv" as const, label: "TV" },
-		{ type: "movie" as const, label: "Movies" },
-		{ type: "book" as const, label: "Books" },
-		{ type: "manga" as const, label: "Manga" },
-	];
-
 	return (
-		<div className="flex flex-col space-y-3">
-			<p className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-				Select media type
-			</p>
-			<div className="flex flex-wrap items-center gap-2">
-				{options.map((option) => (
-					<Button
-						className={cn(
-							"h-9 rounded-full border px-4 text-xs font-semibold transition-all duration-300",
-							mediaType === option.type
-								? "border-primary/30 bg-primary text-primary-foreground shadow-sm hover:bg-primary/85"
-								: "border-border/60 bg-card text-muted-foreground hover:bg-accent/40 hover:text-foreground",
-						)}
-						key={option.type}
-						onClick={() => setMediaType(option.type)}
-						size="sm"
-						variant="outline"
-					>
-						{option.label}
-					</Button>
-				))}
+		<div className="flex flex-col space-y-2">
+			<p>Select media type</p>
+			<div className="flex flex-wrap items-center gap-3">
+				<Button
+					className="text-xs"
+					onClick={() => setMediaType("anime")}
+					size="sm"
+					variant={mediaType === "anime" ? "default" : "outline"}
+				>
+					Anime
+				</Button>
+				<Button
+					className="text-xs"
+					onClick={() => setMediaType("tv")}
+					size="sm"
+					variant={mediaType === "tv" ? "default" : "outline"}
+				>
+					TV
+				</Button>
+				<Button
+					className="text-xs"
+					onClick={() => setMediaType("movie")}
+					size="sm"
+					variant={mediaType === "movie" ? "default" : "outline"}
+				>
+					Movies
+				</Button>
+				<Button
+					className="text-xs"
+					onClick={() => setMediaType("book")}
+					size="sm"
+					variant={mediaType === "book" ? "default" : "outline"}
+				>
+					Books
+				</Button>
+				<Button
+					className="text-xs"
+					onClick={() => setMediaType("manga")}
+					size="sm"
+					variant={mediaType === "manga" ? "default" : "outline"}
+				>
+					Manga
+				</Button>
 			</div>
 		</div>
 	);

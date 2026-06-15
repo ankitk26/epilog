@@ -27,12 +27,8 @@ function SearchPage() {
 				search={{ type: backType, view: defaultMediaFilters.view }}
 				to="/"
 			>
-				<Button
-					className="gap-2 rounded-full text-xs font-medium transition-all hover:bg-accent/50"
-					size="sm"
-					variant="outline"
-				>
-					<ArrowLeftIcon weight="bold" />
+				<Button className="text-xs" size="sm" variant="secondary">
+					<ArrowLeftIcon />
 					Go back
 				</Button>
 			</Link>

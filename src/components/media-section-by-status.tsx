@@ -48,14 +48,14 @@ export default function MediaSectionByStatus(props: Props) {
 	};
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-3">
 			{/* Section title */}
 			<div className="flex items-center justify-between space-y-1">
 				<div className="flex items-center gap-3">
 					{/* Collapse button */}
 					{props.logs.length > 0 && (
 						<Button
-							className="size-7 rounded-lg border-border/60 transition-all hover:bg-accent/50"
+							className="size-6"
 							onClick={() =>
 								setIsCollapsed((prevState) => !prevState)
 							}
@@ -64,22 +64,18 @@ export default function MediaSectionByStatus(props: Props) {
 						>
 							<CaretDownIcon
 								className={cn(
-									"size-3.5 transition-transform duration-300",
+									"size-3 transition-transform",
 									isCollapsed ? "-rotate-90" : "rotate-0",
 								)}
-								weight="bold"
 							/>
 						</Button>
 					)}
 
-					<h2
-						className="text-lg font-semibold tracking-tight"
-						style={{ fontFamily: "var(--font-heading)" }}
-					>
+					<h2 className="text-lg font-medium">
 						{props.section.title}
 					</h2>
 					<Badge
-						className="rounded-full border-0 bg-secondary px-2.5 text-xs font-semibold text-secondary-foreground"
+						className="bg-muted text-muted-foreground"
 						variant="secondary"
 					>
 						{props.logs.length}
@@ -88,21 +84,15 @@ export default function MediaSectionByStatus(props: Props) {
 					{/* Edit button */}
 					{props.logs.length > 0 && (
 						<Button
-							className="size-7 rounded-lg border-border/60 transition-all hover:bg-accent/50"
+							className="size-7"
 							onClick={() => setIsEditing((prev) => !prev)}
 							size="icon"
 							variant="outline"
 						>
 							{isEditing ? (
-								<PencilSimpleSlashIcon
-									className="size-3.5"
-									weight="bold"
-								/>
+								<PencilSimpleSlashIcon className="size-3" />
 							) : (
-								<PencilSimpleIcon
-									className="size-3.5"
-									weight="bold"
-								/>
+								<PencilSimpleIcon className="size-3" />
 							)}
 						</Button>
 					)}
@@ -126,7 +116,7 @@ export default function MediaSectionByStatus(props: Props) {
 				<div
 					className={
 						view === "list"
-							? "flex flex-col gap-3"
+							? "flex flex-col gap-4"
 							: "grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4"
 					}
 				>
@@ -162,13 +152,11 @@ export default function MediaSectionByStatus(props: Props) {
 
 			{/* No data section */}
 			{props.logs.length === 0 && (
-				<div className="flex flex-col items-center justify-center space-y-4 rounded-xl border-2 border-dashed border-border/40 py-10 text-center">
-					<div className="flex size-12 items-center justify-center rounded-xl bg-secondary/50">
-						<IconByType
-							className="size-6 text-muted-foreground/60"
-							type={mediaType}
-						/>
-					</div>
+				<div className="flex flex-col items-center justify-center space-y-3 rounded-lg border-2 border-dashed border-muted-foreground/25 py-8 text-center">
+					<IconByType
+						className="size-8 text-muted-foreground"
+						type={mediaType}
+					/>
 					<p className="text-xs text-muted-foreground">
 						<EmptyStateMessage />
 					</p>

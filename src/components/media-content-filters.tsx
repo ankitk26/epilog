@@ -61,10 +61,10 @@ export default function MediaContentFilters() {
 					return (
 						<button
 							className={cn(
-								"flex h-9 cursor-pointer items-center gap-2 rounded-full border px-3.5 text-xs leading-none font-semibold transition-all duration-300",
+								"flex h-8 cursor-pointer items-center gap-1.5 rounded-full border-0 px-3 text-xs leading-none font-medium transition-colors",
 								isActive
-									? "border-primary/30 bg-primary text-primary-foreground shadow-sm hover:shadow-md"
-									: "border-border/60 bg-card text-muted-foreground hover:border-border hover:bg-accent/40 hover:text-foreground",
+									? "bg-primary text-primary-foreground hover:bg-primary/80"
+									: "bg-muted text-muted-foreground hover:bg-muted/80",
 							)}
 							key={item.type}
 							onClick={() => {
@@ -75,10 +75,10 @@ export default function MediaContentFilters() {
 							<span className="leading-none">{item.label}</span>
 							<span
 								className={cn(
-									"flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[10px] leading-none font-bold",
+									"flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs leading-none font-medium",
 									isActive
-										? "bg-primary-foreground/20 text-primary-foreground"
-										: "bg-secondary text-muted-foreground",
+										? "bg-primary-foreground/25 text-primary-foreground"
+										: "bg-background/60 text-muted-foreground",
 								)}
 							>
 								{item.count}
@@ -89,7 +89,7 @@ export default function MediaContentFilters() {
 			</div>
 
 			{/* View switcher */}
-			<div className="flex w-full items-center gap-1 rounded-xl border border-border/60 bg-muted/20 p-1 sm:w-auto">
+			<div className="flex w-full items-center gap-1 rounded-lg border p-1 sm:w-auto">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
@@ -103,10 +103,10 @@ export default function MediaContentFilters() {
 								render={
 									<Button
 										className={cn(
-											"h-8 w-8 flex-1 rounded-lg p-0 transition-all duration-300 sm:w-8 sm:flex-none",
+											"h-7 w-7 flex-1 p-0 sm:w-7 sm:flex-none",
 											isActive
-												? "bg-background text-foreground shadow-sm"
-												: "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+												? "bg-accent text-accent-foreground"
+												: "text-muted-foreground hover:text-foreground",
 										)}
 										key={option.value}
 										onClick={() => setView(option.value)}
@@ -114,12 +114,7 @@ export default function MediaContentFilters() {
 										variant="ghost"
 										title={option.label}
 									>
-										<Icon
-											className="size-3.5"
-											weight={
-												isActive ? "bold" : "regular"
-											}
-										/>
+										<Icon className="size-3.5" />
 										<span className="sr-only">
 											{option.label}
 										</span>
