@@ -15,6 +15,7 @@ export const getMangaSearchResults = createServerFn({ method: "GET" })
 				method: "GET",
 				query: {
 					q: data.searchQuery,
+					sfw: "true",
 				},
 				output: jikanMangaSearchAPIOutput,
 			},
