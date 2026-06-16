@@ -12,6 +12,7 @@ type Props = {
 		icon: Icon;
 	};
 	logs: FunctionReturnType<typeof api.logs.all>;
+	onLogClick?: (log: FunctionReturnType<typeof api.logs.all>[0]) => void;
 };
 
 export default function ShelfColumn(props: Props) {
@@ -43,7 +44,11 @@ export default function ShelfColumn(props: Props) {
 				<div className="space-y-3">
 					{props.logs.length > 0 &&
 						props.logs.map((log) => (
-							<ShelfCard key={log._id} log={log} />
+							<ShelfCard
+								key={log._id}
+								log={log}
+								onClick={() => props.onLogClick?.(log)}
+							/>
 						))}
 				</div>
 			</div>

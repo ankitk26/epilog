@@ -1,43 +1,26 @@
 import type { api } from "@convex/_generated/api";
-import type { Id } from "@convex/_generated/dataModel";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import IconByType from "./icon-by-type";
-import { Checkbox } from "./ui/checkbox";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
-	selected?: boolean;
-	onToggleSelect?: (id: Id<"logs">) => void;
-	showCheckbox?: boolean;
+	onClick?: () => void;
 };
 
-export default function ListCard({
-	log,
-	selected,
-	onToggleSelect,
-	showCheckbox,
-}: Props) {
+export default function ListCard({ log, onClick }: Props) {
 	return (
-		<Card className={cn("p-3", selected ? "ring-2 ring-ring/60" : "")}>
-			<div
-				aria-pressed={showCheckbox ? !!selected : undefined}
-				className="flex items-center gap-3"
-				onClick={
-					showCheckbox ? () => onToggleSelect?.(log._id) : undefined
-				}
-				role={showCheckbox ? "button" : undefined}
-			>
-				{/* Selector */}
-				{showCheckbox && (
-					<Checkbox
-						checked={!!selected}
-						onCheckedChange={() => onToggleSelect?.(log._id)}
-						onClick={(e) => e.stopPropagation()}
-					/>
-				)}
+		<Card
+			className={cn(
+				"cursor-pointer p-3 transition-colors hover:bg-muted/50",
+				onClick ? "cursor-pointer" : "",
+			)}
+			onClick={onClick}
+			role="button"
+		>
+			<div className="flex items-center gap-3">
 				{/* Poster */}
 				<div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-md">
 					{log.metadata?.image ? (

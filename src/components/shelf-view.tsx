@@ -6,8 +6,10 @@ import {
 	ClockIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import type { FunctionReturnType } from "convex/server";
 import { useMemo, useRef, useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import LogDetailsDialog from "./log-details-dialog";
 import ShelfColumn from "./shelf-column";
 
 export default function ShelfView() {
@@ -17,6 +19,9 @@ export default function ShelfView() {
 	const [touchStart, setTouchStart] = useState(0);
 	const [touchEnd, setTouchEnd] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
+	const [selectedLog, setSelectedLog] = useState<
+		FunctionReturnType<typeof api.logs.all>[0] | null
+	>(null);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -102,6 +107,7 @@ export default function ShelfView() {
 								logs={logsFilteredByMediaType.filter(
 									(log) => log.status === column.status,
 								)}
+								onLogClick={setSelectedLog}
 							/>
 						</div>
 					))}
@@ -117,10 +123,19 @@ export default function ShelfView() {
 							logs={logsFilteredByMediaType.filter(
 								(log) => log.status === column.status,
 							)}
+							onLogClick={setSelectedLog}
 						/>
 					</div>
 				))}
 			</div>
+
+			<LogDetailsDialog
+				log={selectedLog}
+				open={!!selectedLog}
+				onOpenChange={(open) => {
+					if (!open) setSelectedLog(null);
+				}}
+			/>
 		</div>
 	);
 }

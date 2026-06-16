@@ -11,7 +11,6 @@ import type { MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
-import { Checkbox } from "./ui/checkbox";
 
 type Props = {
 	media: {
@@ -28,9 +27,7 @@ type Props = {
 	};
 	displayOnly?: boolean;
 	id?: Id<"logs">;
-	selected?: boolean;
-	onToggleSelect?: (id: Id<"logs">) => void;
-	showCheckbox?: boolean;
+	onClick?: () => void;
 };
 
 export default function MediaCard(props: Props) {
@@ -72,20 +69,16 @@ export default function MediaCard(props: Props) {
 		});
 	};
 
+	const isClickable = displayOnly && !!props.onClick;
+
 	return (
 		<Card
 			className={cn(
-				"group w-full overflow-hidden p-0",
-				props.showCheckbox && "cursor-pointer",
-				props.selected ? "ring-2 ring-ring/60" : "",
+				"group w-full overflow-hidden p-0 transition-colors",
+				isClickable && "cursor-pointer hover:bg-muted/50",
 			)}
-			onClick={
-				props.showCheckbox
-					? () => props.id && props.onToggleSelect?.(props.id)
-					: undefined
-			}
-			role={props.showCheckbox ? "button" : undefined}
-			aria-pressed={props.showCheckbox ? !!props.selected : undefined}
+			onClick={props.onClick}
+			role={isClickable ? "button" : undefined}
 		>
 			<div className="relative aspect-[2/3] overflow-hidden">
 				{props.media.imageUrl && !imageFailed ? (
@@ -105,20 +98,8 @@ export default function MediaCard(props: Props) {
 						/>
 					</div>
 				)}
-				{/* Checkbox overlay for edit mode */}
-				{props.showCheckbox && (
-					<div className="absolute top-2 left-2 z-10">
-						<Checkbox
-							checked={!!props.selected}
-							onCheckedChange={() =>
-								props.id && props.onToggleSelect?.(props.id)
-							}
-							onClick={(e) => e.stopPropagation()}
-						/>
-					</div>
-				)}
 				{/* Add button overlay */}
-				{!displayOnly && !props.showCheckbox && (
+				{!displayOnly && (
 					<div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100">
 						<Button
 							onClick={handleAddToPlanning}

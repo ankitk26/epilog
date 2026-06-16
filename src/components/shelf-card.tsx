@@ -1,16 +1,24 @@
 import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
+import { cn } from "@/lib/utils";
 import IconByType from "./icon-by-type";
-import ShelfCardActions from "./shelf-card-actions";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
+	onClick?: () => void;
 };
 
-export default function ShelfCard({ log }: Props) {
+export default function ShelfCard({ log, onClick }: Props) {
 	return (
-		<div className="group flex items-center gap-3 overflow-hidden rounded-lg bg-card p-2.5 transition-all duration-300 hover:shadow-lg">
+		<div
+			className={cn(
+				"group flex items-center gap-3 overflow-hidden rounded-lg bg-card p-2.5 transition-all duration-300 hover:shadow-lg",
+				onClick && "cursor-pointer hover:bg-muted/50",
+			)}
+			onClick={onClick}
+			role={onClick ? "button" : undefined}
+		>
 			{/* Poster Thumbnail */}
 			<div className="h-20 w-14 flex-shrink-0 overflow-hidden rounded-md">
 				{log.metadata?.image ? (
@@ -39,11 +47,6 @@ export default function ShelfCard({ log }: Props) {
 				<p className="text-xs text-muted-foreground">
 					{log.metadata.releaseYear}
 				</p>
-			</div>
-
-			{/* Actions */}
-			<div className="flex-shrink-0 self-start opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-				<ShelfCardActions log={log} />
 			</div>
 		</div>
 	);

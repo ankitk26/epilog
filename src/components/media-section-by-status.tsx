@@ -1,10 +1,5 @@
 import type { api } from "@convex/_generated/api";
-import type { Id } from "@convex/_generated/dataModel";
-import {
-	CaretDownIcon,
-	PencilSimpleIcon,
-	PencilSimpleSlashIcon,
-} from "@phosphor-icons/react";
+import { CaretDownIcon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
@@ -12,7 +7,7 @@ import { cn } from "@/lib/utils";
 import EmptyStateMessage from "./empty-state-message";
 import IconByType from "./icon-by-type";
 import ListCard from "./list-card";
-import ListViewToolbar from "./list-view-toolbar";
+import LogDetailsDialog from "./log-details-dialog";
 import MediaCard from "./media-card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -29,23 +24,9 @@ export default function MediaSectionByStatus(props: Props) {
 	const { type: mediaType, view } = useMediaFilters();
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
-	const [selectedLogIds, setSelectedLogIds] = useState<Set<Id<"logs">>>(
-		new Set(),
-	);
-
-	// toggle selection of a single item
-	const onToggleSelect = (id: Id<"logs">) => {
-		setSelectedLogIds((prev) => {
-			const next = new Set(prev);
-			if (next.has(id)) {
-				next.delete(id);
-			} else {
-				next.add(id);
-			}
-			return next;
-		});
-	};
+	const [selectedLog, setSelectedLog] = useState<
+		FunctionReturnType<typeof api.logs.all>[0] | null
+	>(null);
 
 	return (
 		<div className="space-y-3">
@@ -80,36 +61,7 @@ export default function MediaSectionByStatus(props: Props) {
 					>
 						{props.logs.length}
 					</Badge>
-
-					{/* Edit button */}
-					{props.logs.length > 0 && (
-						<Button
-							className="size-7"
-							onClick={() => setIsEditing((prev) => !prev)}
-							size="icon"
-							variant="outline"
-						>
-							{isEditing ? (
-								<PencilSimpleSlashIcon className="size-3" />
-							) : (
-								<PencilSimpleIcon className="size-3" />
-							)}
-						</Button>
-					)}
 				</div>
-			</div>
-
-			<div className="flex w-full justify-start">
-				{isEditing && props.logs.length > 0 && (
-					<ListViewToolbar
-						isEditing={isEditing}
-						logs={props.logs}
-						sectionStatus={props.section.status}
-						selectedLogIds={selectedLogIds}
-						setIsEditing={setIsEditing}
-						setSelectedLogIds={setSelectedLogIds}
-					/>
-				)}
 			</div>
 
 			{!isCollapsed && props.logs.length !== 0 && (
@@ -125,15 +77,12 @@ export default function MediaSectionByStatus(props: Props) {
 							<ListCard
 								key={log._id}
 								log={log}
-								onToggleSelect={onToggleSelect}
-								selected={selectedLogIds.has(log._id)}
-								showCheckbox={isEditing}
+								onClick={() => setSelectedLog(log)}
 							/>
 						) : (
 							<MediaCard
 								displayOnly
 								key={log._id}
-								id={log._id}
 								media={{
 									imageUrl: log.metadata.image,
 									name: log.metadata.name || "NA",
@@ -141,9 +90,7 @@ export default function MediaSectionByStatus(props: Props) {
 									sourceId: log.metadata.sourceMediaId,
 									type: log.metadata.type,
 								}}
-								onToggleSelect={onToggleSelect}
-								selected={selectedLogIds.has(log._id)}
-								showCheckbox={isEditing}
+								onClick={() => setSelectedLog(log)}
 							/>
 						),
 					)}
@@ -162,6 +109,14 @@ export default function MediaSectionByStatus(props: Props) {
 					</p>
 				</div>
 			)}
+
+			<LogDetailsDialog
+				log={selectedLog}
+				open={!!selectedLog}
+				onOpenChange={(open) => {
+					if (!open) setSelectedLog(null);
+				}}
+			/>
 		</div>
 	);
 }

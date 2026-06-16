@@ -156,6 +156,31 @@ export const updateStatus = mutation({
 	},
 });
 
+export const update = mutation({
+	args: {
+		logId: v.id("logs"),
+		status: v.union(
+			v.literal("planned"),
+			v.literal("in_progress"),
+			v.literal("completed"),
+		),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const existingLog = await ctx.db.get(args.logId);
+
+		if (!existingLog || existingLog.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		await ctx.db.patch(args.logId, {
+			status: args.status,
+			updatedTime: Date.now(),
+		});
+	},
+});
+
 export const bulkUpdateStatus = mutation({
 	args: {
 		logIds: v.array(v.id("logs")),
