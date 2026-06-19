@@ -37,7 +37,7 @@ export default function MangaResults() {
 		<div className="space-y-5">
 			<div className="flex items-center gap-4">
 				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
-				<span className="text-sm tabular-nums text-muted-foreground">
+				<span className="text-sm text-muted-foreground tabular-nums">
 					{mangaContent.data.length} found
 				</span>
 				<div className="h-px flex-1 bg-hairline" />

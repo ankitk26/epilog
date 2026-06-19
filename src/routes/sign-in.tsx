@@ -15,10 +15,10 @@ function SignInPage() {
 		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-5 py-16">
 			{/* Atmospheric gradient orbs — the brand's signature color moment */}
 			<div aria-hidden className="pointer-events-none absolute inset-0">
-				<div className="orb orb-mint animate-orb-drift right-[-10rem] top-[-12rem] size-[32rem] opacity-60" />
-				<div className="orb orb-peach animate-orb-drift-2 bottom-[-14rem] left-[-8rem] size-[30rem] opacity-55" />
-				<div className="orb orb-lavender animate-orb-drift left-[38%] top-[24%] size-[22rem] opacity-40" />
-				<div className="orb orb-sky animate-orb-drift-2 right-[20%] bottom-[8%] size-[18rem] opacity-30" />
+				<div className="orb orb-mint top-[-12rem] right-[-10rem] size-[32rem] animate-orb-drift opacity-60" />
+				<div className="orb orb-peach bottom-[-14rem] left-[-8rem] size-[30rem] animate-orb-drift-2 opacity-55" />
+				<div className="orb orb-lavender top-[24%] left-[38%] size-[22rem] animate-orb-drift opacity-40" />
+				<div className="orb orb-sky right-[20%] bottom-[8%] size-[18rem] animate-orb-drift-2 opacity-30" />
 			</div>
 
 			<div
@@ -27,7 +27,7 @@ function SignInPage() {
 			>
 				<div className="space-y-4 text-center">
 					<div className="space-y-2">
-						<h1 className="font-heading text-5xl font-light italic tracking-tight text-ink lg:text-6xl">
+						<h1 className="font-heading text-5xl font-light tracking-tight text-ink italic lg:text-6xl">
 							epilog
 						</h1>
 						<p className="eyebrow tracking-[0.18em]">
@@ -90,8 +90,7 @@ function SignInPage() {
 				</div>
 
 				<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
-					By continuing you agree to keep your shelf honestly
-					curated.
+					By continuing you agree to keep your shelf honestly curated.
 				</p>
 			</div>
 		</div>

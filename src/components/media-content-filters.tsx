@@ -75,7 +75,7 @@ export default function MediaContentFilters() {
 							<span>{item.label}</span>
 							<span
 								className={cn(
-									"flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-[11px] font-semibold tabular-nums leading-none",
+									"flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-[11px] leading-none font-semibold tabular-nums",
 									isActive
 										? "bg-primary-foreground/20 text-primary-foreground"
 										: "bg-secondary text-muted-foreground group-hover:bg-secondary",

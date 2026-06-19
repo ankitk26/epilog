@@ -118,7 +118,7 @@ export default function MediaCard(props: Props) {
 				)}
 			</div>
 			<CardContent className="space-y-0.5 px-2.5 py-2.5">
-				<h4 className="line-clamp-2 text-[13px] leading-snug font-medium text-ink">
+				<h4 className="line-clamp-2 font-heading text-[14px] leading-tight font-normal text-ink">
 					{props.media.name}
 				</h4>
 				{props.media.secondaryText && (
@@ -127,7 +127,7 @@ export default function MediaCard(props: Props) {
 					</p>
 				)}
 				{props.media.releaseYear && (
-					<p className="text-xs tabular-nums text-muted-foreground">
+					<p className="text-xs text-muted-foreground tabular-nums">
 						{props.media.releaseYear}
 					</p>
 				)}

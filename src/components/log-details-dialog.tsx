@@ -5,7 +5,6 @@ import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 
@@ -106,8 +106,8 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="flex max-h-[80vh] flex-col rounded-2xl border border-hairline p-6 shadow-lift sm:max-w-md">
 				<DialogHeader>
-					<DialogTitle className="font-heading text-xl font-normal tracking-tight text-ink">
-						Log details
+					<DialogTitle className="font-heading text-xl leading-tight font-normal tracking-tight text-ink">
+						{log?.metadata.name || "Untitled"}
 					</DialogTitle>
 				</DialogHeader>
 
@@ -137,11 +137,8 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 							</div>
 
 							<div className="min-w-0 flex-1 space-y-1.5 pt-1">
-								<h3 className="font-heading text-lg leading-tight font-normal tracking-tight text-ink">
-									{log.metadata.name || "Untitled"}
-								</h3>
 								{log.metadata.releaseYear && (
-									<p className="text-xs tabular-nums text-muted-foreground">
+									<p className="text-xs text-muted-foreground tabular-nums">
 										{log.metadata.releaseYear}
 									</p>
 								)}

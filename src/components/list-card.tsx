@@ -37,11 +37,11 @@ export default function ListCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="min-w-0 flex-1">
-				<h3 className="font-heading text-lg font-normal leading-tight tracking-tight text-ink transition-colors group-hover:text-ink">
+				<h3 className="font-heading text-base leading-tight font-normal tracking-tight text-ink transition-colors group-hover:text-ink">
 					{log.metadata?.name || "Untitled"}
 				</h3>
 				{log.metadata?.releaseYear && (
-					<p className="mt-1 text-xs tabular-nums text-muted-foreground">
+					<p className="mt-1 text-xs text-muted-foreground tabular-nums">
 						{log.metadata.releaseYear}
 					</p>
 				)}

@@ -16,19 +16,19 @@ export default function ShelfCard({ log, onClick }: Props) {
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="h-16 w-11 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
+			<div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}
 						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-						height={64}
+						height={96}
 						src={log.metadata.image}
-						width={44}
+						width={64}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center">
 						<IconByType
-							className="size-3.5 text-muted-foreground/50"
+							className="size-5 text-muted-foreground/50"
 							type={log.metadata?.type}
 						/>
 					</div>
@@ -40,7 +40,7 @@ export default function ShelfCard({ log, onClick }: Props) {
 				<h4 className="mb-0.5 line-clamp-2 font-heading text-[14px] leading-tight font-normal text-ink">
 					{log.metadata.name}
 				</h4>
-				<p className="text-[11px] tabular-nums text-muted-foreground">
+				<p className="text-[11px] text-muted-foreground tabular-nums">
 					{log.metadata.releaseYear}
 				</p>
 			</div>

@@ -52,7 +52,7 @@ export default function Header() {
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-2xl font-light italic tracking-tight text-ink transition-opacity group-hover:opacity-70">
+					<span className="font-heading text-2xl font-light tracking-tight text-ink italic transition-opacity group-hover:opacity-70">
 						epilog
 					</span>
 				</Link>
@@ -75,7 +75,7 @@ export default function Header() {
 							render={
 								<button
 									type="button"
-									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline-strong bg-transparent p-0 outline-none transition-colors hover:bg-secondary"
+									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline-strong bg-transparent p-0 transition-colors outline-none hover:bg-secondary"
 								>
 									<Avatar className="size-9 rounded-full">
 										<AvatarImage

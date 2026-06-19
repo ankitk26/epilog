@@ -104,7 +104,7 @@ export default function MovieSearchResultItem({
 					{movie.name ?? movie.title ?? "N/A"}
 				</h4>
 				{releaseYear && (
-					<p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
+					<p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
 						{releaseYear}
 					</p>
 				)}

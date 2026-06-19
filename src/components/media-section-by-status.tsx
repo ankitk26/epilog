@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { cn } from "@/lib/utils";
 import EmptyStateMessage from "./empty-state-message";
-import IconByType from "./icon-by-type";
 import ListCard from "./list-card";
 import LogDetailsDialog from "./log-details-dialog";
 import MediaCard from "./media-card";
@@ -20,7 +19,7 @@ type Props = {
 };
 
 export default function MediaSectionByStatus(props: Props) {
-	const { type: mediaType, view } = useMediaFilters();
+	const { view } = useMediaFilters();
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [selectedLog, setSelectedLog] = useState<
@@ -28,13 +27,13 @@ export default function MediaSectionByStatus(props: Props) {
 	>(null);
 
 	return (
-		<section className="space-y-5 animate-reveal-up">
+		<section className="animate-reveal-up space-y-2">
 			{/* Section header — editorial title with a hairline rule */}
 			<div className="flex items-center gap-4">
 				<h2 className="font-heading text-2xl font-light tracking-tight whitespace-nowrap text-ink">
 					{props.section.title}
 				</h2>
-				<span className="text-sm tabular-nums text-muted-foreground">
+				<span className="text-sm text-muted-foreground tabular-nums">
 					{props.logs.length}
 				</span>
 				<div className="h-px flex-1 bg-hairline" />
@@ -61,7 +60,7 @@ export default function MediaSectionByStatus(props: Props) {
 				<div
 					className={
 						view === "list"
-							? "flex flex-col divide-y divide-hairline border-y border-hairline"
+							? "flex flex-col divide-y divide-hairline border-b border-hairline"
 							: "grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4"
 					}
 				>
@@ -91,17 +90,7 @@ export default function MediaSectionByStatus(props: Props) {
 			)}
 
 			{/* No data section */}
-			{props.logs.length === 0 && (
-				<div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-hairline-strong bg-canvas-soft/50 py-12 text-center">
-					<IconByType
-						className="size-7 text-muted-foreground/60"
-						type={mediaType}
-					/>
-					<p className="max-w-xs text-[13px] leading-relaxed text-muted-foreground">
-						<EmptyStateMessage />
-					</p>
-				</div>
-			)}
+			{props.logs.length === 0 && <EmptyStateMessage />}
 
 			<LogDetailsDialog
 				log={selectedLog}

@@ -1,7 +1,12 @@
-import { createFileRoute, Outlet, redirect, useSearch } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Outlet,
+	redirect,
+	useSearch,
+} from "@tanstack/react-router";
 import Header from "@/components/header";
-import type { MediaType } from "@/types";
 import { cn } from "@/lib/utils";
+import type { MediaType } from "@/types";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -32,19 +37,19 @@ function Atmosphere() {
 				className={cn(
 					"orb animate-orb-drift",
 					orbClass,
-					"right-[-12rem] top-[-14rem] size-[34rem]",
+					"top-[-14rem] right-[-12rem] size-[34rem]",
 				)}
 			/>
 			<div
 				className={cn(
-					"orb animate-orb-drift-2 orb-rose",
+					"orb orb-rose animate-orb-drift-2",
 					"bottom-[-16rem] left-[-10rem] size-[30rem]",
 				)}
 			/>
 			<div
 				className={cn(
-					"orb animate-orb-drift orb-lavender",
-					"left-[42%] top-[28%] size-[20rem] opacity-30",
+					"orb orb-lavender animate-orb-drift",
+					"top-[28%] left-[42%] size-[20rem] opacity-30",
 				)}
 			/>
 		</div>

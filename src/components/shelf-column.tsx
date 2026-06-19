@@ -21,11 +21,14 @@ export default function ShelfColumn(props: Props) {
 		<div className="flex min-h-48 flex-col rounded-xl border border-hairline bg-canvas-soft/50">
 			{/* Column Header */}
 			<div className="flex items-center gap-2.5 border-b border-hairline px-4 py-3.5">
-				<Icon className="size-4 text-muted-foreground" weight="regular" />
+				<Icon
+					className="size-4 text-muted-foreground"
+					weight="regular"
+				/>
 				<span className="font-heading text-[17px] font-normal tracking-tight text-ink">
 					{props.column.title}
 				</span>
-				<span className="ml-auto text-sm tabular-nums text-muted-foreground">
+				<span className="ml-auto text-sm text-muted-foreground tabular-nums">
 					{props.logs.length}
 				</span>
 			</div>
@@ -33,10 +36,8 @@ export default function ShelfColumn(props: Props) {
 			{/* Column Content */}
 			<div className="min-w-0 flex-1 p-1.5">
 				{props.logs.length === 0 && (
-					<div className="flex flex-1 flex-col items-center justify-center px-3 py-10 text-center">
-						<p className="max-w-[14rem] text-[13px] leading-relaxed text-muted-foreground/70">
-							<EmptyStateMessage />
-						</p>
+					<div className="px-2.5 pt-3">
+						<EmptyStateMessage />
 					</div>
 				)}
 
