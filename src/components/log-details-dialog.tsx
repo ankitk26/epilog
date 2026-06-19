@@ -163,10 +163,10 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 									return (
 										<button
 											className={cn(
-												"h-9 cursor-pointer rounded-full px-4 text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-50",
+												"h-9 cursor-pointer rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-50",
 												isActive
-													? "bg-primary text-primary-foreground shadow-soft"
-													: "border border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
+													? "border-transparent bg-primary text-primary-foreground shadow-soft"
+													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
 											)}
 											disabled={isLoading}
 											key={option.value}

@@ -61,10 +61,10 @@ export default function MediaContentFilters() {
 					return (
 						<button
 							className={cn(
-								"group flex h-9 cursor-pointer items-center gap-2 rounded-full px-4 text-[13px] font-medium tracking-wide transition-all duration-200",
+								"group flex h-9 cursor-pointer items-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200",
 								isActive
-									? "bg-primary text-primary-foreground shadow-soft"
-									: "border border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
+									? "border-transparent bg-primary text-primary-foreground shadow-soft"
+									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
 							)}
 							key={item.type}
 							onClick={() => {
