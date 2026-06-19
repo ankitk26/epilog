@@ -81,7 +81,7 @@ export default function ShelfView() {
 	};
 
 	return (
-		<div className="-mx-4 space-y-6 overflow-x-hidden lg:mx-0">
+		<div className="-mx-5 space-y-6 overflow-x-hidden lg:mx-0">
 			{/* Mobile and tablet: Single column with swipe */}
 			<div
 				className="lg:hidden"
@@ -115,7 +115,7 @@ export default function ShelfView() {
 			</div>
 
 			{/* Desktop: Three column grid */}
-			<div className="hidden lg:grid lg:grid-cols-3 lg:gap-4">
+			<div className="hidden gap-5 lg:grid lg:grid-cols-3">
 				{columns.map((column) => (
 					<div key={column.status}>
 						<ShelfColumn

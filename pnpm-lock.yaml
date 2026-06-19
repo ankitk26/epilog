@@ -20,6 +20,15 @@ importers:
       '@convex-dev/react-query':
         specifier: 0.1.0
         version: 0.1.0(@tanstack/react-query@5.100.6(react@19.2.5))(convex@1.37.0(react@19.2.5))
+      '@fontsource-variable/eb-garamond':
+        specifier: ^5.2.7
+        version: 5.2.7
+      '@fontsource-variable/hanken-grotesk':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource-variable/newsreader':
+        specifier: ^5.2.10
+        version: 5.2.10
       '@fontsource-variable/playfair-display':
         specifier: ^5.2.8
         version: 5.2.8
@@ -733,6 +742,15 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@fontsource-variable/eb-garamond@5.2.7':
+    resolution: {integrity: sha512-TbR+Pun4k5g85lgdxRNSbWka5vJgi9pzdFzFswgf7/7NRhKssvoumft1+ZGz3n91YYet96JcnjWrgPGGj6JTzg==}
+
+  '@fontsource-variable/hanken-grotesk@5.2.8':
+    resolution: {integrity: sha512-K7hu09ZKReBc7EifRLeM4K94NZBrxFEg0nGcISmVwlFQOJo4EmYkLXTWEwr5JcNW4z2hr5zy8vLS2sxC8JDmrQ==}
+
+  '@fontsource-variable/newsreader@5.2.10':
+    resolution: {integrity: sha512-MdI2iRwrqWpMOU/2aV2BgfZ4dJNlj/XlYaY8Zb7t87mWqHskYW0XiUANkt1cyOCiEfW2VQ0bQ5vZgGPp6B2B4w==}
 
   '@fontsource-variable/playfair-display@5.2.8':
     resolution: {integrity: sha512-ZzVIXPOrL85yyOvZYoBzUszIJM+xKkHqni4IYn2CVLaGQQdJR8sBeC8yFNgjxSJ7ludTwta8qpULeOFuk5X75A==}
@@ -3958,6 +3976,12 @@ snapshots:
       react-dom: 19.2.5(react@19.2.5)
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@fontsource-variable/eb-garamond@5.2.7': {}
+
+  '@fontsource-variable/hanken-grotesk@5.2.8': {}
+
+  '@fontsource-variable/newsreader@5.2.10': {}
 
   '@fontsource-variable/playfair-display@5.2.8': {}
 

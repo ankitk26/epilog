@@ -4,7 +4,6 @@ import { getContentSearchResults } from "@/actions/get-content-search-results";
 import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
-import { Badge } from "@/components/ui/badge";
 import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
 import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { searchStore } from "@/store/search-store";
@@ -43,17 +42,16 @@ export default function ContentResults() {
 	}
 
 	return (
-		<div className="space-y-3">
-			<div className="flex items-center space-x-4">
-				<h3 className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-					Search Results
-				</h3>
-				<Badge className="text-xs" variant="secondary">
+		<div className="space-y-5">
+			<div className="flex items-center gap-4">
+				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
+				<span className="text-sm tabular-nums text-muted-foreground">
 					{mediaContent.results.length} found
-				</Badge>
+				</span>
+				<div className="h-px flex-1 bg-hairline" />
 			</div>
 
-			<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4">
+			<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
 				{mediaContent.results.map((media) => {
 					const releaseYear = getReleaseYear(
 						media.release_date,

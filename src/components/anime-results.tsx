@@ -5,7 +5,6 @@ import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
 import SearchLoading from "./search-loading";
-import { Badge } from "./ui/badge";
 
 export default function AnimeResults() {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
@@ -35,16 +34,15 @@ export default function AnimeResults() {
 	}
 
 	return (
-		<div className="space-y-3">
-			<div className="flex items-center space-x-4">
-				<h3 className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-					Search Results
-				</h3>
-				<Badge className="text-xs" variant="secondary">
+		<div className="space-y-5">
+			<div className="flex items-center gap-4">
+				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
+				<span className="text-sm tabular-nums text-muted-foreground">
 					{animeContent.data.length} found
-				</Badge>
+				</span>
+				<div className="h-px flex-1 bg-hairline" />
 			</div>
-			<div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4">
+			<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
 				{animeContent.data.map((anime) => (
 					<MediaCard
 						key={anime.mal_id}

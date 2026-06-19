@@ -12,26 +12,37 @@ function SignInPage() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
-		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-background p-4">
-			{/* Decorative background elements */}
-			<div className="pointer-events-none absolute inset-0 overflow-hidden">
-				<div className="absolute -top-1/4 -right-1/4 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl" />
-				<div className="absolute -bottom-1/4 -left-1/4 h-[500px] w-[500px] rounded-full bg-accent/30 blur-3xl" />
+		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-5 py-16">
+			{/* Atmospheric gradient orbs — the brand's signature color moment */}
+			<div aria-hidden className="pointer-events-none absolute inset-0">
+				<div className="orb orb-mint animate-orb-drift right-[-10rem] top-[-12rem] size-[32rem] opacity-60" />
+				<div className="orb orb-peach animate-orb-drift-2 bottom-[-14rem] left-[-8rem] size-[30rem] opacity-55" />
+				<div className="orb orb-lavender animate-orb-drift left-[38%] top-[24%] size-[22rem] opacity-40" />
+				<div className="orb orb-sky animate-orb-drift-2 right-[20%] bottom-[8%] size-[18rem] opacity-30" />
 			</div>
 
-			<div className="relative w-full max-w-sm space-y-8 rounded-2xl border border-border/60 bg-card/80 p-8 shadow-2xl backdrop-blur-sm lg:space-y-10 lg:p-10">
-				<div className="space-y-3 text-center">
-					<h1 className="font-heading text-3xl font-semibold tracking-tight text-card-foreground lg:text-4xl">
-						epilog
-					</h1>
-					<p className="text-sm leading-relaxed text-muted-foreground">
-						Curate your world. Track the stories that move you.
+			<div
+				className="relative w-full max-w-sm animate-reveal-up space-y-10 rounded-2xl border border-hairline bg-card/80 p-9 shadow-lift backdrop-blur-md lg:p-11"
+				style={{ animationDelay: "120ms" }}
+			>
+				<div className="space-y-4 text-center">
+					<div className="space-y-2">
+						<h1 className="font-heading text-5xl font-light italic tracking-tight text-ink lg:text-6xl">
+							epilog
+						</h1>
+						<p className="eyebrow tracking-[0.18em]">
+							a media journal
+						</p>
+					</div>
+					<p className="mx-auto max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
+						Curate the stories that move you — films, shows, anime
+						and books, kept like a quiet editorial record.
 					</p>
 				</div>
 
 				<div className="space-y-4">
 					<Button
-						className="h-12 w-full gap-3 rounded-xl border-border/60 font-medium transition-all duration-300 hover:scale-[1.02] hover:bg-accent/50 hover:shadow-lg active:scale-[0.98]"
+						className="h-12 w-full gap-3 rounded-full bg-primary text-[15px] font-medium tracking-wide text-primary-foreground transition-all duration-300 hover:shadow-lift hover:grayscale-[0.05] active:scale-[0.99]"
 						disabled={isLoading}
 						onClick={async () => {
 							setIsLoading(true);
@@ -39,35 +50,49 @@ function SignInPage() {
 								provider: "google",
 							});
 						}}
-						variant="outline"
 					>
 						{isLoading ? (
 							<>
-								<SpinnerIcon className="h-4 w-4 animate-spin lg:h-5 lg:w-5" />
-								Signing in...
+								<SpinnerIcon className="size-5 animate-spin" />
+								Signing in…
 							</>
 						) : (
 							<>
 								<svg
 									aria-label="Google logo"
-									className="icon icon-tabler icons-tabler-filled icon-tabler-brand-google size-5 fill-primary"
+									className="size-5"
 									role="img"
 									viewBox="0 0 24 24"
 									xmlns="http://www.w3.org/2000/svg"
 								>
 									<title>Google</title>
 									<path
-										d="M0 0h24v24H0z"
-										fill="none"
-										stroke="none"
+										d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+										fill="#4285F4"
 									/>
-									<path d="M12 2a9.96 9.96 0 0 1 6.29 2.226a1 1 0 0 1 .04 1.52l-1.51 1.362a1 1 0 0 1 -1.265 .06a6 6 0 1 0 2.103 6.836l.001 -.004h-3.66a1 1 0 0 1 -.992 -.883l-.007 -.117v-2a1 1 0 0 1 1 -1h6.945a1 1 0 0 1 .994 .89c.04 .367 .061 .737 .061 1.11c0 5.523 -4.477 10 -10 10s-10 -4.477 -10 -10s4.477 -10 10 -10z" />
+									<path
+										d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"
+										fill="#34A853"
+									/>
+									<path
+										d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"
+										fill="#FBBC05"
+									/>
+									<path
+										d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"
+										fill="#EA4335"
+									/>
 								</svg>
 								Continue with Google
 							</>
 						)}
 					</Button>
 				</div>
+
+				<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
+					By continuing you agree to keep your shelf honestly
+					curated.
+				</p>
 			</div>
 		</div>
 	);

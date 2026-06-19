@@ -78,33 +78,33 @@ export default function MovieSearchResultItem({
 	return (
 		<button
 			type="button"
-			className="flex w-full items-start gap-2 rounded-lg border p-2 text-left transition-colors hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+			className="flex w-full items-start gap-3 rounded-lg border border-hairline bg-card p-2.5 text-left transition-all duration-200 hover:shadow-soft focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
 			onClick={handleMovieClick}
 		>
-			<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden">
+			<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden rounded-md bg-secondary">
 				{posterImage ? (
 					<Image
 						src={posterImage}
-						className="h-full w-full rounded-lg object-cover object-top"
+						className="h-full w-full object-cover object-top"
 						height={120}
 						width={80}
 						alt={movie.name ?? "movie"}
 					/>
 				) : (
-					<div className="flex h-full w-full items-center justify-center bg-muted">
+					<div className="flex h-full w-full items-center justify-center">
 						<IconByType
-							className="size-6 text-muted-foreground"
+							className="size-5 text-muted-foreground/50"
 							type="movie"
 						/>
 					</div>
 				)}
 			</div>
 			<div className="min-w-0 flex-1">
-				<h4 className="truncate text-xs font-medium">
+				<h4 className="truncate font-heading text-sm font-normal text-ink">
 					{movie.name ?? movie.title ?? "N/A"}
 				</h4>
 				{releaseYear && (
-					<p className="text-xs text-muted-foreground">
+					<p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
 						{releaseYear}
 					</p>
 				)}

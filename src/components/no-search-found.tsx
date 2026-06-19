@@ -6,14 +6,16 @@ export default function NoSearchFound() {
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
 	return (
-		<div className="flex flex-col items-center justify-center py-8 text-center">
+		<div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-hairline-strong bg-canvas-soft/50 py-14 text-center">
 			<SearchIconByType
-				className="mb-2 size-8 text-muted-foreground"
+				className="size-7 text-muted-foreground/60"
 				type={mediaType}
 			/>
-			<p className="text-sm text-muted-foreground">No results found</p>
-			<p className="text-xs text-muted-foreground">
-				Try a different search term
+			<p className="font-heading text-lg font-normal text-ink">
+				No results found
+			</p>
+			<p className="max-w-xs text-[13px] leading-relaxed text-muted-foreground">
+				Try a different search term.
 			</p>
 		</div>
 	);

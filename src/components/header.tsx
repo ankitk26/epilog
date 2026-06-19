@@ -45,24 +45,26 @@ export default function Header() {
 	};
 
 	return (
-		<header className="border-b px-4 py-3 lg:px-6 lg:py-4">
-			<div className="mx-auto flex max-w-6xl items-center justify-between">
+		<header className="sticky top-0 z-30 border-b border-hairline bg-canvas/70 backdrop-blur-md supports-backdrop-filter:bg-canvas/55">
+			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 lg:h-[4.5rem] lg:px-8">
 				<Link
-					className="font-heading text-lg font-semibold tracking-wide"
+					className="group flex items-baseline"
 					search={defaultMediaFilters}
 					to="/"
 				>
-					epilog
+					<span className="font-heading text-2xl font-light italic tracking-tight text-ink transition-opacity group-hover:opacity-70">
+						epilog
+					</span>
 				</Link>
 
-				<div className="flex items-center gap-3">
+				<div className="flex items-center gap-2 sm:gap-3">
 					<Button
-						className="h-8 gap-1.5 text-xs"
+						className="h-9 gap-2 rounded-full border-hairline-strong bg-transparent px-4 text-[13px] font-medium tracking-wide text-ink transition-colors hover:bg-secondary"
 						onClick={goToSearch}
 						size="sm"
 						variant="outline"
 					>
-						<MagnifyingGlassIcon className="size-3.5" />
+						<MagnifyingGlassIcon className="size-4" />
 						Search
 					</Button>
 
@@ -73,33 +75,38 @@ export default function Header() {
 							render={
 								<button
 									type="button"
-									className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0 outline-none select-none"
+									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline-strong bg-transparent p-0 outline-none transition-colors hover:bg-secondary"
 								>
-									<span className="absolute inset-0 rounded-full border border-border mix-blend-darken dark:mix-blend-lighten" />
-									<Avatar className="size-8">
+									<Avatar className="size-9 rounded-full">
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
 										/>
-										<AvatarFallback>
+										<AvatarFallback className="rounded-full bg-secondary text-[13px] font-medium text-ink">
 											{data?.user.name[0]}
 										</AvatarFallback>
 									</Avatar>
 								</button>
 							}
 						/>
-						<DropdownMenuContent align="end" className="w-48">
-							<div className="px-2 py-1.5">
-								<p className="text-sm font-medium">
+						<DropdownMenuContent
+							align="end"
+							className="w-52 rounded-xl border-hairline shadow-soft"
+						>
+							<div className="px-2.5 py-2">
+								<p className="font-heading text-[15px] font-normal text-ink">
 									{data?.user.name}
 								</p>
-								<p className="text-xs text-muted-foreground">
+								<p className="mt-0.5 text-xs text-muted-foreground">
 									{data?.user.email}
 								</p>
 							</div>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick={handleSignOut}>
-								<SignOutIcon className="size-3.5" />
+							<DropdownMenuSeparator className="bg-hairline" />
+							<DropdownMenuItem
+								className="rounded-lg text-sm focus:bg-secondary"
+								onClick={handleSignOut}
+							>
+								<SignOutIcon className="size-4" />
 								Log out
 							</DropdownMenuItem>
 						</DropdownMenuContent>

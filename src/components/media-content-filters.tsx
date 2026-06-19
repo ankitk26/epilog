@@ -13,118 +13,133 @@ import { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-export default function MediaContentFilters() {
+const mediaNouns: { type: MediaType; word: string }[] = [
+	{ type: "movie", word: "films" },
+	{ type: "tv", word: "shows" },
+	{ type: "anime", word: "anime" },
+	{ type: "book", word: "books" },
+];
+
+const viewOptions: {
+	value: FilterMediaView;
+	label: string;
+	icon: typeof ListIcon;
+}[] = [
+	{ value: "grid", label: "Grid", icon: SquaresFourIcon },
+	{ value: "list", label: "List", icon: ListIcon },
+	{ value: "shelf", label: "Shelf", icon: KanbanIcon },
+	{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
+];
+
+export default function LibraryMasthead() {
 	const { setType, setView, type, view } = useMediaFilters();
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
-	const logCountsByType = [
-		{
-			type: "movie",
-			label: "Movies",
-			count: logs.filter((log) => log.metadata.type === "movie").length,
-		},
-		{
-			type: "tv",
-			label: "TV Shows",
-			count: logs.filter((log) => log.metadata.type === "tv").length,
-		},
-		{
-			type: "anime",
-			label: "Anime",
-			count: logs.filter((log) => log.metadata.type === "anime").length,
-		},
-		{
-			type: "book",
-			label: "Books",
-			count: logs.filter((log) => log.metadata.type === "book").length,
-		},
-	];
-
-	const viewOptions: {
-		value: FilterMediaView;
-		label: string;
-		icon: typeof ListIcon;
-	}[] = [
-		{ value: "list", label: "List", icon: ListIcon },
-		{ value: "grid", label: "Grid", icon: SquaresFourIcon },
-		{ value: "shelf", label: "Shelf", icon: KanbanIcon },
-		{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
-	];
+	const countByType = (t: MediaType) =>
+		logs.filter((log) => log.metadata.type === t).length;
 
 	return (
-		<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-			{/* Media type filter */}
-			<div className="grid grid-cols-2 gap-2 md:flex md:items-center">
-				{logCountsByType.map((item) => {
-					const isActive = type === item.type;
-					return (
-						<button
-							className={cn(
-								"flex h-8 cursor-pointer items-center gap-1.5 rounded-full border-0 px-3 text-xs leading-none font-medium transition-colors",
-								isActive
-									? "bg-primary text-primary-foreground hover:bg-primary/80"
-									: "bg-muted text-muted-foreground hover:bg-muted/80",
-							)}
-							key={item.type}
-							onClick={() => {
-								setType(item.type as MediaType);
-							}}
-							type="button"
-						>
-							<span className="leading-none">{item.label}</span>
+		<div className="space-y-7">
+			<p className="eyebrow animate-reveal-fade tracking-[0.18em]">
+				The Library
+			</p>
+
+			{/* Integrated headline — the media-type words ARE the filter */}
+			<h1
+				key={type}
+				className="display animate-reveal-up flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[2.5rem] leading-[1.1] text-ink sm:text-5xl lg:text-6xl"
+			>
+				<span>The</span>
+				<span className="inline-flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+					{mediaNouns.map((noun, i) => {
+						const isActive = type === noun.type;
+						const count = countByType(noun.type);
+						return (
 							<span
-								className={cn(
-									"flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-xs leading-none font-medium",
-									isActive
-										? "bg-primary-foreground/25 text-primary-foreground"
-										: "bg-background/60 text-muted-foreground",
-								)}
+								key={noun.type}
+								className="inline-flex items-baseline"
 							>
-								{item.count}
-							</span>
-						</button>
-					);
-				})}
-			</div>
-
-			{/* View switcher */}
-			<div className="flex w-full items-center gap-1 rounded-lg border p-1 sm:w-auto">
-				{viewOptions.map((option) => {
-					if (type !== "movie" && option.value === "calendar") {
-						return null;
-					}
-
-					const Icon = option.icon;
-					const isActive = view === option.value;
-					return (
-						<Tooltip key={`${option.value}_filter`}>
-							<TooltipTrigger
-								render={
-									<Button
+								{i > 0 && (
+									<span className="mr-2.5 text-muted-foreground/40">
+										/
+									</span>
+								)}
+								<button
+									className={cn(
+										"group relative cursor-pointer font-heading italic font-light tracking-tight transition-colors duration-200",
+										isActive
+											? "text-ink"
+											: "text-muted-foreground/55 hover:text-ink/80",
+									)}
+									onClick={() => setType(noun.type)}
+									type="button"
+								>
+									<span
 										className={cn(
-											"h-7 w-7 flex-1 p-0 sm:w-7 sm:flex-none",
+											"bg-gradient-to-b from-transparent bg-[length:100%_2px] bg-bottom bg-no-repeat pb-0.5 transition-all duration-300",
 											isActive
-												? "bg-accent text-accent-foreground"
-												: "text-muted-foreground hover:text-foreground",
+												? "bg-[linear-gradient(var(--ink),var(--ink))] bg-[length:100%_1px]"
+												: "bg-[length:0%_1px] group-hover:bg-[linear-gradient(var(--ink),var(--ink))] group-hover:bg-[length:100%_1px]",
 										)}
-										key={option.value}
-										onClick={() => setView(option.value)}
-										size="icon"
-										variant="ghost"
-										title={option.label}
 									>
-										<Icon className="size-3.5" />
-										<span className="sr-only">
-											{option.label}
-										</span>
-									</Button>
-								}
-							/>
-							<TooltipContent>{option.label}</TooltipContent>
-						</Tooltip>
-					);
-				})}
+										{noun.word}
+									</span>
+									<sup className="ml-0.5 align-super font-sans text-[0.4em] not-italic font-semibold tabular-nums text-muted-foreground/70">
+										{count}
+									</sup>
+								</button>
+							</span>
+						);
+					})}
+				</span>
+				<span>you keep.</span>
+			</h1>
+
+			{/* View switcher — quiet, right-aligned with a hairline rule */}
+			<div className="flex items-center gap-4">
+				<div className="h-px flex-1 bg-hairline" />
+				<div className="flex items-center gap-1 rounded-full border border-hairline bg-card/50 p-1 backdrop-blur-sm">
+					{viewOptions.map((option) => {
+						if (type !== "movie" && option.value === "calendar") {
+							return null;
+						}
+
+						const Icon = option.icon;
+						const isActive = view === option.value;
+						return (
+							<Tooltip key={`${option.value}_filter`}>
+								<TooltipTrigger
+									render={
+										<Button
+											className={cn(
+												"h-8 w-9 gap-1.5 rounded-full px-0 text-[12px] font-medium transition-all duration-200",
+												isActive
+													? "bg-card text-ink shadow-soft"
+													: "text-muted-foreground hover:text-ink",
+											)}
+											key={option.value}
+											onClick={() =>
+												setView(option.value)
+											}
+											size="sm"
+											title={option.label}
+											variant="ghost"
+										>
+											<Icon className="size-4" />
+											<span className="sr-only">
+												{option.label}
+											</span>
+										</Button>
+									}
+								/>
+								<TooltipContent>
+									{option.label}
+								</TooltipContent>
+							</Tooltip>
+						);
+					})}
+				</div>
 			</div>
 		</div>
 	);
