@@ -99,7 +99,7 @@ export default function ShelfView() {
 				>
 					{columns.map((column) => (
 						<div
-							className="w-[100vw] max-w-[100vw] shrink-0 px-4"
+							className="w-[100vw] max-w-[100vw] shrink-0 px-5"
 							key={column.status}
 						>
 							<ShelfColumn
@@ -115,17 +115,16 @@ export default function ShelfView() {
 			</div>
 
 			{/* Desktop: Three column grid */}
-			<div className="hidden gap-5 lg:grid lg:grid-cols-3">
+			<div className="hidden gap-5 lg:grid lg:grid-cols-3 lg:items-start">
 				{columns.map((column) => (
-					<div key={column.status}>
-						<ShelfColumn
-							column={column}
-							logs={logsFilteredByMediaType.filter(
-								(log) => log.status === column.status,
-							)}
-							onLogClick={setSelectedLog}
-						/>
-					</div>
+					<ShelfColumn
+						column={column}
+						key={column.status}
+						logs={logsFilteredByMediaType.filter(
+							(log) => log.status === column.status,
+						)}
+						onLogClick={setSelectedLog}
+					/>
 				))}
 			</div>
 
