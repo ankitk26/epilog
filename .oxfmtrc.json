@@ -4,7 +4,8 @@
 		"pnpm-lock.yaml",
 		"convex/_generated/*",
 		"src/routeTree.gen.ts",
-		"DESIGN.md"
+		"DESIGN.md",
+		".impeccable/**"
 	],
 	"useTabs": true,
 	"tabWidth": 4,

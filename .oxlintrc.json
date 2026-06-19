@@ -8,5 +8,5 @@
 	"env": {
 		"builtin": true
 	},
-	"ignorePatterns": ["DESIGN.md"]
+	"ignorePatterns": ["DESIGN.md", ".impeccable/**"]
 }
