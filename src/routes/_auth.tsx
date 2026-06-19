@@ -56,8 +56,8 @@ function AuthWrapper() {
 		<div className="relative flex min-h-screen flex-col">
 			<Atmosphere />
 			<Header />
-			<main className="relative z-10 flex-1 px-5 py-8 lg:px-8 lg:py-12">
-				<div className="mx-auto max-w-6xl">
+			<main className="relative z-10 flex-1 py-8 lg:py-12">
+				<div className="mx-auto max-w-7xl px-5 lg:px-8">
 					<Outlet />
 				</div>
 			</main>

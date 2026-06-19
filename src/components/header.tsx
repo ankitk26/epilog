@@ -46,7 +46,7 @@ export default function Header() {
 
 	return (
 		<header className="sticky top-0 z-30 border-b border-hairline bg-canvas/70 backdrop-blur-md supports-backdrop-filter:bg-canvas/55">
-			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 lg:h-[4.5rem] lg:px-8">
+			<div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:h-[4.5rem] lg:px-8">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
