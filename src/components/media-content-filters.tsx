@@ -55,13 +55,13 @@ export default function MediaContentFilters() {
 	return (
 		<div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 			{/* Media type filter — pill rail */}
-			<div className="flex flex-wrap items-center gap-1.5">
+			<div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
 						<button
 							className={cn(
-								"group flex h-9 cursor-pointer items-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200",
+								"group flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground shadow-soft"
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
@@ -89,7 +89,7 @@ export default function MediaContentFilters() {
 			</div>
 
 			{/* View switcher — segmented control */}
-			<div className="flex items-center gap-1 rounded-full border border-hairline bg-card/50 p-1 backdrop-blur-sm">
+			<div className="flex w-full items-center gap-1 rounded-full border border-hairline bg-card/50 p-1 backdrop-blur-sm sm:w-auto">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
@@ -103,7 +103,7 @@ export default function MediaContentFilters() {
 								render={
 									<Button
 										className={cn(
-											"h-8 w-9 gap-1.5 rounded-full px-0 text-[12px] font-medium transition-all duration-200",
+											"h-8 flex-1 gap-1.5 rounded-full px-0 text-[12px] font-medium transition-all duration-200 sm:w-9 sm:flex-none",
 											isActive
 												? "bg-card text-ink shadow-soft"
 												: "text-muted-foreground hover:text-ink",
