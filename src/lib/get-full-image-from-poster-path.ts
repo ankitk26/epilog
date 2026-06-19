@@ -1,5 +1,7 @@
-export const getFullImageFromPosterPath = (posterPath: string | null) => {
-	if (posterPath === null) {
+export const getFullImageFromPosterPath = (
+	posterPath: string | null | undefined,
+) => {
+	if (!posterPath) {
 		return null;
 	}
 

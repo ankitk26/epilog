@@ -1,7 +1,9 @@
+import { SpinnerIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { SubmitEvent, useEffect, useState, type ReactElement } from "react";
 import { getContentSearchResults } from "@/actions/get-content-search-results";
 import MovieSearchResultItem from "./movie-search-result-item";
+import { Button } from "./ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -40,13 +42,14 @@ export default function CalendarDayAddMovieDialog({
 	const [query, setQuery] = useState("");
 	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-	const { data: movieSearchResults } = useQuery({
+	const { data: movieSearchResults, isFetching } = useQuery({
 		queryKey: ["search", "media-content", "movie", query],
 		queryFn: async () =>
 			await getContentSearchResults({
 				data: { searchQuery: query, mediaType: "movie" },
 			}),
 		enabled: query.length !== 0 && isFormSubmitted,
+		refetchOnWindowFocus: false,
 	});
 
 	useEffect(() => {
@@ -70,7 +73,10 @@ export default function CalendarDayAddMovieDialog({
 					<DialogTitle>Add movie</DialogTitle>
 				</DialogHeader>
 				<div className="flex min-h-0 flex-1 flex-col gap-3">
-					<form onSubmit={handleQuerySubmit}>
+					<form
+						onSubmit={handleQuerySubmit}
+						className="flex items-center gap-2"
+					>
 						<Input
 							onChange={(e) => {
 								setQuery(e.target.value);
@@ -78,21 +84,42 @@ export default function CalendarDayAddMovieDialog({
 							}}
 							placeholder="Search movie"
 							value={query}
+							className="flex-1"
 						/>
+						<Button type="submit" disabled={!query || isFetching}>
+							{isFetching ? (
+								<SpinnerIcon className="size-3.5 animate-spin" />
+							) : (
+								"Search"
+							)}
+						</Button>
 					</form>
 					<div className="min-h-0 flex-1 overflow-y-auto pr-1">
-						<div className="flex flex-col gap-1">
-							{movieSearchResults?.results.map((movie) => (
-								<MovieSearchResultItem
-									key={movie.id}
-									movie={movie}
-									day={day}
-									month={month}
-									year={year}
-									closeDialog={() => setIsOpen(false)}
-								/>
-							))}
-						</div>
+						{isFetching && (
+							<div className="flex items-center justify-center gap-2 py-8 text-muted-foreground">
+								<SpinnerIcon className="size-4 animate-spin" />
+								<span className="text-sm">Searching…</span>
+							</div>
+						)}
+						{!isFetching && movieSearchResults && (
+							<div className="flex flex-col gap-1">
+								{movieSearchResults.results.length === 0 && (
+									<p className="py-8 text-center text-sm text-muted-foreground">
+										No results found.
+									</p>
+								)}
+								{movieSearchResults.results.map((movie) => (
+									<MovieSearchResultItem
+										key={movie.id}
+										movie={movie}
+										day={day}
+										month={month}
+										year={year}
+										closeDialog={() => setIsOpen(false)}
+									/>
+								))}
+							</div>
+						)}
 					</div>
 				</div>
 			</DialogContent>

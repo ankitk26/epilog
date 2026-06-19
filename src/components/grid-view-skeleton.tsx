@@ -14,7 +14,7 @@ function GridCardSkeleton() {
 
 export default function GridViewSkeleton() {
 	return (
-		<div className="grid grid-cols-3 gap-3 pt-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4 lg:pt-0">
+		<div className="grid grid-cols-2 gap-3 pt-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-4 lg:pt-0">
 			{Array.from({ length: 12 }).map((_, cardIndex) => (
 				<GridCardSkeleton key={`grid-card-skeleton-${cardIndex + 1}`} />
 			))}

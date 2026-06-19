@@ -10,7 +10,7 @@ import IconByType from "./icon-by-type";
 type Props = {
 	movie: {
 		id: number;
-		poster_path: string | null;
+		poster_path?: string | null | undefined;
 		first_air_date?: string | null | undefined;
 		release_date?: string | null | undefined;
 		name?: string | null | undefined;

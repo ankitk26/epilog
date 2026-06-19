@@ -52,20 +52,21 @@ export default function Header() {
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-2xl font-light tracking-tight text-ink italic transition-opacity group-hover:opacity-70">
+					<span className="font-heading text-2xl font-light tracking-tight text-ink transition-opacity group-hover:opacity-70">
 						epilog
 					</span>
 				</Link>
 
 				<div className="flex items-center gap-2 sm:gap-3">
 					<Button
-						className="h-9 gap-2 rounded-full border-hairline-strong bg-transparent px-4 text-[13px] font-medium tracking-wide text-ink transition-colors hover:bg-secondary"
+						aria-label="Search"
+						className="h-9 rounded-full border-hairline-strong bg-transparent px-2.5 text-[13px] font-medium tracking-wide text-ink transition-colors hover:bg-secondary sm:px-4"
 						onClick={goToSearch}
 						size="sm"
 						variant="outline"
 					>
 						<MagnifyingGlassIcon className="size-4" />
-						Search
+						<span className="hidden sm:inline">Search</span>
 					</Button>
 
 					<ThemeToggle />

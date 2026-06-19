@@ -17,7 +17,7 @@ export const mediaSearchAPIOutput = z.object({
 			release_date: z.string().nullable().optional(),
 			name: z.string().nullable().optional(),
 			title: z.string().nullable().optional(),
-			poster_path: z.string().nullable(),
+			poster_path: z.string().nullable().optional(),
 			original_language: z.string().nullable().optional(),
 		}),
 	),

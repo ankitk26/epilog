@@ -43,7 +43,7 @@ export default function BookResults() {
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 
-			<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
+			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
 				{books.data.map((book) => (
 					<MediaCard
 						key={book.id}

@@ -5,7 +5,6 @@ import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -23,6 +22,13 @@ type Props = {
 	log: Log | null;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+};
+
+const orbClassByType: Record<MediaType, string> = {
+	movie: "orb-mint",
+	tv: "orb-sky",
+	anime: "orb-lavender",
+	book: "orb-peach",
 };
 
 function getStatusOptions(type: MediaType) {
@@ -46,6 +52,14 @@ function formatMediaType(type: MediaType) {
 		default:
 			return type.charAt(0).toUpperCase() + type.slice(1);
 	}
+}
+
+function formatLogDate(timestamp: number) {
+	return new Intl.DateTimeFormat("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	}).format(new Date(timestamp));
 }
 
 export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
@@ -101,21 +115,37 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 
 	const mediaType = log?.metadata.type ?? "movie";
 	const isLoading = updateMutation.isPending || removeMutation.isPending;
+	const seriesLabel =
+		log?.metadata.seriesName &&
+		`${log.metadata.seriesName}${
+			log.metadata.seriesPosition && log.metadata.seriesTotal
+				? ` · ${log.metadata.seriesPosition}/${log.metadata.seriesTotal}`
+				: ""
+		}`;
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="flex max-h-[80vh] flex-col rounded-2xl border border-hairline p-6 shadow-lift sm:max-w-md">
-				<DialogHeader>
+			<DialogContent className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6">
+				{/* Media-reactive atmospheric orb — the brand's signature mood */}
+				<div
+					aria-hidden
+					className={cn(
+						"orb pointer-events-none absolute top-[-7rem] right-[-5rem] size-44 sm:size-52",
+						orbClassByType[mediaType],
+					)}
+				/>
+
+				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle className="font-heading text-xl leading-tight font-normal tracking-tight text-ink">
 						{log?.metadata.name || "Untitled"}
 					</DialogTitle>
 				</DialogHeader>
 
 				{log && (
-					<div className="flex flex-col gap-5">
+					<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
 						{/* Media summary */}
 						<div className="flex gap-4">
-							<div className="h-30 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary">
+							<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
 								{log.metadata.image ? (
 									<Image
 										alt={
@@ -137,30 +167,38 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 							</div>
 
 							<div className="min-w-0 flex-1 space-y-1.5 pt-1">
-								{log.metadata.releaseYear && (
-									<p className="text-xs text-muted-foreground tabular-nums">
-										{log.metadata.releaseYear}
+								<p className="text-[13px] font-medium text-ink">
+									{formatMediaType(log.metadata.type)}
+									{log.metadata.releaseYear ? (
+										<span className="text-muted-foreground tabular-nums">
+											{" · "}
+											{log.metadata.releaseYear}
+										</span>
+									) : null}
+								</p>
+
+								{seriesLabel && (
+									<p className="text-xs text-muted-foreground">
+										{seriesLabel}
 									</p>
 								)}
-								<Badge
-									className="rounded-full bg-secondary text-[11px] font-semibold tracking-wide text-muted-foreground"
-									variant="secondary"
-								>
-									{formatMediaType(log.metadata.type)}
-								</Badge>
+
+								<p className="pt-1 text-[11px] text-muted-foreground/70">
+									Logged {formatLogDate(log.updatedTime)}
+								</p>
 							</div>
 						</div>
 
 						{/* Status field */}
 						<div className="space-y-2.5">
 							<label className="eyebrow block">Status</label>
-							<div className="flex flex-wrap gap-2">
+							<div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
 								{getStatusOptions(mediaType).map((option) => {
 									const isActive = status === option.value;
 									return (
 										<button
 											className={cn(
-												"h-9 cursor-pointer rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-50",
+												"h-11 cursor-pointer rounded-full border px-3 text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
 												isActive
 													? "border-transparent bg-primary text-primary-foreground shadow-soft"
 													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
@@ -180,9 +218,9 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 						</div>
 
 						{/* Footer actions */}
-						<div className="flex items-center justify-between gap-2 border-t border-hairline pt-4">
+						<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 							<Button
-								className="h-9 gap-1.5 rounded-full px-4 text-[13px] font-medium text-destructive hover:bg-destructive/10"
+								className="h-11 w-full rounded-full px-4 text-[13px] font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
 								disabled={isLoading}
 								onClick={handleDelete}
 								size="sm"
@@ -191,9 +229,9 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 								Delete
 							</Button>
 
-							<div className="flex items-center gap-2">
+							<div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
 								<Button
-									className="h-9 rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary"
+									className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 									disabled={isLoading}
 									onClick={() => onOpenChange(false)}
 									size="sm"
@@ -202,7 +240,7 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 									Cancel
 								</Button>
 								<Button
-									className="h-9 rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40"
+									className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 									disabled={
 										isLoading || status === log.status
 									}
