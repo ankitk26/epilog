@@ -7,6 +7,7 @@ import {
 	ListIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { cn } from "@/lib/utils";
 import { FilterMediaView, MediaType } from "@/types";
@@ -15,6 +16,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaContentFilters() {
 	const { setType, setView, type, view } = useMediaFilters();
+	const isMobile = useIsMobile();
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -92,6 +94,10 @@ export default function MediaContentFilters() {
 			<div className="flex w-full items-center gap-1 rounded-full border border-hairline bg-card/50 p-1 backdrop-blur-sm sm:w-auto">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
+						return null;
+					}
+
+					if (isMobile && option.value === "shelf") {
 						return null;
 					}
 
