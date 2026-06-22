@@ -12,9 +12,10 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
-import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
-import type { MediaType } from "@/types";
+import { statusesByMediaType } from "@/types";
+import type { LogStatus, MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
@@ -32,20 +33,6 @@ const orbClassByType: Record<MediaType, string> = {
 	book: "orb-peach",
 	manga: "orb-amber",
 };
-
-function getStatusOptions(type: MediaType) {
-	return [
-		{
-			value: "planned" as const,
-			label: plannedLabel(type),
-		},
-		{
-			value: "in_progress" as const,
-			label: inProgressLabel(type),
-		},
-		{ value: "completed" as const, label: "Completed" },
-	];
-}
 
 function formatMediaType(type: MediaType) {
 	switch (type) {
@@ -65,11 +52,13 @@ function formatLogDate(timestamp: number) {
 }
 
 export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
-	const [status, setStatus] = useState<Log["status"]>("planned");
+	const mediaType = log?.metadata.type ?? "movie";
+	const validStatuses = statusesByMediaType[mediaType];
+	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
 
 	useEffect(() => {
 		if (log) {
-			setStatus(log.status);
+			setStatus(log.status as LogStatus);
 		}
 	}, [log]);
 
@@ -115,7 +104,6 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 		removeMutation.mutate({ logId: log._id });
 	};
 
-	const mediaType = log?.metadata.type ?? "movie";
 	const isLoading = updateMutation.isPending || removeMutation.isPending;
 	const seriesLabel =
 		log?.metadata.seriesName &&
@@ -194,9 +182,9 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 						{/* Status field */}
 						<div className="space-y-2.5">
 							<label className="eyebrow block">Status</label>
-							<div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
-								{getStatusOptions(mediaType).map((option) => {
-									const isActive = status === option.value;
+							<div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+								{validStatuses.map((s) => {
+									const isActive = status === s;
 									return (
 										<button
 											className={cn(
@@ -206,13 +194,11 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
 											)}
 											disabled={isLoading}
-											key={option.value}
-											onClick={() =>
-												setStatus(option.value)
-											}
+											key={s}
+											onClick={() => setStatus(s)}
 											type="button"
 										>
-											{option.label}
+											{statusLabel(s, mediaType)}
 										</button>
 									);
 								})}
@@ -244,7 +230,8 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 								<Button
 									className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 									disabled={
-										isLoading || status === log.status
+										isLoading ||
+										status === (log.status as LogStatus)
 									}
 									onClick={handleSave}
 									size="sm"

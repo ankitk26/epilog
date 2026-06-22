@@ -6,6 +6,37 @@ export type FilterMediaView = (typeof filterMediaViews)[number];
 export const mediaTypes = ["movie", "tv", "anime", "book", "manga"] as const;
 export type MediaType = (typeof mediaTypes)[number];
 
+export const logStatuses = [
+	"tbr",
+	"reading",
+	"finished",
+	"dnf",
+	"watchlist",
+	"watching",
+	"watched",
+	"plan_to_watch",
+	"waiting",
+	"completed",
+	"dropped",
+] as const;
+export type LogStatus = (typeof logStatuses)[number];
+
+export const statusesByMediaType: Record<MediaType, LogStatus[]> = {
+	book: ["tbr", "reading", "finished", "dnf"],
+	manga: ["tbr", "reading", "finished", "dnf"],
+	movie: ["watchlist", "watching", "watched"],
+	tv: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+	anime: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+};
+
+export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
+	book: "tbr",
+	manga: "tbr",
+	movie: "watchlist",
+	tv: "plan_to_watch",
+	anime: "plan_to_watch",
+};
+
 export const mediaSearchAPIOutput = z.object({
 	results: z.array(
 		z.object({

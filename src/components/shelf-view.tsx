@@ -4,14 +4,33 @@ import {
 	CalendarBlankIcon,
 	CheckCircleIcon,
 	ClockIcon,
+	EyeIcon,
+	XCircleIcon,
+	type Icon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { useMemo, useRef, useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
-import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
+import { statusLabel } from "@/lib/media-labels";
+import { statusesByMediaType } from "@/types";
+import type { LogStatus } from "@/types";
 import LogDetailsDialog from "./log-details-dialog";
 import ShelfColumn from "./shelf-column";
+
+const iconByStatus: Record<LogStatus, Icon> = {
+	tbr: CalendarBlankIcon,
+	reading: ClockIcon,
+	finished: CheckCircleIcon,
+	dnf: XCircleIcon,
+	watchlist: CalendarBlankIcon,
+	watching: EyeIcon,
+	watched: CheckCircleIcon,
+	plan_to_watch: CalendarBlankIcon,
+	waiting: ClockIcon,
+	completed: CheckCircleIcon,
+	dropped: XCircleIcon,
+};
 
 export default function ShelfView() {
 	const { type: mediaType } = useMediaFilters();
@@ -26,23 +45,11 @@ export default function ShelfView() {
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
-	const columns = [
-		{
-			status: "planned",
-			title: plannedLabel(mediaType),
-			icon: CalendarBlankIcon,
-		},
-		{
-			status: "in_progress",
-			title: inProgressLabel(mediaType),
-			icon: ClockIcon,
-		},
-		{
-			status: "completed",
-			title: "Completed",
-			icon: CheckCircleIcon,
-		},
-	];
+	const columns = statusesByMediaType[mediaType].map((status) => ({
+		status,
+		title: statusLabel(status, mediaType),
+		icon: iconByStatus[status],
+	}));
 
 	// logs filtered by media type
 	const logsFilteredByMediaType = useMemo(
@@ -115,8 +122,13 @@ export default function ShelfView() {
 				</div>
 			</div>
 
-			{/* Desktop: Three column grid */}
-			<div className="hidden gap-5 lg:grid lg:grid-cols-3 lg:items-start">
+			{/* Desktop: multi-column grid */}
+			<div
+				className="hidden gap-5 lg:grid lg:items-start"
+				style={{
+					gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
+				}}
+			>
 				{columns.map((column) => (
 					<ShelfColumn
 						column={column}

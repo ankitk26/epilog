@@ -7,8 +7,8 @@ import {
 	ListIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";

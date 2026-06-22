@@ -88,9 +88,9 @@ function SignInPage() {
 					</Button>
 				</div>
 
-			<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
-				Just your stuff, nicely kept.
-			</p>
+				<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
+					Just your stuff, nicely kept.
+				</p>
 			</div>
 		</div>
 	);

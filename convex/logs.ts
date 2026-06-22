@@ -3,6 +3,69 @@ import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUserOrThrow } from "./model/users";
 
+const allStatusLiterals = v.union(
+	v.literal("tbr"),
+	v.literal("reading"),
+	v.literal("finished"),
+	v.literal("dnf"),
+	v.literal("watchlist"),
+	v.literal("watching"),
+	v.literal("watched"),
+	v.literal("plan_to_watch"),
+	v.literal("waiting"),
+	v.literal("completed"),
+	v.literal("dropped"),
+	// legacy values — keep until production migration completes
+	v.literal("planned"),
+	v.literal("in_progress"),
+);
+
+const mediaTypeLiteral = v.union(
+	v.literal("anime"),
+	v.literal("movie"),
+	v.literal("tv"),
+	v.literal("book"),
+	v.literal("manga"),
+);
+
+function defaultStatusForType(
+	type: "anime" | "movie" | "tv" | "book" | "manga",
+): string {
+	switch (type) {
+		case "book":
+		case "manga":
+			return "tbr";
+		case "movie":
+			return "watchlist";
+		case "tv":
+		case "anime":
+			return "plan_to_watch";
+	}
+}
+
+const validStatusesByType: Record<
+	"anime" | "movie" | "tv" | "book" | "manga",
+	Set<string>
+> = {
+	book: new Set(["tbr", "reading", "finished", "dnf"]),
+	manga: new Set(["tbr", "reading", "finished", "dnf"]),
+	movie: new Set(["watchlist", "watching", "watched"]),
+	tv: new Set([
+		"plan_to_watch",
+		"watching",
+		"waiting",
+		"completed",
+		"dropped",
+	]),
+	anime: new Set([
+		"plan_to_watch",
+		"watching",
+		"waiting",
+		"completed",
+		"dropped",
+	]),
+};
+
 export const all = query({
 	args: {},
 	handler: async (ctx) => {
@@ -41,13 +104,7 @@ export const addToPlanning = mutation({
 			image: v.optional(v.string()),
 			releaseYear: v.union(v.number(), v.null()),
 			sourceMediaId: v.string(),
-			type: v.union(
-				v.literal("anime"),
-				v.literal("movie"),
-				v.literal("tv"),
-				v.literal("book"),
-				v.literal("manga"),
-			),
+			type: mediaTypeLiteral,
 			seriesName: v.optional(v.string()),
 			seriesPosition: v.optional(v.number()),
 			seriesTotal: v.optional(v.number()),
@@ -100,10 +157,21 @@ export const addToPlanning = mutation({
 			return "Already added";
 		}
 
-		// add log for media with status as planned
+		// add log for media with type-specific default status
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
-			status: "planned",
+			status: defaultStatusForType(args.media.type) as
+				| "tbr"
+				| "reading"
+				| "finished"
+				| "dnf"
+				| "watchlist"
+				| "watching"
+				| "watched"
+				| "plan_to_watch"
+				| "waiting"
+				| "completed"
+				| "dropped",
 			updatedTime: Date.now(),
 			userId,
 		});
@@ -134,11 +202,7 @@ export const remove = mutation({
 export const updateStatus = mutation({
 	args: {
 		logId: v.id("logs"),
-		status: v.union(
-			v.literal("planned"),
-			v.literal("in_progress"),
-			v.literal("completed"),
-		),
+		status: allStatusLiterals,
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -148,6 +212,18 @@ export const updateStatus = mutation({
 		// check if user trying to delete the doc is the doc's owner
 		if (!existingLog || existingLog?.userId !== userId) {
 			throw new Error("invalid request");
+		}
+
+		const media = await ctx.db.get(existingLog.dbMediaId);
+		if (!media) {
+			throw new Error("media not found");
+		}
+
+		const valid = validStatusesByType[media.type];
+		if (!valid.has(args.status)) {
+			throw new Error(
+				`invalid status "${args.status}" for media type "${media.type}"`,
+			);
 		}
 
 		await ctx.db.patch(args.logId, {
@@ -160,11 +236,7 @@ export const updateStatus = mutation({
 export const update = mutation({
 	args: {
 		logId: v.id("logs"),
-		status: v.union(
-			v.literal("planned"),
-			v.literal("in_progress"),
-			v.literal("completed"),
-		),
+		status: allStatusLiterals,
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -173,6 +245,18 @@ export const update = mutation({
 
 		if (!existingLog || existingLog.userId !== userId) {
 			throw new Error("invalid request");
+		}
+
+		const media = await ctx.db.get(existingLog.dbMediaId);
+		if (!media) {
+			throw new Error("media not found");
+		}
+
+		const valid = validStatusesByType[media.type];
+		if (!valid.has(args.status)) {
+			throw new Error(
+				`invalid status "${args.status}" for media type "${media.type}"`,
+			);
 		}
 
 		await ctx.db.patch(args.logId, {
@@ -185,11 +269,7 @@ export const update = mutation({
 export const bulkUpdateStatus = mutation({
 	args: {
 		logIds: v.array(v.id("logs")),
-		status: v.union(
-			v.literal("planned"),
-			v.literal("in_progress"),
-			v.literal("completed"),
-		),
+		status: allStatusLiterals,
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -200,6 +280,21 @@ export const bulkUpdateStatus = mutation({
 		for (const log of logs) {
 			if (!log || log.userId !== userId) {
 				throw new Error("invalid request");
+			}
+		}
+
+		// Verify status is valid for each log's media type
+		for (const log of logs) {
+			if (!log) continue;
+			const media = await ctx.db.get(log.dbMediaId);
+			if (!media) {
+				throw new Error("media not found");
+			}
+			const valid = validStatusesByType[media.type];
+			if (!valid.has(args.status)) {
+				throw new Error(
+					`invalid status "${args.status}" for media type "${media.type}"`,
+				);
 			}
 		}
 

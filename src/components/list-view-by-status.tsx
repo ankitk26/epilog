@@ -3,7 +3,8 @@ import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
-import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
+import { statusLabel } from "@/lib/media-labels";
+import { statusesByMediaType } from "@/types";
 import MediaSectionByStatus from "./media-section-by-status";
 
 export default function ListViewByStatus() {
@@ -17,20 +18,10 @@ export default function ListViewByStatus() {
 		[logs, mediaType],
 	);
 
-	const sections = [
-		{
-			title: plannedLabel(mediaType),
-			status: "planned",
-		},
-		{
-			title: inProgressLabel(mediaType),
-			status: "in_progress",
-		},
-		{
-			title: "Completed",
-			status: "completed",
-		},
-	];
+	const sections = statusesByMediaType[mediaType].map((status) => ({
+		title: statusLabel(status, mediaType),
+		status,
+	}));
 
 	return (
 		<div className="space-y-12 pt-4 lg:space-y-16 lg:pt-0">

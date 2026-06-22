@@ -119,7 +119,11 @@ export const separateMangaAndStandardizeSourceIds = mutation({
 
 			// Merge each duplicate into the canonical media row.
 			for (const { doc: duplicate } of duplicates) {
-				await mergeMediaReferences(ctx, duplicate._id, canonical.doc._id);
+				await mergeMediaReferences(
+					ctx,
+					duplicate._id,
+					canonical.doc._id,
+				);
 				await ctx.db.delete(duplicate._id);
 				mergedDuplicates++;
 			}
@@ -154,7 +158,8 @@ export const flipOlMangaToMangaType = mutation({
 	handler: async (ctx) => {
 		const allMedia = await ctx.db.query("media").collect();
 
-		const flipped: Array<{ name: string; oldId: string; newId: string }> = [];
+		const flipped: Array<{ name: string; oldId: string; newId: string }> =
+			[];
 		const kept: Array<{ name: string; reason: string }> = [];
 
 		for (const doc of allMedia) {
@@ -192,7 +197,12 @@ export const flipOlMangaToMangaType = mutation({
 			});
 		}
 
-		return { flippedCount: flipped.length, keptCount: kept.length, flipped, kept };
+		return {
+			flippedCount: flipped.length,
+			keptCount: kept.length,
+			flipped,
+			kept,
+		};
 	},
 });
 
@@ -205,9 +215,7 @@ async function mergeMediaReferences(
 	// drop the duplicate log to respect the one-log-per-user invariant.
 	const duplicateLogs = await ctx.db
 		.query("logs")
-		.withIndex("by_media_and_status", (q) =>
-			q.eq("dbMediaId", fromMediaId),
-		)
+		.withIndex("by_media_and_status", (q) => q.eq("dbMediaId", fromMediaId))
 		.collect();
 
 	for (const log of duplicateLogs) {
@@ -252,3 +260,88 @@ async function mergeMediaReferences(
 		}
 	}
 }
+
+// ─────────────────────────────────────────────
+// Status migration: old 3-value enum → per-type statuses
+// ─────────────────────────────────────────────
+
+const oldToNewStatus: Record<string, Record<string, string>> = {
+	book: { planned: "tbr", in_progress: "reading", completed: "finished" },
+	manga: { planned: "tbr", in_progress: "reading", completed: "finished" },
+	movie: {
+		planned: "watchlist",
+		in_progress: "watching",
+		completed: "watched",
+	},
+	tv: {
+		planned: "plan_to_watch",
+		in_progress: "watching",
+		completed: "completed",
+	},
+	anime: {
+		planned: "plan_to_watch",
+		in_progress: "watching",
+		completed: "completed",
+	},
+};
+
+export const migrateStatuses = mutation({
+	args: {},
+	handler: async (ctx) => {
+		const allLogs = await ctx.db.query("logs").collect();
+
+		let skipped = 0;
+		let migrated = 0;
+		const details: Array<{
+			logId: string;
+			old: string;
+			new: string;
+			type: string;
+		}> = [];
+
+		for (const log of allLogs) {
+			const media = await ctx.db.get(log.dbMediaId);
+			if (!media) {
+				skipped++;
+				continue;
+			}
+
+			const mapping = oldToNewStatus[media.type];
+			if (!mapping) {
+				skipped++;
+				continue;
+			}
+
+			const newStatus = mapping[log.status];
+			if (!newStatus) {
+				// Already a new status or unknown old status
+				skipped++;
+				continue;
+			}
+
+			await ctx.db.patch(log._id, {
+				status: newStatus as
+					| "tbr"
+					| "reading"
+					| "finished"
+					| "dnf"
+					| "watchlist"
+					| "watching"
+					| "watched"
+					| "plan_to_watch"
+					| "waiting"
+					| "completed"
+					| "dropped",
+			});
+			migrated++;
+			details.push({
+				logId: log._id,
+				old: log.status,
+				new: newStatus,
+				type: media.type,
+			});
+		}
+
+		return { migrated, skipped, details };
+	},
+});
