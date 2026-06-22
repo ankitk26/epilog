@@ -27,11 +27,11 @@ function SignInPage() {
 			>
 				<div className="space-y-4 text-center">
 					<div className="space-y-2">
-						<h1 className="font-heading text-5xl font-light tracking-tight text-ink italic lg:text-6xl">
+						<h1 className="font-heading text-5xl font-light tracking-tight text-ink lg:text-6xl">
 							epilog
 						</h1>
 						<p className="eyebrow tracking-[0.18em]">
-							a media journal
+							your story log
 						</p>
 					</div>
 					<p className="mx-auto max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
@@ -87,10 +87,6 @@ function SignInPage() {
 						)}
 					</Button>
 				</div>
-
-				<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
-					Just your stuff, nicely kept.
-				</p>
 			</div>
 		</div>
 	);
