@@ -2,8 +2,10 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import type { MediaType } from "@/types";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import IconByType from "./icon-by-type";
 import { Button } from "./ui/button";
@@ -24,6 +26,23 @@ type Props = {
 	onOpenChange: (open: boolean) => void;
 };
 
+const orbClassByType: Record<MediaType, string> = {
+	movie: "orb-mint",
+	tv: "orb-sky",
+	anime: "orb-lavender",
+	book: "orb-peach",
+	manga: "orb-amber",
+};
+
+function formatMediaType(type: MediaType) {
+	switch (type) {
+		case "tv":
+			return "TV";
+		default:
+			return type.charAt(0).toUpperCase() + type.slice(1);
+	}
+}
+
 function parseEventDate(eventDate: string) {
 	const year = Number(eventDate.slice(0, 4));
 	const month = Number(eventDate.slice(4, 6)) - 1;
@@ -31,12 +50,17 @@ function parseEventDate(eventDate: string) {
 	return new Date(year, month, day);
 }
 
-function formatDisplayDate(date: Date) {
-	return `${date.getFullYear().toString().padStart(4, "0")}-${(
-		date.getMonth() + 1
-	)
-		.toString()
-		.padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+function formatDate(date: Date) {
+	return new Intl.DateTimeFormat("en-US", {
+		month: "short",
+		day: "numeric",
+		year: "numeric",
+	}).format(date);
+}
+
+function eventPhrase(type: MediaType, date: string): string {
+	const verb = type === "book" || type === "manga" ? "Read" : "Watched";
+	return `${verb} on ${date}`;
 }
 
 function getDaysInMonth(year: number, month: number) {
@@ -67,6 +91,7 @@ export default function MovieEventDetailsDialog({
 	const [selectedDay, setSelectedDay] = useState<string>("");
 	const [selectedMonth, setSelectedMonth] = useState<string>("");
 	const [selectedYear, setSelectedYear] = useState<string>("");
+	const titleRef = useRef<HTMLHeadingElement>(null);
 
 	const eventDate = useMemo(
 		() => (event ? parseEventDate(event.eventDate) : undefined),
@@ -157,6 +182,20 @@ export default function MovieEventDetailsDialog({
 		return null;
 	}
 
+	const mediaType = event.type;
+	const isLoading =
+		updateEventDateMutation.isPending || deleteEventMutation.isPending;
+	const formattedEventDate = eventDate
+		? eventPhrase(mediaType, formatDate(eventDate))
+		: "";
+
+	const hasDateChanged =
+		!!selectedDay &&
+		!!selectedMonth &&
+		!!selectedYear &&
+		`${selectedYear}${selectedMonth.padStart(2, "0")}${selectedDay.padStart(2, "0")}` !==
+			event.eventDate;
+
 	return (
 		<Dialog
 			open={open}
@@ -170,183 +209,231 @@ export default function MovieEventDetailsDialog({
 				}
 			}}
 		>
-			<DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
-				<DialogHeader>
-					<DialogTitle>Movie event</DialogTitle>
-				</DialogHeader>
-				<div className="flex items-start gap-3">
-					<div className="relative aspect-2/3 w-24 shrink-0 overflow-hidden rounded-lg border">
-						{event.image ? (
-							<Image
-								src={event.image}
-								className="h-full w-full object-cover object-top"
-								height={180}
-								width={120}
-								alt={event.name}
-							/>
-						) : (
-							<div className="flex h-full w-full items-center justify-center bg-muted">
-								<IconByType
-									className="size-8 text-muted-foreground"
-									type={event.type}
-								/>
-							</div>
-						)}
-					</div>
-					<div className="min-w-0 space-y-1">
-						<h3 className="text-sm font-medium">{event.name}</h3>
-						{event.releaseYear && (
-							<p className="text-xs text-muted-foreground">
-								{event.releaseYear}
-							</p>
-						)}
-						{eventDate && (
-							<p className="text-xs text-muted-foreground">
-								Current date: {formatDisplayDate(eventDate)}
-							</p>
-						)}
-					</div>
-				</div>
-				<div className="space-y-2">
-					<p className="text-xs font-medium">Update event date</p>
-					<div className="grid grid-cols-3 gap-2">
-						<Select
-							items={[
-								{ value: null, label: "Day" },
-								...dayOptions,
-							]}
-							value={selectedDay}
-							onValueChange={(value) =>
-								setSelectedDay(value ?? "")
-							}
-						>
-							<SelectTrigger className="w-full">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Day</SelectLabel>
-									{dayOptions.map((day) => (
-										<SelectItem
-											key={day.value}
-											value={day.value}
-										>
-											{day.label}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-						<Select
-							items={months}
-							value={selectedMonth}
-							onValueChange={(value) => {
-								setSelectedMonth(value ?? "");
-								const daysInTargetMonth = getDaysInMonth(
-									selectedYearNumber,
-									Number(value ?? "1"),
-								);
+			<DialogContent
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				initialFocus={titleRef}
+			>
+				{/* Media-reactive atmospheric orb */}
+				<div
+					aria-hidden
+					className={cn(
+						"orb pointer-events-none absolute top-[-7rem] right-[-5rem] size-44 sm:size-52",
+						orbClassByType[mediaType],
+					)}
+				/>
 
-								if (Number(selectedDay) > daysInTargetMonth) {
-									setSelectedDay(
-										daysInTargetMonth.toString(),
-									);
+				<DialogHeader className="relative z-10 flex-shrink-0">
+					<DialogTitle
+						ref={titleRef}
+						className="font-heading text-xl leading-tight font-normal tracking-tight text-ink"
+						tabIndex={-1}
+					>
+						{event.name || "Untitled"}
+					</DialogTitle>
+				</DialogHeader>
+
+				<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
+					{/* Media summary */}
+					<div className="flex gap-4">
+						<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
+							{event.image ? (
+								<Image
+									alt={event.name || "Media poster"}
+									className="h-full w-full object-cover"
+									height={120}
+									src={event.image}
+									width={80}
+								/>
+							) : (
+								<div className="flex h-full w-full items-center justify-center">
+									<IconByType
+										className="size-5 text-muted-foreground/50"
+										type={mediaType}
+									/>
+								</div>
+							)}
+						</div>
+
+						<div className="min-w-0 flex-1 space-y-1.5 pt-1">
+							<p className="text-[13px] font-medium text-ink">
+								{formatMediaType(mediaType)}
+								{event.releaseYear ? (
+									<span className="text-muted-foreground tabular-nums">
+										{" · "}
+										{event.releaseYear}
+									</span>
+								) : null}
+							</p>
+
+							<p className="pt-1 text-[11px] text-muted-foreground/70">
+								{formattedEventDate}
+							</p>
+						</div>
+					</div>
+
+					{/* Reschedule field */}
+					<div className="space-y-2.5">
+						<label className="eyebrow block">Reschedule</label>
+						<div className="grid grid-cols-3 gap-2">
+							<Select
+								items={[
+									{ value: null, label: "Day" },
+									...dayOptions,
+								]}
+								value={selectedDay}
+								onValueChange={(value) =>
+									setSelectedDay(value ?? "")
 								}
-							}}
-						>
-							<SelectTrigger className="w-full">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Month</SelectLabel>
-									{months
-										.filter(
-											(monthOption) =>
-												monthOption.value !== null,
-										)
-										.map((monthOption) => (
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Day</SelectLabel>
+										{dayOptions.map((day) => (
 											<SelectItem
-												key={monthOption.value}
-												value={monthOption.value}
+												key={day.value}
+												value={day.value}
 											>
-												{monthOption.label}
+												{day.label}
 											</SelectItem>
 										))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-						<Select
-							items={[
-								{ value: null, label: "Year" },
-								...yearOptions,
-							]}
-							value={selectedYear}
-							onValueChange={(value) => {
-								setSelectedYear(value ?? "");
-								const daysInTargetMonth = getDaysInMonth(
-									Number(value ?? currentYear.toString()),
-									selectedMonthNumber,
-								);
-
-								if (Number(selectedDay) > daysInTargetMonth) {
-									setSelectedDay(
-										daysInTargetMonth.toString(),
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+							<Select
+								items={months}
+								value={selectedMonth}
+								onValueChange={(value) => {
+									setSelectedMonth(value ?? "");
+									const daysInTargetMonth = getDaysInMonth(
+										selectedYearNumber,
+										Number(value ?? "1"),
 									);
-								}
-							}}
-						>
-							<SelectTrigger className="w-full">
-								<SelectValue />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Year</SelectLabel>
-									{yearOptions.map((yearOption) => (
-										<SelectItem
-											key={yearOption.value}
-											value={yearOption.value}
-										>
-											{yearOption.label}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-					</div>
-				</div>
-				<div className="flex items-center justify-between gap-2">
-					<Button
-						variant="destructive"
-						onClick={() =>
-							deleteEventMutation.mutate({
-								movieEventId: event.movieEventId,
-							})
-						}
-					>
-						Delete event
-					</Button>
-					<Button
-						disabled={
-							!selectedDay || !selectedMonth || !selectedYear
-						}
-						onClick={() => {
-							if (
-								!selectedDay ||
-								!selectedMonth ||
-								!selectedYear
-							) {
-								return;
-							}
 
-							updateEventDateMutation.mutate({
-								movieEventId: event.movieEventId,
-								eventDate: `${selectedYear}${selectedMonth.padStart(2, "0")}${selectedDay.padStart(2, "0")}`,
-							});
-						}}
-					>
-						Update date
-					</Button>
+									if (
+										Number(selectedDay) > daysInTargetMonth
+									) {
+										setSelectedDay(
+											daysInTargetMonth.toString(),
+										);
+									}
+								}}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Month</SelectLabel>
+										{months
+											.filter(
+												(monthOption) =>
+													monthOption.value !== null,
+											)
+											.map((monthOption) => (
+												<SelectItem
+													key={monthOption.value}
+													value={monthOption.value}
+												>
+													{monthOption.label}
+												</SelectItem>
+											))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+							<Select
+								items={[
+									{ value: null, label: "Year" },
+									...yearOptions,
+								]}
+								value={selectedYear}
+								onValueChange={(value) => {
+									setSelectedYear(value ?? "");
+									const daysInTargetMonth = getDaysInMonth(
+										Number(value ?? currentYear.toString()),
+										selectedMonthNumber,
+									);
+
+									if (
+										Number(selectedDay) > daysInTargetMonth
+									) {
+										setSelectedDay(
+											daysInTargetMonth.toString(),
+										);
+									}
+								}}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectLabel>Year</SelectLabel>
+										{yearOptions.map((yearOption) => (
+											<SelectItem
+												key={yearOption.value}
+												value={yearOption.value}
+											>
+												{yearOption.label}
+											</SelectItem>
+										))}
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+						</div>
+					</div>
+
+					{/* Footer actions */}
+					<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+						<Button
+							className="h-11 w-full rounded-full px-4 text-[13px] font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
+							disabled={isLoading}
+							onClick={() =>
+								deleteEventMutation.mutate({
+									movieEventId: event.movieEventId,
+								})
+							}
+							size="sm"
+							variant="ghost"
+						>
+							Delete event
+						</Button>
+
+						<div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
+							<Button
+								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+								disabled={isLoading}
+								onClick={() => onOpenChange(false)}
+								size="sm"
+								variant="outline"
+							>
+								Cancel
+							</Button>
+							<Button
+								className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+								disabled={isLoading || !hasDateChanged}
+								onClick={() => {
+									if (
+										!selectedDay ||
+										!selectedMonth ||
+										!selectedYear
+									) {
+										return;
+									}
+
+									updateEventDateMutation.mutate({
+										movieEventId: event.movieEventId,
+										eventDate: `${selectedYear}${selectedMonth.padStart(2, "0")}${selectedDay.padStart(2, "0")}`,
+									});
+								}}
+								size="sm"
+							>
+								Update date
+							</Button>
+						</div>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>
