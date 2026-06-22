@@ -298,7 +298,7 @@
 		filter: blur(72px);
 		pointer-events: none;
 		will-change: transform;
-		opacity: 0.55;
+		opacity: 0.9;
 		mix-blend-mode: multiply;
 	}
 	.dark .orb {
