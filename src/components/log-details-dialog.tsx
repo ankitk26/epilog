@@ -51,6 +51,33 @@ function formatLogDate(timestamp: number) {
 	}).format(new Date(timestamp));
 }
 
+function statusPhrase(status: LogStatus, date: string): string {
+	switch (status) {
+		case "tbr":
+			return `TBR'd on ${date}`;
+		case "reading":
+			return `Started reading on ${date}`;
+		case "finished":
+			return `Finished on ${date}`;
+		case "dnf":
+			return `DNF'd on ${date}`;
+		case "watchlist":
+			return `Added to watchlist on ${date}`;
+		case "watching":
+			return `Started watching on ${date}`;
+		case "watched":
+			return `Watched on ${date}`;
+		case "plan_to_watch":
+			return `Bookmarked on ${date}`;
+		case "waiting":
+			return `Waiting since ${date}`;
+		case "completed":
+			return `Completed on ${date}`;
+		case "dropped":
+			return `Dropped on ${date}`;
+	}
+}
+
 export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 	const mediaType = log?.metadata.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
@@ -182,7 +209,10 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 								)}
 
 								<p className="pt-1 text-[11px] text-muted-foreground/70">
-									Logged {formatLogDate(log.updatedTime)}
+									{statusPhrase(
+										log.status as LogStatus,
+										formatLogDate(log.updatedTime),
+									)}
 								</p>
 							</div>
 						</div>
