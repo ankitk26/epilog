@@ -15,9 +15,6 @@ const allStatusLiterals = v.union(
 	v.literal("waiting"),
 	v.literal("completed"),
 	v.literal("dropped"),
-	// legacy values — keep until production migration completes
-	v.literal("planned"),
-	v.literal("in_progress"),
 );
 
 const mediaTypeLiteral = v.union(
