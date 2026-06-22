@@ -8,8 +8,13 @@ import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-pat
 import { getReleaseYear } from "@/lib/get-movie-release-year";
 import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
+import type { SearchMedia } from "./search-results";
 
-export default function ContentResults() {
+type Props = {
+	onMediaClick: (media: SearchMedia) => void;
+};
+
+export default function ContentResults({ onMediaClick }: Props) {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
@@ -63,19 +68,20 @@ export default function ContentResults() {
 						media.poster_path,
 					);
 
+					const searchMedia: SearchMedia = {
+						imageUrl: posterImage,
+						name: media.name ?? media.title ?? "NA",
+						releaseYear,
+						sourceId: buildSourceMediaId(mediaType, media.id),
+						type: mediaType,
+					};
+
 					return (
 						<MediaCard
+							displayOnly
 							key={media.id}
-							media={{
-								imageUrl: posterImage,
-								name: media.name ?? media.title ?? "NA",
-								releaseYear,
-								sourceId: buildSourceMediaId(
-									mediaType,
-									media.id,
-								),
-								type: mediaType,
-							}}
+							media={searchMedia}
+							onClick={() => onMediaClick(searchMedia)}
 						/>
 					);
 				})}

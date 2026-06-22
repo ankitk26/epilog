@@ -2,8 +2,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import type { FunctionReturnType } from "convex/server";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,10 +17,20 @@ import { statusesByMediaType } from "@/types";
 import type { LogStatus, MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 
-type Log = FunctionReturnType<typeof api.logs.all>[0];
+type Media = {
+	imageUrl: string | undefined | null;
+	name: string;
+	releaseYear: number | null;
+	sourceId: string;
+	type: MediaType;
+	seriesName?: string;
+	seriesPosition?: number;
+	seriesTotal?: number;
+	seriesKey?: string;
+};
 
 type Props = {
-	log: Log | null;
+	media: Media | null;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
@@ -43,34 +52,22 @@ function formatMediaType(type: MediaType) {
 	}
 }
 
-function formatLogDate(timestamp: number) {
-	return new Intl.DateTimeFormat("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric",
-	}).format(new Date(timestamp));
-}
-
-export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
-	const mediaType = log?.metadata.type ?? "movie";
+export default function AddMediaDialog({ media, open, onOpenChange }: Props) {
+	const mediaType = media?.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
-	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
+	const [status, setStatus] = useState<LogStatus | null>(null);
+
 	const titleRef = useRef<HTMLHeadingElement>(null);
 
-	useEffect(() => {
-		if (log) {
-			setStatus(log.status as LogStatus);
-		}
-	}, [log]);
-
-	const updateMutation = useMutation({
-		mutationFn: useConvexMutation(api.logs.update),
+	const addMutation = useMutation({
+		mutationFn: useConvexMutation(api.logs.add),
 		onMutate: () => {
-			toast.loading("Saving changes...");
+			toast.loading("Adding...");
 		},
-		onSuccess: () => {
+		onSuccess: (response: string) => {
 			toast.dismiss();
-			toast.success("Log updated");
+			toast.success(response);
+			setStatus(null);
 			onOpenChange(false);
 		},
 		onError: () => {
@@ -79,48 +76,46 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 		},
 	});
 
-	const removeMutation = useMutation({
-		mutationFn: useConvexMutation(api.logs.remove),
-		onMutate: () => {
-			toast.loading("Removing log...");
-		},
-		onSuccess: () => {
-			toast.dismiss();
-			toast.success("Removed log");
-			onOpenChange(false);
-		},
-		onError: () => {
-			toast.dismiss();
-			toast.error("Something went wrong!");
-		},
-	});
-
-	const handleSave = () => {
-		if (!log) return;
-		updateMutation.mutate({ logId: log._id, status });
+	const handleAdd = () => {
+		if (!media || !status) return;
+		addMutation.mutate({
+			media: {
+				name: media.name,
+				releaseYear: media.releaseYear ?? 2025,
+				sourceMediaId: media.sourceId,
+				type: media.type,
+				image: media.imageUrl ?? "",
+				seriesName: media.seriesName,
+				seriesPosition: media.seriesPosition,
+				seriesTotal: media.seriesTotal,
+				seriesKey: media.seriesKey,
+			},
+			status,
+		});
 	};
 
-	const handleDelete = () => {
-		if (!log) return;
-		removeMutation.mutate({ logId: log._id });
-	};
-
-	const isLoading = updateMutation.isPending || removeMutation.isPending;
+	const isLoading = addMutation.isPending;
 	const seriesLabel =
-		log?.metadata.seriesName &&
-		`${log.metadata.seriesName}${
-			log.metadata.seriesPosition && log.metadata.seriesTotal
-				? ` · ${log.metadata.seriesPosition}/${log.metadata.seriesTotal}`
+		media?.seriesName &&
+		`${media.seriesName}${
+			media.seriesPosition && media.seriesTotal
+				? ` · ${media.seriesPosition}/${media.seriesTotal}`
 				: ""
 		}`;
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Dialog
+			open={open}
+			onOpenChange={(value) => {
+				if (!value) setStatus(null);
+				onOpenChange(value);
+			}}
+		>
 			<DialogContent
 				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
 				initialFocus={titleRef}
 			>
-				{/* Media-reactive atmospheric orb — the brand's signature mood */}
+				{/* Media-reactive atmospheric orb */}
 				<div
 					aria-hidden
 					className={cn(
@@ -135,30 +130,28 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 						className="font-heading text-xl leading-tight font-normal tracking-tight text-ink"
 						tabIndex={-1}
 					>
-						{log?.metadata.name || "Untitled"}
+						{media?.name || "Untitled"}
 					</DialogTitle>
 				</DialogHeader>
 
-				{log && (
+				{media && (
 					<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
 						{/* Media summary */}
 						<div className="flex gap-4">
 							<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
-								{log.metadata.image ? (
+								{media.imageUrl ? (
 									<Image
-										alt={
-											log.metadata.name || "Media poster"
-										}
+										alt={media.name || "Media poster"}
 										className="h-full w-full object-cover"
 										height={120}
-										src={log.metadata.image}
+										src={media.imageUrl}
 										width={80}
 									/>
 								) : (
 									<div className="flex h-full w-full items-center justify-center">
 										<IconByType
 											className="size-5 text-muted-foreground/50"
-											type={log.metadata.type}
+											type={media.type}
 										/>
 									</div>
 								)}
@@ -166,11 +159,11 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 
 							<div className="min-w-0 flex-1 space-y-1.5 pt-1">
 								<p className="text-[13px] font-medium text-ink">
-									{formatMediaType(log.metadata.type)}
-									{log.metadata.releaseYear ? (
+									{formatMediaType(media.type)}
+									{media.releaseYear ? (
 										<span className="text-muted-foreground tabular-nums">
 											{" · "}
-											{log.metadata.releaseYear}
+											{media.releaseYear}
 										</span>
 									) : null}
 								</p>
@@ -180,10 +173,6 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 										{seriesLabel}
 									</p>
 								)}
-
-								<p className="pt-1 text-[11px] text-muted-foreground/70">
-									Logged {formatLogDate(log.updatedTime)}
-								</p>
 							</div>
 						</div>
 
@@ -214,39 +203,24 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 						</div>
 
 						{/* Footer actions */}
-						<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
 							<Button
-								className="h-11 w-full rounded-full px-4 text-[13px] font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 								disabled={isLoading}
-								onClick={handleDelete}
+								onClick={() => onOpenChange(false)}
 								size="sm"
-								variant="ghost"
+								variant="outline"
 							>
-								Delete
+								Cancel
 							</Button>
-
-							<div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
-								<Button
-									className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
-									disabled={isLoading}
-									onClick={() => onOpenChange(false)}
-									size="sm"
-									variant="outline"
-								>
-									Cancel
-								</Button>
-								<Button
-									className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
-									disabled={
-										isLoading ||
-										status === (log.status as LogStatus)
-									}
-									onClick={handleSave}
-									size="sm"
-								>
-									Save
-								</Button>
-							</div>
+							<Button
+								className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+								disabled={isLoading || !status}
+								onClick={handleAdd}
+								size="sm"
+							>
+								Add to library
+							</Button>
 						</div>
 					</div>
 				)}

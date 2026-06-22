@@ -6,8 +6,13 @@ import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
 import SearchLoading from "./search-loading";
+import type { SearchMedia } from "./search-results";
 
-export default function AnimeResults() {
+type Props = {
+	onMediaClick: (media: SearchMedia) => void;
+};
+
+export default function AnimeResults({ onMediaClick }: Props) {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
@@ -44,20 +49,26 @@ export default function AnimeResults() {
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
-				{animeContent.data.map((anime) => (
-					<MediaCard
-						key={anime.mal_id}
-						media={{
-							imageUrl: anime.images.webp?.large_image_url,
-							name: anime.title_english ?? anime.title ?? "NA",
-							releaseYear: anime.aired.from
-								? new Date(anime.aired.from).getFullYear()
-								: null,
-							sourceId: buildSourceMediaId("anime", anime.mal_id),
-							type: "anime",
-						}}
-					/>
-				))}
+				{animeContent.data.map((anime) => {
+					const searchMedia: SearchMedia = {
+						imageUrl: anime.images.webp?.large_image_url,
+						name: anime.title_english ?? anime.title ?? "NA",
+						releaseYear: anime.aired.from
+							? new Date(anime.aired.from).getFullYear()
+							: null,
+						sourceId: buildSourceMediaId("anime", anime.mal_id),
+						type: "anime",
+					};
+
+					return (
+						<MediaCard
+							displayOnly
+							key={anime.mal_id}
+							media={searchMedia}
+							onClick={() => onMediaClick(searchMedia)}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

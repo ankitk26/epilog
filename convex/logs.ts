@@ -94,7 +94,7 @@ export const all = query({
 	},
 });
 
-export const addToPlanning = mutation({
+export const add = mutation({
 	args: {
 		media: v.object({
 			name: v.string(),
@@ -107,6 +107,7 @@ export const addToPlanning = mutation({
 			seriesTotal: v.optional(v.number()),
 			seriesKey: v.optional(v.string()),
 		}),
+		status: v.optional(allStatusLiterals),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -148,16 +149,25 @@ export const addToPlanning = mutation({
 			)
 			.unique();
 
-		// do nothing if give media is already logged
+		// do nothing if given media is already logged
 		if (existingLog) {
 			// return message to display in sonner
 			return "Already added";
 		}
 
-		// add log for media with type-specific default status
+		// determine status: use provided if valid for type, otherwise default
+		let status = defaultStatusForType(args.media.type);
+		if (args.status) {
+			const valid = validStatusesByType[args.media.type];
+			if (valid.has(args.status)) {
+				status = args.status;
+			}
+		}
+
+		// add log for media with chosen or default status
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
-			status: defaultStatusForType(args.media.type) as
+			status: status as
 				| "tbr"
 				| "reading"
 				| "finished"
@@ -174,7 +184,7 @@ export const addToPlanning = mutation({
 		});
 
 		// return message to display in sonner
-		return "Added to planning";
+		return "Added to library";
 	},
 });
 

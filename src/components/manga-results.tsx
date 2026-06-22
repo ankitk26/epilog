@@ -6,8 +6,13 @@ import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
 import SearchLoading from "./search-loading";
+import type { SearchMedia } from "./search-results";
 
-export default function MangaResults() {
+type Props = {
+	onMediaClick: (media: SearchMedia) => void;
+};
+
+export default function MangaResults({ onMediaClick }: Props) {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
@@ -44,20 +49,26 @@ export default function MangaResults() {
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
-				{mangaContent.data.map((manga) => (
-					<MediaCard
-						key={manga.mal_id}
-						media={{
-							imageUrl: manga.images.webp?.large_image_url,
-							name: manga.title_english ?? manga.title ?? "NA",
-							releaseYear: manga.published.from
-								? new Date(manga.published.from).getFullYear()
-								: null,
-							sourceId: buildSourceMediaId("manga", manga.mal_id),
-							type: "manga",
-						}}
-					/>
-				))}
+				{mangaContent.data.map((manga) => {
+					const searchMedia: SearchMedia = {
+						imageUrl: manga.images.webp?.large_image_url,
+						name: manga.title_english ?? manga.title ?? "NA",
+						releaseYear: manga.published.from
+							? new Date(manga.published.from).getFullYear()
+							: null,
+						sourceId: buildSourceMediaId("manga", manga.mal_id),
+						type: "manga",
+					};
+
+					return (
+						<MediaCard
+							displayOnly
+							key={manga.mal_id}
+							media={searchMedia}
+							onClick={() => onMediaClick(searchMedia)}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

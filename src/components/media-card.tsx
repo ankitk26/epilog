@@ -1,15 +1,8 @@
-import { useConvexMutation } from "@convex-dev/react-query";
-import { api } from "@convex/_generated/api";
-import type { Id } from "@convex/_generated/dataModel";
-import { PlusIcon } from "@phosphor-icons/react";
-import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import IconByType from "./icon-by-type";
-import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
 type Props = {
@@ -26,48 +19,12 @@ type Props = {
 		seriesKey?: string;
 	};
 	displayOnly?: boolean;
-	id?: Id<"logs">;
 	onClick?: () => void;
 };
 
 export default function MediaCard(props: Props) {
 	const { displayOnly = false } = props;
 	const [imageFailed, setImageFailed] = useState(false);
-
-	useEffect(() => {
-		setImageFailed(false);
-	}, [props.media.imageUrl]);
-
-	const addToPlanningMutation = useMutation({
-		mutationFn: useConvexMutation(api.logs.addToPlanning),
-		onMutate: () => {
-			toast.loading("Adding...");
-		},
-		onSuccess: (response: string) => {
-			toast.dismiss();
-			toast.success(response);
-		},
-		onError: () => {
-			toast.dismiss();
-			toast.error("Something went wrong!");
-		},
-	});
-
-	const handleAddToPlanning = () => {
-		addToPlanningMutation.mutate({
-			media: {
-				name: props.media.name,
-				releaseYear: props.media.releaseYear ?? 2025,
-				sourceMediaId: props.media.sourceId,
-				type: props.media.type,
-				image: props.media.imageUrl ?? "",
-				seriesName: props.media.seriesName,
-				seriesPosition: props.media.seriesPosition,
-				seriesTotal: props.media.seriesTotal,
-				seriesKey: props.media.seriesKey,
-			},
-		});
-	};
 
 	const isClickable = displayOnly && !!props.onClick;
 
@@ -100,20 +57,6 @@ export default function MediaCard(props: Props) {
 							className="size-14 text-muted-foreground/50"
 							type={props.media.type}
 						/>
-					</div>
-				)}
-				{/* Add button overlay */}
-				{!displayOnly && (
-					<div className="absolute inset-0 flex items-center justify-center bg-ink/45 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 group-hover:opacity-100">
-						<Button
-							className="h-9 gap-1.5 rounded-full bg-card px-4 text-[13px] font-medium text-ink shadow-soft hover:bg-card"
-							onClick={handleAddToPlanning}
-							size="sm"
-							variant="secondary"
-						>
-							<PlusIcon className="size-4" />
-							Add
-						</Button>
 					</div>
 				)}
 			</div>

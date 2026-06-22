@@ -6,8 +6,13 @@ import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
 import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
+import type { SearchMedia } from "./search-results";
 
-export default function BookResults() {
+type Props = {
+	onMediaClick: (media: SearchMedia) => void;
+};
+
+export default function BookResults({ onMediaClick }: Props) {
 	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
@@ -45,23 +50,28 @@ export default function BookResults() {
 			</div>
 
 			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
-				{books.data.map((book) => (
-					<MediaCard
-						key={book.id}
-						media={{
-							imageUrl: book.imageUrl,
-							name: book.title,
-							secondaryText: book.author,
-							releaseYear: book.publishYear,
-							sourceId: buildSourceMediaId("book", book.id),
-							type: "book",
-							seriesName: book.seriesName ?? undefined,
-							seriesPosition: book.seriesPosition ?? undefined,
-							seriesTotal: book.seriesTotal ?? undefined,
-							seriesKey: book.seriesKey ?? undefined,
-						}}
-					/>
-				))}
+				{books.data.map((book) => {
+					const searchMedia: SearchMedia = {
+						imageUrl: book.imageUrl,
+						name: book.title,
+						releaseYear: book.publishYear,
+						sourceId: buildSourceMediaId("book", book.id),
+						type: "book",
+						seriesName: book.seriesName ?? undefined,
+						seriesPosition: book.seriesPosition ?? undefined,
+						seriesTotal: book.seriesTotal ?? undefined,
+						seriesKey: book.seriesKey ?? undefined,
+					};
+
+					return (
+						<MediaCard
+							displayOnly
+							key={book.id}
+							media={searchMedia}
+							onClick={() => onMediaClick(searchMedia)}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);
