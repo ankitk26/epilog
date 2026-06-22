@@ -45,7 +45,7 @@ function computeMigrationTarget(doc: MediaDoc): MigrationTarget | null {
 	}
 
 	if (doc.type === "book") {
-		// Manga were previously stored as book with a "manga-" sourceId prefix.
+		// Manga from the MAL search had a "manga-" prefix.
 		if (doc.sourceMediaId.startsWith("manga-")) {
 			const nativeId = doc.sourceMediaId.slice("manga-".length);
 			return {
@@ -54,6 +54,18 @@ function computeMigrationTarget(doc: MediaDoc): MigrationTarget | null {
 				newSourceMediaId: `mal:manga:${nativeId}`,
 			};
 		}
+
+		// Manga added via OpenLibrary search have purely numeric IDs.
+		// Real books have "/works/" in the key or non-numeric IDs
+		// (e.g. wrOQLV6xB-wC, OL26594474M).
+		if (/^\d+$/.test(doc.sourceMediaId)) {
+			return {
+				mediaId: doc._id,
+				newType: "manga",
+				newSourceMediaId: `ol:manga:${doc.sourceMediaId}`,
+			};
+		}
+
 		return {
 			mediaId: doc._id,
 			newType: "book",
