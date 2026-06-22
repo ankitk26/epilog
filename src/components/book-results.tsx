@@ -4,6 +4,7 @@ import { getBookSearchResults } from "@/actions/get-book-search-results";
 import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
+import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
 
 export default function BookResults() {
@@ -52,7 +53,7 @@ export default function BookResults() {
 							name: book.title,
 							secondaryText: book.author,
 							releaseYear: book.publishYear,
-							sourceId: book.id,
+							sourceId: buildSourceMediaId("book", book.id),
 							type: "book",
 							seriesName: book.seriesName ?? undefined,
 							seriesPosition: book.seriesPosition ?? undefined,

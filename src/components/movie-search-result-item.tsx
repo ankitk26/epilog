@@ -5,6 +5,7 @@ import { Image } from "@unpic/react";
 import { toast } from "sonner";
 import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
 import { getReleaseYear } from "@/lib/get-movie-release-year";
+import { buildSourceMediaId } from "@/lib/source-media-id";
 import IconByType from "./icon-by-type";
 
 type Props = {
@@ -69,7 +70,7 @@ export default function MovieSearchResultItem({
 			media: {
 				name: movie.name ?? movie.title ?? "N/A",
 				releaseYear,
-				sourceMediaId: movie.id.toString(),
+				sourceMediaId: buildSourceMediaId("movie", movie.id),
 				image: posterImage,
 			},
 		});

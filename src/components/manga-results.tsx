@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import { getMangaSearchResults } from "@/actions/get-manga-search-results";
+import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
@@ -52,8 +53,8 @@ export default function MangaResults() {
 							releaseYear: manga.published.from
 								? new Date(manga.published.from).getFullYear()
 								: null,
-							sourceId: `manga-${manga.mal_id}`,
-							type: "book",
+							sourceId: buildSourceMediaId("manga", manga.mal_id),
+							type: "manga",
 						}}
 					/>
 				))}

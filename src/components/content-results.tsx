@@ -6,6 +6,7 @@ import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
 import { getFullImageFromPosterPath } from "@/lib/get-full-image-from-poster-path";
 import { getReleaseYear } from "@/lib/get-movie-release-year";
+import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
 
 export default function ContentResults() {
@@ -69,7 +70,10 @@ export default function ContentResults() {
 								imageUrl: posterImage,
 								name: media.name ?? media.title ?? "NA",
 								releaseYear,
-								sourceId: media.id.toString(),
+								sourceId: buildSourceMediaId(
+									mediaType,
+									media.id,
+								),
 								type: mediaType,
 							}}
 						/>

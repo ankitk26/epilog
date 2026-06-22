@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import { getAnimeSearchResults } from "@/actions/get-anime-search-results";
+import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
@@ -52,7 +53,7 @@ export default function AnimeResults() {
 							releaseYear: anime.aired.from
 								? new Date(anime.aired.from).getFullYear()
 								: null,
-							sourceId: anime.mal_id.toString(),
+							sourceId: buildSourceMediaId("anime", anime.mal_id),
 							type: "anime",
 						}}
 					/>
