@@ -35,8 +35,7 @@ function SignInPage() {
 						</p>
 					</div>
 					<p className="mx-auto max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
-						Curate the stories that move you — films, shows, anime
-						and books, kept like a quiet editorial record.
+						Keep track of the stories you're into.
 					</p>
 				</div>
 
@@ -89,9 +88,9 @@ function SignInPage() {
 					</Button>
 				</div>
 
-				<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
-					By continuing you agree to keep your shelf honestly curated.
-				</p>
+			<p className="text-center text-xs leading-relaxed text-muted-foreground/80">
+				Just your stuff, nicely kept.
+			</p>
 			</div>
 		</div>
 	);

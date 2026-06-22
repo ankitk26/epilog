@@ -1,7 +1,7 @@
 ---
 version: 1.0
 name: epilog-design-system
-description: A personal media journal that reads like a quietly editorial print magazine. The base canvas is warm off-white (`#f5f5f5`) holding warm near-black ink (`#0c0a09`). The brand voltage is atmospheric, not chromatic — soft pastel gradient orbs (mint, peach, lavender, sky, rose) drift behind every authenticated surface, and the active orb hue reacts to the selected media type (movies→mint, TV→sky, anime→lavender, books→peach) so the page's mood shifts with what you're tracking. Display runs Newsreader Variable at weight 300 — the editorial signature, used italic for the wordmark. Hanken Grotesk carries body, navigation, captions, and buttons. The primary action is a near-black ink pill; secondary actions are transparent pills with a hairline-strong border. A film-grain overlay sits over everything for a printed-paper feel. There is no saturated brand action color, no neon accent, no developer-tools dark canvas by default.
+description: A personal media journal that reads like a quietly editorial print magazine. The base canvas is warm off-white (`#f5f5f5`) holding warm near-black ink (`#0c0a09`). The brand voltage is atmospheric, not chromatic — soft pastel gradient orbs (mint, peach, lavender, sky, rose, amber) drift behind every authenticated surface, and the active orb hue reacts to the selected media type (movies→mint, TV→sky, anime→lavender, books→peach, manga→amber) so the page's mood shifts with what you're tracking. Display runs Newsreader Variable at weight 300 — the editorial signature, used italic for the wordmark. Hanken Grotesk carries body, navigation, captions, and buttons. The primary action is a near-black ink pill; secondary actions are transparent pills with a hairline-strong border. A film-grain overlay sits over everything for a printed-paper feel. There is no saturated brand action color, no neon accent, no developer-tools dark canvas by default.
 
 colors:
   ink: "#0c0a09"
@@ -33,6 +33,7 @@ orb-by-media-type:
   tv: "sky"
   anime: "lavender"
   book: "peach"
+  manga: "amber"
   ambient: "rose, lavender"
 
 typography:
@@ -126,7 +127,7 @@ components:
     border: "1px bottom hairline"
     wordmark: "italic Newsreader 'epilog', opacity dims on hover"
   library-masthead:
-    description: "The home headline IS the media-type filter. Reads 'The films / shows / anime / books you keep.' Each noun is a clickable inline control; active = solid ink with animated underline, inactive = muted with underline-on-hover. Counts sit as superscripts. The view switcher is a pill control on a hairline rule beneath."
+    description: "The home headline IS the media-type filter. Reads 'The films / shows / anime / books / manga you keep.' Each noun is a clickable inline control; active = solid ink with animated underline, inactive = muted with underline-on-hover. Counts sit as superscripts. The view switcher is a pill control on a hairline rule beneath."
   media-section:
     description: "Editorial section header: Newsreader title, tabular count, hairline rule filling remaining width, collapse caret. Body is a poster grid (grid view) or divided rows (list view)."
   media-card:
@@ -185,10 +186,10 @@ CTAs are subtle: a near-black ink pill (`{colors.primary}`) is the primary; tran
 
 **Key Characteristics:**
 - Warm off-white canvas, warm near-black ink. No saturated action color.
-- Media-type-reactive atmospheric orbs: movies→mint, TV→sky, anime→lavender, books→peach. Rose + lavender stay ambient.
+- Media-type-reactive atmospheric orbs: movies→mint, TV→sky, anime→lavender, books→peach, manga→amber. Rose + lavender stay ambient.
 - Newsreader Variable at weight 300 for all display — the editorial signature. Italic only on the wordmark.
 - Hanken Grotesk for body at 400/500 with relaxed leading (1.55).
-- The home headline **is** the media-type filter ("The films / shows / anime / books you keep.") — copy and control are the same element.
+- The home headline **is** the media-type filter ("The films / shows / anime / books / manga you keep.") — copy and control are the same element.
 - Pill geometry for every CTA, badge, and selector. Cards use `{radius.xl}` (16px).
 - Hairline rules carry editorial structure; counts are tabular.
 - Film-grain overlay + soft/lift shadow tiers give printed depth.
@@ -303,7 +304,7 @@ Fixed full-viewport `z-0` layer with three drifting orbs. The primary orb's clas
 Sticky `z-30`, 64/72px tall, `{colors.canvas}` at 70% opacity with `backdrop-blur-md`, 1px bottom hairline. Italic Newsreader wordmark left (opacity dims to 70% on hover). Right: pill outline Search button, circular outline ThemeToggle, circular outline avatar with dropdown. No subtitle.
 
 ### LibraryMasthead (`src/components/media-content-filters.tsx`)
-**The headline is the filter.** Renders "The *films* / *shows* / *anime* / *books* you keep." where each noun is a `<button>`:
+**The headline is the filter.** Renders "The *films* / *shows* / *anime* / *books* / *manga* you keep." where each noun is a `<button>`:
 - Active noun: solid ink, animated underline grows to 100%.
 - Inactive noun: muted at 55%, underline grows on hover.
 - Count as a `<sup>` superscript in Hanken Grotesk.
