@@ -7,6 +7,7 @@ const messageByType: Record<MediaType, string> = {
 	tv: "No shows here yet.",
 	anime: "No anime here yet.",
 	book: "No books here yet.",
+	manga: "No manga here yet.",
 };
 
 export default function EmptyStateMessage() {

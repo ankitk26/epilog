@@ -13,8 +13,8 @@ export default function SearchMediaButtons() {
 		{ value: "movie", label: "Movies" },
 		{ value: "tv", label: "TV" },
 		{ value: "anime", label: "Anime" },
-		{ value: "manga", label: "Manga" },
 		{ value: "book", label: "Books" },
+		{ value: "manga", label: "Manga" },
 	];
 
 	return (

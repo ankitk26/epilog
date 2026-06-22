@@ -41,6 +41,11 @@ export default function MediaContentFilters() {
 			label: "Books",
 			count: logs.filter((log) => log.metadata.type === "book").length,
 		},
+		{
+			type: "manga",
+			label: "Manga",
+			count: logs.filter((log) => log.metadata.type === "manga").length,
+		},
 	];
 
 	const viewOptions: {

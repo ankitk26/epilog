@@ -13,6 +13,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
 import type { MediaType } from "@/types";
 import IconByType from "./icon-by-type";
 
@@ -29,17 +30,18 @@ const orbClassByType: Record<MediaType, string> = {
 	tv: "orb-sky",
 	anime: "orb-lavender",
 	book: "orb-peach",
+	manga: "orb-amber",
 };
 
 function getStatusOptions(type: MediaType) {
 	return [
 		{
 			value: "planned" as const,
-			label: type === "book" ? "To Read" : "To Watch",
+			label: plannedLabel(type),
 		},
 		{
 			value: "in_progress" as const,
-			label: type === "book" ? "Reading" : "Watching",
+			label: inProgressLabel(type),
 		},
 		{ value: "completed" as const, label: "Completed" },
 	];

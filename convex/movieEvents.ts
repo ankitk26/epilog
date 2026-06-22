@@ -179,7 +179,7 @@ export const getAll = query({
 				image?: string | null;
 				releaseYear: number | null;
 				sourceMediaId: string;
-				type: "anime" | "movie" | "tv" | "book";
+				type: "anime" | "movie" | "tv" | "book" | "manga";
 				movieEventId: Id<"movieEvents">;
 				eventDate: string;
 			}>

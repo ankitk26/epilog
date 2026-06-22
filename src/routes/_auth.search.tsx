@@ -4,9 +4,8 @@ import { useSelector } from "@tanstack/react-store";
 import SearchInput from "@/components/search-input";
 import SearchMediaButtons from "@/components/search-media-buttons";
 import SearchResults from "@/components/search-results";
-import { defaultMediaFilters, isMediaType } from "@/lib/media-filters";
+import { defaultMediaFilters } from "@/lib/media-filters";
 import { searchStore } from "@/store/search-store";
-import type { MediaType } from "@/types";
 
 export const Route = createFileRoute("/_auth/search")({
 	component: SearchPage,
@@ -15,15 +14,11 @@ export const Route = createFileRoute("/_auth/search")({
 function SearchPage() {
 	const mediaType = useSelector(searchStore, (state) => state.mediaType);
 
-	const backType: MediaType = isMediaType(mediaType)
-		? mediaType
-		: defaultMediaFilters.type;
-
 	return (
 		<div className="flex flex-col space-y-10 pt-2">
 			<Link
 				className="inline-flex self-start"
-				search={{ type: backType, view: defaultMediaFilters.view }}
+				search={{ type: mediaType, view: defaultMediaFilters.view }}
 				to="/"
 			>
 				<span className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-ink">

@@ -49,6 +49,7 @@
 	--color-lavender: var(--lavender);
 	--color-sky: var(--sky);
 	--color-rose: var(--rose);
+	--color-amber: var(--amber);
 	--color-sidebar: var(--sidebar);
 	--color-sidebar-foreground: var(--sidebar-foreground);
 	--color-sidebar-primary: var(--sidebar-primary);
@@ -153,6 +154,7 @@
 	--lavender: #c8b8e0;
 	--sky: #a8c8e8;
 	--rose: #e8b8c4;
+	--amber: #f2dca0;
 
 	--chart-1: #a7e5d3;
 	--chart-2: #f4c5a8;
@@ -202,6 +204,7 @@
 	--lavender: #c8b8e0;
 	--sky: #a8c8e8;
 	--rose: #e8b8c4;
+	--amber: #f2dca0;
 
 	--chart-1: #a7e5d3;
 	--chart-2: #f4c5a8;
@@ -336,6 +339,13 @@
 		background: radial-gradient(
 			circle at 50% 50%,
 			var(--rose) 0%,
+			transparent 68%
+		);
+	}
+	.orb-amber {
+		background: radial-gradient(
+			circle at 50% 50%,
+			var(--amber) 0%,
 			transparent 68%
 		);
 	}

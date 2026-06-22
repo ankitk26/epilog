@@ -3,6 +3,7 @@ import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
 import MediaSectionByStatus from "./media-section-by-status";
 
 export default function ListViewByStatus() {
@@ -18,11 +19,11 @@ export default function ListViewByStatus() {
 
 	const sections = [
 		{
-			title: mediaType === "book" ? "To Read" : "To Watch",
+			title: plannedLabel(mediaType),
 			status: "planned",
 		},
 		{
-			title: mediaType === "book" ? "Reading" : "Watching",
+			title: inProgressLabel(mediaType),
 			status: "in_progress",
 		},
 		{

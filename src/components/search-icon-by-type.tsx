@@ -5,13 +5,13 @@ import {
 	TelevisionIcon,
 } from "@phosphor-icons/react";
 import type { IconProps } from "@phosphor-icons/react";
-import type { SearchMediaType } from "@/types";
+import type { MediaType } from "@/types";
 
 export default function SearchIconByType({
 	type,
 	...props
 }: {
-	type: SearchMediaType;
+	type: MediaType;
 } & IconProps) {
 	if (type === "book") {
 		return <BookIcon {...props} />;

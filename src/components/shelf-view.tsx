@@ -9,6 +9,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { useMemo, useRef, useState } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { inProgressLabel, plannedLabel } from "@/lib/media-labels";
 import LogDetailsDialog from "./log-details-dialog";
 import ShelfColumn from "./shelf-column";
 
@@ -28,12 +29,12 @@ export default function ShelfView() {
 	const columns = [
 		{
 			status: "planned",
-			title: mediaType === "book" ? "To Read" : "To Watch",
+			title: plannedLabel(mediaType),
 			icon: CalendarBlankIcon,
 		},
 		{
 			status: "in_progress",
-			title: mediaType === "book" ? "Reading" : "Watching",
+			title: inProgressLabel(mediaType),
 			icon: ClockIcon,
 		},
 		{

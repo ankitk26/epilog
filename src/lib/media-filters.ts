@@ -5,12 +5,7 @@ import {
 	type FilterMediaView,
 	mediaTypes,
 	type MediaType,
-	type SearchMediaType,
 } from "@/types";
-
-export function isMediaType(type: SearchMediaType): type is MediaType {
-	return (mediaTypes as readonly string[]).includes(type);
-}
 
 export const defaultMediaFilters = {
 	type: "movie" as MediaType,

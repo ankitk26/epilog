@@ -46,6 +46,7 @@ export const addToPlanning = mutation({
 				v.literal("movie"),
 				v.literal("tv"),
 				v.literal("book"),
+				v.literal("manga"),
 			),
 			seriesName: v.optional(v.string()),
 			seriesPosition: v.optional(v.number()),

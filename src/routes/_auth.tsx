@@ -22,6 +22,7 @@ const orbByType: Record<MediaType, string> = {
 	tv: "orb-sky",
 	anime: "orb-lavender",
 	book: "orb-peach",
+	manga: "orb-amber",
 };
 
 function Atmosphere() {
