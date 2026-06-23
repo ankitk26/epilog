@@ -3,11 +3,13 @@ import { api } from "@convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
+import { XIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
@@ -82,7 +84,7 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 	const mediaType = log?.metadata.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
-	const titleRef = useRef<HTMLHeadingElement>(null);
+	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
 		if (log) {
@@ -145,7 +147,8 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
 				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
-				initialFocus={titleRef}
+				initialFocus={closeButtonRef}
+				showCloseButton={false}
 			>
 				{/* Media-reactive atmospheric orb — the brand's signature mood */}
 				<div
@@ -157,14 +160,24 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 				/>
 
 				<DialogHeader className="relative z-10 flex-shrink-0">
-					<DialogTitle
-						ref={titleRef}
-						className="font-heading text-xl leading-tight font-normal tracking-tight text-ink"
-						tabIndex={-1}
-					>
+					<DialogTitle className="font-heading text-xl leading-tight font-normal tracking-tight text-ink">
 						{log?.metadata.name || "Untitled"}
 					</DialogTitle>
 				</DialogHeader>
+
+				<DialogClose
+					ref={closeButtonRef}
+					render={
+						<Button
+							variant="ghost"
+							className="absolute top-2 right-2"
+							size="icon-sm"
+						/>
+					}
+				>
+					<XIcon />
+					<span className="sr-only">Close</span>
+				</DialogClose>
 
 				{log && (
 					<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
