@@ -16,14 +16,14 @@ export default function ListCard({ log, onClick }: Props) {
 			role="button"
 		>
 			{/* Poster */}
-			<div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
+			<div className="h-28 w-20 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata.name || "Media poster"}
 						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-						height={96}
+						height={112}
 						src={log.metadata.image || "/placeholder.svg"}
-						width={64}
+						width={80}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center">

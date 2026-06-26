@@ -62,13 +62,13 @@ export default function MediaContentFilters() {
 	return (
 		<div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 			{/* Media type filter — pill rail */}
-			<div className="grid grid-cols-2 gap-1.5 sm:flex sm:flex-wrap sm:items-center">
+			<div className="no-scrollbar flex gap-1.5 overflow-x-auto pb-1 sm:flex-wrap sm:items-center sm:overflow-visible">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
 						<button
 							className={cn(
-								"group flex h-9 w-full cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
+								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground shadow-soft"
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
