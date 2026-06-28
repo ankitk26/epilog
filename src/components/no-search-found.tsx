@@ -1,9 +1,8 @@
-import { useSelector } from "@tanstack/react-store";
-import { searchStore } from "@/store/search-store";
+import { useSearch } from "@tanstack/react-router";
 import SearchIconByType from "./search-icon-by-type";
 
 export default function NoSearchFound() {
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const { type: mediaType } = useSearch({ from: "/_auth/search" });
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-hairline-strong bg-canvas-soft/50 py-14 text-center">

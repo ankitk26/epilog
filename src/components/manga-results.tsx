@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
+import { useSearch } from "@tanstack/react-router";
 import { getMangaSearchResults } from "@/actions/get-manga-search-results";
 import { buildSourceMediaId } from "@/lib/source-media-id";
-import { searchStore } from "@/store/search-store";
 import MediaCard from "./media-card";
 import NoSearchFound from "./no-search-found";
 import SearchLoading from "./search-loading";
@@ -13,8 +12,9 @@ type Props = {
 };
 
 export default function MangaResults({ onMediaClick }: Props) {
-	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const { q: searchQuery, type: mediaType } = useSearch({
+		from: "/_auth/search",
+	});
 
 	const {
 		data: mangaContent,

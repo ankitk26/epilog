@@ -1,23 +1,22 @@
 import { MagnifyingGlassIcon } from "@phosphor-icons/react";
-import { useSelector } from "@tanstack/react-store";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { type FormEvent, useEffect, useState } from "react";
-import { searchStore } from "@/store/search-store";
 import { Input } from "./ui/input";
 
 export default function SearchInput() {
-	const [query, setQuery] = useState("");
-
-	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
+	const navigate = useNavigate({ from: "/search" });
+	const { q, type } = useSearch({ from: "/_auth/search" });
+	const [query, setQuery] = useState(q);
 
 	function handleQuerySubmit(e: FormEvent) {
 		e.preventDefault();
 		e.stopPropagation();
-		searchStore.setState((state) => ({ ...state, searchQuery: query }));
+		void navigate({ search: { q: query, type }, replace: true });
 	}
 
 	useEffect(() => {
-		setQuery(searchQuery);
-	}, [searchQuery]);
+		setQuery(q);
+	}, [q]);
 
 	return (
 		<form onSubmit={handleQuerySubmit}>

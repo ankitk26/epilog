@@ -1,7 +1,6 @@
-import { useSelector } from "@tanstack/react-store";
+import { useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import AddMediaDialog from "@/components/add-media-dialog";
-import { searchStore } from "@/store/search-store";
 import AnimeResults from "./anime-results";
 import BookResults from "./book-results";
 import ContentResults from "./content-results";
@@ -20,7 +19,7 @@ export type SearchMedia = {
 };
 
 export default function SearchResults() {
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const { type: mediaType } = useSearch({ from: "/_auth/search" });
 	const [selectedMedia, setSelectedMedia] = useState<SearchMedia | null>(
 		null,
 	);

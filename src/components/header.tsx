@@ -2,7 +2,6 @@ import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { defaultMediaFilters } from "@/lib/media-filters";
-import { searchStore } from "@/store/search-store";
 import type { MediaType } from "@/types";
 import { ThemeToggle } from "./theme-toggler";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -24,13 +23,11 @@ export default function Header() {
 	const homeMediaType = (location.search as { type?: MediaType }).type;
 
 	const goToSearch = () => {
-		if (isHome && homeMediaType) {
-			searchStore.setState((state) => ({
-				...state,
-				mediaType: homeMediaType,
-			}));
-		}
-		void navigate({ to: "/search" });
+		void navigate({
+			to: "/search",
+			search:
+				isHome && homeMediaType ? { type: homeMediaType } : undefined,
+		});
 	};
 
 	const handleSignOut = async () => {

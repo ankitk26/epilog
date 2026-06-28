@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "@tanstack/react-store";
+import { useSearch } from "@tanstack/react-router";
+import { getBookSearchResults } from "@/actions/get-book-search-results";
 import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
-import { searchBooks } from "@/lib/search-books";
 import { buildSourceMediaId } from "@/lib/source-media-id";
-import { searchStore } from "@/store/search-store";
 import type { SearchMedia } from "./search-results";
 
 type Props = {
@@ -13,8 +12,9 @@ type Props = {
 };
 
 export default function BookResults({ onMediaClick }: Props) {
-	const searchQuery = useSelector(searchStore, (state) => state.searchQuery);
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const { q: searchQuery, type: mediaType } = useSearch({
+		from: "/_auth/search",
+	});
 
 	const {
 		data: books,
@@ -22,7 +22,12 @@ export default function BookResults({ onMediaClick }: Props) {
 		isEnabled,
 	} = useQuery({
 		queryKey: ["search", "book", searchQuery],
-		queryFn: () => searchBooks(searchQuery),
+		queryFn: async () => {
+			const results = await getBookSearchResults({
+				data: { searchQuery },
+			});
+			return results.data;
+		},
 		enabled: searchQuery.length > 0 && mediaType === "book",
 		staleTime: 1000 * 60 * 2,
 	});

@@ -1,24 +1,24 @@
 import { ArrowLeftIcon } from "@phosphor-icons/react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSelector } from "@tanstack/react-store";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import SearchInput from "@/components/search-input";
 import SearchMediaButtons from "@/components/search-media-buttons";
 import SearchResults from "@/components/search-results";
 import { defaultMediaFilters } from "@/lib/media-filters";
-import { searchStore } from "@/store/search-store";
+import { searchParamsValidator } from "@/lib/search-params";
 
 export const Route = createFileRoute("/_auth/search")({
+	validateSearch: searchParamsValidator,
 	component: SearchPage,
 });
 
 function SearchPage() {
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const { type } = useSearch({ from: "/_auth/search" });
 
 	return (
 		<div className="flex flex-col space-y-10 pt-2">
 			<Link
 				className="inline-flex self-start"
-				search={{ type: mediaType, view: defaultMediaFilters.view }}
+				search={{ type, view: defaultMediaFilters.view }}
 				to="/"
 			>
 				<span className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-ink">

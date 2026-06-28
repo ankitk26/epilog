@@ -1,12 +1,12 @@
-import { useSelector } from "@tanstack/react-store";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { searchStore } from "@/store/search-store";
 
 export default function SearchMediaButtons() {
-	const mediaType = useSelector(searchStore, (state) => state.mediaType);
+	const navigate = useNavigate({ from: "/search" });
+	const { q, type: mediaType } = useSearch({ from: "/_auth/search" });
 
 	const setMediaType = (type: typeof mediaType) => {
-		searchStore.setState((state) => ({ ...state, mediaType: type }));
+		void navigate({ search: { q, type }, replace: true });
 	};
 
 	const options: { value: typeof mediaType; label: string }[] = [
