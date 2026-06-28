@@ -28,14 +28,6 @@ type Props = {
 	onOpenChange: (open: boolean) => void;
 };
 
-const orbClassByType: Record<MediaType, string> = {
-	movie: "orb-mint",
-	tv: "orb-sky",
-	anime: "orb-lavender",
-	book: "orb-peach",
-	manga: "orb-amber",
-};
-
 function formatMediaType(type: MediaType) {
 	switch (type) {
 		case "tv":
@@ -150,15 +142,6 @@ export default function LogDetailsDialog({ log, open, onOpenChange }: Props) {
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
-				{/* Media-reactive atmospheric orb — the brand's signature mood */}
-				<div
-					aria-hidden
-					className={cn(
-						"orb pointer-events-none absolute top-[-7rem] right-[-5rem] size-44 sm:size-52",
-						orbClassByType[mediaType],
-					)}
-				/>
-
 				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle className="font-heading text-xl leading-tight font-normal tracking-tight text-ink">
 						{log?.metadata.name || "Untitled"}

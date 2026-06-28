@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
-import { getBookSearchResults } from "@/actions/get-book-search-results";
 import MediaCard from "@/components/media-card";
 import NoSearchFound from "@/components/no-search-found";
 import SearchLoading from "@/components/search-loading";
+import { searchBooks } from "@/lib/search-books";
 import { buildSourceMediaId } from "@/lib/source-media-id";
 import { searchStore } from "@/store/search-store";
 import type { SearchMedia } from "./search-results";
@@ -21,10 +21,10 @@ export default function BookResults({ onMediaClick }: Props) {
 		isPending,
 		isEnabled,
 	} = useQuery({
-		queryKey: ["search", "book", mediaType, searchQuery],
-		queryFn: async () =>
-			await getBookSearchResults({ data: { searchQuery } }),
-		enabled: searchQuery.length !== 0 && mediaType === "book",
+		queryKey: ["search", "book", searchQuery],
+		queryFn: () => searchBooks(searchQuery),
+		enabled: searchQuery.length > 0 && mediaType === "book",
+		staleTime: 1000 * 60 * 2,
 	});
 
 	if (isEnabled && isPending) {
@@ -35,7 +35,7 @@ export default function BookResults({ onMediaClick }: Props) {
 		return null;
 	}
 
-	if (!books || books.data.length === 0) {
+	if (!books || books.length === 0) {
 		return <NoSearchFound />;
 	}
 
@@ -44,13 +44,20 @@ export default function BookResults({ onMediaClick }: Props) {
 			<div className="flex items-center gap-4">
 				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
 				<span className="text-sm text-muted-foreground tabular-nums">
-					{books.data.length} found
+					{books.length} found
 				</span>
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 
 			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
-				{books.data.map((book) => {
+				{books.map((book) => {
+					let displayTitle = book.title;
+					if (book.seriesName && book.seriesPosition) {
+						displayTitle = `${book.title} (${book.seriesName}, #${book.seriesPosition})`;
+					} else if (book.seriesName) {
+						displayTitle = `${book.title} (${book.seriesName})`;
+					}
+
 					const searchMedia: SearchMedia = {
 						imageUrl: book.imageUrl,
 						name: book.title,
@@ -67,7 +74,11 @@ export default function BookResults({ onMediaClick }: Props) {
 						<MediaCard
 							displayOnly
 							key={book.id}
-							media={searchMedia}
+							media={{
+								...searchMedia,
+								name: displayTitle,
+								secondaryText: book.author,
+							}}
 							onClick={() => onMediaClick(searchMedia)}
 						/>
 					);

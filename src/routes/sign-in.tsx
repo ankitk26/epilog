@@ -13,14 +13,6 @@ function SignInPage() {
 
 	return (
 		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-5 py-16">
-			{/* Atmospheric gradient orbs — the brand's signature color moment */}
-			<div aria-hidden className="pointer-events-none absolute inset-0">
-				<div className="orb orb-mint top-[-12rem] right-[-10rem] size-[32rem] animate-orb-drift opacity-60" />
-				<div className="orb orb-peach bottom-[-14rem] left-[-8rem] size-[30rem] animate-orb-drift-2 opacity-55" />
-				<div className="orb orb-lavender top-[24%] left-[38%] size-[22rem] animate-orb-drift opacity-40" />
-				<div className="orb orb-sky right-[20%] bottom-[8%] size-[18rem] animate-orb-drift-2 opacity-30" />
-			</div>
-
 			<div
 				className="relative w-full max-w-sm animate-reveal-up space-y-10 rounded-2xl border border-hairline bg-card/80 p-9 shadow-lift backdrop-blur-md lg:p-11"
 				style={{ animationDelay: "120ms" }}

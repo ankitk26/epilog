@@ -1,12 +1,5 @@
-import {
-	createFileRoute,
-	Outlet,
-	redirect,
-	useSearch,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import Header from "@/components/header";
-import { cn } from "@/lib/utils";
-import type { MediaType } from "@/types";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -17,50 +10,9 @@ export const Route = createFileRoute("/_auth")({
 	},
 });
 
-const orbByType: Record<MediaType, string> = {
-	movie: "orb-mint",
-	tv: "orb-sky",
-	anime: "orb-lavender",
-	book: "orb-peach",
-	manga: "orb-amber",
-};
-
-function Atmosphere() {
-	const search = useSearch({ strict: false }) as { type?: MediaType };
-	const orbClass = orbByType[search.type ?? "movie"] ?? "orb-rose";
-
-	return (
-		<div
-			aria-hidden
-			className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-		>
-			<div
-				className={cn(
-					"orb animate-orb-drift",
-					orbClass,
-					"top-[-14rem] right-[-12rem] size-[34rem]",
-				)}
-			/>
-			<div
-				className={cn(
-					"orb orb-rose animate-orb-drift-2",
-					"bottom-[-16rem] left-[-10rem] size-[30rem]",
-				)}
-			/>
-			<div
-				className={cn(
-					"orb orb-lavender animate-orb-drift",
-					"top-[28%] left-[42%] size-[20rem] opacity-30",
-				)}
-			/>
-		</div>
-	);
-}
-
 function AuthWrapper() {
 	return (
 		<div className="relative flex min-h-screen flex-col">
-			<Atmosphere />
 			<Header />
 			<main className="relative z-10 flex-1 py-8 lg:py-12">
 				<div className="mx-auto max-w-7xl px-5 lg:px-8">

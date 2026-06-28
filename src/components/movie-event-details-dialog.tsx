@@ -4,7 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import IconByType from "./icon-by-type";
@@ -24,14 +23,6 @@ type Props = {
 	event: CalendarMovieEvent | null;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
-};
-
-const orbClassByType: Record<MediaType, string> = {
-	movie: "orb-mint",
-	tv: "orb-sky",
-	anime: "orb-lavender",
-	book: "orb-peach",
-	manga: "orb-amber",
 };
 
 function formatMediaType(type: MediaType) {
@@ -213,15 +204,6 @@ export default function MovieEventDetailsDialog({
 				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
 				initialFocus={titleRef}
 			>
-				{/* Media-reactive atmospheric orb */}
-				<div
-					aria-hidden
-					className={cn(
-						"orb pointer-events-none absolute top-[-7rem] right-[-5rem] size-44 sm:size-52",
-						orbClassByType[mediaType],
-					)}
-				/>
-
 				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle
 						ref={titleRef}
