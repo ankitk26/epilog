@@ -1,13 +1,13 @@
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
-import SearchInput from "@/components/search-input";
-import SearchMediaButtons from "@/components/search-media-buttons";
-import SearchResults from "@/components/search-results";
+import SearchMediaTypeTabs from "@/components/search-media-type-tabs";
+import SearchQueryInput from "@/components/search-query-input";
+import SearchResultsPanel from "@/components/search-results-panel";
 import { defaultMediaFilters } from "@/lib/media-filters";
-import { searchParamsValidator } from "@/lib/search-params";
+import { searchUrlFiltersValidator } from "@/lib/search-url-filters";
 
 export const Route = createFileRoute("/_auth/search")({
-	validateSearch: searchParamsValidator,
+	validateSearch: searchUrlFiltersValidator,
 	component: SearchPage,
 });
 
@@ -35,11 +35,11 @@ function SearchPage() {
 			</header>
 
 			<div className="space-y-6">
-				<SearchInput />
-				<SearchMediaButtons />
+				<SearchQueryInput />
+				<SearchMediaTypeTabs />
 			</div>
 
-			<SearchResults />
+			<SearchResultsPanel />
 		</div>
 	);
 }

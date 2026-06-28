@@ -2,9 +2,9 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
-import HomeLoadingSkeleton from "@/components/home-loading-skeleton";
-import MainMediaContent from "@/components/main-media-content";
-import MediaContentFilters from "@/components/media-content-filters";
+import HomeLoadingState from "@/components/home-loading-state";
+import MediaViewContent from "@/components/media-view-content";
+import MediaViewToolbar from "@/components/media-view-toolbar";
 import { mediaFiltersSearchValidator } from "@/lib/media-filters";
 
 export const Route = createFileRoute("/_auth/")({
@@ -17,10 +17,10 @@ export const Route = createFileRoute("/_auth/")({
 
 function Home() {
 	return (
-		<Suspense fallback={<HomeLoadingSkeleton />}>
+		<Suspense fallback={<HomeLoadingState />}>
 			<div className="space-y-8 pt-2 lg:space-y-10 lg:pt-4">
-				<MediaContentFilters />
-				<MainMediaContent />
+				<MediaViewToolbar />
+				<MediaViewContent />
 			</div>
 		</Suspense>
 	);

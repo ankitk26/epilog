@@ -1,6 +1,6 @@
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import type { MediaType } from "@/types";
-import IconByType from "./icon-by-type";
+import MediaTypeIcon from "./media-type-icon";
 
 const messageByType: Record<MediaType, string> = {
 	movie: "No films here yet.",
@@ -15,7 +15,7 @@ export default function EmptyStateMessage() {
 
 	return (
 		<div className="flex items-center gap-2.5 py-3 text-muted-foreground/70">
-			<IconByType className="size-4 shrink-0" type={mediaType} />
+			<MediaTypeIcon className="size-4 shrink-0" type={mediaType} />
 			<span className="text-[13px] leading-relaxed">
 				{messageByType[mediaType]}
 			</span>

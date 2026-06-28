@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import Header from "@/components/header";
+import AppShellHeader from "@/components/app-shell-header";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_auth")({
 function AuthWrapper() {
 	return (
 		<div className="relative flex min-h-screen flex-col">
-			<Header />
+			<AppShellHeader />
 			<main className="relative z-10 flex-1 py-8 lg:py-12">
 				<div className="mx-auto max-w-7xl px-5 lg:px-8">
 					<Outlet />
