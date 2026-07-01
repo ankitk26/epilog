@@ -5,6 +5,22 @@ import { type BookSearchOutput, openLibraryBookSearchAPIOutput } from "@/types";
 const collectionPatterns =
 	/\b(box\s*set|collection|omnibus|volumes?|books?\s+1[-–]|complete\s+series|the\s+\d+\s+books)\b/i;
 
+const latinTextPattern = /\p{Script=Latin}/u;
+
+function getEnglishAuthorName(book: {
+	author_alternative_name?: string[];
+	author_name?: string[];
+}) {
+	return (
+		book.author_alternative_name?.find((name) =>
+			latinTextPattern.test(name),
+		) ??
+		book.author_name?.find((name) => latinTextPattern.test(name)) ??
+		book.author_name?.[0] ??
+		null
+	);
+}
+
 export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 	.inputValidator((data: { searchQuery: string }) => data)
 	.handler(async ({ data }) => {
@@ -13,10 +29,10 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 			{
 				method: "GET",
 				query: {
-					q: `${data.searchQuery} language:eng`,
-					lang: "en",
+					q: `${data.searchQuery}`,
+					language: "eng",
 					limit: "20",
-					fields: "key,title,author_name,cover_i,first_publish_year,series_key,series_name,series_position,editions,editions.cover_i,editions.language",
+					fields: "key,title,author_name,author_alternative_name,cover_i,first_publish_year,series_key,series_name,series_position,editions,editions.key,editions.title,editions.cover_i,editions.language",
 				},
 				output: openLibraryBookSearchAPIOutput,
 			},
@@ -36,9 +52,8 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 				return !looksLikeCollection;
 			})
 			.map((book) => {
-				const englishEdition = book.editions?.docs.find(
-					(edition) =>
-						edition.language?.includes("eng") && edition.cover_i,
+				const englishEdition = book.editions?.docs.find((edition) =>
+					edition.language?.includes("eng"),
 				);
 				const coverId = englishEdition?.cover_i ?? book.cover_i;
 				const imageUrl = coverId
@@ -55,8 +70,8 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 
 				return {
 					id: book.key,
-					title: book.title,
-					author: book.author_name?.[0] ?? null,
+					title: englishEdition?.title ?? book.title,
+					author: getEnglishAuthorName(book),
 					imageUrl,
 					publishYear: book.first_publish_year ?? null,
 					seriesName,

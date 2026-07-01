@@ -131,6 +131,8 @@ export const openLibraryBookSearchAPIOutput = z.object({
 			key: z.string(),
 			title: z.string(),
 			author_name: z.array(z.string()).optional(),
+			author_alternative_name: z.array(z.string()).optional(),
+			author_key: z.array(z.string()).optional(),
 			cover_i: z.number().optional(),
 			first_publish_year: z.number().optional(),
 			series_key: z.array(z.string()).optional(),
@@ -140,8 +142,8 @@ export const openLibraryBookSearchAPIOutput = z.object({
 				.object({
 					docs: z.array(
 						z.object({
-							key: z.string(),
-							title: z.string(),
+							key: z.string().optional(),
+							title: z.string().optional(),
 							cover_i: z.number().optional(),
 							language: z.array(z.string()).optional(),
 							publish_year: z.array(z.number()).optional(),
