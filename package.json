@@ -6,7 +6,7 @@
 		"dev:all": "concurrently -n vite,convex -c blue,green \"pnpm run dev\" \"convex dev\"",
 		"build": "vite build",
 		"types": "tsc --noEmit",
-		"fmt": "oxfmt --threads=1",
+		"fmt": "oxfmt",
 		"lint": "oxlint"
 	},
 	"dependencies": {

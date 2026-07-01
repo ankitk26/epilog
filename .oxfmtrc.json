@@ -3,9 +3,7 @@
 	"ignorePatterns": [
 		"pnpm-lock.yaml",
 		"convex/_generated/*",
-		"src/routeTree.gen.ts",
-		"DESIGN.md",
-		".impeccable/**"
+		"src/routeTree.gen.ts"
 	],
 	"useTabs": true,
 	"tabWidth": 4,

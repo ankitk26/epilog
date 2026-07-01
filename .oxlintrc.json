@@ -7,6 +7,5 @@
 	"rules": {},
 	"env": {
 		"builtin": true
-	},
-	"ignorePatterns": ["DESIGN.md", ".impeccable/**"]
+	}
 }
