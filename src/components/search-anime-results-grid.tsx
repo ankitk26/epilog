@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
 import { searchJikanAnime } from "@/actions/search-jikan-anime";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import MediaPosterCard from "./media-poster-card";
@@ -9,21 +8,21 @@ import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
 	onMediaClick: (media: SearchMedia) => void;
+	query: string;
 };
 
-export default function SearchAnimeResultsGrid({ onMediaClick }: Props) {
-	const { q: searchQuery, type: mediaType } = useSearch({
-		from: "/_auth/search",
-	});
-
+export default function SearchAnimeResultsGrid({
+	onMediaClick,
+	query: searchQuery,
+}: Props) {
 	const {
 		data: animeContent,
 		isPending,
 		isEnabled,
 	} = useQuery({
-		queryKey: ["search", "media-content", mediaType, searchQuery],
+		queryKey: ["search", "media-content", "anime", searchQuery],
 		queryFn: async () => await searchJikanAnime({ data: { searchQuery } }),
-		enabled: searchQuery.length !== 0 && mediaType === "anime",
+		enabled: searchQuery.length !== 0,
 	});
 
 	if (isEnabled && isPending) {
@@ -35,7 +34,7 @@ export default function SearchAnimeResultsGrid({ onMediaClick }: Props) {
 	}
 
 	if (!animeContent || animeContent.data.length === 0) {
-		return <SearchNoResultsEmptyState />;
+		return <SearchNoResultsEmptyState type="anime" />;
 	}
 
 	return (

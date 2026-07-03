@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
 import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
 import MediaPosterCard from "@/components/media-poster-card";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
@@ -10,18 +9,16 @@ import { getTmdbMediaReleaseYear } from "@/lib/get-tmdb-media-release-year";
 import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
+	mediaType: "movie" | "tv";
 	onMediaClick: (media: SearchMedia) => void;
+	query: string;
 };
 
-export default function SearchMovieTvResultsGrid({ onMediaClick }: Props) {
-	const { q: searchQuery, type: mediaType } = useSearch({
-		from: "/_auth/search",
-	});
-
-	if (mediaType !== "movie" && mediaType !== "tv") {
-		return null;
-	}
-
+export default function SearchMovieTvResultsGrid({
+	mediaType,
+	onMediaClick,
+	query: searchQuery,
+}: Props) {
 	const {
 		data: mediaContent,
 		isPending,
@@ -44,7 +41,7 @@ export default function SearchMovieTvResultsGrid({ onMediaClick }: Props) {
 	}
 
 	if (!mediaContent || mediaContent.results.length === 0) {
-		return <SearchNoResultsEmptyState />;
+		return <SearchNoResultsEmptyState type={mediaType} />;
 	}
 
 	return (

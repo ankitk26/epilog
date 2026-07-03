@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
 import { searchOpenLibraryBooks } from "@/actions/search-open-library-books";
 import MediaPosterCard from "@/components/media-poster-card";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
@@ -9,13 +8,13 @@ import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
 	onMediaClick: (media: SearchMedia) => void;
+	query: string;
 };
 
-export default function SearchBookResultsGrid({ onMediaClick }: Props) {
-	const { q: searchQuery, type: mediaType } = useSearch({
-		from: "/_auth/search",
-	});
-
+export default function SearchBookResultsGrid({
+	onMediaClick,
+	query: searchQuery,
+}: Props) {
 	const {
 		data: books,
 		isPending,
@@ -28,7 +27,7 @@ export default function SearchBookResultsGrid({ onMediaClick }: Props) {
 			});
 			return results.data;
 		},
-		enabled: searchQuery.length > 0 && mediaType === "book",
+		enabled: searchQuery.length > 0,
 		staleTime: 1000 * 60 * 2,
 	});
 
@@ -41,7 +40,7 @@ export default function SearchBookResultsGrid({ onMediaClick }: Props) {
 	}
 
 	if (!books || books.length === 0) {
-		return <SearchNoResultsEmptyState />;
+		return <SearchNoResultsEmptyState type="book" />;
 	}
 
 	return (

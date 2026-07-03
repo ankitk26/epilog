@@ -1,8 +1,9 @@
 import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useAddLibrarySheet } from "@/components/add-library-sheet";
 import { authClient } from "@/lib/auth-client";
 import { defaultMediaFilters } from "@/lib/media-filters";
-import type { MediaType } from "@/types";
 import { ThemeModeToggle } from "./theme-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -13,22 +14,16 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function AppShellHeader() {
 	const navigate = useNavigate();
-	const location = useLocation();
 	const { data } = authClient.useSession();
+	const { open: openAddLibrarySheet } = useAddLibrarySheet();
 
-	const isHome = location.pathname === "/";
-	const homeMediaType = (location.search as { type?: MediaType }).type;
-
-	const goToSearch = () => {
-		void navigate({
-			to: "/search",
-			search:
-				isHome && homeMediaType ? { type: homeMediaType } : undefined,
-		});
-	};
+	useHotkey("Mod+K", (event) => {
+		openAddLibrarySheet();
+	});
 
 	const handleSignOut = async () => {
 		await navigate({ to: "/sign-in" });
@@ -55,16 +50,27 @@ export default function AppShellHeader() {
 				</Link>
 
 				<div className="flex items-center gap-2 sm:gap-3">
-					<Button
-						aria-label="Search"
-						className="h-9 rounded-full border-hairline-strong bg-transparent px-3 text-sm font-medium tracking-wide text-ink transition-colors hover:bg-secondary sm:px-4"
-						onClick={goToSearch}
-						size="sm"
-						variant="outline"
-					>
-						<MagnifyingGlassIcon className="size-4" />
-						<span className="hidden sm:inline">Search</span>
-					</Button>
+					<Tooltip>
+						<TooltipTrigger
+							render={
+								<Button
+									aria-label="Search library"
+									className="size-9 rounded-full border-hairline-strong bg-transparent text-ink transition-colors hover:bg-secondary"
+									onClick={openAddLibrarySheet}
+									size="icon-sm"
+									variant="outline"
+								>
+									<MagnifyingGlassIcon className="size-4" />
+								</Button>
+							}
+						/>
+						<TooltipContent>
+							Search library
+							<kbd className="ml-2 rounded-sm bg-background/20 px-1.5 py-0.5 text-[10px] font-medium">
+								Mod+K
+							</kbd>
+						</TooltipContent>
+					</Tooltip>
 
 					<ThemeModeToggle />
 

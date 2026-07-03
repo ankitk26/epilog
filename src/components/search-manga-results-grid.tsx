@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSearch } from "@tanstack/react-router";
 import { searchJikanManga } from "@/actions/search-jikan-manga";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import MediaPosterCard from "./media-poster-card";
@@ -9,21 +8,21 @@ import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
 	onMediaClick: (media: SearchMedia) => void;
+	query: string;
 };
 
-export default function SearchMangaResultsGrid({ onMediaClick }: Props) {
-	const { q: searchQuery, type: mediaType } = useSearch({
-		from: "/_auth/search",
-	});
-
+export default function SearchMangaResultsGrid({
+	onMediaClick,
+	query: searchQuery,
+}: Props) {
 	const {
 		data: mangaContent,
 		isPending,
 		isEnabled,
 	} = useQuery({
-		queryKey: ["search", "media-content", mediaType, searchQuery],
+		queryKey: ["search", "media-content", "manga", searchQuery],
 		queryFn: async () => await searchJikanManga({ data: { searchQuery } }),
-		enabled: searchQuery.length !== 0 && mediaType === "manga",
+		enabled: searchQuery.length !== 0,
 	});
 
 	if (isEnabled && isPending) {
@@ -35,7 +34,7 @@ export default function SearchMangaResultsGrid({ onMediaClick }: Props) {
 	}
 
 	if (!mangaContent || mangaContent.data.length === 0) {
-		return <SearchNoResultsEmptyState />;
+		return <SearchNoResultsEmptyState type="manga" />;
 	}
 
 	return (

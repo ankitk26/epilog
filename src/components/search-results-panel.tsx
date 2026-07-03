@@ -1,6 +1,6 @@
-import { useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import AddMediaToLogDialog from "@/components/add-media-to-log-dialog";
+import type { MediaType } from "@/types";
 import SearchAnimeResultsGrid from "./search-anime-results-grid";
 import SearchBookResultsGrid from "./search-book-results-grid";
 import SearchMangaResultsGrid from "./search-manga-results-grid";
@@ -18,8 +18,12 @@ export type SearchMedia = {
 	seriesKey?: string;
 };
 
-export default function SearchResultsPanel() {
-	const { type: mediaType } = useSearch({ from: "/_auth/search" });
+type Props = {
+	query: string;
+	type: MediaType;
+};
+
+export default function SearchResultsPanel({ query, type: mediaType }: Props) {
 	const [selectedMedia, setSelectedMedia] = useState<SearchMedia | null>(
 		null,
 	);
@@ -27,16 +31,29 @@ export default function SearchResultsPanel() {
 	return (
 		<div>
 			{mediaType === "book" && (
-				<SearchBookResultsGrid onMediaClick={setSelectedMedia} />
+				<SearchBookResultsGrid
+					onMediaClick={setSelectedMedia}
+					query={query}
+				/>
 			)}
 			{(mediaType === "movie" || mediaType === "tv") && (
-				<SearchMovieTvResultsGrid onMediaClick={setSelectedMedia} />
+				<SearchMovieTvResultsGrid
+					mediaType={mediaType}
+					onMediaClick={setSelectedMedia}
+					query={query}
+				/>
 			)}
 			{mediaType === "anime" && (
-				<SearchAnimeResultsGrid onMediaClick={setSelectedMedia} />
+				<SearchAnimeResultsGrid
+					onMediaClick={setSelectedMedia}
+					query={query}
+				/>
 			)}
 			{mediaType === "manga" && (
-				<SearchMangaResultsGrid onMediaClick={setSelectedMedia} />
+				<SearchMangaResultsGrid
+					onMediaClick={setSelectedMedia}
+					query={query}
+				/>
 			)}
 
 			<AddMediaToLogDialog

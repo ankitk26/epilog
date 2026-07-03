@@ -1,13 +1,13 @@
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import type { MediaType } from "@/types";
 
-export default function SearchMediaTypeTabs() {
-	const navigate = useNavigate({ from: "/search" });
-	const { q, type: mediaType } = useSearch({ from: "/_auth/search" });
+type Props = {
+	onChange: (type: MediaType) => void;
+	value: MediaType;
+};
 
-	const setMediaType = (type: typeof mediaType) => {
-		void navigate({ search: { q, type }, replace: true });
-	};
+export default function SearchMediaTypeTabs({ onChange, value }: Props) {
+	const mediaType = value;
 
 	const options: { value: typeof mediaType; label: string }[] = [
 		{ value: "movie", label: "Movies" },
@@ -32,7 +32,7 @@ export default function SearchMediaTypeTabs() {
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
 							)}
 							key={option.value}
-							onClick={() => setMediaType(option.value)}
+							onClick={() => onChange(option.value)}
 							type="button"
 						>
 							{option.label}
