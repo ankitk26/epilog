@@ -13,7 +13,7 @@ export function useMediaFilters() {
 	const view = normalizeMediaFilterView(search.type, search.view);
 
 	const setType = (nextType: MediaType) => {
-		navigate({
+		void navigate({
 			replace: true,
 			search: (prev) => ({
 				type: nextType,

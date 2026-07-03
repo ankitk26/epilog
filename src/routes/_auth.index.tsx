@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_auth/")({
 	validateSearch: mediaFiltersSearchValidator,
 	component: Home,
 	loader: ({ context }) => {
-		context.queryClient.ensureQueryData(convexQuery(api.logs.all));
+		void context.queryClient.ensureQueryData(convexQuery(api.logs.all));
 	},
 });
 
