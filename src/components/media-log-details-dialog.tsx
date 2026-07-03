@@ -142,12 +142,12 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-4 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-sm sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
 				<DialogHeader className="relative z-10 flex-shrink-0">
-					<DialogTitle className="font-heading text-xl leading-tight font-normal tracking-tight text-ink">
+					<DialogTitle className="pr-8 font-heading text-lg leading-tight font-normal tracking-tight text-ink">
 						{log?.metadata.name || "Untitled"}
 					</DialogTitle>
 				</DialogHeader>
@@ -157,7 +157,7 @@ export default function MediaLogDetailsDialog({
 					render={
 						<Button
 							variant="ghost"
-							className="absolute top-2 right-2"
+							className="absolute top-2 right-2 text-muted-foreground hover:text-ink"
 							size="icon-sm"
 						/>
 					}
@@ -167,10 +167,10 @@ export default function MediaLogDetailsDialog({
 				</DialogClose>
 
 				{log && (
-					<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
+					<div className="relative z-10 flex flex-col gap-4 overflow-y-auto">
 						{/* Media summary */}
-						<div className="flex gap-4">
-							<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
+						<div className="flex gap-3">
+							<div className="h-[120px] w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[100px] sm:w-[72px]">
 								{log.metadata.image ? (
 									<Image
 										alt={
@@ -191,7 +191,7 @@ export default function MediaLogDetailsDialog({
 								)}
 							</div>
 
-							<div className="min-w-0 flex-1 space-y-2 pt-1">
+							<div className="min-w-0 flex-1 space-y-1 pt-0.5">
 								<p className="text-sm font-medium text-ink">
 									{formatMediaType(log.metadata.type)}
 									{log.metadata.releaseYear ? (
@@ -218,15 +218,15 @@ export default function MediaLogDetailsDialog({
 						</div>
 
 						{/* Status field */}
-						<div className="space-y-3">
+						<div className="space-y-2">
 							<label className="eyebrow block">Status</label>
-							<div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+							<div className="flex flex-wrap gap-2">
 								{validStatuses.map((s) => {
 									const isActive = status === s;
 									return (
 										<button
 											className={cn(
-												"h-11 cursor-pointer rounded-full border px-3 text-sm font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
+												"h-8 cursor-pointer rounded-full border px-3 text-xs font-medium transition-all duration-200 disabled:opacity-50 sm:h-7",
 												isActive
 													? "border-transparent bg-primary text-primary-foreground shadow-soft"
 													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
@@ -244,9 +244,9 @@ export default function MediaLogDetailsDialog({
 						</div>
 
 						{/* Footer actions */}
-						<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+						<div className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3">
 							<Button
-								className="h-11 w-full rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
+								className="text-destructive hover:bg-destructive/10"
 								disabled={isLoading}
 								onClick={handleDelete}
 								size="sm"
@@ -255,9 +255,8 @@ export default function MediaLogDetailsDialog({
 								Delete
 							</Button>
 
-							<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+							<div className="flex items-center gap-2">
 								<Button
-									className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 									disabled={isLoading}
 									onClick={() => onOpenChange(false)}
 									size="sm"
@@ -266,7 +265,6 @@ export default function MediaLogDetailsDialog({
 									Cancel
 								</Button>
 								<Button
-									className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 									disabled={
 										isLoading ||
 										status === (log.status as LogStatus)
