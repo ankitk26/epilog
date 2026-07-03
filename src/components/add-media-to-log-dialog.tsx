@@ -166,13 +166,13 @@ export default function AddMediaToLogDialog({
 						{/* Status field */}
 						<div className="space-y-3">
 							<label className="eyebrow block">Status</label>
-							<div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+							<div className="flex flex-col gap-2">
 								{validStatuses.map((s) => {
 									const isActive = status === s;
 									return (
 										<button
 											className={cn(
-												"h-11 cursor-pointer rounded-full border px-3 text-sm font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
+												"h-11 w-full cursor-pointer rounded-full border px-3 text-sm font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
 												isActive
 													? "border-transparent bg-primary text-primary-foreground shadow-soft"
 													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
