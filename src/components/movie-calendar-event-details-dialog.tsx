@@ -253,9 +253,9 @@ export default function MovieCalendarEventDetailsDialog({
 						</div>
 					</div>
 
-					{/* Reschedule field */}
+					{/* Date watched field */}
 					<div className="space-y-3">
-						<label className="eyebrow block">Reschedule</label>
+						<label className="eyebrow block">Date watched</label>
 						<div className="grid grid-cols-3 gap-2">
 							<Select
 								items={[
