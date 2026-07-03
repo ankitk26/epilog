@@ -11,7 +11,7 @@ type Props = {
 export default function MediaShelfCard({ log, onClick }: Props) {
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-2.5 py-2 transition-colors duration-200 hover:bg-card"
+			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors duration-200 hover:bg-card"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>
@@ -37,10 +37,10 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="min-w-0 flex-1">
-				<h4 className="mb-0.5 line-clamp-2 font-heading text-[14px] leading-tight font-normal text-ink">
+				<h4 className="mb-1 line-clamp-2 font-heading text-sm leading-tight font-normal text-ink">
 					{log.metadata.name}
 				</h4>
-				<p className="text-[11px] text-muted-foreground tabular-nums">
+				<p className="text-xs text-muted-foreground tabular-nums">
 					{log.metadata.releaseYear}
 				</p>
 			</div>

@@ -60,15 +60,15 @@ export default function MediaViewToolbar() {
 	];
 
 	return (
-		<div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+		<div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 			{/* Media type filter — pill rail */}
-			<div className="no-scrollbar flex gap-1.5 overflow-x-auto pb-1 sm:flex-wrap sm:items-center sm:overflow-visible">
+			<div className="no-scrollbar flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:items-center sm:overflow-visible">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
 						<button
 							className={cn(
-								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
+								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground shadow-soft"
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
@@ -82,7 +82,7 @@ export default function MediaViewToolbar() {
 							<span>{item.label}</span>
 							<span
 								className={cn(
-									"flex min-w-[1.25rem] items-center justify-center rounded-full px-1.5 text-[11px] leading-none font-semibold tabular-nums",
+									"flex min-w-[1.25rem] items-center justify-center rounded-full px-2 text-xs leading-none font-semibold tabular-nums",
 									isActive
 										? "bg-primary-foreground/20 text-primary-foreground"
 										: "bg-secondary text-muted-foreground group-hover:bg-secondary",
@@ -114,7 +114,7 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"h-8 flex-1 gap-1.5 rounded-full px-0 text-[12px] font-medium transition-all duration-200 sm:w-9 sm:flex-none",
+											"h-8 flex-1 gap-2 rounded-full px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
 											isActive
 												? "bg-card text-ink shadow-soft"
 												: "text-muted-foreground hover:text-ink",

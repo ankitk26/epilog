@@ -89,7 +89,7 @@ export default function MediaShelfView() {
 	};
 
 	return (
-		<div className="-mx-5 space-y-6 overflow-x-hidden lg:mx-0">
+		<div className="-mx-6 space-y-8 overflow-x-hidden lg:mx-0">
 			{/* Mobile and tablet: Single column with swipe */}
 			<div
 				className="lg:hidden"
@@ -107,7 +107,7 @@ export default function MediaShelfView() {
 				>
 					{columns.map((column) => (
 						<div
-							className="w-[100vw] max-w-[100vw] shrink-0 px-5"
+							className="w-[100vw] max-w-[100vw] shrink-0 px-6"
 							key={column.status}
 						>
 							<MediaShelfStatusColumn
@@ -124,7 +124,7 @@ export default function MediaShelfView() {
 
 			{/* Desktop: multi-column grid */}
 			<div
-				className="hidden gap-5 lg:grid lg:items-start"
+				className="hidden gap-6 lg:grid lg:items-start"
 				style={{
 					gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
 				}}

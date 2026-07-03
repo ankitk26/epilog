@@ -27,7 +27,7 @@ export default function MediaSectionByStatus(props: Props) {
 	>(null);
 
 	return (
-		<section className="animate-reveal-up space-y-2">
+		<section className="animate-reveal-up space-y-4">
 			{/* Section header — editorial title with a hairline rule */}
 			<div className="flex items-center gap-4">
 				<h2 className="font-heading text-2xl font-light tracking-tight whitespace-nowrap text-ink">
@@ -61,7 +61,7 @@ export default function MediaSectionByStatus(props: Props) {
 					className={
 						view === "list"
 							? "flex flex-col divide-y divide-hairline border-b border-hairline"
-							: "grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4"
+							: "grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6"
 					}
 				>
 					{props.logs.map((log) =>

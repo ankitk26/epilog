@@ -13,7 +13,7 @@ export default function SearchNoResultsEmptyState() {
 			<p className="font-heading text-lg font-normal text-ink">
 				No results found
 			</p>
-			<p className="max-w-xs text-[13px] leading-relaxed text-muted-foreground">
+			<p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
 				Try a different search term.
 			</p>
 		</div>

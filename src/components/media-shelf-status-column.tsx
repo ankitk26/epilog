@@ -20,12 +20,12 @@ export default function MediaShelfStatusColumn(props: Props) {
 	return (
 		<div className="flex min-h-48 flex-col rounded-xl border border-hairline bg-canvas-soft/50">
 			{/* Column header */}
-			<div className="flex items-center gap-2.5 border-b border-hairline px-4 py-3.5">
+			<div className="flex items-center gap-3 border-b border-hairline px-6 py-4">
 				<Icon
 					className="size-4 text-muted-foreground"
 					weight="regular"
 				/>
-				<span className="font-heading text-[17px] font-normal tracking-tight text-ink">
+				<span className="font-heading text-lg font-normal tracking-tight text-ink">
 					{props.column.title}
 				</span>
 				<span className="ml-auto text-sm text-muted-foreground tabular-nums">
@@ -34,9 +34,9 @@ export default function MediaShelfStatusColumn(props: Props) {
 			</div>
 
 			{/* Column Content */}
-			<div className="min-w-0 flex-1 p-1.5">
+			<div className="min-w-0 flex-1 p-3">
 				{props.logs.length === 0 && (
-					<div className="px-2.5 pt-3">
+					<div className="px-3 pt-3">
 						<EmptyStateMessage />
 					</div>
 				)}

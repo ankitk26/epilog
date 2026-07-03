@@ -201,7 +201,7 @@ export default function MovieCalendarEventDetailsDialog({
 			}}
 		>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
 				initialFocus={titleRef}
 			>
 				<DialogHeader className="relative z-10 flex-shrink-0">
@@ -214,7 +214,7 @@ export default function MovieCalendarEventDetailsDialog({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
+				<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 					{/* Media summary */}
 					<div className="flex gap-4">
 						<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
@@ -236,8 +236,8 @@ export default function MovieCalendarEventDetailsDialog({
 							)}
 						</div>
 
-						<div className="min-w-0 flex-1 space-y-1.5 pt-1">
-							<p className="text-[13px] font-medium text-ink">
+						<div className="min-w-0 flex-1 space-y-2 pt-1">
+							<p className="text-sm font-medium text-ink">
 								{formatMediaType(mediaType)}
 								{event.releaseYear ? (
 									<span className="text-muted-foreground tabular-nums">
@@ -247,14 +247,14 @@ export default function MovieCalendarEventDetailsDialog({
 								) : null}
 							</p>
 
-							<p className="pt-1 text-[11px] text-muted-foreground/70">
+							<p className="pt-1 text-xs text-muted-foreground/70">
 								{formattedEventDate}
 							</p>
 						</div>
 					</div>
 
 					{/* Reschedule field */}
-					<div className="space-y-2.5">
+					<div className="space-y-3">
 						<label className="eyebrow block">Reschedule</label>
 						<div className="grid grid-cols-3 gap-2">
 							<Select
@@ -368,9 +368,9 @@ export default function MovieCalendarEventDetailsDialog({
 					</div>
 
 					{/* Footer actions */}
-					<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 						<Button
-							className="h-11 w-full rounded-full px-4 text-[13px] font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
+							className="h-11 w-full rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
 							disabled={isLoading}
 							onClick={() =>
 								deleteEventMutation.mutate({
@@ -383,9 +383,9 @@ export default function MovieCalendarEventDetailsDialog({
 							Delete event
 						</Button>
 
-						<div className="flex w-full flex-col gap-2.5 sm:w-auto sm:flex-row sm:items-center">
+						<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
 							<Button
-								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 								disabled={isLoading}
 								onClick={() => onOpenChange(false)}
 								size="sm"
@@ -394,7 +394,7 @@ export default function MovieCalendarEventDetailsDialog({
 								Cancel
 							</Button>
 							<Button
-								className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 								disabled={isLoading || !hasDateChanged}
 								onClick={() => {
 									if (

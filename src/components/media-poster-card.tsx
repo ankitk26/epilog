@@ -60,8 +60,8 @@ export default function MediaPosterCard(props: Props) {
 					</div>
 				)}
 			</div>
-			<CardContent className="space-y-0.5 px-2.5 py-2.5">
-				<h4 className="line-clamp-2 font-heading text-[14px] leading-tight font-normal text-ink">
+			<CardContent className="space-y-2 px-3 py-4">
+				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-normal text-ink">
 					{props.media.name}
 				</h4>
 				{props.media.secondaryText && (

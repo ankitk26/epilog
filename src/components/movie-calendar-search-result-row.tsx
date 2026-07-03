@@ -79,7 +79,7 @@ export default function MovieCalendarSearchResultRow({
 	return (
 		<button
 			type="button"
-			className="flex w-full items-start gap-3 rounded-lg border border-hairline bg-card p-2.5 text-left transition-all duration-200 hover:shadow-soft focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+			className="flex w-full items-start gap-3 rounded-lg border border-hairline bg-card p-3 text-left transition-all duration-200 hover:shadow-soft focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
 			onClick={handleMovieClick}
 		>
 			<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden rounded-md bg-secondary">
@@ -105,7 +105,7 @@ export default function MovieCalendarSearchResultRow({
 					{movie.name ?? movie.title ?? "N/A"}
 				</h4>
 				{releaseYear && (
-					<p className="mt-0.5 text-xs text-muted-foreground tabular-nums">
+					<p className="mt-1 text-xs text-muted-foreground tabular-nums">
 						{releaseYear}
 					</p>
 				)}

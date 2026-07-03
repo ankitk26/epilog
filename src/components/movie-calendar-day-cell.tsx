@@ -65,7 +65,7 @@ export default function MovieCalendarDayCell({
 			<div
 				onClick={handleDayClick}
 				className={cn(
-					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 border p-1 text-left text-[10px] transition-colors sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
+					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 border p-1 text-left text-xs transition-colors sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
 					isCurrentMonth ? "" : "text-muted-foreground",
 					isCurrentDayCell
 						? "bg-primary text-primary-foreground"
@@ -80,7 +80,7 @@ export default function MovieCalendarDayCell({
 				</div>
 
 				{/* Mobile: Show colored bars only */}
-				<div className="flex flex-col gap-0.5 sm:hidden">
+				<div className="flex flex-col gap-1 sm:hidden">
 					{events.slice(0, 3).map((_, index) => (
 						<div
 							key={index}
@@ -88,14 +88,14 @@ export default function MovieCalendarDayCell({
 						/>
 					))}
 					{events.length > 3 && (
-						<div className="text-center text-[8px] text-muted-foreground">
+						<div className="text-center text-xs text-muted-foreground">
 							+{events.length - 3}
 						</div>
 					)}
 				</div>
 
 				{/* Desktop/Tablet: Show event name chips */}
-				<div className="hidden flex-col gap-0.5 sm:flex sm:gap-1">
+				<div className="hidden flex-col gap-1 sm:flex sm:gap-1">
 					{events.map((event) => (
 						<MovieCalendarEventChip
 							key={event.movieEventId}

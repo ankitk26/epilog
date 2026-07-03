@@ -26,7 +26,7 @@ export default function SearchMediaTypeTabs() {
 					return (
 						<button
 							className={cn(
-								"h-9 cursor-pointer rounded-full border px-4 text-[13px] font-medium tracking-wide transition-all duration-200",
+								"h-9 cursor-pointer rounded-full border px-4 text-sm font-medium tracking-wide transition-all duration-200",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground shadow-soft"
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",

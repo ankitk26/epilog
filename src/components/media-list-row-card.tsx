@@ -11,12 +11,12 @@ type Props = {
 export default function MediaListRowCard({ log, onClick }: Props) {
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-4 px-2 py-3.5 transition-colors hover:bg-canvas-soft/60"
+			className="group flex cursor-pointer items-center gap-4 px-3 py-4 transition-colors hover:bg-canvas-soft/60"
 			onClick={onClick}
 			role="button"
 		>
 			{/* Poster */}
-			<div className="h-28 w-20 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
+			<div className="h-32 w-[5.5rem] flex-shrink-0 overflow-hidden rounded-md bg-secondary">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata.name || "Media poster"}

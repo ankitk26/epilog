@@ -169,8 +169,8 @@
 	--input: rgba(245, 245, 245, 0.16);
 	--ring: #f5f5f5;
 	--body: #d6d3d1;
-	--hairline: rgba(245, 245, 245, 0.1);
-	--hairline-strong: rgba(245, 245, 245, 0.18);
+	--hairline: rgba(245, 245, 245, 0.08);
+	--hairline-strong: rgba(245, 245, 245, 0.14);
 
 	--mint: #a7e5d3;
 	--peach: #f4c5a8;
@@ -269,6 +269,16 @@
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 	}
 }
+
+/* ───────────────────────────────────────────────────────────────
+   Spacing System — use ONLY these values across the entire app
+   ───────────────────────────────────────────────────────────────
+   space-*  : 2 | 3 | 4 | 6 | 8 | 14 | 20
+   gap-*    : 1 | 2 | 3 | 4 | 6 | 8
+   p-*      : 0 | 1 | 2 | 3 | 4 | 6 | 8
+   m-*      : 0 | 1 | 2 | 4 | 6 | 8
+   Layout exceptions (page shells only): px-12, py-14, py-20
+   ─────────────────────────────────────────────────────────────── */
 
 @layer components {
 	/* Caption-uppercase eyebrow — tracked section label */

@@ -108,7 +108,7 @@ export default function AddMediaToLogDialog({
 			}}
 		>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-5 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
 				initialFocus={titleRef}
 			>
 				<DialogHeader className="relative z-10 flex-shrink-0">
@@ -122,7 +122,7 @@ export default function AddMediaToLogDialog({
 				</DialogHeader>
 
 				{media && (
-					<div className="relative z-10 flex flex-col gap-5 overflow-y-auto">
+					<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 						{/* Media summary */}
 						<div className="flex gap-4">
 							<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
@@ -144,8 +144,8 @@ export default function AddMediaToLogDialog({
 								)}
 							</div>
 
-							<div className="min-w-0 flex-1 space-y-1.5 pt-1">
-								<p className="text-[13px] font-medium text-ink">
+							<div className="min-w-0 flex-1 space-y-2 pt-1">
+								<p className="text-sm font-medium text-ink">
 									{formatMediaType(media.type)}
 									{media.releaseYear ? (
 										<span className="text-muted-foreground tabular-nums">
@@ -164,7 +164,7 @@ export default function AddMediaToLogDialog({
 						</div>
 
 						{/* Status field */}
-						<div className="space-y-2.5">
+						<div className="space-y-3">
 							<label className="eyebrow block">Status</label>
 							<div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
 								{validStatuses.map((s) => {
@@ -172,7 +172,7 @@ export default function AddMediaToLogDialog({
 									return (
 										<button
 											className={cn(
-												"h-11 cursor-pointer rounded-full border px-3 text-[13px] font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
+												"h-11 cursor-pointer rounded-full border px-3 text-sm font-medium tracking-wide transition-all duration-200 disabled:opacity-50 sm:h-9",
 												isActive
 													? "border-transparent bg-primary text-primary-foreground shadow-soft"
 													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
@@ -190,9 +190,9 @@ export default function AddMediaToLogDialog({
 						</div>
 
 						{/* Footer actions */}
-						<div className="flex flex-col gap-2.5 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
+						<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
 							<Button
-								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-[13px] font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 								disabled={isLoading}
 								onClick={() => onOpenChange(false)}
 								size="sm"
@@ -201,7 +201,7 @@ export default function AddMediaToLogDialog({
 								Cancel
 							</Button>
 							<Button
-								className="h-11 w-full rounded-full bg-primary px-5 text-[13px] font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 								disabled={isLoading || !status}
 								onClick={handleAdd}
 								size="sm"

@@ -9,7 +9,7 @@ function CalendarCellSkeleton({
 }) {
 	return (
 		<div className="col-span-1 flex min-h-14 flex-col gap-1 border p-1 sm:min-h-20 sm:gap-2 sm:p-2 lg:min-h-24 lg:p-3">
-			<div className="space-y-1 sm:space-y-2">
+			<div className="space-y-2 sm:space-y-2">
 				<Skeleton
 					className={
 						isCurrentMonth
@@ -17,7 +17,7 @@ function CalendarCellSkeleton({
 							: "h-3 w-4 opacity-60 sm:h-4 sm:w-5"
 					}
 				/>
-				<div className="space-y-0.5 sm:space-y-1">
+				<div className="space-y-2 sm:space-y-2">
 					<Skeleton className="h-1.5 w-full rounded-full sm:h-3.5" />
 					{isCurrentMonth ? (
 						<Skeleton className="hidden h-1.5 w-2/3 rounded-full sm:block sm:h-3.5" />

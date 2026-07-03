@@ -43,7 +43,7 @@ export default function AppShellHeader() {
 
 	return (
 		<header className="sticky top-0 z-30 border-b border-hairline bg-canvas/70 backdrop-blur-md supports-backdrop-filter:bg-canvas/55">
-			<div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:h-[4.5rem] lg:px-8">
+			<div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between px-6 lg:h-[4.5rem] lg:px-12">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
@@ -57,7 +57,7 @@ export default function AppShellHeader() {
 				<div className="flex items-center gap-2 sm:gap-3">
 					<Button
 						aria-label="Search"
-						className="h-9 rounded-full border-hairline-strong bg-transparent px-2.5 text-[13px] font-medium tracking-wide text-ink transition-colors hover:bg-secondary sm:px-4"
+						className="h-9 rounded-full border-hairline-strong bg-transparent px-3 text-sm font-medium tracking-wide text-ink transition-colors hover:bg-secondary sm:px-4"
 						onClick={goToSearch}
 						size="sm"
 						variant="outline"
@@ -80,7 +80,7 @@ export default function AppShellHeader() {
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
 										/>
-										<AvatarFallback className="rounded-full bg-secondary text-[13px] font-medium text-ink">
+										<AvatarFallback className="rounded-full bg-secondary text-sm font-medium text-ink">
 											{data?.user.name[0]}
 										</AvatarFallback>
 									</Avatar>
@@ -91,11 +91,11 @@ export default function AppShellHeader() {
 							align="end"
 							className="w-52 rounded-xl border-hairline shadow-soft"
 						>
-							<div className="px-2.5 py-2">
-								<p className="font-heading text-[15px] font-normal text-ink">
+							<div className="px-3 py-2">
+								<p className="font-heading text-base font-normal text-ink">
 									{data?.user.name}
 								</p>
-								<p className="mt-0.5 text-xs text-muted-foreground">
+								<p className="mt-1 text-xs text-muted-foreground">
 									{data?.user.email}
 								</p>
 							</div>

@@ -39,7 +39,7 @@ export default function SearchAnimeResultsGrid({ onMediaClick }: Props) {
 	}
 
 	return (
-		<div className="space-y-5">
+		<div className="space-y-6">
 			<div className="flex items-center gap-4">
 				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
 				<span className="text-sm text-muted-foreground tabular-nums">
@@ -47,7 +47,7 @@ export default function SearchAnimeResultsGrid({ onMediaClick }: Props) {
 				</span>
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
-			<div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-4">
+			<div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6">
 				{animeContent.data.map((anime) => {
 					const searchMedia: SearchMedia = {
 						imageUrl: anime.images.webp?.large_image_url,

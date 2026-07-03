@@ -14,9 +14,9 @@ export default function EmptyStateMessage() {
 	const { type: mediaType } = useMediaFilters();
 
 	return (
-		<div className="flex items-center gap-2.5 py-3 text-muted-foreground/70">
+		<div className="flex items-center gap-3 py-6 text-muted-foreground/70">
 			<MediaTypeIcon className="size-4 shrink-0" type={mediaType} />
-			<span className="text-[13px] leading-relaxed">
+			<span className="text-sm leading-relaxed">
 				{messageByType[mediaType]}
 			</span>
 		</div>

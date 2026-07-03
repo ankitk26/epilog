@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_auth/")({
 function Home() {
 	return (
 		<Suspense fallback={<HomeLoadingState />}>
-			<div className="space-y-8 pt-2 lg:space-y-10 lg:pt-4">
+			<div className="space-y-20 lg:space-y-20">
 				<MediaViewToolbar />
 				<MediaViewContent />
 			</div>

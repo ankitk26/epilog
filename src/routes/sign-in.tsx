@@ -12,9 +12,9 @@ function SignInPage() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
-		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-5 py-16">
+		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-6 py-14">
 			<div
-				className="relative w-full max-w-sm animate-reveal-up space-y-10 rounded-2xl border border-hairline bg-card/80 p-9 shadow-lift backdrop-blur-md lg:p-11"
+				className="relative w-full max-w-sm animate-reveal-up space-y-8 rounded-2xl border border-hairline bg-card/80 p-8 shadow-lift backdrop-blur-md lg:p-12"
 				style={{ animationDelay: "120ms" }}
 			>
 				<div className="space-y-4 text-center">
@@ -26,14 +26,14 @@ function SignInPage() {
 							your story log
 						</p>
 					</div>
-					<p className="mx-auto max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
+					<p className="mx-auto max-w-[18rem] text-base leading-relaxed text-muted-foreground">
 						Keep track of the stories you're into.
 					</p>
 				</div>
 
 				<div className="space-y-4">
 					<Button
-						className="h-12 w-full gap-3 rounded-full bg-primary text-[15px] font-medium tracking-wide text-primary-foreground transition-all duration-300 hover:shadow-lift hover:grayscale-[0.05] active:scale-[0.99]"
+						className="h-12 w-full gap-3 rounded-full bg-primary text-base font-medium tracking-wide text-primary-foreground transition-all duration-300 hover:shadow-lift hover:grayscale-[0.05] active:scale-[0.99]"
 						disabled={isLoading}
 						onClick={async () => {
 							setIsLoading(true);
