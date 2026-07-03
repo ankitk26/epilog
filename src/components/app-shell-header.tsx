@@ -21,7 +21,7 @@ export default function AppShellHeader() {
 	const { data } = authClient.useSession();
 	const { open: openAddLibrarySheet } = useAddLibrarySheet();
 
-	useHotkey("Mod+K", (event) => {
+	useHotkey("Mod+K", () => {
 		openAddLibrarySheet();
 	});
 

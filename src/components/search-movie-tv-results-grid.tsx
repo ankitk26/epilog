@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
-import MediaPosterCard from "@/components/media-poster-card";
+import SearchMediaListItem from "@/components/search-media-list-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
-import SearchResultsLoadingGrid from "@/components/search-results-loading-grid";
+import SearchResultsLoadingList from "@/components/search-results-loading-list";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { buildTmdbPosterImageUrl } from "@/lib/build-tmdb-poster-image-url";
 import { getTmdbMediaReleaseYear } from "@/lib/get-tmdb-media-release-year";
@@ -33,7 +33,7 @@ export default function SearchMovieTvResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingGrid />;
+		return <SearchResultsLoadingList />;
 	}
 
 	if (!searchQuery) {
@@ -54,7 +54,7 @@ export default function SearchMovieTvResultsGrid({
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 
-			<div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6">
+			<div className="flex flex-col gap-1">
 				{mediaContent.results.map((media) => {
 					const releaseYear = getTmdbMediaReleaseYear(
 						media.release_date,
@@ -74,8 +74,7 @@ export default function SearchMovieTvResultsGrid({
 					};
 
 					return (
-						<MediaPosterCard
-							displayOnly
+						<SearchMediaListItem
 							key={media.id}
 							media={searchMedia}
 							onClick={() => onMediaClick(searchMedia)}

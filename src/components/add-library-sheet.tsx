@@ -1,7 +1,9 @@
+import { useSearch } from "@tanstack/react-router";
 import {
 	createContext,
 	useCallback,
 	useContext,
+	useEffect,
 	useState,
 	type ReactNode,
 } from "react";
@@ -11,7 +13,6 @@ import SearchResultsPanel from "@/components/search-results-panel";
 import {
 	Sheet,
 	SheetContent,
-	SheetDescription,
 	SheetHeader,
 	SheetTitle,
 } from "@/components/ui/sheet";
@@ -25,8 +26,6 @@ type AddLibrarySheetContextValue = {
 
 const AddLibrarySheetContext =
 	createContext<AddLibrarySheetContextValue | null>(null);
-
-const DEFAULT_MEDIA_TYPE: MediaType = "anime";
 
 export function AddLibrarySheetProvider({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -61,16 +60,23 @@ function AddLibrarySheetContent({
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 }) {
+	const { type: homeType } = useSearch({ from: "/_auth/" });
+
 	const [query, setQuery] = useState("");
 	const [submittedQuery, setSubmittedQuery] = useState("");
-	const [mediaType, setMediaType] = useState<MediaType>(DEFAULT_MEDIA_TYPE);
+	const [mediaType, setMediaType] = useState<MediaType>(homeType);
+
+	useEffect(() => {
+		if (isOpen) {
+			setMediaType(homeType);
+		}
+	}, [isOpen, homeType]);
 
 	const handleOpenChange = useCallback(
 		(open: boolean) => {
 			if (!open) {
 				setQuery("");
 				setSubmittedQuery("");
-				setMediaType(DEFAULT_MEDIA_TYPE);
 			}
 			onOpenChange(open);
 		},
@@ -80,21 +86,18 @@ function AddLibrarySheetContent({
 	return (
 		<Sheet open={isOpen} onOpenChange={handleOpenChange}>
 			<SheetContent
-				className="w-full border-l border-hairline bg-canvas shadow-lift sm:max-w-xl lg:max-w-2xl"
+				className="border-l border-hairline bg-canvas shadow-lift data-[side=right]:w-full data-[side=right]:sm:max-w-xl data-[side=right]:lg:max-w-2xl"
 				side="right"
 			>
 				<div className="flex h-full flex-col">
-					<SheetHeader className="shrink-0">
-						<SheetTitle className="display text-2xl tracking-tight">
+					<SheetHeader className="shrink-0 p-4 pt-6 lg:p-6">
+						<SheetTitle className="display text-xl tracking-tight lg:text-2xl">
 							Find your next.
 						</SheetTitle>
-						<SheetDescription>
-							Search for something new to add to your library.
-						</SheetDescription>
 					</SheetHeader>
 
-					<div className="flex flex-1 flex-col gap-8 overflow-y-auto px-6 pt-2 pb-8">
-						<div className="space-y-6">
+					<div className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pt-2 pb-6 lg:gap-8 lg:px-6 lg:pb-8">
+						<div className="space-y-4 lg:space-y-6">
 							<SearchQueryInput
 								autoFocus
 								onChange={setQuery}

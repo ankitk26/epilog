@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchOpenLibraryBooks } from "@/actions/search-open-library-books";
-import MediaPosterCard from "@/components/media-poster-card";
+import SearchMediaListItem from "@/components/search-media-list-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
-import SearchResultsLoadingGrid from "@/components/search-results-loading-grid";
+import SearchResultsLoadingList from "@/components/search-results-loading-list";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import type { SearchMedia } from "./search-results-panel";
 
@@ -32,7 +32,7 @@ export default function SearchBookResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingGrid />;
+		return <SearchResultsLoadingList />;
 	}
 
 	if (!searchQuery) {
@@ -53,15 +53,8 @@ export default function SearchBookResultsGrid({
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
 
-			<div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6">
+			<div className="flex flex-col gap-1">
 				{books.map((book) => {
-					let displayTitle = book.title;
-					if (book.seriesName && book.seriesPosition) {
-						displayTitle = `${book.title} (${book.seriesName}, #${book.seriesPosition})`;
-					} else if (book.seriesName) {
-						displayTitle = `${book.title} (${book.seriesName})`;
-					}
-
 					const searchMedia: SearchMedia = {
 						imageUrl: book.imageUrl,
 						name: book.title,
@@ -75,12 +68,10 @@ export default function SearchBookResultsGrid({
 					};
 
 					return (
-						<MediaPosterCard
-							displayOnly
+						<SearchMediaListItem
 							key={book.id}
 							media={{
 								...searchMedia,
-								name: displayTitle,
 								secondaryText: book.author,
 							}}
 							onClick={() => onMediaClick(searchMedia)}

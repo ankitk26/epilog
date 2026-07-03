@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { searchJikanManga } from "@/actions/search-jikan-manga";
+import SearchMediaListItem from "@/components/search-media-list-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
-import MediaPosterCard from "./media-poster-card";
 import SearchNoResultsEmptyState from "./search-no-results-empty-state";
-import SearchResultsLoadingGrid from "./search-results-loading-grid";
+import SearchResultsLoadingList from "./search-results-loading-list";
 import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
@@ -26,7 +26,7 @@ export default function SearchMangaResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingGrid />;
+		return <SearchResultsLoadingList />;
 	}
 
 	if (!searchQuery) {
@@ -46,7 +46,7 @@ export default function SearchMangaResultsGrid({
 				</span>
 				<div className="h-px flex-1 bg-hairline" />
 			</div>
-			<div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6">
+			<div className="flex flex-col gap-1">
 				{mangaContent.data.map((manga) => {
 					const searchMedia: SearchMedia = {
 						imageUrl: manga.images.webp?.large_image_url,
@@ -59,8 +59,7 @@ export default function SearchMangaResultsGrid({
 					};
 
 					return (
-						<MediaPosterCard
-							displayOnly
+						<SearchMediaListItem
 							key={manga.mal_id}
 							media={searchMedia}
 							onClick={() => onMediaClick(searchMedia)}

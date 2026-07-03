@@ -7,18 +7,25 @@ const collectionPatterns =
 
 const latinTextPattern = /\p{Script=Latin}/u;
 
-function getEnglishAuthorName(book: {
+function getAuthorName(book: {
 	author_alternative_name?: string[];
 	author_name?: string[];
 }) {
-	return (
-		book.author_alternative_name?.find((name) =>
-			latinTextPattern.test(name),
-		) ??
-		book.author_name?.find((name) => latinTextPattern.test(name)) ??
-		book.author_name?.[0] ??
-		null
+	const primaryName = book.author_name?.[0];
+
+	if (primaryName && latinTextPattern.test(primaryName)) {
+		return primaryName;
+	}
+
+	const alternativeName = book.author_alternative_name?.find((name) =>
+		latinTextPattern.test(name),
 	);
+
+	if (alternativeName) {
+		return alternativeName;
+	}
+
+	return primaryName ?? null;
 }
 
 export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
@@ -71,7 +78,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 				return {
 					id: book.key,
 					title: englishEdition?.title ?? book.title,
-					author: getEnglishAuthorName(book),
+					author: getAuthorName(book),
 					imageUrl,
 					publishYear: book.first_publish_year ?? null,
 					seriesName,
