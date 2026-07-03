@@ -11,7 +11,7 @@ type Props = {
 export default function MediaShelfCard({ log, onClick }: Props) {
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors duration-200 hover:bg-card"
+			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-all duration-200 hover:translate-x-0.5 hover:bg-card"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>

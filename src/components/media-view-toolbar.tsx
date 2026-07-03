@@ -68,7 +68,7 @@ export default function MediaViewToolbar() {
 					return (
 						<button
 							className={cn(
-								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium tracking-wide transition-all duration-200 sm:w-auto sm:justify-start",
+								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium tracking-wide transition-all duration-200 active:scale-[0.97] sm:w-auto sm:justify-start",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground shadow-soft"
 									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",

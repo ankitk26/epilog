@@ -33,7 +33,7 @@ export default function MediaPosterCard(props: Props) {
 			className={cn(
 				"group w-full overflow-hidden rounded-xl p-0 ring-1 ring-border transition-all duration-300",
 				isClickable &&
-					"cursor-pointer hover:shadow-lift hover:ring-hairline-strong",
+					"cursor-pointer hover:-translate-y-1 hover:shadow-lift hover:ring-hairline-strong",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}

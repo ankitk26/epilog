@@ -1,3 +1,4 @@
 - use pnpm for running scripts
 - never run the build script unless asked to do so
 - never run any type-check, lint or format unless asked to do so
+- never invoke any skills on your own
