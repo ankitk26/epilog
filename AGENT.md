@@ -1,6 +1,0 @@
-- use pnpm for running scripts
-- never run the build script unless asked to do so
-- never run any type-check, lint or format unless asked to do so
-- never invoke any skills on your own
-- respect the app's spacing system in `src/styles/app.css`: use only the allowed values for `space-*` (2 | 3 | 4 | 6 | 8 | 14 | 20), `gap-*` (1 | 2 | 3 | 4 | 6 | 8), `p-*` (0 | 1 | 2 | 3 | 4 | 6 | 8), and `m-*` (0 | 1 | 2 | 4 | 6 | 8); prefer standard Tailwind sizing scales for width/height over arbitrary values
-- when overriding shadcn/ui Sheet styles, match the default selector specificity (e.g. `data-[side=right]:w-full`) instead of relying on class order
