@@ -170,16 +170,16 @@ export default function MediaLogDetailsDialog({
 					<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 						{/* Media summary */}
 						<div className="flex gap-4">
-							<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
+							<div className="h-[180px] w-32 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[180px] sm:w-32">
 								{log.metadata.image ? (
 									<Image
 										alt={
 											log.metadata.name || "Media poster"
 										}
 										className="h-full w-full object-cover"
-										height={120}
+										height={180}
 										src={log.metadata.image}
-										width={80}
+										width={128}
 									/>
 								) : (
 									<div className="flex h-full w-full items-center justify-center">
