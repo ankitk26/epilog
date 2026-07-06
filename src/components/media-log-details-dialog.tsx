@@ -11,6 +11,7 @@ import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
+import { creatorPhrase } from "@/lib/creator-phrase";
 import type { LogStatus, MediaType } from "@/types";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
@@ -20,22 +21,6 @@ type Props = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 };
-
-function creatorPhrase(type: MediaType, creator: string): string {
-	switch (type) {
-		case "tv":
-			return `Watch on ${creator}`;
-		case "movie":
-			return `Directed by ${creator}`;
-		case "book":
-		case "manga":
-			return `Written by ${creator}`;
-		case "anime":
-			return `Animated by ${creator}`;
-		default:
-			return creator;
-	}
-}
 
 function formatLogDate(timestamp: number) {
 	return new Intl.DateTimeFormat("en-US", {
