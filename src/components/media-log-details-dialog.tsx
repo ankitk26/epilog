@@ -120,13 +120,13 @@ export default function MediaLogDetailsDialog({
 	};
 
 	const isLoading = updateMutation.isPending || removeMutation.isPending;
-	const seriesLabel =
-		log?.metadata.seriesName &&
-		`${log.metadata.seriesName}${
-			log.metadata.seriesPosition && log.metadata.seriesTotal
-				? ` · ${log.metadata.seriesPosition}/${log.metadata.seriesTotal}`
-				: ""
-		}`;
+	const seriesLabel = (() => {
+		if (!log?.metadata.seriesName) return null;
+		if (log.metadata.seriesPosition) {
+			return `(${log.metadata.seriesName}, #${log.metadata.seriesPosition})`;
+		}
+		return `(${log.metadata.seriesName})`;
+	})();
 
 	const hasChanges = log && status !== (log.status as LogStatus);
 
