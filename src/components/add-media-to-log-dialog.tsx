@@ -182,7 +182,7 @@ export default function AddMediaToLogDialog({
 						{/* Status field */}
 						<div className="space-y-3">
 							<label className="eyebrow block">Status</label>
-							<div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+							<div className="grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(5.5rem,1fr))]">
 								{validStatuses.map((s) => {
 									const isActive = status === s;
 									return (
