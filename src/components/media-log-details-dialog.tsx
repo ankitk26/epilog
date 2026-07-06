@@ -1,6 +1,6 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { CalendarBlank, TrashSimple, XIcon } from "@phosphor-icons/react";
+import { CalendarBlankIcon, TrashSimpleIcon, XIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
-import { statusLabel } from "@/lib/media-labels";
+import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
 import { creatorPhrase } from "@/lib/creator-phrase";
@@ -223,7 +223,7 @@ export default function MediaLogDetailsDialog({
 									)}
 
 									<div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
-										<CalendarBlank
+										<CalendarBlankIcon
 											className="size-3"
 											weight="bold"
 										/>
@@ -243,23 +243,44 @@ export default function MediaLogDetailsDialog({
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
 								<label className="eyebrow block">Status</label>
-								<div className="flex flex-wrap gap-2">
-									{validStatuses.map((s) => {
+								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
+									{validStatuses.map((s, index) => {
 										const isActive = status === s;
+										const StatusIcon = getStatusIcon(s);
 										return (
 											<button
 												className={cn(
-													"h-9 cursor-pointer rounded-full border px-4 text-sm font-medium transition-all duration-200 disabled:opacity-50",
+													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
+													index > 0 && "border-t border-hairline",
 													isActive
-														? "scale-[1.02] border-transparent bg-primary text-primary-foreground shadow-soft"
-														: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink active:scale-95",
+														? "bg-primary/[0.04]"
+														: "hover:bg-secondary/60",
 												)}
 												disabled={isLoading}
 												key={s}
 												onClick={() => setStatus(s)}
 												type="button"
 											>
-												{statusLabel(s, mediaType)}
+
+												<StatusIcon
+													className={cn(
+														"size-4 shrink-0 transition-colors duration-150",
+														isActive
+															? "text-primary"
+															: "text-muted-foreground",
+													)}
+													weight={isActive ? "fill" : "regular"}
+												/>
+												<span
+													className={cn(
+														"flex-1 font-medium transition-colors duration-150",
+														isActive
+															? "text-ink"
+															: "text-muted-foreground",
+													)}
+												>
+													{statusLabel(s, mediaType)}
+												</span>
 											</button>
 										);
 									})}
@@ -273,9 +294,9 @@ export default function MediaLogDetailsDialog({
 									disabled={isLoading}
 									onClick={handleDelete}
 									size="sm"
-									variant="ghost"
+									variant="destructive"
 								>
-									<TrashSimple
+									<TrashSimpleIcon
 										className="size-3.5"
 										weight="bold"
 									/>

@@ -378,7 +378,7 @@ export default function MovieCalendarEventDetailsDialog({
 								})
 							}
 							size="sm"
-							variant="ghost"
+							variant="destructive"
 						>
 							Delete event
 						</Button>
