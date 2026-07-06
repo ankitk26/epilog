@@ -1,3 +1,5 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchOpenLibraryBooks } from "@/actions/search-open-library-books";
 import SearchMediaListItem from "@/components/search-media-list-item";
@@ -31,6 +33,15 @@ export default function SearchBookResultsGrid({
 		staleTime: 1000 * 60 * 2,
 	});
 
+	const sourceMediaIds = (books ?? []).map((book) =>
+		buildSourceMediaId("book", book.id),
+	);
+
+	const { data: loggedStatuses } = useQuery({
+		...convexQuery(api.logs.getLoggedStatuses, { sourceMediaIds }),
+		enabled: sourceMediaIds.length > 0,
+	});
+
 	if (isEnabled && isPending) {
 		return <SearchResultsLoadingList />;
 	}
@@ -55,11 +66,13 @@ export default function SearchBookResultsGrid({
 
 			<div className="flex flex-col gap-1">
 				{books.map((book) => {
+					const sourceId = buildSourceMediaId("book", book.id);
+
 					const searchMedia: SearchMedia = {
 						imageUrl: book.imageUrl,
 						name: book.title,
 						releaseYear: book.publishYear,
-						sourceId: buildSourceMediaId("book", book.id),
+						sourceId,
 						type: "book",
 						creator: book.author,
 						seriesName: book.seriesName ?? undefined,
@@ -71,6 +84,7 @@ export default function SearchBookResultsGrid({
 					return (
 						<SearchMediaListItem
 							key={book.id}
+							isLogged={!!loggedStatuses?.[sourceId]}
 							media={{
 								...searchMedia,
 								secondaryText: book.author,

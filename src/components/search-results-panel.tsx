@@ -1,5 +1,9 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddMediaToLogDialog from "@/components/add-media-to-log-dialog";
+import MediaLogDetailsDialog from "@/components/media-log-details-dialog";
 import type { MediaType } from "@/types";
 import SearchAnimeResultsGrid from "./search-anime-results-grid";
 import SearchBookResultsGrid from "./search-book-results-grid";
@@ -29,6 +33,13 @@ export default function SearchResultsPanel({ query, type: mediaType }: Props) {
 		null,
 	);
 
+	const { data: existingLog } = useQuery({
+		...convexQuery(api.logs.getBySourceMediaId, {
+			sourceMediaId: selectedMedia?.sourceId ?? "",
+		}),
+		enabled: !!selectedMedia,
+	});
+
 	return (
 		<div>
 			{mediaType === "book" && (
@@ -57,13 +68,23 @@ export default function SearchResultsPanel({ query, type: mediaType }: Props) {
 				/>
 			)}
 
-			<AddMediaToLogDialog
-				media={selectedMedia}
-				open={!!selectedMedia}
-				onOpenChange={(open) => {
-					if (!open) setSelectedMedia(null);
-				}}
-			/>
+			{existingLog ? (
+				<MediaLogDetailsDialog
+					log={existingLog}
+					open={!!selectedMedia}
+					onOpenChange={(open) => {
+						if (!open) setSelectedMedia(null);
+					}}
+				/>
+			) : (
+				<AddMediaToLogDialog
+					media={selectedMedia}
+					open={!!selectedMedia}
+					onOpenChange={(open) => {
+						if (!open) setSelectedMedia(null);
+					}}
+				/>
+			)}
 		</div>
 	);
 }

@@ -1,3 +1,5 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchJikanAnime } from "@/actions/search-jikan-anime";
 import SearchMediaListItem from "@/components/search-media-list-item";
@@ -25,6 +27,15 @@ export default function SearchAnimeResultsGrid({
 		enabled: searchQuery.length !== 0,
 	});
 
+	const sourceMediaIds = (animeContent?.data ?? []).map((anime) =>
+		buildSourceMediaId("anime", anime.mal_id),
+	);
+
+	const { data: loggedStatuses } = useQuery({
+		...convexQuery(api.logs.getLoggedStatuses, { sourceMediaIds }),
+		enabled: sourceMediaIds.length > 0,
+	});
+
 	if (isEnabled && isPending) {
 		return <SearchResultsLoadingList />;
 	}
@@ -48,13 +59,15 @@ export default function SearchAnimeResultsGrid({
 			</div>
 			<div className="flex flex-col gap-1">
 				{animeContent.data.map((anime) => {
+					const sourceId = buildSourceMediaId("anime", anime.mal_id);
+
 					const searchMedia: SearchMedia = {
 						imageUrl: anime.images.webp?.large_image_url,
 						name: anime.title_english ?? anime.title ?? "NA",
 						releaseYear: anime.aired.from
 							? new Date(anime.aired.from).getFullYear()
 							: null,
-						sourceId: buildSourceMediaId("anime", anime.mal_id),
+						sourceId,
 						type: "anime",
 						creator: anime.studios[0]?.name ?? null,
 					};
@@ -62,6 +75,7 @@ export default function SearchAnimeResultsGrid({
 					return (
 						<SearchMediaListItem
 							key={anime.mal_id}
+							isLogged={!!loggedStatuses?.[sourceId]}
 							media={searchMedia}
 							onClick={() => onMediaClick(searchMedia)}
 						/>

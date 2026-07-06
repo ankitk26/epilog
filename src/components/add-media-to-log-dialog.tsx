@@ -8,8 +8,8 @@ import { toast } from "sonner";
 import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
-import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { creatorPhrase } from "@/lib/creator-phrase";
+import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
 import type { LogStatus, MediaType } from "@/types";
@@ -167,8 +167,10 @@ export default function AddMediaToLogDialog({
 										/>
 									) : (
 										<div className="flex h-full w-full items-center justify-center">
-											<span className="text-3xl font-heading text-muted-foreground/20">
-												{(media.name || "?").charAt(0).toUpperCase()}
+											<span className="font-heading text-3xl text-muted-foreground/20">
+												{(media.name || "?")
+													.charAt(0)
+													.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -207,7 +209,6 @@ export default function AddMediaToLogDialog({
 						<div className="flex flex-col gap-6 px-6 pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<label className="eyebrow block">Status</label>
 								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
@@ -216,7 +217,8 @@ export default function AddMediaToLogDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-													index > 0 && "border-t border-hairline",
+													index > 0 &&
+														"border-t border-hairline",
 													isActive
 														? "bg-primary/[0.04]"
 														: "hover:bg-secondary/60",
@@ -226,7 +228,6 @@ export default function AddMediaToLogDialog({
 												onClick={() => setStatus(s)}
 												type="button"
 											>
-
 												<StatusIcon
 													className={cn(
 														"size-4 shrink-0 transition-colors duration-150",
@@ -234,7 +235,11 @@ export default function AddMediaToLogDialog({
 															? "text-primary"
 															: "text-muted-foreground",
 													)}
-													weight={isActive ? "fill" : "regular"}
+													weight={
+														isActive
+															? "fill"
+															: "regular"
+													}
 												/>
 												<span
 													className={cn(

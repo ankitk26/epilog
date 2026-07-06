@@ -1,3 +1,5 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
 import SearchMediaListItem from "@/components/search-media-list-item";
@@ -30,6 +32,15 @@ export default function SearchMovieTvResultsGrid({
 				data: { searchQuery, mediaType },
 			}),
 		enabled: searchQuery.length !== 0,
+	});
+
+	const sourceMediaIds = (mediaContent?.results ?? []).map((media) =>
+		buildSourceMediaId(mediaType, media.id),
+	);
+
+	const { data: loggedStatuses } = useQuery({
+		...convexQuery(api.logs.getLoggedStatuses, { sourceMediaIds }),
+		enabled: sourceMediaIds.length > 0,
 	});
 
 	if (isEnabled && isPending) {
@@ -65,17 +76,20 @@ export default function SearchMovieTvResultsGrid({
 						media.poster_path,
 					);
 
+					const sourceId = buildSourceMediaId(mediaType, media.id);
+
 					const searchMedia: SearchMedia = {
 						imageUrl: posterImage,
 						name: media.name ?? media.title ?? "NA",
 						releaseYear,
-						sourceId: buildSourceMediaId(mediaType, media.id),
+						sourceId,
 						type: mediaType,
 					};
 
 					return (
 						<SearchMediaListItem
 							key={media.id}
+							isLogged={!!loggedStatuses?.[sourceId]}
 							media={searchMedia}
 							onClick={() => onMediaClick(searchMedia)}
 						/>

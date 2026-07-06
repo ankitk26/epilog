@@ -1,3 +1,5 @@
+import { convexQuery } from "@convex-dev/react-query";
+import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchJikanManga } from "@/actions/search-jikan-manga";
 import SearchMediaListItem from "@/components/search-media-list-item";
@@ -26,6 +28,15 @@ export default function SearchMangaResultsGrid({
 		enabled: searchQuery.length !== 0,
 	});
 
+	const sourceMediaIds = (mangaContent?.data ?? []).map((manga) =>
+		buildSourceMediaId("manga", manga.mal_id),
+	);
+
+	const { data: loggedStatuses } = useQuery({
+		...convexQuery(api.logs.getLoggedStatuses, { sourceMediaIds }),
+		enabled: sourceMediaIds.length > 0,
+	});
+
 	if (isEnabled && isPending) {
 		return <SearchResultsLoadingList />;
 	}
@@ -49,13 +60,15 @@ export default function SearchMangaResultsGrid({
 			</div>
 			<div className="flex flex-col gap-1">
 				{mangaContent.data.map((manga) => {
+					const sourceId = buildSourceMediaId("manga", manga.mal_id);
+
 					const searchMedia: SearchMedia = {
 						imageUrl: manga.images.webp?.large_image_url,
 						name: manga.title_english ?? manga.title ?? "NA",
 						releaseYear: manga.published.from
 							? new Date(manga.published.from).getFullYear()
 							: null,
-						sourceId: buildSourceMediaId("manga", manga.mal_id),
+						sourceId,
 						type: "manga",
 						creator: standardizePersonName(manga.authors[0]?.name),
 					};
@@ -63,6 +76,7 @@ export default function SearchMangaResultsGrid({
 					return (
 						<SearchMediaListItem
 							key={manga.mal_id}
+							isLogged={!!loggedStatuses?.[sourceId]}
 							media={searchMedia}
 							onClick={() => onMediaClick(searchMedia)}
 						/>

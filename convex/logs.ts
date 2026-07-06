@@ -94,6 +94,80 @@ export const all = query({
 	},
 });
 
+export const getLoggedStatuses = query({
+	args: {
+		sourceMediaIds: v.array(v.string()),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const results: Record<
+			string,
+			{ status: string; logId: string } | null
+		> = {};
+
+		for (const sourceMediaId of args.sourceMediaIds) {
+			const media = await ctx.db
+				.query("media")
+				.withIndex("by_sourceId", (q) =>
+					q.eq("sourceMediaId", sourceMediaId),
+				)
+				.first();
+
+			if (!media) {
+				results[sourceMediaId] = null;
+				continue;
+			}
+
+			const log = await ctx.db
+				.query("logs")
+				.withIndex("by_user_and_mediaId", (q) =>
+					q.eq("userId", userId).eq("dbMediaId", media._id),
+				)
+				.unique();
+
+			results[sourceMediaId] = log
+				? { status: log.status, logId: log._id }
+				: null;
+		}
+
+		return results;
+	},
+});
+
+export const getBySourceMediaId = query({
+	args: {
+		sourceMediaId: v.string(),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const media = await ctx.db
+			.query("media")
+			.withIndex("by_sourceId", (q) =>
+				q.eq("sourceMediaId", args.sourceMediaId),
+			)
+			.first();
+
+		if (!media) {
+			return null;
+		}
+
+		const log = await ctx.db
+			.query("logs")
+			.withIndex("by_user_and_mediaId", (q) =>
+				q.eq("userId", userId).eq("dbMediaId", media._id),
+			)
+			.unique();
+
+		if (!log) {
+			return null;
+		}
+
+		return { ...log, metadata: media };
+	},
+});
+
 export const add = mutation({
 	args: {
 		media: v.object({

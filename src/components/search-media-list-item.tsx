@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Image } from "@unpic/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -13,10 +14,15 @@ type Props = {
 		sourceId: string;
 		type: MediaType;
 	};
+	isLogged?: boolean;
 	onClick?: () => void;
 };
 
-export default function SearchMediaListItem({ media, onClick }: Props) {
+export default function SearchMediaListItem({
+	media,
+	isLogged,
+	onClick,
+}: Props) {
 	const [imageFailed, setImageFailed] = useState(false);
 
 	return (
@@ -61,6 +67,16 @@ export default function SearchMediaListItem({ media, onClick }: Props) {
 					<p className="mt-1 text-xs text-muted-foreground tabular-nums lg:mt-2 lg:text-sm">
 						{media.releaseYear}
 					</p>
+				)}
+
+				{isLogged && (
+					<span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary lg:mt-3 lg:text-sm">
+						<CheckCircleIcon
+							className="size-3 lg:size-3.5"
+							weight="fill"
+						/>
+						In library
+					</span>
 				)}
 			</div>
 		</button>

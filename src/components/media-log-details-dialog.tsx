@@ -1,6 +1,10 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { CalendarBlankIcon, TrashSimpleIcon, XIcon } from "@phosphor-icons/react";
+import {
+	CalendarBlankIcon,
+	TrashSimpleIcon,
+	XIcon,
+} from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
@@ -8,10 +12,10 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
+import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
-import { creatorPhrase } from "@/lib/creator-phrase";
 import type { LogStatus, MediaType } from "@/types";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
@@ -186,8 +190,10 @@ export default function MediaLogDetailsDialog({
 										/>
 									) : (
 										<div className="flex h-full w-full items-center justify-center">
-											<span className="text-3xl font-heading text-muted-foreground/20">
-												{(log.metadata.name || "?").charAt(0).toUpperCase()}
+											<span className="font-heading text-3xl text-muted-foreground/20">
+												{(log.metadata.name || "?")
+													.charAt(0)
+													.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -242,7 +248,6 @@ export default function MediaLogDetailsDialog({
 						<div className="flex flex-col gap-6 px-6 pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<label className="eyebrow block">Status</label>
 								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
@@ -251,7 +256,8 @@ export default function MediaLogDetailsDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-													index > 0 && "border-t border-hairline",
+													index > 0 &&
+														"border-t border-hairline",
 													isActive
 														? "bg-primary/[0.04]"
 														: "hover:bg-secondary/60",
@@ -261,7 +267,6 @@ export default function MediaLogDetailsDialog({
 												onClick={() => setStatus(s)}
 												type="button"
 											>
-
 												<StatusIcon
 													className={cn(
 														"size-4 shrink-0 transition-colors duration-150",
@@ -269,7 +274,11 @@ export default function MediaLogDetailsDialog({
 															? "text-primary"
 															: "text-muted-foreground",
 													)}
-													weight={isActive ? "fill" : "regular"}
+													weight={
+														isActive
+															? "fill"
+															: "regular"
+													}
 												/>
 												<span
 													className={cn(
