@@ -12,7 +12,6 @@ import { statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
 import type { LogStatus, MediaType } from "@/types";
-import MediaTypeIcon from "./media-type-icon";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
 
@@ -22,12 +21,19 @@ type Props = {
 	onOpenChange: (open: boolean) => void;
 };
 
-function formatMediaType(type: MediaType) {
+function creatorPhrase(type: MediaType, creator: string): string {
 	switch (type) {
 		case "tv":
-			return "TV";
+			return `Watch on ${creator}`;
+		case "movie":
+			return `Directed by ${creator}`;
+		case "book":
+		case "manga":
+			return `Written by ${creator}`;
+		case "anime":
+			return `Animated by ${creator}`;
 		default:
-			return type.charAt(0).toUpperCase() + type.slice(1);
+			return creator;
 	}
 }
 
@@ -138,7 +144,7 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-[26rem] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
@@ -181,7 +187,7 @@ export default function MediaLogDetailsDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-4 px-6 pt-8 pb-6">
 								{/* Vertical poster */}
-								<div className="h-40 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline">
+								<div className="h-48 w-36 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline">
 									{log.metadata.image ? (
 										<Image
 											alt={
@@ -189,16 +195,15 @@ export default function MediaLogDetailsDialog({
 												"Media poster"
 											}
 											className="h-full w-full object-cover"
-											height={160}
+											height={192}
 											src={log.metadata.image}
-											width={112}
+											width={144}
 										/>
 									) : (
 										<div className="flex h-full w-full items-center justify-center">
-											<MediaTypeIcon
-												className="size-8 text-muted-foreground/30"
-												type={log.metadata.type}
-											/>
+											<span className="text-3xl font-heading text-muted-foreground/20">
+												{(log.metadata.name || "?").charAt(0).toUpperCase()}
+											</span>
 										</div>
 									)}
 								</div>
@@ -210,24 +215,21 @@ export default function MediaLogDetailsDialog({
 									</h2>
 
 									<div className="mt-2 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-										<span className="inline-flex items-center gap-1 font-medium">
-											<MediaTypeIcon
-												className="size-3"
-												type={log.metadata.type}
-											/>
-											{formatMediaType(log.metadata.type)}
-										</span>
 										{log.metadata.releaseYear && (
-											<>
-												<span className="text-hairline-strong">
-													·
-												</span>
-												<span className="tabular-nums">
-													{log.metadata.releaseYear}
-												</span>
-											</>
+											<span className="tabular-nums">
+												{log.metadata.releaseYear}
+											</span>
 										)}
 									</div>
+
+									{log.metadata.creator && (
+										<p className="mt-1.5 text-xs font-medium text-ink/70">
+											{creatorPhrase(
+												log.metadata.type,
+												log.metadata.creator,
+											)}
+										</p>
+									)}
 
 									{seriesLabel && (
 										<p className="mt-1 text-xs text-muted-foreground/70">
