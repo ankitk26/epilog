@@ -17,12 +17,21 @@ function getAuthorName(book: {
 		return primaryName;
 	}
 
-	const alternativeName = book.author_alternative_name?.find((name) =>
-		latinTextPattern.test(name),
-	);
+	const latinAlternatives =
+		book.author_alternative_name?.filter((name) =>
+			latinTextPattern.test(name),
+		) ?? [];
 
-	if (alternativeName) {
-		return alternativeName;
+	// Prefer the natural "FirstName LastName" format (no comma) over
+	// the inverted "LastName, FirstName" format that OpenLibrary returns.
+	const naturalName = latinAlternatives.find((name) => !name.includes(","));
+	if (naturalName) {
+		return naturalName;
+	}
+
+	// Fall back to first Latin alternative even if comma-formatted.
+	if (latinAlternatives.length > 0) {
+		return latinAlternatives[0];
 	}
 
 	return primaryName ?? null;
