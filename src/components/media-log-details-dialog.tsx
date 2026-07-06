@@ -1,19 +1,13 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { XIcon } from "@phosphor-icons/react";
+import { CalendarBlank, TrashSimple, XIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { statusesByMediaType } from "@/types";
@@ -139,25 +133,22 @@ export default function MediaLogDetailsDialog({
 				: ""
 		}`;
 
+	const hasChanges = log && status !== (log.status as LogStatus);
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-[26rem] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
-				<DialogHeader className="relative z-10 flex-shrink-0">
-					<DialogTitle className="pr-10 font-heading text-xl leading-tight font-normal tracking-tight text-ink">
-						{log?.metadata.name || "Untitled"}
-					</DialogTitle>
-				</DialogHeader>
-
+				{/* ── Close button ── */}
 				<DialogClose
 					ref={closeButtonRef}
 					render={
 						<Button
 							variant="ghost"
-							className="absolute top-3 right-3 text-muted-foreground hover:text-ink"
+							className="absolute top-3 right-3 z-30 text-muted-foreground hover:bg-secondary/60 hover:text-ink"
 							size="icon-sm"
 						/>
 					}
@@ -167,115 +158,162 @@ export default function MediaLogDetailsDialog({
 				</DialogClose>
 
 				{log && (
-					<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
-						{/* Media summary */}
-						<div className="flex gap-4">
-							<div className="h-[180px] w-32 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[180px] sm:w-32">
-								{log.metadata.image ? (
-									<Image
-										alt={
-											log.metadata.name || "Media poster"
-										}
-										className="h-full w-full object-cover"
-										height={180}
+					<div className="flex flex-col overflow-y-auto">
+						{/* ── Hero: blurred ambient backdrop + poster card ── */}
+						<div className="relative flex-shrink-0">
+							{/* Blurred ambient backdrop */}
+							{log.metadata.image ? (
+								<div className="absolute inset-0 overflow-hidden">
+									<img
+										alt=""
+										aria-hidden="true"
+										className="h-full w-full scale-110 object-cover opacity-30 blur-2xl saturate-150 dark:opacity-20"
 										src={log.metadata.image}
-										width={128}
 									/>
-								) : (
-									<div className="flex h-full w-full items-center justify-center">
-										<MediaTypeIcon
-											className="size-5 text-muted-foreground/50"
-											type={log.metadata.type}
+								</div>
+							) : (
+								<div className="absolute inset-0 bg-secondary" />
+							)}
+
+							{/* Gradient fade at bottom edge */}
+							<div className="absolute inset-x-0 bottom-0 z-[1] h-16 bg-gradient-to-t from-popover to-transparent" />
+
+							{/* Content: poster + info */}
+							<div className="relative z-[2] flex gap-4 px-6 pt-8 pb-6">
+								{/* Vertical poster */}
+								<div className="h-40 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline">
+									{log.metadata.image ? (
+										<Image
+											alt={
+												log.metadata.name ||
+												"Media poster"
+											}
+											className="h-full w-full object-cover"
+											height={160}
+											src={log.metadata.image}
+											width={112}
 										/>
-									</div>
-								)}
-							</div>
-
-							<div className="min-w-0 flex-1 space-y-2 pt-1">
-								<p className="text-sm font-medium text-ink">
-									{formatMediaType(log.metadata.type)}
-									{log.metadata.releaseYear ? (
-										<span className="text-muted-foreground tabular-nums">
-											{" · "}
-											{log.metadata.releaseYear}
-										</span>
-									) : null}
-								</p>
-
-								{seriesLabel && (
-									<p className="text-xs text-muted-foreground">
-										{seriesLabel}
-									</p>
-								)}
-
-								<p className="pt-1 text-xs text-muted-foreground/70">
-									{statusPhrase(
-										log.status as LogStatus,
-										formatLogDate(log.updatedTime),
+									) : (
+										<div className="flex h-full w-full items-center justify-center">
+											<MediaTypeIcon
+												className="size-8 text-muted-foreground/30"
+												type={log.metadata.type}
+											/>
+										</div>
 									)}
-								</p>
-							</div>
-						</div>
+								</div>
 
-						{/* Status field */}
-						<div className="space-y-3">
-							<label className="eyebrow block">Status</label>
-							<div className="flex flex-wrap gap-3">
-								{validStatuses.map((s) => {
-									const isActive = status === s;
-									return (
-										<button
-											className={cn(
-												"h-11 cursor-pointer rounded-full border px-4 text-sm font-medium transition-all duration-200 disabled:opacity-50 sm:h-9",
-												isActive
-													? "border-transparent bg-primary text-primary-foreground shadow-soft"
-													: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
+								{/* Title + metadata */}
+								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
+									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-normal tracking-tight text-ink">
+										{log.metadata.name || "Untitled"}
+									</h2>
+
+									<div className="mt-2 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+										<span className="inline-flex items-center gap-1 font-medium">
+											<MediaTypeIcon
+												className="size-3"
+												type={log.metadata.type}
+											/>
+											{formatMediaType(log.metadata.type)}
+										</span>
+										{log.metadata.releaseYear && (
+											<>
+												<span className="text-hairline-strong">
+													·
+												</span>
+												<span className="tabular-nums">
+													{log.metadata.releaseYear}
+												</span>
+											</>
+										)}
+									</div>
+
+									{seriesLabel && (
+										<p className="mt-1 text-xs text-muted-foreground/70">
+											{seriesLabel}
+										</p>
+									)}
+
+									<div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
+										<CalendarBlank
+											className="size-3"
+											weight="bold"
+										/>
+										<span>
+											{statusPhrase(
+												log.status as LogStatus,
+												formatLogDate(log.updatedTime),
 											)}
-											disabled={isLoading}
-											key={s}
-											onClick={() => setStatus(s)}
-											type="button"
-										>
-											{statusLabel(s, mediaType)}
-										</button>
-									);
-								})}
+										</span>
+									</div>
+								</div>
 							</div>
 						</div>
 
-						{/* Footer actions */}
-						<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
-							<Button
-								className="h-11 w-full rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
-								disabled={isLoading}
-								onClick={handleDelete}
-								size="sm"
-								variant="ghost"
-							>
-								Delete
-							</Button>
+						{/* ── Body ── */}
+						<div className="flex flex-col gap-6 px-6 pb-6">
+							{/* ── Status selector ── */}
+							<div className="space-y-3">
+								<label className="eyebrow block">Status</label>
+								<div className="flex flex-wrap gap-2">
+									{validStatuses.map((s) => {
+										const isActive = status === s;
+										return (
+											<button
+												className={cn(
+													"h-9 cursor-pointer rounded-full border px-4 text-sm font-medium transition-all duration-200 disabled:opacity-50",
+													isActive
+														? "scale-[1.02] border-transparent bg-primary text-primary-foreground shadow-soft"
+														: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink active:scale-95",
+												)}
+												disabled={isLoading}
+												key={s}
+												onClick={() => setStatus(s)}
+												type="button"
+											>
+												{statusLabel(s, mediaType)}
+											</button>
+										);
+									})}
+								</div>
+							</div>
 
-							<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+							{/* ── Footer actions ── */}
+							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 								<Button
-									className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+									className="h-11 w-full gap-1.5 rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
 									disabled={isLoading}
-									onClick={() => onOpenChange(false)}
+									onClick={handleDelete}
 									size="sm"
-									variant="outline"
+									variant="ghost"
 								>
-									Cancel
+									<TrashSimple
+										className="size-3.5"
+										weight="bold"
+									/>
+									Delete
 								</Button>
-								<Button
-									className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
-									disabled={
-										isLoading ||
-										status === (log.status as LogStatus)
-									}
-									onClick={handleSave}
-									size="sm"
-								>
-									Save
-								</Button>
+
+								<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+									<Button
+										className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+										disabled={isLoading}
+										onClick={() => onOpenChange(false)}
+										size="sm"
+										variant="outline"
+									>
+										Cancel
+									</Button>
+									<Button
+										className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+										disabled={isLoading || !hasChanges}
+										onClick={handleSave}
+										size="sm"
+									>
+										Save
+									</Button>
+								</div>
 							</div>
 						</div>
 					</div>
