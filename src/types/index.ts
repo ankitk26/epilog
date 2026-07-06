@@ -70,6 +70,13 @@ export const animeSearchAPIOutput = z.object({
 			aired: z.object({
 				from: z.string().nullable().optional(),
 			}),
+			studios: z
+				.array(
+					z.object({
+						name: z.string(),
+					}),
+				)
+				.default([]),
 		}),
 	),
 });
@@ -92,6 +99,13 @@ export const jikanMangaSearchAPIOutput = z.object({
 			published: z.object({
 				from: z.string().nullable().optional(),
 			}),
+			authors: z
+				.array(
+					z.object({
+						name: z.string(),
+					}),
+				)
+				.default([]),
 		}),
 	),
 });

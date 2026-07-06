@@ -56,6 +56,7 @@ export default function SearchAnimeResultsGrid({
 							: null,
 						sourceId: buildSourceMediaId("anime", anime.mal_id),
 						type: "anime",
+						creator: anime.studios[0]?.name ?? null,
 					};
 
 					return (

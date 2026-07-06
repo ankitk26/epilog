@@ -11,6 +11,7 @@ export default defineSchema({
 		name: v.string(),
 		image: v.optional(v.union(v.string(), v.null())),
 		releaseYear: v.union(v.number(), v.null()),
+		creator: v.optional(v.union(v.string(), v.null())),
 		sourceMediaId: v.string(),
 		type: v.union(
 			v.literal("anime"),

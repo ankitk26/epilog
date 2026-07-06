@@ -76,7 +76,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 						: null;
 
 				return {
-					id: book.key,
+					id: book.key.replace(/^\/works\//, ""),
 					title: englishEdition?.title ?? book.title,
 					author: getAuthorName(book),
 					imageUrl,

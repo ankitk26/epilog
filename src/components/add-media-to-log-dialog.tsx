@@ -1,9 +1,10 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -23,6 +24,7 @@ type Media = {
 	releaseYear: number | null;
 	sourceId: string;
 	type: MediaType;
+	creator?: string | null;
 	seriesName?: string;
 	seriesPosition?: number;
 	seriesTotal?: number;
@@ -55,6 +57,19 @@ export default function AddMediaToLogDialog({
 
 	const titleRef = useRef<HTMLHeadingElement>(null);
 
+	const tmdbCreatorQuery = useQuery({
+		queryKey: ["tmdb-creator", media?.sourceId, media?.type],
+		queryFn: async () => {
+			if (!media || (media.type !== "movie" && media.type !== "tv")) {
+				return null;
+			}
+			return await getTmdbMediaCreator({
+				data: { sourceMediaId: media.sourceId, type: media.type },
+			});
+		},
+		enabled: !!media && (media.type === "movie" || media.type === "tv"),
+	});
+
 	const addMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.add),
 		onMutate: () => {
@@ -81,6 +96,7 @@ export default function AddMediaToLogDialog({
 				sourceMediaId: media.sourceId,
 				type: media.type,
 				image: media.imageUrl ?? "",
+				creator: media.creator ?? tmdbCreatorQuery.data ?? null,
 				seriesName: media.seriesName,
 				seriesPosition: media.seriesPosition,
 				seriesTotal: media.seriesTotal,

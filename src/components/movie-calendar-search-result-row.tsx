@@ -3,6 +3,7 @@ import { api } from "@convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { toast } from "sonner";
+import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { buildTmdbPosterImageUrl } from "@/lib/build-tmdb-poster-image-url";
 import { getTmdbMediaReleaseYear } from "@/lib/get-tmdb-media-release-year";
@@ -60,17 +61,24 @@ export default function MovieCalendarSearchResultRow({
 		},
 	});
 
-	const handleMovieClick = () => {
+	const handleMovieClick = async () => {
 		const formattedDate = `${year.toString().padStart(4, "0")}${(month + 1)
 			.toString()
 			.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
+
+		const sourceMediaId = buildSourceMediaId("movie", movie.id);
+
+		const creator = await getTmdbMediaCreator({
+			data: { sourceMediaId, type: "movie" },
+		});
 
 		addMovieEventMutation.mutate({
 			eventDate: formattedDate,
 			media: {
 				name: movie.name ?? movie.title ?? "N/A",
 				releaseYear,
-				sourceMediaId: buildSourceMediaId("movie", movie.id),
+				creator,
+				sourceMediaId,
 				image: posterImage,
 			},
 		});

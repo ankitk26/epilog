@@ -40,9 +40,9 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 				<h3 className="font-heading text-base leading-tight font-normal tracking-tight text-ink transition-colors group-hover:text-ink">
 					{log.metadata?.name || "Untitled"}
 				</h3>
-				{log.metadata?.releaseYear && (
-					<p className="mt-1 text-xs text-muted-foreground tabular-nums">
-						{log.metadata.releaseYear}
+				{(log.metadata?.creator ?? log.metadata?.releaseYear) && (
+					<p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
+						{log.metadata.creator ?? log.metadata.releaseYear}
 					</p>
 				)}
 			</div>

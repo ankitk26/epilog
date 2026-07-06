@@ -61,6 +61,7 @@ export default function SearchBookResultsGrid({
 						releaseYear: book.publishYear,
 						sourceId: buildSourceMediaId("book", book.id),
 						type: "book",
+						creator: book.author,
 						seriesName: book.seriesName ?? undefined,
 						seriesPosition: book.seriesPosition ?? undefined,
 						seriesTotal: book.seriesTotal ?? undefined,

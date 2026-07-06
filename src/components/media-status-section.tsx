@@ -79,6 +79,7 @@ export default function MediaSectionByStatus(props: Props) {
 									imageUrl: log.metadata.image,
 									name: log.metadata.name || "NA",
 									releaseYear: log.metadata.releaseYear,
+									creator: log.metadata.creator,
 									sourceId: log.metadata.sourceMediaId,
 									type: log.metadata.type,
 								}}

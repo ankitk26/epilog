@@ -11,6 +11,7 @@ type Props = {
 		name: string;
 		secondaryText?: string | null;
 		releaseYear: number | null;
+		creator?: string | null;
 		sourceId: string;
 		type: MediaType;
 		seriesName?: string;
@@ -69,9 +70,9 @@ export default function MediaPosterCard(props: Props) {
 						{props.media.secondaryText}
 					</p>
 				)}
-				{props.media.releaseYear && (
-					<p className="text-xs text-muted-foreground tabular-nums">
-						{props.media.releaseYear}
+				{(props.media.creator ?? props.media.releaseYear) && (
+					<p className="line-clamp-1 text-xs text-muted-foreground">
+						{props.media.creator ?? props.media.releaseYear}
 					</p>
 				)}
 			</CardContent>

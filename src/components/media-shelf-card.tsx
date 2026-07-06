@@ -40,8 +40,8 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 				<h4 className="mb-1 line-clamp-2 font-heading text-sm leading-tight font-normal text-ink">
 					{log.metadata.name}
 				</h4>
-				<p className="text-xs text-muted-foreground tabular-nums">
-					{log.metadata.releaseYear}
+				<p className="line-clamp-1 text-xs text-muted-foreground">
+					{log.metadata.creator ?? log.metadata.releaseYear}
 				</p>
 			</div>
 		</div>

@@ -12,6 +12,7 @@ export type SearchMedia = {
 	releaseYear: number | null;
 	sourceId: string;
 	type: "movie" | "tv" | "anime" | "book" | "manga";
+	creator?: string | null;
 	seriesName?: string;
 	seriesPosition?: number;
 	seriesTotal?: number;

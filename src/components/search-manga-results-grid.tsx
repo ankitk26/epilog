@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchJikanManga } from "@/actions/search-jikan-manga";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
+import { standardizePersonName } from "@/lib/standardize-person-name";
 import SearchNoResultsEmptyState from "./search-no-results-empty-state";
 import SearchResultsLoadingList from "./search-results-loading-list";
 import type { SearchMedia } from "./search-results-panel";
@@ -56,6 +57,7 @@ export default function SearchMangaResultsGrid({
 							: null,
 						sourceId: buildSourceMediaId("manga", manga.mal_id),
 						type: "manga",
+						creator: standardizePersonName(manga.authors[0]?.name),
 					};
 
 					return (

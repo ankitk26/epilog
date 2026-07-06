@@ -100,6 +100,7 @@ export const add = mutation({
 			name: v.string(),
 			image: v.optional(v.string()),
 			releaseYear: v.union(v.number(), v.null()),
+			creator: v.optional(v.union(v.string(), v.null())),
 			sourceMediaId: v.string(),
 			type: mediaTypeLiteral,
 			seriesName: v.optional(v.string()),
@@ -125,12 +126,20 @@ export const add = mutation({
 		if (existingMedia) {
 			// assign alredy existing id to mediaId
 			mediaId = existingMedia._id;
+
+			// backfill creator if it was never stored
+			if (!existingMedia.creator && args.media.creator) {
+				await ctx.db.patch(mediaId, {
+					creator: args.media.creator,
+				});
+			}
 		} else {
 			// create new media entry and get its ID
 			const newMediaId = await ctx.db.insert("media", {
 				image: args.media.image,
 				name: args.media.name,
 				releaseYear: args.media.releaseYear,
+				creator: args.media.creator,
 				sourceMediaId: args.media.sourceMediaId,
 				type: args.media.type,
 				seriesName: args.media.seriesName,
