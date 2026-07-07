@@ -154,9 +154,9 @@ export default function AddMediaToLogDialog({
 							<div className="absolute inset-x-0 bottom-0 z-[1] h-16 bg-gradient-to-t from-popover to-transparent" />
 
 							{/* Content: poster + info */}
-							<div className="relative z-[2] flex gap-4 px-6 pt-8 pb-6">
+							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="h-48 w-36 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline">
+								<div className="h-36 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline sm:h-48 sm:w-36">
 									{media.imageUrl ? (
 										<Image
 											alt={media.name || "Media poster"}
@@ -206,7 +206,7 @@ export default function AddMediaToLogDialog({
 						</div>
 
 						{/* ── Body ── */}
-						<div className="flex flex-col gap-6 px-6 pb-6">
+						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
 								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
