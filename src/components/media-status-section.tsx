@@ -2,6 +2,7 @@ import type { api } from "@convex/_generated/api";
 import { CaretDownIcon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { cn } from "@/lib/utils";
 import EmptyStateMessage from "./empty-state-message";
@@ -25,6 +26,8 @@ export default function MediaSectionByStatus(props: Props) {
 	const [selectedLog, setSelectedLog] = useState<
 		FunctionReturnType<typeof api.logs.all>[0] | null
 	>(null);
+
+	useDialogHistory(!!selectedLog, () => setSelectedLog(null), "log-details");
 
 	return (
 		<section className="animate-reveal-up space-y-6">

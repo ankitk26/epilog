@@ -4,6 +4,7 @@ import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import MovieCalendarAddEventDialog from "./movie-calendar-add-event-dialog";
@@ -46,6 +47,12 @@ export default function MovieCalendarMonthGrid() {
 		month: number;
 		year: number;
 	} | null>(null);
+
+	useDialogHistory(
+		!!addMovieDate,
+		() => setAddMovieDate(null),
+		"calendar-add-event",
+	);
 	const { data: movieCalendarEvents = [] } = useQuery(
 		convexQuery(api.movieEvents.getAll),
 	);

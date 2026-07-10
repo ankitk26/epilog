@@ -11,6 +11,7 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
 import { useMemo, useRef, useState } from "react";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { statusLabel } from "@/lib/media-labels";
 import { statusesByMediaType } from "@/types";
@@ -42,6 +43,12 @@ export default function MediaShelfView() {
 	const [selectedLog, setSelectedLog] = useState<
 		FunctionReturnType<typeof api.logs.all>[0] | null
 	>(null);
+
+	useDialogHistory(
+		!!selectedLog,
+		() => setSelectedLog(null),
+		"shelf-log-details",
+	);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 

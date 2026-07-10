@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddMediaToLogDialog from "@/components/add-media-to-log-dialog";
 import MediaLogDetailsDialog from "@/components/media-log-details-dialog";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import type { MediaType } from "@/types";
 import SearchAnimeResultsGrid from "./search-anime-results-grid";
 import SearchBookResultsGrid from "./search-book-results-grid";
@@ -31,6 +32,12 @@ type Props = {
 export default function SearchResultsPanel({ query, type: mediaType }: Props) {
 	const [selectedMedia, setSelectedMedia] = useState<SearchMedia | null>(
 		null,
+	);
+
+	useDialogHistory(
+		!!selectedMedia,
+		() => setSelectedMedia(null),
+		"search-media-dialog",
 	);
 
 	const { data: existingLog } = useQuery({

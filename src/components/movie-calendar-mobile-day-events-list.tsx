@@ -1,5 +1,6 @@
 import { PlusIcon } from "@phosphor-icons/react";
 import { useState } from "react";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { cn } from "@/lib/utils";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import MovieCalendarAddEventDialog from "./movie-calendar-add-event-dialog";
@@ -38,6 +39,12 @@ export default function MovieCalendarMobileDayEventsList({
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
 		useState<CalendarMovieEvent | null>(null);
+
+	useDialogHistory(
+		!!selectedEvent,
+		() => setSelectedEvent(null),
+		"mobile-calendar-event",
+	);
 
 	const displayDate = selectedDate;
 

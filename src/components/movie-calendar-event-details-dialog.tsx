@@ -260,7 +260,9 @@ export default function MovieCalendarEventDetailsDialog({
 
 					{/* Date watched field */}
 					<div className="space-y-3">
-						<label className="section-label block">Date watched</label>
+						<label className="section-label block">
+							Date watched
+						</label>
 						<div className="grid grid-cols-3 gap-2">
 							<Select
 								items={[

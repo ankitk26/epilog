@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
@@ -30,6 +31,13 @@ export default function MovieCalendarDayCell({
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
 		useState<CalendarMovieEvent | null>(null);
+
+	useDialogHistory(
+		!!selectedEvent,
+		() => setSelectedEvent(null),
+		"calendar-event",
+	);
+
 	const isMobile = useIsMobile();
 
 	const today = new Date();

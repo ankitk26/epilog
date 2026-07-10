@@ -16,6 +16,7 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "@/components/ui/sheet";
+import { useDialogHistory } from "@/hooks/use-dialog-history";
 import type { MediaType } from "@/types";
 
 type AddLibrarySheetContextValue = {
@@ -60,6 +61,8 @@ function AddLibrarySheetContent({
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 }) {
+	useDialogHistory(isOpen, () => onOpenChange(false), "add-library-sheet");
+
 	const { type: homeType } = useSearch({ from: "/_auth/" });
 
 	const [query, setQuery] = useState("");
