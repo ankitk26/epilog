@@ -37,14 +37,14 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="fixed top-0 right-0 left-0 z-30 px-6 lg:px-12">
+		<header className="fixed top-0 right-0 left-0 z-30 bg-canvas/80 px-6 backdrop-blur-md backdrop-saturate-150 lg:px-12">
 			<div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-sm font-semibold tracking-[0.15em] uppercase text-ink transition-opacity group-hover:opacity-60">
+					<span className="font-heading text-sm font-semibold tracking-[0.15em] text-ink uppercase transition-opacity group-hover:opacity-60">
 						epilog
 					</span>
 				</Link>
@@ -55,12 +55,11 @@ export default function AppShellHeader() {
 							render={
 								<Button
 									aria-label="Search library"
-									className="size-9 border-hairline bg-canvas/70 text-ink backdrop-blur-md hover:bg-secondary"
 									onClick={openAddLibrarySheet}
-									size="icon-sm"
+									size="icon"
 									variant="outline"
 								>
-									<MagnifyingGlassIcon className="size-4" />
+									<MagnifyingGlassIcon />
 								</Button>
 							}
 						/>
@@ -77,20 +76,21 @@ export default function AppShellHeader() {
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							render={
-								<button
-									type="button"
-									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline bg-canvas/70 p-0 backdrop-blur-md transition-colors outline-none hover:bg-secondary"
+								<Button
+									className="overflow-hidden"
+									size="icon"
+									variant="outline"
 								>
-									<Avatar className="size-9 rounded-full">
+									<Avatar>
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
 										/>
-										<AvatarFallback className="rounded-full bg-secondary text-sm font-medium text-ink">
+										<AvatarFallback>
 											{data?.user.name[0]}
 										</AvatarFallback>
 									</Avatar>
-								</button>
+								</Button>
 							}
 						/>
 						<DropdownMenuContent

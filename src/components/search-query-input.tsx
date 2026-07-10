@@ -27,7 +27,7 @@ export default function SearchQueryInput({
 				<MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground" />
 				<Input
 					autoFocus={autoFocus}
-					className="h-12 w-full rounded-lg border-hairline-strong bg-card pr-4 pl-12 text-sm tracking-wide text-ink shadow-soft focus-visible:border-ink focus-visible:ring-0 lg:h-12 lg:pl-12 lg:text-base"
+					className="pl-12"
 					onChange={(e) => onChange(e.target.value)}
 					placeholder="Search for a title…"
 					value={value}

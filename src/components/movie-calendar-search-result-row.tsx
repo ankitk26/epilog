@@ -90,7 +90,7 @@ export default function MovieCalendarSearchResultRow({
 			className="flex w-full items-start gap-3 rounded-lg border border-hairline bg-card p-3 text-left transition-all duration-200 hover:shadow-soft focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
 			onClick={handleMovieClick}
 		>
-			<div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden rounded-md bg-secondary">
+			<div className="relative aspect-[2/3] w-10 shrink-0 overflow-hidden rounded-md bg-secondary">
 				{posterImage ? (
 					<Image
 						src={posterImage}

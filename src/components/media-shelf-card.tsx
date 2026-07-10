@@ -37,7 +37,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="min-w-0 flex-1">
-				<h4 className="mb-1 line-clamp-2 font-heading text-sm font-medium leading-tight text-ink">
+				<h4 className="mb-1 line-clamp-2 font-heading text-sm leading-tight font-medium text-ink">
 					{log.metadata.name}
 				</h4>
 				<p className="line-clamp-1 text-xs text-muted-foreground">

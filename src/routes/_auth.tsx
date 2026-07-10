@@ -16,7 +16,7 @@ function AuthWrapper() {
 		<AddLibrarySheetProvider>
 			<div className="relative flex min-h-screen flex-col">
 				<AppShellHeader />
-				<main className="relative z-10 flex-1 px-6 pb-14 pt-24 lg:px-12 lg:pb-20 lg:pt-32">
+				<main className="relative z-10 flex-1 px-6 pt-24 pb-14 lg:px-12 lg:pt-32 lg:pb-20">
 					<div className="mx-auto max-w-[88rem]">
 						<Outlet />
 					</div>

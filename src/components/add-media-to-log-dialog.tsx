@@ -1,13 +1,15 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { XIcon } from "@phosphor-icons/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
+import {
+	BottomSheetDialogContent,
+	Dialog,
+} from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
@@ -41,8 +43,6 @@ export default function AddMediaToLogDialog({
 	const mediaType = media?.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus | null>(null);
-
-	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
 	const tmdbCreatorQuery = useQuery({
 		queryKey: ["tmdb-creator", media?.sourceId, media?.type],
@@ -104,26 +104,7 @@ export default function AddMediaToLogDialog({
 				onOpenChange(value);
 			}}
 		>
-			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b"
-				initialFocus={closeButtonRef}
-				showCloseButton={false}
-			>
-				{/* ── Close button ── */}
-				<DialogClose
-					ref={closeButtonRef}
-					render={
-						<Button
-							variant="ghost"
-							className="absolute top-3 right-3 z-30 text-muted-foreground hover:bg-secondary/60 hover:text-ink"
-							size="icon-sm"
-						/>
-					}
-				>
-					<XIcon />
-					<span className="sr-only">Close</span>
-				</DialogClose>
-
+			<BottomSheetDialogContent showCloseButton>
 				{media && (
 					<div className="flex flex-col overflow-y-auto">
 						{/* ── Hero: blurred ambient backdrop + poster card ── */}
@@ -161,8 +142,8 @@ export default function AddMediaToLogDialog({
 										<div className="flex h-full w-full items-center justify-center">
 											<span className="font-heading text-3xl text-muted-foreground/20">
 												{(media.name || "?")
-												.charAt(0)
-												.toUpperCase()}
+													.charAt(0)
+													.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -170,7 +151,7 @@ export default function AddMediaToLogDialog({
 
 								{/* Title + metadata */}
 								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-									<h2 className="line-clamp-2 font-heading text-lg font-medium leading-tight tracking-tight text-ink">
+									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-medium tracking-tight text-ink">
 										{media.name || "Untitled"}
 									</h2>
 
@@ -187,7 +168,6 @@ export default function AddMediaToLogDialog({
 											{creatorPhrase(media.type, creator)}
 										</p>
 									)}
-
 								</div>
 							</div>
 						</div>
@@ -204,12 +184,12 @@ export default function AddMediaToLogDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-												index > 0 &&
-													"border-t border-hairline",
-												isActive
-													? "bg-primary/[0.04]"
-													: "hover:bg-secondary/60",
-											)}
+													index > 0 &&
+														"border-t border-hairline",
+													isActive
+														? "bg-primary/[0.04]"
+														: "hover:bg-secondary/60",
+												)}
 												disabled={isLoading}
 												key={s}
 												onClick={() => setStatus(s)}
@@ -240,32 +220,32 @@ export default function AddMediaToLogDialog({
 												</span>
 											</button>
 										);
-										})}
-									</div>
-								</div>
-
-								{/* ── Footer actions ── */}
-								<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
-									<Button
-										disabled={isLoading}
-										onClick={() => onOpenChange(false)}
-										size="sm"
-										variant="outline"
-									>
-										Cancel
-									</Button>
-									<Button
-										disabled={isLoading || !status}
-										onClick={handleAdd}
-										size="sm"
-									>
-										Add to library
-									</Button>
+									})}
 								</div>
 							</div>
+
+							{/* ── Footer actions ── */}
+							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
+								<Button
+									disabled={isLoading}
+									onClick={() => onOpenChange(false)}
+									size="sm"
+									variant="outline"
+								>
+									Cancel
+								</Button>
+								<Button
+									disabled={isLoading || !status}
+									onClick={handleAdd}
+									size="sm"
+								>
+									Add to library
+								</Button>
+							</div>
 						</div>
-					)}
-				</DialogContent>
-			</Dialog>
-		);
-	}
+					</div>
+				)}
+			</BottomSheetDialogContent>
+		</Dialog>
+	);
+}

@@ -114,18 +114,17 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"h-8 flex-1 gap-2 rounded-sm px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
+											"flex-1 sm:w-9 sm:flex-none",
 											isActive
 												? "bg-card text-ink shadow-soft"
 												: "text-muted-foreground hover:text-ink",
 										)}
 										key={option.value}
 										onClick={() => setView(option.value)}
-										size="sm"
 										title={option.label}
 										variant="ghost"
 									>
-										<Icon className="size-4" />
+										<Icon />
 										<span className="sr-only">
 											{option.label}
 										</span>

@@ -51,7 +51,7 @@ export default function SearchAnimeResultsGrid({
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
-				<h3 className="eyebrow tracking-[0.16em]">Search Results</h3>
+				<h3 className="eyebrow">Search Results</h3>
 				<span className="text-sm text-muted-foreground tabular-nums">
 					{animeContent.data.length} found
 				</span>

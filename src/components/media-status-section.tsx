@@ -40,7 +40,7 @@ export default function MediaSectionByStatus(props: Props) {
 				</div>
 				{props.logs.length > 0 && (
 					<Button
-						className="size-7 shrink-0 rounded-full text-muted-foreground hover:text-ink"
+						className="text-muted-foreground hover:text-ink"
 						onClick={() =>
 							setIsCollapsed((prevState) => !prevState)
 						}

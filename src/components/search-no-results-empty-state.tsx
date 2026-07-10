@@ -1,5 +1,5 @@
 import type { MediaType } from "@/types";
-import SearchMediaTypeIcon from "./search-media-type-icon";
+import MediaTypeIcon from "./media-type-icon";
 
 type Props = {
 	type: MediaType;
@@ -8,7 +8,7 @@ type Props = {
 export default function SearchNoResultsEmptyState({ type: mediaType }: Props) {
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-hairline-strong bg-canvas-soft/50 py-14 text-center">
-			<SearchMediaTypeIcon
+			<MediaTypeIcon
 				className="size-7 text-muted-foreground/60"
 				type={mediaType}
 			/>

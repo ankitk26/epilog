@@ -1,17 +1,16 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import {
-	CalendarBlankIcon,
-	TrashSimpleIcon,
-	XIcon,
-} from "@phosphor-icons/react";
+import { CalendarBlankIcon, TrashSimpleIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+	BottomSheetDialogContent,
+	Dialog,
+} from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
@@ -69,7 +68,6 @@ export default function MediaLogDetailsDialog({
 	const mediaType = log?.metadata.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
-	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
 	useEffect(() => {
 		if (log) {
@@ -124,26 +122,7 @@ export default function MediaLogDetailsDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b"
-				initialFocus={closeButtonRef}
-				showCloseButton={false}
-			>
-				{/* ── Close button ── */}
-				<DialogClose
-					ref={closeButtonRef}
-					render={
-						<Button
-							variant="ghost"
-							className="absolute top-3 right-3 z-30 text-muted-foreground hover:bg-secondary/60 hover:text-ink"
-							size="icon-sm"
-						/>
-					}
-				>
-					<XIcon />
-					<span className="sr-only">Close</span>
-				</DialogClose>
-
+			<BottomSheetDialogContent showCloseButton>
 				{log && (
 					<div className="flex flex-col overflow-y-auto">
 						{/* ── Hero: blurred ambient backdrop + poster card ── */}
@@ -184,8 +163,8 @@ export default function MediaLogDetailsDialog({
 										<div className="flex h-full w-full items-center justify-center">
 											<span className="font-heading text-3xl text-muted-foreground/20">
 												{(log.metadata.name || "?")
-												.charAt(0)
-												.toUpperCase()}
+													.charAt(0)
+													.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -193,7 +172,7 @@ export default function MediaLogDetailsDialog({
 
 								{/* Title + metadata */}
 								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-									<h2 className="line-clamp-2 font-heading text-lg font-medium leading-tight tracking-tight text-ink">
+									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-medium tracking-tight text-ink">
 										{log.metadata.name || "Untitled"}
 									</h2>
 
@@ -242,12 +221,12 @@ export default function MediaLogDetailsDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-												index > 0 &&
-													"border-t border-hairline",
-												isActive
-													? "bg-primary/[0.04]"
-													: "hover:bg-secondary/60",
-											)}
+													index > 0 &&
+														"border-t border-hairline",
+													isActive
+														? "bg-primary/[0.04]"
+														: "hover:bg-secondary/60",
+												)}
 												disabled={isLoading}
 												key={s}
 												onClick={() => setStatus(s)}
@@ -278,50 +257,50 @@ export default function MediaLogDetailsDialog({
 												</span>
 											</button>
 										);
-										})}
-									</div>
+									})}
 								</div>
+							</div>
 
-								{/* ── Footer actions ── */}
-								<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+							{/* ── Footer actions ── */}
+							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+								<Button
+									className="w-full sm:w-auto"
+									disabled={isLoading}
+									onClick={handleDelete}
+									size="sm"
+									variant="destructive"
+								>
+									<TrashSimpleIcon
+										className="size-3.5"
+										weight="bold"
+									/>
+									Delete
+								</Button>
+
+								<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
 									<Button
 										className="w-full sm:w-auto"
 										disabled={isLoading}
-										onClick={handleDelete}
+										onClick={() => onOpenChange(false)}
 										size="sm"
-										variant="destructive"
+										variant="outline"
 									>
-										<TrashSimpleIcon
-											className="size-3.5"
-											weight="bold"
-										/>
-										Delete
+										Cancel
 									</Button>
-
-									<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-										<Button
-											className="w-full sm:w-auto"
-											disabled={isLoading}
-											onClick={() => onOpenChange(false)}
-											size="sm"
-											variant="outline"
-										>
-											Cancel
-										</Button>
-										<Button
-											className="w-full sm:w-auto"
-											disabled={isLoading || !hasChanges}
-											onClick={handleSave}
-											size="sm"
-										>
-											Save
-										</Button>
-									</div>
+									<Button
+										className="w-full sm:w-auto"
+										disabled={isLoading || !hasChanges}
+										onClick={handleSave}
+										size="sm"
+									>
+										Save
+									</Button>
 								</div>
 							</div>
 						</div>
-					)}
-				</DialogContent>
-			</Dialog>
-		);
-	}
+					</div>
+				)}
+			</BottomSheetDialogContent>
+		</Dialog>
+	);
+}

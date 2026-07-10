@@ -55,7 +55,7 @@ export default function SearchMediaListItem({
 			</div>
 
 			<div className="min-w-0 flex-1">
-				<h4 className="line-clamp-2 font-heading text-sm font-medium leading-tight text-ink transition-colors group-hover:text-ink lg:line-clamp-3 lg:text-base">
+				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-ink transition-colors group-hover:text-ink lg:line-clamp-3 lg:text-base">
 					{media.name}
 				</h4>
 				{media.secondaryText && (

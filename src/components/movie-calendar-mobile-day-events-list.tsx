@@ -64,8 +64,8 @@ export default function MovieCalendarMobileDayEventsList({
 					<div className="flex items-center gap-2">
 						<span
 							className={cn(
-								"text-3xl font-bold",
-								isToday ? "text-primary" : "text-foreground",
+								"text-3xl font-semibold",
+								isToday ? "text-primary" : "text-ink",
 							)}
 						>
 							{displayDate.day}
@@ -100,7 +100,7 @@ export default function MovieCalendarMobileDayEventsList({
 								<button
 									key={event.movieEventId}
 									onClick={() => setSelectedEvent(event)}
-									className="flex items-center gap-3 px-2 py-3 text-left transition-colors hover:bg-muted active:bg-muted"
+									className="flex items-center gap-3 px-2 py-3 text-left transition-colors hover:bg-secondary active:bg-secondary"
 								>
 									<div
 										className={cn(
@@ -110,7 +110,7 @@ export default function MovieCalendarMobileDayEventsList({
 									/>
 
 									<div className="min-w-0 flex-1">
-										<h4 className="truncate text-base font-medium text-foreground">
+										<h4 className="truncate text-base font-medium text-ink">
 											{event.name}
 										</h4>
 									</div>

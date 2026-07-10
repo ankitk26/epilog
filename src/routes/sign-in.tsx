@@ -25,7 +25,8 @@ function SignInPage() {
 
 				<div className="mx-auto w-full max-w-xs space-y-4">
 					<Button
-						className="h-11 w-full gap-3 rounded-lg bg-primary text-sm font-semibold tracking-wide text-primary-foreground transition-all active:scale-[0.99]"
+						className="w-full gap-3 text-sm font-semibold tracking-wide active:scale-[0.99]"
+						size="lg"
 						disabled={isLoading}
 						onClick={async () => {
 							setIsLoading(true);

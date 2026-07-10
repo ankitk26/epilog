@@ -38,7 +38,7 @@ export default function MediaPosterCard(props: Props) {
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}
 		>
-			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-muted">
+			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary">
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
@@ -61,7 +61,7 @@ export default function MediaPosterCard(props: Props) {
 				)}
 			</div>
 			<div className="flex flex-col gap-1 pt-3">
-				<h4 className="line-clamp-2 font-heading text-sm font-medium leading-snug text-ink">
+				<h4 className="line-clamp-2 font-heading text-sm leading-snug font-medium text-ink">
 					{props.media.name}
 				</h4>
 				{props.media.creator && (

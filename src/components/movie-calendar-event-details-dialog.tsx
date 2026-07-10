@@ -4,11 +4,15 @@ import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+	BottomSheetDialogContent,
+	Dialog,
+} from "@/components/bottom-sheet-dialog";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { MediaType } from "@/types";
 import type { CalendarMovieEvent } from "@/types/calendar-movie-event";
 import MediaTypeIcon from "./media-type-icon";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import {
 	Select,
 	SelectContent,
@@ -200,9 +204,10 @@ export default function MovieCalendarEventDetailsDialog({
 				}
 			}}
 		>
-			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b sm:p-6"
+			<BottomSheetDialogContent
+				className="p-6 sm:p-6"
 				initialFocus={titleRef}
+				showCloseButton
 			>
 				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle
@@ -414,7 +419,7 @@ export default function MovieCalendarEventDetailsDialog({
 						</div>
 					</div>
 				</div>
-			</DialogContent>
+			</BottomSheetDialogContent>
 		</Dialog>
 	);
 }
