@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_auth/")({
 function Home() {
 	return (
 		<Suspense fallback={<HomeLoadingState />}>
-			<div className="animate-reveal-fade space-y-14 lg:space-y-16">
+			<div className="animate-reveal-fade space-y-6 lg:space-y-8">
 				<MediaViewToolbar />
 				<MediaViewContent />
 			</div>

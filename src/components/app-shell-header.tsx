@@ -65,7 +65,7 @@ export default function AppShellHeader() {
 						/>
 						<TooltipContent>
 							Search library
-							<kbd className="ml-2 rounded-sm bg-background/20 px-1.5 py-0.5 text-[10px] font-medium">
+							<kbd className="ml-2 rounded-sm bg-background/20 px-1.5 py-0.5 text-xs font-medium">
 								Mod+K
 							</kbd>
 						</TooltipContent>
@@ -81,9 +81,7 @@ export default function AppShellHeader() {
 									size="icon"
 									variant="outline"
 								>
-									<Avatar
-										className="rounded-2xl after:rounded-2xl *:rounded-2xl"
-									>
+									<Avatar className="rounded-2xl *:rounded-2xl after:rounded-2xl">
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
@@ -95,10 +93,7 @@ export default function AppShellHeader() {
 								</Button>
 							}
 						/>
-						<DropdownMenuContent
-							align="end"
-							className="w-52"
-						>
+						<DropdownMenuContent align="end" className="w-52">
 							<div className="px-3 py-2">
 								<p className="font-heading text-sm font-medium text-ink">
 									{data?.user.name}

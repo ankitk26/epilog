@@ -34,7 +34,7 @@ export default function MediaSectionByStatus(props: Props) {
 					<h2 className="font-heading text-2xl font-medium tracking-tight text-ink lg:text-3xl">
 						{props.section.title}
 					</h2>
-					<span className="eyebrow shrink-0 whitespace-nowrap pl-1">
+					<span className="eyebrow shrink-0 pl-1 whitespace-nowrap">
 						{props.logs.length} titles
 					</span>
 				</div>
