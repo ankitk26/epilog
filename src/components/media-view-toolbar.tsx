@@ -77,23 +77,24 @@ export default function MediaViewToolbar() {
 					{logCountsByType.map((item) => {
 						const isActive = type === item.type;
 						return (
-							<button
+							<Button
 								className={cn(
-									"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 text-xs font-semibold tracking-wide uppercase transition-all duration-200 active:scale-[0.97]",
+									"group text-xs font-semibold tracking-wide uppercase active:scale-[0.97]",
 									isActive
-										? "border-transparent bg-primary text-primary-foreground"
-										: "border-border bg-transparent text-muted-foreground hover:border-border hover:text-foreground",
+										? "bg-primary! text-primary-foreground hover:text-primary-foreground"
+										: "text-muted-foreground hover:text-foreground",
 								)}
 								key={item.type}
 								onClick={() => {
 									setType(item.type);
 								}}
-								type="button"
+								size="lg"
+								variant="outline"
 							>
 								{item.label}
 								<span
 									className={cn(
-										"flex min-w-[1.25rem] items-center justify-center rounded-lg px-1 text-xs leading-none font-semibold tabular-nums",
+										"flex min-w-5 items-center justify-center rounded-lg px-1 text-xs leading-none font-semibold tabular-nums",
 										isActive
 											? "bg-primary-foreground/20 text-primary-foreground"
 											: "bg-secondary text-muted-foreground group-hover:text-foreground",
@@ -101,7 +102,7 @@ export default function MediaViewToolbar() {
 								>
 									{item.count}
 								</span>
-							</button>
+							</Button>
 						);
 					})}
 				</div>
@@ -159,7 +160,6 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"size-7 sm:size-8",
 											isActive
 												? "bg-card text-foreground shadow-soft"
 												: "text-muted-foreground hover:text-foreground",
@@ -167,6 +167,7 @@ export default function MediaViewToolbar() {
 										onClick={() => setView(option.value)}
 										title={option.label}
 										variant="ghost"
+										size="icon"
 									>
 										<Icon />
 										<span className="sr-only">
