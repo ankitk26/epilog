@@ -370,7 +370,6 @@ export default function MovieCalendarEventDetailsDialog({
 					{/* Footer actions */}
 					<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 						<Button
-							className="h-11 w-full rounded-lg px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
 							disabled={isLoading}
 							onClick={() =>
 								deleteEventMutation.mutate({
@@ -385,7 +384,6 @@ export default function MovieCalendarEventDetailsDialog({
 
 						<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
 							<Button
-								className="h-11 w-full rounded-lg border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 								disabled={isLoading}
 								onClick={() => onOpenChange(false)}
 								size="sm"
@@ -394,7 +392,6 @@ export default function MovieCalendarEventDetailsDialog({
 								Cancel
 							</Button>
 							<Button
-								className="h-11 w-full rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 								disabled={isLoading || !hasDateChanged}
 								onClick={() => {
 									if (

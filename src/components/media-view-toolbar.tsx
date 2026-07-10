@@ -114,9 +114,9 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"h-8 flex-1 gap-2 rounded-lg px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
+											"h-8 flex-1 gap-2 rounded-sm px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
 											isActive
-												? "bg-card text-ink shadow-soft ring-1 ring-hairline"
+												? "bg-card text-ink shadow-soft"
 												: "text-muted-foreground hover:text-ink",
 										)}
 										key={option.value}
