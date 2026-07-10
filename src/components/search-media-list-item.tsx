@@ -28,7 +28,7 @@ export default function SearchMediaListItem({
 	return (
 		<button
 			className={cn(
-				"group flex w-full items-center gap-4 rounded-lg px-3 py-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:px-4 lg:py-4",
+				"group flex w-full items-center gap-4 rounded-lg py-3 pr-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:py-4 lg:pr-4",
 				onClick && "cursor-pointer",
 			)}
 			onClick={onClick}
