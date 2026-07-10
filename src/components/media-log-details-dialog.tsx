@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
+import type { LogStatus } from "@/types";
 import { statusesByMediaType } from "@/types";
-import type { LogStatus, MediaType } from "@/types";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
 
