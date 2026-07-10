@@ -147,7 +147,7 @@ export default function MediaLogDetailsDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="h-36 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:h-48 sm:w-36">
+								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:w-36">
 									{log.metadata.image ? (
 										<Image
 											alt={
@@ -155,7 +155,7 @@ export default function MediaLogDetailsDialog({
 												"Media poster"
 											}
 											className="h-full w-full object-cover"
-											height={192}
+											height={216}
 											src={log.metadata.image}
 											width={144}
 										/>

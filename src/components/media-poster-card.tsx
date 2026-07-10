@@ -46,7 +46,7 @@ export default function MediaPosterCard(props: Props) {
 							"h-full w-full object-cover object-top transition-transform duration-700 ease-out",
 							!displayOnly && "group-hover:scale-[1.04]",
 						)}
-						height={176}
+						height={396}
 						onError={() => setImageFailed(true)}
 						src={props.media.imageUrl}
 						width={264}

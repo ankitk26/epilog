@@ -16,7 +16,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-border">
+			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-border">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}

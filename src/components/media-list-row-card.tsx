@@ -16,14 +16,14 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 			role="button"
 		>
 			{/* Poster */}
-			<div className="h-32 w-[5.5rem] flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border">
+			<div className="aspect-[2/3] w-[5.5rem] flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata.name || "Media poster"}
 						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-						height={112}
+						height={132}
 						src={log.metadata.image || "/placeholder.svg"}
-						width={80}
+						width={88}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center">

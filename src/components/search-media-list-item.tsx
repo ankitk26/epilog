@@ -34,12 +34,12 @@ export default function SearchMediaListItem({
 			onClick={onClick}
 			type="button"
 		>
-			<div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border lg:h-32 lg:w-24">
+			<div className="aspect-[2/3] w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border lg:w-24">
 				{media.imageUrl && !imageFailed ? (
 					<Image
 						alt={media.name}
 						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-						height={128}
+						height={144}
 						onError={() => setImageFailed(true)}
 						src={media.imageUrl}
 						width={96}
