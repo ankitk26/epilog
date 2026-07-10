@@ -77,11 +77,13 @@ export default function AppShellHeader() {
 						<DropdownMenuTrigger
 							render={
 								<Button
-									className="overflow-hidden"
+									className="overflow-hidden p-0"
 									size="icon"
 									variant="outline"
 								>
-									<Avatar>
+									<Avatar
+										className="rounded-2xl after:rounded-2xl *:rounded-2xl"
+									>
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
@@ -95,7 +97,7 @@ export default function AppShellHeader() {
 						/>
 						<DropdownMenuContent
 							align="end"
-							className="w-52 rounded-lg border-hairline bg-popover shadow-lift"
+							className="w-52"
 						>
 							<div className="px-3 py-2">
 								<p className="font-heading text-sm font-medium text-ink">
@@ -105,9 +107,9 @@ export default function AppShellHeader() {
 									{data?.user.email}
 								</p>
 							</div>
-							<DropdownMenuSeparator className="bg-hairline" />
+							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								className="rounded-lg text-sm focus:bg-secondary"
+								className="text-sm"
 								onClick={handleSignOut}
 							>
 								<SignOutIcon className="size-4" />

@@ -11,7 +11,7 @@ type Props = {
 export default function MediaListRowCard({ log, onClick }: Props) {
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-4 px-3 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-canvas-soft/60"
+			className="group flex cursor-pointer items-center gap-4 px-3 py-4 transition-colors duration-300 ease-out hover:bg-canvas-soft/60"
 			onClick={onClick}
 			role="button"
 		>

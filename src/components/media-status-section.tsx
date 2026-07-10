@@ -30,11 +30,11 @@ export default function MediaSectionByStatus(props: Props) {
 		<section className="animate-reveal-up space-y-6">
 			{/* Section header — large uppercase title with count */}
 			<div className="flex items-end justify-between gap-4">
-				<div className="flex items-baseline gap-4">
+				<div className="flex flex-col gap-1">
 					<h2 className="font-heading text-2xl font-medium tracking-tight text-ink lg:text-3xl">
 						{props.section.title}
 					</h2>
-					<span className="eyebrow pb-1">
+					<span className="eyebrow shrink-0 whitespace-nowrap pl-1">
 						{props.logs.length} titles
 					</span>
 				</div>

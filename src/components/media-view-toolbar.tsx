@@ -62,13 +62,13 @@ export default function MediaViewToolbar() {
 	return (
 		<div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 			{/* Media type filter — minimal pill rail */}
-			<div className="no-scrollbar flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:items-center sm:overflow-visible">
+			<div className="no-scrollbar flex gap-2 pb-2 sm:flex-wrap sm:items-center">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
 						<button
 							className={cn(
-								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 active:scale-[0.97] sm:w-auto sm:justify-start",
+								"group flex h-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border px-2 text-[10px] font-semibold tracking-wide uppercase transition-all duration-200 active:scale-[0.97] sm:w-auto sm:px-4",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground"
 									: "border-hairline bg-transparent text-muted-foreground hover:border-hairline-strong hover:text-ink",
@@ -79,10 +79,11 @@ export default function MediaViewToolbar() {
 							}}
 							type="button"
 						>
-							<span>{item.label}</span>
+							<span className="sm:hidden">{item.label}</span>
+							<span className="hidden sm:inline">{item.label}</span>
 							<span
 								className={cn(
-									"flex min-w-[1.25rem] items-center justify-center rounded-lg px-1.5 text-[10px] leading-none font-semibold tabular-nums",
+									"hidden min-w-[1.25rem] items-center justify-center rounded-lg text-[10px] leading-none font-semibold tabular-nums sm:flex",
 									isActive
 										? "bg-primary-foreground/20 text-primary-foreground"
 										: "bg-secondary text-muted-foreground group-hover:text-ink",
