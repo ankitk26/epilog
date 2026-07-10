@@ -30,7 +30,7 @@ export default function DefaultNotFoundComponent() {
 
 				<div className="mt-6 flex flex-wrap gap-3">
 					<Link search={defaultMediaFilters} to="/">
-						<Button className="gap-2" size="sm">
+						<Button className="gap-2">
 							<HouseIcon className="size-4" />
 							Home
 						</Button>

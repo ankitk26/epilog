@@ -229,7 +229,6 @@ export default function AddMediaToLogDialog({
 								<Button
 									disabled={isLoading}
 									onClick={() => onOpenChange(false)}
-									size="sm"
 									variant="outline"
 								>
 									Cancel
@@ -237,7 +236,6 @@ export default function AddMediaToLogDialog({
 								<Button
 									disabled={isLoading || !status}
 									onClick={handleAdd}
-									size="sm"
 								>
 									Add to library
 								</Button>

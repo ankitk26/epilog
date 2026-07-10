@@ -163,11 +163,7 @@ export default function MovieCalendarMonthGrid() {
 		<div className="col-span-12 flex h-full flex-col space-y-4">
 			<div className="flex items-center justify-start">
 				<div className="flex items-center gap-2">
-					<Button
-						size={isMobile ? "sm" : "default"}
-						variant="outline"
-						onClick={goToCurrentMonth}
-					>
+					<Button variant="outline" onClick={goToCurrentMonth}>
 						Current month
 					</Button>
 					<Button

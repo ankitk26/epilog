@@ -383,7 +383,6 @@ export default function MovieCalendarEventDetailsDialog({
 									movieEventId: event.movieEventId,
 								})
 							}
-							size="sm"
 							variant="destructive"
 						>
 							Delete event
@@ -393,7 +392,6 @@ export default function MovieCalendarEventDetailsDialog({
 							<Button
 								disabled={isLoading}
 								onClick={() => onOpenChange(false)}
-								size="sm"
 								variant="outline"
 							>
 								Cancel
@@ -414,7 +412,6 @@ export default function MovieCalendarEventDetailsDialog({
 										eventDate: `${selectedYear}${selectedMonth.padStart(2, "0")}${selectedDay.padStart(2, "0")}`,
 									});
 								}}
-								size="sm"
 							>
 								Update date
 							</Button>
