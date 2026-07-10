@@ -6,13 +6,13 @@ import { Button } from "./ui/button";
 export default function DefaultNotFoundComponent() {
 	return (
 		<div className="flex min-h-[60vh] items-center justify-center px-4 py-8">
-			<div className="w-full max-w-xl rounded-2xl border bg-card p-6 shadow-sm">
+			<div className="w-full max-w-xl rounded-lg border border-hairline bg-card p-8 shadow-soft">
 				<div className="mb-6 flex items-start gap-4">
-					<div className="rounded-2xl bg-muted p-3 text-muted-foreground">
+					<div className="rounded-lg bg-muted p-3 text-muted-foreground">
 						<MagnifyingGlassIcon className="size-6" />
 					</div>
 					<div className="space-y-2">
-						<h1 className="text-xl font-semibold tracking-tight">
+						<h1 className="font-heading text-xl font-medium tracking-tight">
 							Page not found
 						</h1>
 						<p className="text-sm text-muted-foreground">

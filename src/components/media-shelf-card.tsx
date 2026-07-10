@@ -16,7 +16,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary">
+			<div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-hairline">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}
@@ -28,7 +28,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 				) : (
 					<div className="flex h-full w-full items-center justify-center">
 						<MediaTypeIcon
-							className="size-5 text-muted-foreground/50"
+							className="size-4 text-muted-foreground/40"
 							type={log.metadata?.type}
 						/>
 					</div>
@@ -37,7 +37,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="min-w-0 flex-1">
-				<h4 className="mb-1 line-clamp-2 font-heading text-sm leading-tight font-normal text-ink">
+				<h4 className="mb-1 line-clamp-2 font-heading text-sm font-medium leading-tight text-ink">
 					{log.metadata.name}
 				</h4>
 				<p className="line-clamp-1 text-xs text-muted-foreground">

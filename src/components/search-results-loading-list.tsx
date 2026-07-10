@@ -5,7 +5,7 @@ export default function SearchResultsLoadingList() {
 		<div className="flex flex-col gap-1">
 			{Array.from({ length: 6 }).map((_, index) => (
 				<div
-					className="flex items-center gap-4 rounded-xl px-3 py-3"
+					className="flex items-center gap-4 rounded-lg px-3 py-3"
 					key={index}
 				>
 					<Skeleton className="h-16 w-12 flex-shrink-0 rounded-md lg:h-32 lg:w-24 lg:rounded-lg" />

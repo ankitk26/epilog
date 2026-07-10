@@ -12,28 +12,20 @@ function SignInPage() {
 	const [isLoading, setIsLoading] = useState(false);
 
 	return (
-		<div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-canvas px-6 py-14">
-			<div
-				className="relative w-full max-w-sm animate-reveal-up space-y-8 rounded-2xl border border-hairline bg-card/80 p-8 shadow-lift backdrop-blur-md lg:p-12"
-				style={{ animationDelay: "120ms" }}
-			>
-				<div className="space-y-4 text-center">
-					<div className="space-y-2">
-						<h1 className="font-heading text-5xl font-light tracking-tight text-ink lg:text-6xl">
-							epilog
-						</h1>
-						<p className="eyebrow tracking-[0.18em]">
-							your story log
-						</p>
-					</div>
-					<p className="mx-auto max-w-[18rem] text-base leading-relaxed text-muted-foreground">
-						Keep track of the stories you're into.
+		<div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-canvas px-6 py-14">
+			<div className="relative w-full max-w-md animate-reveal-up space-y-10 text-center">
+				<div className="space-y-4">
+					<h1 className="display text-6xl tracking-tight text-ink lg:text-7xl">
+						epilog
+					</h1>
+					<p className="mx-auto max-w-xs text-sm leading-relaxed text-body">
+						Track every story that moves you.
 					</p>
 				</div>
 
-				<div className="space-y-4">
+				<div className="mx-auto w-full max-w-xs space-y-4">
 					<Button
-						className="h-12 w-full gap-3 rounded-full bg-primary text-base font-medium tracking-wide text-primary-foreground transition-all duration-300 hover:shadow-lift hover:grayscale-[0.05] active:scale-[0.99]"
+						className="h-11 w-full gap-3 rounded-lg bg-primary text-sm font-semibold tracking-wide text-primary-foreground transition-all active:scale-[0.99]"
 						disabled={isLoading}
 						onClick={async () => {
 							setIsLoading(true);

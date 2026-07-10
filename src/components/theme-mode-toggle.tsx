@@ -11,9 +11,9 @@ export function ThemeModeToggle() {
 
 	return (
 		<Button
-			className="size-9 shrink-0 rounded-full border border-hairline-strong bg-transparent text-ink transition-colors hover:bg-secondary"
+			className="size-9 shrink-0 rounded-full border border-hairline bg-transparent text-ink transition-colors hover:bg-secondary"
 			onClick={toggleTheme}
-			size="icon"
+			size="icon-sm"
 			variant="outline"
 		>
 			<SunIcon className="size-[1.1rem] scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />

@@ -94,14 +94,6 @@ export default function AddMediaToLogDialog({
 	};
 
 	const isLoading = addMutation.isPending;
-	const seriesLabel = (() => {
-		if (!media?.seriesName) return null;
-		if (media.seriesPosition) {
-			return `(${media.seriesName}, #${media.seriesPosition})`;
-		}
-		return `(${media.seriesName})`;
-	})();
-
 	const creator = media?.creator ?? tmdbCreatorQuery.data;
 
 	return (
@@ -113,7 +105,7 @@ export default function AddMediaToLogDialog({
 			}}
 		>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b"
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
@@ -142,7 +134,7 @@ export default function AddMediaToLogDialog({
 									<img
 										alt=""
 										aria-hidden="true"
-										className="h-full w-full scale-110 object-cover opacity-30 blur-2xl saturate-150 dark:opacity-20"
+										className="h-full w-full scale-110 object-cover opacity-15 blur-2xl"
 										src={media.imageUrl}
 									/>
 								</div>
@@ -169,8 +161,8 @@ export default function AddMediaToLogDialog({
 										<div className="flex h-full w-full items-center justify-center">
 											<span className="font-heading text-3xl text-muted-foreground/20">
 												{(media.name || "?")
-													.charAt(0)
-													.toUpperCase()}
+												.charAt(0)
+												.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -178,7 +170,7 @@ export default function AddMediaToLogDialog({
 
 								{/* Title + metadata */}
 								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-normal tracking-tight text-ink">
+									<h2 className="line-clamp-2 font-heading text-lg font-medium leading-tight tracking-tight text-ink">
 										{media.name || "Untitled"}
 									</h2>
 
@@ -196,11 +188,6 @@ export default function AddMediaToLogDialog({
 										</p>
 									)}
 
-									{seriesLabel && (
-										<p className="mt-1 text-xs text-muted-foreground/70">
-											{seriesLabel}
-										</p>
-									)}
 								</div>
 							</div>
 						</div>
@@ -209,7 +196,7 @@ export default function AddMediaToLogDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
+								<div className="flex flex-col overflow-hidden rounded-lg border border-hairline-strong">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);
@@ -217,12 +204,12 @@ export default function AddMediaToLogDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-													index > 0 &&
-														"border-t border-hairline",
-													isActive
-														? "bg-primary/[0.04]"
-														: "hover:bg-secondary/60",
-												)}
+												index > 0 &&
+													"border-t border-hairline",
+												isActive
+													? "bg-primary/[0.04]"
+													: "hover:bg-secondary/60",
+											)}
 												disabled={isLoading}
 												key={s}
 												onClick={() => setStatus(s)}
@@ -253,34 +240,34 @@ export default function AddMediaToLogDialog({
 												</span>
 											</button>
 										);
-									})}
+										})}
+									</div>
+								</div>
+
+								{/* ── Footer actions ── */}
+								<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
+									<Button
+										className="h-11 w-full rounded-lg border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+										disabled={isLoading}
+										onClick={() => onOpenChange(false)}
+										size="sm"
+										variant="outline"
+									>
+										Cancel
+									</Button>
+									<Button
+										className="h-11 w-full rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+										disabled={isLoading || !status}
+										onClick={handleAdd}
+										size="sm"
+									>
+										Add to library
+									</Button>
 								</div>
 							</div>
-
-							{/* ── Footer actions ── */}
-							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-end">
-								<Button
-									className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
-									disabled={isLoading}
-									onClick={() => onOpenChange(false)}
-									size="sm"
-									variant="outline"
-								>
-									Cancel
-								</Button>
-								<Button
-									className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
-									disabled={isLoading || !status}
-									onClick={handleAdd}
-									size="sm"
-								>
-									Add to library
-								</Button>
-							</div>
 						</div>
-					</div>
-				)}
-			</DialogContent>
-		</Dialog>
-	);
-}
+					)}
+				</DialogContent>
+			</Dialog>
+		);
+	}

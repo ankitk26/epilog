@@ -120,20 +120,12 @@ export default function MediaLogDetailsDialog({
 	};
 
 	const isLoading = updateMutation.isPending || removeMutation.isPending;
-	const seriesLabel = (() => {
-		if (!log?.metadata.seriesName) return null;
-		if (log.metadata.seriesPosition) {
-			return `(${log.metadata.seriesName}, #${log.metadata.seriesPosition})`;
-		}
-		return `(${log.metadata.seriesName})`;
-	})();
-
 	const hasChanges = log && status !== (log.status as LogStatus);
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b"
 				initialFocus={closeButtonRef}
 				showCloseButton={false}
 			>
@@ -162,7 +154,7 @@ export default function MediaLogDetailsDialog({
 									<img
 										alt=""
 										aria-hidden="true"
-										className="h-full w-full scale-110 object-cover opacity-30 blur-2xl saturate-150 dark:opacity-20"
+										className="h-full w-full scale-110 object-cover opacity-15 blur-2xl"
 										src={log.metadata.image}
 									/>
 								</div>
@@ -192,8 +184,8 @@ export default function MediaLogDetailsDialog({
 										<div className="flex h-full w-full items-center justify-center">
 											<span className="font-heading text-3xl text-muted-foreground/20">
 												{(log.metadata.name || "?")
-													.charAt(0)
-													.toUpperCase()}
+												.charAt(0)
+												.toUpperCase()}
 											</span>
 										</div>
 									)}
@@ -201,7 +193,7 @@ export default function MediaLogDetailsDialog({
 
 								{/* Title + metadata */}
 								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-normal tracking-tight text-ink">
+									<h2 className="line-clamp-2 font-heading text-lg font-medium leading-tight tracking-tight text-ink">
 										{log.metadata.name || "Untitled"}
 									</h2>
 
@@ -219,12 +211,6 @@ export default function MediaLogDetailsDialog({
 												log.metadata.type,
 												log.metadata.creator,
 											)}
-										</p>
-									)}
-
-									{seriesLabel && (
-										<p className="mt-1 text-xs text-muted-foreground/70">
-											{seriesLabel}
 										</p>
 									)}
 
@@ -248,7 +234,7 @@ export default function MediaLogDetailsDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden rounded-xl border border-hairline-strong">
+								<div className="flex flex-col overflow-hidden rounded-lg border border-hairline-strong">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);
@@ -256,12 +242,12 @@ export default function MediaLogDetailsDialog({
 											<button
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
-													index > 0 &&
-														"border-t border-hairline",
-													isActive
-														? "bg-primary/[0.04]"
-														: "hover:bg-secondary/60",
-												)}
+												index > 0 &&
+													"border-t border-hairline",
+												isActive
+													? "bg-primary/[0.04]"
+													: "hover:bg-secondary/60",
+											)}
 												disabled={isLoading}
 												key={s}
 												onClick={() => setStatus(s)}
@@ -292,50 +278,50 @@ export default function MediaLogDetailsDialog({
 												</span>
 											</button>
 										);
-									})}
+										})}
+									</div>
 								</div>
-							</div>
 
-							{/* ── Footer actions ── */}
-							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
-								<Button
-									className="h-11 w-full gap-1.5 rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
-									disabled={isLoading}
-									onClick={handleDelete}
-									size="sm"
-									variant="destructive"
-								>
-									<TrashSimpleIcon
-										className="size-3.5"
-										weight="bold"
-									/>
-									Delete
-								</Button>
-
-								<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+								{/* ── Footer actions ── */}
+								<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 									<Button
-										className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+										className="w-full sm:w-auto"
 										disabled={isLoading}
-										onClick={() => onOpenChange(false)}
+										onClick={handleDelete}
 										size="sm"
-										variant="outline"
+										variant="destructive"
 									>
-										Cancel
+										<TrashSimpleIcon
+											className="size-3.5"
+											weight="bold"
+										/>
+										Delete
 									</Button>
-									<Button
-										className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
-										disabled={isLoading || !hasChanges}
-										onClick={handleSave}
-										size="sm"
-									>
-										Save
-									</Button>
+
+									<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+										<Button
+											className="w-full sm:w-auto"
+											disabled={isLoading}
+											onClick={() => onOpenChange(false)}
+											size="sm"
+											variant="outline"
+										>
+											Cancel
+										</Button>
+										<Button
+											className="w-full sm:w-auto"
+											disabled={isLoading || !hasChanges}
+											onClick={handleSave}
+											size="sm"
+										>
+											Save
+										</Button>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				)}
-			</DialogContent>
-		</Dialog>
-	);
-}
+					)}
+				</DialogContent>
+			</Dialog>
+		);
+	}

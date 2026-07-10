@@ -61,17 +61,17 @@ export default function MediaViewToolbar() {
 
 	return (
 		<div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-			{/* Media type filter — pill rail */}
+			{/* Media type filter — minimal pill rail */}
 			<div className="no-scrollbar flex gap-2 overflow-x-auto pb-2 sm:flex-wrap sm:items-center sm:overflow-visible">
 				{logCountsByType.map((item) => {
 					const isActive = type === item.type;
 					return (
 						<button
 							className={cn(
-								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-4 text-sm font-medium tracking-wide transition-all duration-200 active:scale-[0.97] sm:w-auto sm:justify-start",
+								"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 text-[11px] font-semibold tracking-wide uppercase transition-all duration-200 active:scale-[0.97] sm:w-auto sm:justify-start",
 								isActive
-									? "border-transparent bg-primary text-primary-foreground shadow-soft"
-									: "border-hairline-strong bg-transparent text-muted-foreground hover:border-ink/30 hover:text-ink",
+									? "border-transparent bg-primary text-primary-foreground"
+									: "border-hairline bg-transparent text-muted-foreground hover:border-hairline-strong hover:text-ink",
 							)}
 							key={item.type}
 							onClick={() => {
@@ -82,10 +82,10 @@ export default function MediaViewToolbar() {
 							<span>{item.label}</span>
 							<span
 								className={cn(
-									"flex min-w-[1.25rem] items-center justify-center rounded-full px-2 text-xs leading-none font-semibold tabular-nums",
+									"flex min-w-[1.25rem] items-center justify-center rounded-lg px-1.5 text-[10px] leading-none font-semibold tabular-nums",
 									isActive
 										? "bg-primary-foreground/20 text-primary-foreground"
-										: "bg-secondary text-muted-foreground group-hover:bg-secondary",
+										: "bg-secondary text-muted-foreground group-hover:text-ink",
 								)}
 							>
 								{item.count}
@@ -95,8 +95,8 @@ export default function MediaViewToolbar() {
 				})}
 			</div>
 
-			{/* View switcher — segmented control */}
-			<div className="flex w-full items-center gap-1 rounded-full border border-hairline bg-card/50 p-1 backdrop-blur-sm sm:w-auto">
+			{/* View switcher — minimal segmented control */}
+			<div className="flex w-full items-center gap-1 rounded-lg border border-hairline bg-card/50 p-1 sm:w-auto">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
@@ -114,9 +114,9 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"h-8 flex-1 gap-2 rounded-full px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
+											"h-8 flex-1 gap-2 rounded-lg px-0 text-xs font-medium transition-all duration-200 sm:w-9 sm:flex-none",
 											isActive
-												? "bg-card text-ink shadow-soft"
+												? "bg-card text-ink shadow-soft ring-1 ring-hairline"
 												: "text-muted-foreground hover:text-ink",
 										)}
 										key={option.value}

@@ -37,14 +37,14 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="sticky top-0 z-30 border-b border-hairline bg-canvas/70 backdrop-blur-md supports-backdrop-filter:bg-canvas/55">
-			<div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between px-6 lg:h-[4.5rem] lg:px-12">
+		<header className="fixed top-0 right-0 left-0 z-30 px-6 lg:px-12">
+			<div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-2xl font-light tracking-tight text-ink transition-opacity group-hover:opacity-70">
+					<span className="font-heading text-sm font-semibold tracking-[0.15em] uppercase text-ink transition-opacity group-hover:opacity-60">
 						epilog
 					</span>
 				</Link>
@@ -55,7 +55,7 @@ export default function AppShellHeader() {
 							render={
 								<Button
 									aria-label="Search library"
-									className="size-9 rounded-full border-hairline-strong bg-transparent text-ink transition-colors hover:bg-secondary"
+									className="size-9 border-hairline bg-canvas/70 text-ink backdrop-blur-md hover:bg-secondary"
 									onClick={openAddLibrarySheet}
 									size="icon-sm"
 									variant="outline"
@@ -79,7 +79,7 @@ export default function AppShellHeader() {
 							render={
 								<button
 									type="button"
-									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline-strong bg-transparent p-0 transition-colors outline-none hover:bg-secondary"
+									className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-hairline bg-canvas/70 p-0 backdrop-blur-md transition-colors outline-none hover:bg-secondary"
 								>
 									<Avatar className="size-9 rounded-full">
 										<AvatarImage
@@ -95,10 +95,10 @@ export default function AppShellHeader() {
 						/>
 						<DropdownMenuContent
 							align="end"
-							className="w-52 rounded-xl border-hairline shadow-soft"
+							className="w-52 rounded-lg border-hairline bg-popover shadow-lift"
 						>
 							<div className="px-3 py-2">
-								<p className="font-heading text-base font-normal text-ink">
+								<p className="font-heading text-sm font-medium text-ink">
 									{data?.user.name}
 								</p>
 								<p className="mt-1 text-xs text-muted-foreground">

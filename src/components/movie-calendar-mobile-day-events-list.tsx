@@ -81,7 +81,7 @@ export default function MovieCalendarMobileDayEventsList({
 					>
 						<button
 							type="button"
-							className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
 						>
 							<PlusIcon className="size-5" />
 						</button>
@@ -104,7 +104,7 @@ export default function MovieCalendarMobileDayEventsList({
 								>
 									<div
 										className={cn(
-											"h-6 w-1 shrink-0 rounded-full",
+											"h-6 w-1 shrink-0 rounded-lg",
 											getEventColor(),
 										)}
 									/>

@@ -27,16 +27,17 @@ export default function MediaSectionByStatus(props: Props) {
 	>(null);
 
 	return (
-		<section className="animate-reveal-up space-y-4">
-			{/* Section header — editorial title with a hairline rule */}
-			<div className="flex items-center gap-4">
-				<h2 className="font-heading text-2xl font-light tracking-tight whitespace-nowrap text-ink">
-					{props.section.title}
-				</h2>
-				<span className="text-sm text-muted-foreground tabular-nums">
-					{props.logs.length}
-				</span>
-				<div className="h-px flex-1 bg-hairline" />
+		<section className="animate-reveal-up space-y-6">
+			{/* Section header — large uppercase title with count */}
+			<div className="flex items-end justify-between gap-4">
+				<div className="flex items-baseline gap-4">
+					<h2 className="font-heading text-2xl font-medium tracking-tight text-ink lg:text-3xl">
+						{props.section.title}
+					</h2>
+					<span className="eyebrow pb-1">
+						{props.logs.length} titles
+					</span>
+				</div>
 				{props.logs.length > 0 && (
 					<Button
 						className="size-7 shrink-0 rounded-full text-muted-foreground hover:text-ink"
@@ -61,7 +62,7 @@ export default function MediaSectionByStatus(props: Props) {
 					className={
 						view === "list"
 							? "flex flex-col divide-y divide-hairline border-b border-hairline"
-							: "grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] lg:gap-x-6"
+							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-6"
 					}
 				>
 					{props.logs.map((log) =>

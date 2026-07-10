@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 function ListRowSkeleton() {
 	return (
-		<div className="rounded-xl border bg-card/70 p-3">
+		<div className="rounded-lg border bg-card/70 p-3">
 			<div className="flex items-center gap-3">
 				<Skeleton className="h-30 w-20 rounded-md" />
 				<div className="min-w-0 flex-1 space-y-3">

@@ -201,7 +201,7 @@ export default function MovieCalendarEventDetailsDialog({
 			}}
 		>
 			<DialogContent
-				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-2xl sm:border-b sm:p-6"
+				className="top-auto right-0 bottom-0 left-0 flex max-h-[85vh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-2xl rounded-b-none border border-b-0 border-hairline p-6 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border-b sm:p-6"
 				initialFocus={titleRef}
 			>
 				<DialogHeader className="relative z-10 flex-shrink-0">
@@ -370,7 +370,7 @@ export default function MovieCalendarEventDetailsDialog({
 					{/* Footer actions */}
 					<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
 						<Button
-							className="h-11 w-full rounded-full px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
+							className="h-11 w-full rounded-lg px-4 text-sm font-medium text-destructive hover:bg-destructive/10 sm:h-9 sm:w-auto"
 							disabled={isLoading}
 							onClick={() =>
 								deleteEventMutation.mutate({
@@ -385,7 +385,7 @@ export default function MovieCalendarEventDetailsDialog({
 
 						<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
 							<Button
-								className="h-11 w-full rounded-full border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-lg border border-hairline-strong bg-transparent px-4 text-sm font-medium text-ink hover:bg-secondary sm:h-9 sm:w-auto"
 								disabled={isLoading}
 								onClick={() => onOpenChange(false)}
 								size="sm"
@@ -394,7 +394,7 @@ export default function MovieCalendarEventDetailsDialog({
 								Cancel
 							</Button>
 							<Button
-								className="h-11 w-full rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
+								className="h-11 w-full rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-lift disabled:opacity-40 sm:h-9 sm:w-auto"
 								disabled={isLoading || !hasDateChanged}
 								onClick={() => {
 									if (

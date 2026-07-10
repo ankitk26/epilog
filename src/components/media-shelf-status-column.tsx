@@ -18,17 +18,17 @@ export default function MediaShelfStatusColumn(props: Props) {
 	const Icon = props.column.icon;
 
 	return (
-		<div className="flex min-h-48 flex-col rounded-xl border border-hairline bg-canvas-soft/50">
+		<div className="flex min-h-48 flex-col rounded-lg border border-hairline bg-canvas-soft/50">
 			{/* Column header */}
-			<div className="flex items-center gap-3 border-b border-hairline px-6 py-4">
+			<div className="flex items-center gap-3 border-b border-hairline px-5 py-4">
 				<Icon
 					className="size-4 text-muted-foreground"
 					weight="regular"
 				/>
-				<span className="font-heading text-lg font-normal tracking-tight text-ink">
+				<span className="font-heading text-sm font-medium tracking-tight text-ink">
 					{props.column.title}
 				</span>
-				<span className="ml-auto text-sm text-muted-foreground tabular-nums">
+				<span className="ml-auto text-xs text-muted-foreground tabular-nums">
 					{props.logs.length}
 				</span>
 			</div>

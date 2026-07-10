@@ -28,13 +28,13 @@ export default function SearchMediaListItem({
 	return (
 		<button
 			className={cn(
-				"group flex w-full items-center gap-4 rounded-xl px-3 py-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:px-4 lg:py-4",
+				"group flex w-full items-center gap-4 rounded-lg px-3 py-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:px-4 lg:py-4",
 				onClick && "cursor-pointer",
 			)}
 			onClick={onClick}
 			type="button"
 		>
-			<div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-hairline lg:h-32 lg:w-24 lg:rounded-lg">
+			<div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-hairline lg:h-32 lg:w-24">
 				{media.imageUrl && !imageFailed ? (
 					<Image
 						alt={media.name}
@@ -47,7 +47,7 @@ export default function SearchMediaListItem({
 				) : (
 					<div className="flex h-full w-full items-center justify-center">
 						<MediaTypeIcon
-							className="size-5 text-muted-foreground/50 lg:size-8"
+							className="size-5 text-muted-foreground/40 lg:size-8"
 							type={media.type}
 						/>
 					</div>
@@ -55,7 +55,7 @@ export default function SearchMediaListItem({
 			</div>
 
 			<div className="min-w-0 flex-1">
-				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-normal text-ink transition-colors group-hover:text-ink lg:line-clamp-3 lg:text-lg">
+				<h4 className="line-clamp-2 font-heading text-sm font-medium leading-tight text-ink transition-colors group-hover:text-ink lg:line-clamp-3 lg:text-base">
 					{media.name}
 				</h4>
 				{media.secondaryText && (

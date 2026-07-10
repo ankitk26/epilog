@@ -3,7 +3,6 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import MediaTypeIcon from "./media-type-icon";
-import { Card, CardContent } from "./ui/card";
 
 type Props = {
 	media: {
@@ -30,16 +29,16 @@ export default function MediaPosterCard(props: Props) {
 	const isClickable = displayOnly && !!props.onClick;
 
 	return (
-		<Card
+		<div
 			className={cn(
-				"group w-full overflow-hidden rounded-xl p-0 ring-1 ring-border transition-all duration-300",
+				"group flex w-full flex-col overflow-hidden rounded-lg bg-card p-3 ring-1 ring-border transition-all duration-300",
 				isClickable &&
 					"cursor-pointer hover:-translate-y-1 hover:shadow-lift hover:ring-hairline-strong",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}
 		>
-			<div className="relative aspect-[2/3] overflow-hidden rounded-t-xl bg-muted">
+			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-muted">
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
@@ -55,27 +54,27 @@ export default function MediaPosterCard(props: Props) {
 				) : (
 					<div className="flex h-full w-full items-center justify-center bg-secondary">
 						<MediaTypeIcon
-							className="size-14 text-muted-foreground/50"
+							className="size-12 text-muted-foreground/40"
 							type={props.media.type}
 						/>
 					</div>
 				)}
 			</div>
-			<CardContent className="space-y-2 px-3 py-4">
-				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-normal text-ink">
+			<div className="flex flex-col gap-1 pt-3">
+				<h4 className="line-clamp-2 font-heading text-sm font-medium leading-snug text-ink">
 					{props.media.name}
 				</h4>
-				{props.media.secondaryText && (
+				{props.media.creator && (
 					<p className="line-clamp-1 text-xs text-muted-foreground">
-						{props.media.secondaryText}
+						{props.media.creator}
 					</p>
 				)}
-				{(props.media.creator ?? props.media.releaseYear) && (
-					<p className="line-clamp-1 text-xs text-muted-foreground">
-						{props.media.creator ?? props.media.releaseYear}
+				{props.media.releaseYear && !props.media.creator && (
+					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+						{props.media.releaseYear}
 					</p>
 				)}
-			</CardContent>
-		</Card>
+			</div>
+		</div>
 	);
 }
