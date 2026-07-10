@@ -267,7 +267,6 @@ export default function MediaLogDetailsDialog({
 									className="w-full sm:w-auto"
 									disabled={isLoading}
 									onClick={handleDelete}
-									size="sm"
 									variant="destructive"
 								>
 									<TrashSimpleIcon
@@ -282,7 +281,6 @@ export default function MediaLogDetailsDialog({
 										className="w-full sm:w-auto"
 										disabled={isLoading}
 										onClick={() => onOpenChange(false)}
-										size="sm"
 										variant="outline"
 									>
 										Cancel
@@ -291,7 +289,6 @@ export default function MediaLogDetailsDialog({
 										className="w-full sm:w-auto"
 										disabled={isLoading || !hasChanges}
 										onClick={handleSave}
-										size="sm"
 									>
 										Save
 									</Button>

@@ -9,7 +9,7 @@ import {
 	Scripts,
 	useRouteContext,
 } from "@tanstack/react-router";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "better-themes";
 import type { ReactNode } from "react";
 import { getAuth } from "@/actions/get-auth";
 import { Toaster } from "@/components/ui/sonner";
@@ -70,7 +70,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
