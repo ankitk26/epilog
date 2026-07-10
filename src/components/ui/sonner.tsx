@@ -22,6 +22,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 				error: <XCircleIcon className="size-4" />,
 				loading: <SpinnerIcon className="size-4 animate-spin" />,
 			}}
+			duration={1000}
 			style={
 				{
 					"--normal-bg": "var(--popover)",
