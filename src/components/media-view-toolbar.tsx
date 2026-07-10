@@ -112,7 +112,7 @@ export default function MediaViewToolbar() {
 						value={type}
 						onValueChange={(value) => setType(value as MediaType)}
 					>
-						<SelectTrigger className="h-8 gap-1.5 border-hairline bg-canvas-soft px-2 text-xs">
+						<SelectTrigger className="h-8 w-36 gap-1.5 border-hairline bg-canvas-soft px-2 text-xs">
 							<SelectValue>
 								{currentType && (
 									<span className="flex items-center gap-2">
