@@ -65,7 +65,7 @@ export default function MovieCalendarMobileDayEventsList({
 						<span
 							className={cn(
 								"text-3xl font-semibold",
-								isToday ? "text-primary" : "text-ink",
+								isToday ? "text-primary" : "text-foreground",
 							)}
 						>
 							{displayDate.day}
@@ -110,7 +110,7 @@ export default function MovieCalendarMobileDayEventsList({
 									/>
 
 									<div className="min-w-0 flex-1">
-										<h4 className="truncate text-base font-medium text-ink">
+										<h4 className="truncate text-base font-medium text-foreground">
 											{event.name}
 										</h4>
 									</div>

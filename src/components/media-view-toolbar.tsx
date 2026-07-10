@@ -82,7 +82,7 @@ export default function MediaViewToolbar() {
 									"group flex h-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 text-xs font-semibold tracking-wide uppercase transition-all duration-200 active:scale-[0.97]",
 									isActive
 										? "border-transparent bg-primary text-primary-foreground"
-										: "border-hairline bg-transparent text-muted-foreground hover:border-hairline-strong hover:text-ink",
+										: "border-border bg-transparent text-muted-foreground hover:border-border hover:text-foreground",
 								)}
 								key={item.type}
 								onClick={() => {
@@ -96,7 +96,7 @@ export default function MediaViewToolbar() {
 										"flex min-w-[1.25rem] items-center justify-center rounded-lg px-1 text-xs leading-none font-semibold tabular-nums",
 										isActive
 											? "bg-primary-foreground/20 text-primary-foreground"
-											: "bg-secondary text-muted-foreground group-hover:text-ink",
+											: "bg-secondary text-muted-foreground group-hover:text-foreground",
 									)}
 								>
 									{item.count}
@@ -112,7 +112,7 @@ export default function MediaViewToolbar() {
 						value={type}
 						onValueChange={(value) => setType(value as MediaType)}
 					>
-						<SelectTrigger className="h-8 w-36 gap-1.5 border-hairline bg-canvas-soft px-2 text-xs">
+						<SelectTrigger className="h-8 w-36 gap-1.5 border-border bg-canvas-soft px-2 text-xs">
 							<SelectValue>
 								{currentType && (
 									<span className="flex items-center gap-2">
@@ -141,7 +141,7 @@ export default function MediaViewToolbar() {
 			</div>
 
 			{/* View switcher — icon buttons */}
-			<div className="flex shrink-0 items-center gap-1 rounded-lg border border-hairline bg-card/50 p-1">
+			<div className="flex shrink-0 items-center gap-1 rounded-lg border border-border bg-card/50 p-1">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
@@ -161,8 +161,8 @@ export default function MediaViewToolbar() {
 										className={cn(
 											"size-7 sm:size-8",
 											isActive
-												? "bg-card text-ink shadow-soft"
-												: "text-muted-foreground hover:text-ink",
+												? "bg-card text-foreground shadow-soft"
+												: "text-muted-foreground hover:text-foreground",
 										)}
 										onClick={() => setView(option.value)}
 										title={option.label}

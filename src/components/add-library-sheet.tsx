@@ -86,7 +86,7 @@ function AddLibrarySheetContent({
 	return (
 		<Sheet open={isOpen} onOpenChange={handleOpenChange}>
 			<SheetContent
-				className="border-l border-hairline bg-canvas shadow-lift data-[side=right]:w-full data-[side=right]:sm:max-w-xl data-[side=right]:lg:max-w-2xl"
+				className="border-l border-border bg-canvas shadow-lift data-[side=right]:w-full data-[side=right]:sm:max-w-xl data-[side=right]:lg:max-w-2xl"
 				side="right"
 			>
 				<div className="flex h-full flex-col">

@@ -39,9 +39,6 @@
 	--color-chart-5: var(--chart-5);
 	--color-canvas: var(--canvas);
 	--color-canvas-soft: var(--canvas-soft);
-	--color-ink: var(--ink);
-	--color-hairline: var(--hairline);
-	--color-hairline-strong: var(--hairline-strong);
 	--color-body: var(--body);
 	--color-mint: var(--mint);
 	--color-peach: var(--peach);
@@ -96,8 +93,6 @@
 	/* ── Light: clean paper studio ── */
 	--canvas: #ffffff;
 	--canvas-soft: #fafafa;
-	--ink: #0a0a0a;
-
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
@@ -117,9 +112,6 @@
 	--input: oklch(0.922 0 0);
 	--ring: oklch(0.708 0 0);
 	--body: #525252;
-	--hairline: #e5e5e5;
-	--hairline-strong: #d4d4d4;
-
 	--mint: #14b8a6;
 	--peach: #f97316;
 	--lavender: #8b5cf6;
@@ -147,8 +139,6 @@
 	/* ── Dark: NeoVision reference ── */
 	--canvas: #0a0a0a;
 	--canvas-soft: #0c0c0c;
-	--ink: #ffffff;
-
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
@@ -168,9 +158,6 @@
 	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
 	--body: #a0a0a0;
-	--hairline: rgba(255, 255, 255, 0.06);
-	--hairline-strong: rgba(255, 255, 255, 0.1);
-
 	--mint: #34d399;
 	--peach: #fb923c;
 	--lavender: #a78bfa;
@@ -223,7 +210,7 @@
 	/* Clean scrollbar */
 	* {
 		scrollbar-width: thin;
-		scrollbar-color: var(--hairline-strong) transparent;
+		scrollbar-color: var(--border) transparent;
 	}
 	*::-webkit-scrollbar {
 		width: 6px;
@@ -233,7 +220,7 @@
 		background: transparent;
 	}
 	*::-webkit-scrollbar-thumb {
-		background: var(--hairline-strong);
+		background: var(--border);
 		border-radius: 9999px;
 		border: 2px solid var(--background);
 	}

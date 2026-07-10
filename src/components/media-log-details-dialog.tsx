@@ -147,7 +147,7 @@ export default function MediaLogDetailsDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="h-36 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-hairline sm:h-48 sm:w-36">
+								<div className="h-36 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:h-48 sm:w-36">
 									{log.metadata.image ? (
 										<Image
 											alt={
@@ -172,7 +172,7 @@ export default function MediaLogDetailsDialog({
 
 								{/* Title + metadata */}
 								<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-medium tracking-tight text-ink">
+									<h2 className="line-clamp-2 font-heading text-lg leading-tight font-medium tracking-tight text-foreground">
 										{log.metadata.name || "Untitled"}
 									</h2>
 
@@ -185,7 +185,7 @@ export default function MediaLogDetailsDialog({
 									</div>
 
 									{log.metadata.creator && (
-										<p className="mt-1.5 text-xs font-medium text-ink/70">
+										<p className="mt-1.5 text-xs font-medium text-foreground/70">
 											{creatorPhrase(
 												log.metadata.type,
 												log.metadata.creator,
@@ -213,7 +213,7 @@ export default function MediaLogDetailsDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden rounded-lg border border-hairline-strong">
+								<div className="flex flex-col overflow-hidden rounded-lg border border-border">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);
@@ -222,7 +222,7 @@ export default function MediaLogDetailsDialog({
 												className={cn(
 													"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
 													index > 0 &&
-														"border-t border-hairline",
+														"border-t border-border",
 													isActive
 														? "bg-primary/[0.04]"
 														: "hover:bg-secondary/60",
@@ -249,7 +249,7 @@ export default function MediaLogDetailsDialog({
 													className={cn(
 														"flex-1 font-medium transition-colors duration-150",
 														isActive
-															? "text-ink"
+															? "text-foreground"
 															: "text-muted-foreground",
 													)}
 												>
@@ -262,7 +262,7 @@ export default function MediaLogDetailsDialog({
 							</div>
 
 							{/* ── Footer actions ── */}
-							<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+							<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
 								<Button
 									className="w-full sm:w-auto"
 									disabled={isLoading}

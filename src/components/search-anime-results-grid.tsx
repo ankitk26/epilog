@@ -55,7 +55,7 @@ export default function SearchAnimeResultsGrid({
 				<span className="text-sm text-muted-foreground tabular-nums">
 					{animeContent.data.length} found
 				</span>
-				<div className="h-px flex-1 bg-hairline" />
+				<div className="h-px flex-1 bg-border" />
 			</div>
 			<div className="flex flex-col gap-1">
 				{animeContent.data.map((anime) => {

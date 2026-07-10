@@ -44,7 +44,7 @@ export default function AppShellHeader() {
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-sm font-semibold tracking-[0.15em] text-ink uppercase transition-opacity group-hover:opacity-60">
+					<span className="font-heading text-sm font-semibold tracking-[0.15em] text-foreground uppercase transition-opacity group-hover:opacity-60">
 						epilog
 					</span>
 				</Link>
@@ -95,7 +95,7 @@ export default function AppShellHeader() {
 						/>
 						<DropdownMenuContent align="end" className="w-52">
 							<div className="px-3 py-2">
-								<p className="font-heading text-sm font-medium text-ink">
+								<p className="font-heading text-sm font-medium text-foreground">
 									{data?.user.name}
 								</p>
 								<p className="mt-1 text-xs text-muted-foreground">

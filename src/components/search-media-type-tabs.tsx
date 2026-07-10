@@ -29,7 +29,7 @@ export default function SearchMediaTypeTabs({ onChange, value }: Props) {
 								"h-9 cursor-pointer rounded-lg border px-4 text-xs font-semibold tracking-wide uppercase transition-all duration-200 lg:h-9",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground"
-									: "border-hairline bg-transparent text-muted-foreground hover:border-hairline-strong hover:text-ink",
+									: "border-border bg-transparent text-muted-foreground hover:border-border hover:text-foreground",
 							)}
 							key={option.value}
 							onClick={() => onChange(option.value)}

@@ -31,7 +31,7 @@ export default function MediaSectionByStatus(props: Props) {
 			{/* Section header — large uppercase title with count */}
 			<div className="flex items-end justify-between gap-4">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-heading text-2xl font-medium tracking-tight text-ink lg:text-3xl">
+					<h2 className="font-heading text-2xl font-medium tracking-tight text-foreground lg:text-3xl">
 						{props.section.title}
 					</h2>
 					<span className="eyebrow shrink-0 pl-1 whitespace-nowrap">
@@ -40,7 +40,7 @@ export default function MediaSectionByStatus(props: Props) {
 				</div>
 				{props.logs.length > 0 && (
 					<Button
-						className="text-muted-foreground hover:text-ink"
+						className="text-muted-foreground hover:text-foreground"
 						onClick={() =>
 							setIsCollapsed((prevState) => !prevState)
 						}
@@ -61,7 +61,7 @@ export default function MediaSectionByStatus(props: Props) {
 				<div
 					className={
 						view === "list"
-							? "flex flex-col divide-y divide-hairline border-b border-hairline"
+							? "flex flex-col divide-y divide-border border-b border-border"
 							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-6"
 					}
 				>

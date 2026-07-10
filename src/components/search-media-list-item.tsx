@@ -34,7 +34,7 @@ export default function SearchMediaListItem({
 			onClick={onClick}
 			type="button"
 		>
-			<div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-hairline lg:h-32 lg:w-24">
+			<div className="h-16 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border lg:h-32 lg:w-24">
 				{media.imageUrl && !imageFailed ? (
 					<Image
 						alt={media.name}
@@ -55,7 +55,7 @@ export default function SearchMediaListItem({
 			</div>
 
 			<div className="min-w-0 flex-1">
-				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-ink transition-colors group-hover:text-ink lg:line-clamp-3 lg:text-base">
+				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground transition-colors group-hover:text-foreground lg:line-clamp-3 lg:text-base">
 					{media.name}
 				</h4>
 				{media.secondaryText && (

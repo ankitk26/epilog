@@ -212,7 +212,7 @@ export default function MovieCalendarEventDetailsDialog({
 				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle
 						ref={titleRef}
-						className="font-heading text-xl leading-tight font-normal tracking-tight text-ink"
+						className="font-heading text-xl leading-tight font-normal tracking-tight text-foreground"
 						tabIndex={-1}
 					>
 						{event.name || "Untitled"}
@@ -222,7 +222,7 @@ export default function MovieCalendarEventDetailsDialog({
 				<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 					{/* Media summary */}
 					<div className="flex gap-4">
-						<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-hairline sm:h-[120px] sm:w-20">
+						<div className="h-[140px] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border sm:h-[120px] sm:w-20">
 							{event.image ? (
 								<Image
 									alt={event.name || "Media poster"}
@@ -242,7 +242,7 @@ export default function MovieCalendarEventDetailsDialog({
 						</div>
 
 						<div className="min-w-0 flex-1 space-y-2 pt-1">
-							<p className="text-sm font-medium text-ink">
+							<p className="text-sm font-medium text-foreground">
 								{formatMediaType(mediaType)}
 								{event.releaseYear ? (
 									<span className="text-muted-foreground tabular-nums">
@@ -373,7 +373,7 @@ export default function MovieCalendarEventDetailsDialog({
 					</div>
 
 					{/* Footer actions */}
-					<div className="flex flex-col gap-3 border-t border-hairline pt-4 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
 						<Button
 							disabled={isLoading}
 							onClick={() =>

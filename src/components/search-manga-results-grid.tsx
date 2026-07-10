@@ -56,7 +56,7 @@ export default function SearchMangaResultsGrid({
 				<span className="text-sm text-muted-foreground tabular-nums">
 					{mangaContent.data.length} found
 				</span>
-				<div className="h-px flex-1 bg-hairline" />
+				<div className="h-px flex-1 bg-border" />
 			</div>
 			<div className="flex flex-col gap-1">
 				{mangaContent.data.map((manga) => {

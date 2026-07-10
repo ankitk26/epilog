@@ -62,7 +62,7 @@ export default function SearchMovieTvResultsGrid({
 				<span className="text-sm text-muted-foreground tabular-nums">
 					{mediaContent.results.length} found
 				</span>
-				<div className="h-px flex-1 bg-hairline" />
+				<div className="h-px flex-1 bg-border" />
 			</div>
 
 			<div className="flex flex-col gap-1">

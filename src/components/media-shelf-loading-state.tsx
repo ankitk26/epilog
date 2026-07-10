@@ -15,7 +15,7 @@ function MediaShelfCardSkeleton() {
 
 function MediaShelfStatusColumnSkeleton() {
 	return (
-		<div className="flex flex-col space-y-2 rounded-lg border border-hairline bg-canvas-soft/50">
+		<div className="flex flex-col space-y-2 rounded-lg border border-border bg-canvas-soft/50">
 			<div className="space-y-3 p-2">
 				{Array.from({ length: 3 }).map((_, index) => (
 					<MediaShelfCardSkeleton

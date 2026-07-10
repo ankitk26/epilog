@@ -16,7 +16,7 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 			role="button"
 		>
 			{/* Poster */}
-			<div className="h-32 w-[5.5rem] flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-hairline">
+			<div className="h-32 w-[5.5rem] flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata.name || "Media poster"}
@@ -37,7 +37,7 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="min-w-0 flex-1">
-				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-ink transition-colors group-hover:text-ink">
+				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-foreground transition-colors group-hover:text-foreground">
 					{log.metadata?.name || "Untitled"}
 				</h3>
 				{(log.metadata?.creator ?? log.metadata?.releaseYear) && (
