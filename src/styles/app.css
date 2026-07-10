@@ -248,8 +248,8 @@
    ─────────────────────────────────────────────────────────────── */
 
 @layer components {
-	/* Caption-uppercase eyebrow — tracked section label */
-	.eyebrow {
+	/* Caption-uppercase section label */
+	.section-label {
 		font-family: var(--font-sans);
 		font-size: 0.6875rem;
 		line-height: 1;
@@ -259,11 +259,4 @@
 		color: var(--muted-foreground);
 	}
 
-	/* Display utility — Outfit, tight tracking */
-	.display {
-		font-family: var(--font-heading);
-		font-weight: 500;
-		letter-spacing: -0.03em;
-		line-height: 1;
-	}
 }

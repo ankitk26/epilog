@@ -91,7 +91,7 @@ function AddLibrarySheetContent({
 			>
 				<div className="flex h-full flex-col">
 					<SheetHeader className="shrink-0 p-4 pt-6 lg:p-6">
-						<SheetTitle className="display text-xl tracking-tight lg:text-2xl">
+						<SheetTitle className="font-heading text-xl font-medium lg:text-2xl">
 							Search library
 						</SheetTitle>
 					</SheetHeader>

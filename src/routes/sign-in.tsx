@@ -15,7 +15,7 @@ function SignInPage() {
 		<div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-canvas px-6 py-14">
 			<div className="relative w-full max-w-md animate-reveal-up space-y-10 text-center">
 				<div className="space-y-4">
-					<h1 className="display text-6xl tracking-tight text-foreground lg:text-7xl">
+					<h1 className="font-heading text-6xl font-medium text-foreground lg:text-7xl">
 						epilog
 					</h1>
 					<p className="mx-auto max-w-xs text-sm leading-relaxed text-body">

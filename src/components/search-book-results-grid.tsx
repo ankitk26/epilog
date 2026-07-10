@@ -57,7 +57,7 @@ export default function SearchBookResultsGrid({
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center gap-4">
-				<h3 className="eyebrow">Search Results</h3>
+				<h3 className="section-label">Search Results</h3>
 				<span className="text-sm text-muted-foreground tabular-nums">
 					{books.length} found
 				</span>
