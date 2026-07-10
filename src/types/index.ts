@@ -22,11 +22,11 @@ export const logStatuses = [
 export type LogStatus = (typeof logStatuses)[number];
 
 export const statusesByMediaType: Record<MediaType, LogStatus[]> = {
-	book: ["tbr", "reading", "finished", "dnf"],
-	manga: ["tbr", "reading", "finished", "dnf"],
-	movie: ["watchlist", "watching", "watched"],
-	tv: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
-	anime: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+	book: ["reading", "tbr", "finished", "dnf"],
+	manga: ["reading", "tbr", "finished", "dnf"],
+	movie: ["watching", "watchlist", "watched"],
+	tv: ["watching", "plan_to_watch", "waiting", "completed", "dropped"],
+	anime: ["watching", "plan_to_watch", "waiting", "completed", "dropped"],
 };
 
 export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
