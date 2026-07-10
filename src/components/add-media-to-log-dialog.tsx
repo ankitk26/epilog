@@ -104,7 +104,7 @@ export default function AddMediaToLogDialog({
 				onOpenChange(value);
 			}}
 		>
-			<BottomSheetDialogContent showCloseButton>
+			<BottomSheetDialogContent showCloseButton initialFocus={false}>
 				{media && (
 					<div className="flex flex-col overflow-y-auto">
 						{/* ── Hero: blurred ambient backdrop + poster card ── */}
