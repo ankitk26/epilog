@@ -1,6 +1,8 @@
 import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
+import { getBookProgress } from "@/lib/book-progress";
+import BookProgress from "./book-progress";
 import MediaTypeIcon from "./media-type-icon";
 
 type Props = {
@@ -9,6 +11,8 @@ type Props = {
 };
 
 export default function MediaShelfCard({ log, onClick }: Props) {
+	const progress = getBookProgress(log);
+
 	return (
 		<div
 			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors duration-300 ease-out hover:bg-card"
@@ -36,13 +40,14 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 			</div>
 
 			{/* Content */}
-			<div className="min-w-0 flex-1">
-				<h4 className="mb-1 line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
+			<div className="flex min-w-0 flex-1 flex-col gap-1">
+				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
 					{log.metadata.name}
 				</h4>
 				<p className="line-clamp-1 text-xs text-muted-foreground">
 					{log.metadata.creator ?? log.metadata.releaseYear}
 				</p>
+				{progress && <BookProgress progress={progress} />}
 			</div>
 		</div>
 	);

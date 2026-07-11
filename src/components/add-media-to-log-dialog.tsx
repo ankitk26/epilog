@@ -10,6 +10,7 @@ import {
 	Dialog,
 } from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
@@ -43,6 +44,7 @@ export default function AddMediaToLogDialog({
 	const mediaType = media?.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus | null>(null);
+	const [pageCount, setPageCount] = useState<number | undefined>(undefined);
 
 	const tmdbCreatorQuery = useQuery({
 		queryKey: ["tmdb-creator", media?.sourceId, media?.type],
@@ -66,6 +68,7 @@ export default function AddMediaToLogDialog({
 			toast.dismiss();
 			toast.success(response);
 			setStatus(null);
+			setPageCount(undefined);
 			onOpenChange(false);
 		},
 		onError: () => {
@@ -76,6 +79,10 @@ export default function AddMediaToLogDialog({
 
 	const handleAdd = () => {
 		if (!media || !status) return;
+
+		const isReadingBook = media.type === "book" && status === "reading";
+		if (isReadingBook && (!pageCount || pageCount <= 0)) return;
+
 		addMutation.mutate({
 			media: {
 				name: media.name,
@@ -90,17 +97,26 @@ export default function AddMediaToLogDialog({
 				seriesKey: media.seriesKey,
 			},
 			status,
+			pageCount: isReadingBook ? pageCount : undefined,
+			pagesRead: isReadingBook ? 0 : undefined,
 		});
 	};
 
 	const isLoading = addMutation.isPending;
 	const creator = media?.creator ?? tmdbCreatorQuery.data;
+	const isReadingBook = mediaType === "book" && status === "reading";
+	const canAdd =
+		!!status &&
+		(!isReadingBook || (pageCount !== undefined && pageCount > 0));
 
 	return (
 		<Dialog
 			open={open}
 			onOpenChange={(value) => {
-				if (!value) setStatus(null);
+				if (!value) {
+					setStatus(null);
+					setPageCount(undefined);
+				}
 				onOpenChange(value);
 			}}
 		>
@@ -224,6 +240,34 @@ export default function AddMediaToLogDialog({
 								</div>
 							</div>
 
+							{isReadingBook && (
+								<div className="space-y-2">
+									<label
+										className="section-label"
+										htmlFor="book-page-count"
+									>
+										Number of pages
+									</label>
+									<Input
+										id="book-page-count"
+										inputMode="numeric"
+										onChange={(e) => {
+											const digits = e.target.value
+												.replace(/\D/g, "")
+												.replace(/^0+(?=\d)/, "");
+											setPageCount(
+												digits === ""
+													? undefined
+													: parseInt(digits, 10),
+											);
+										}}
+										placeholder="300"
+										type="text"
+										value={pageCount ?? ""}
+									/>
+								</div>
+							)}
+
 							{/* ── Footer actions ── */}
 							<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-end">
 								<Button
@@ -234,7 +278,7 @@ export default function AddMediaToLogDialog({
 									Cancel
 								</Button>
 								<Button
-									disabled={isLoading || !status}
+									disabled={isLoading || !canAdd}
 									onClick={handleAdd}
 								>
 									Add to library

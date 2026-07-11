@@ -183,6 +183,8 @@ export const add = mutation({
 			seriesKey: v.optional(v.string()),
 		}),
 		status: v.optional(allStatusLiterals),
+		pageCount: v.optional(v.number()),
+		pagesRead: v.optional(v.number()),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -247,6 +249,13 @@ export const add = mutation({
 			}
 		}
 
+		// reading books need a page count to track progress
+		if (status === "reading" && args.media.type === "book") {
+			if (!args.pageCount || args.pageCount <= 0) {
+				throw new Error("page count is required for reading books");
+			}
+		}
+
 		// add log for media with chosen or default status
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
@@ -264,6 +273,8 @@ export const add = mutation({
 				| "dropped",
 			updatedTime: Date.now(),
 			userId,
+			pageCount: status === "reading" ? args.pageCount : undefined,
+			pagesRead: status === "reading" ? (args.pagesRead ?? 0) : undefined,
 		});
 
 		// return message to display in sonner
@@ -327,6 +338,8 @@ export const update = mutation({
 	args: {
 		logId: v.id("logs"),
 		status: allStatusLiterals,
+		pageCount: v.optional(v.number()),
+		pagesRead: v.optional(v.number()),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -349,9 +362,35 @@ export const update = mutation({
 			);
 		}
 
+		if (
+			args.status === "reading" &&
+			media.type === "book" &&
+			args.pageCount !== undefined &&
+			args.pageCount <= 0
+		) {
+			throw new Error("page count must be greater than 0");
+		}
+
+		const totalPages =
+			args.pageCount !== undefined
+				? args.pageCount
+				: existingLog.pageCount;
+		const rawPagesRead =
+			args.pagesRead !== undefined
+				? args.pagesRead
+				: existingLog.pagesRead;
+		const pagesRead =
+			totalPages !== undefined && rawPagesRead !== undefined
+				? Math.min(rawPagesRead, totalPages)
+				: rawPagesRead;
+
 		await ctx.db.patch(args.logId, {
 			status: args.status,
 			updatedTime: Date.now(),
+			...(args.pageCount !== undefined && {
+				pageCount: args.pageCount,
+			}),
+			...(pagesRead !== undefined && { pagesRead }),
 		});
 	},
 });

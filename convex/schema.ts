@@ -51,6 +51,8 @@ export default defineSchema({
 			v.literal("dropped"),
 		),
 		updatedTime: v.number(),
+		pageCount: v.optional(v.number()),
+		pagesRead: v.optional(v.number()),
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
 		.index("by_user_and_mediaId", ["userId", "dbMediaId"])

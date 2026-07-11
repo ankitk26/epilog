@@ -4,6 +4,7 @@ import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { getBookProgress } from "@/lib/book-progress";
 import { cn } from "@/lib/utils";
 import EmptyStateMessage from "./empty-state-message";
 import MediaListRowCard from "./media-list-row-card";
@@ -68,8 +69,10 @@ export default function MediaSectionByStatus(props: Props) {
 							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-6"
 					}
 				>
-					{props.logs.map((log) =>
-						view === "list" ? (
+					{props.logs.map((log) => {
+						const progress = getBookProgress(log);
+
+						return view === "list" ? (
 							<MediaListRowCard
 								key={log._id}
 								log={log}
@@ -88,9 +91,10 @@ export default function MediaSectionByStatus(props: Props) {
 									type: log.metadata.type,
 								}}
 								onClick={() => setSelectedLog(log)}
+								progress={progress}
 							/>
-						),
-					)}
+						);
+					})}
 				</div>
 			)}
 

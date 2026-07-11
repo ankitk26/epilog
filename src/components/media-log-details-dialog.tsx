@@ -11,11 +11,13 @@ import {
 	Dialog,
 } from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import { getStatusIcon, statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { LogStatus } from "@/types";
 import { statusesByMediaType } from "@/types";
+import BookProgress from "./book-progress";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
 
@@ -60,6 +62,12 @@ function statusPhrase(status: LogStatus, date: string): string {
 	}
 }
 
+function parsePageValue(value: string): number | undefined {
+	const digits = value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+	if (digits === "") return undefined;
+	return parseInt(digits, 10);
+}
+
 export default function MediaLogDetailsDialog({
 	log,
 	open,
@@ -68,10 +76,14 @@ export default function MediaLogDetailsDialog({
 	const mediaType = log?.metadata.type ?? "movie";
 	const validStatuses = statusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
+	const [pageCount, setPageCount] = useState<number | undefined>(undefined);
+	const [pagesRead, setPagesRead] = useState<number | undefined>(undefined);
 
 	useEffect(() => {
 		if (log) {
 			setStatus(log.status as LogStatus);
+			setPageCount(log.pageCount ?? undefined);
+			setPagesRead(log.pagesRead ?? 0);
 		}
 	}, [log]);
 
@@ -109,7 +121,13 @@ export default function MediaLogDetailsDialog({
 
 	const handleSave = () => {
 		if (!log) return;
-		updateMutation.mutate({ logId: log._id, status });
+
+		updateMutation.mutate({
+			logId: log._id,
+			status,
+			...(pageCount !== undefined && { pageCount }),
+			...(pagesRead !== undefined && { pagesRead }),
+		});
 	};
 
 	const handleDelete = () => {
@@ -118,7 +136,23 @@ export default function MediaLogDetailsDialog({
 	};
 
 	const isLoading = updateMutation.isPending || removeMutation.isPending;
-	const hasChanges = log && status !== (log.status as LogStatus);
+
+	const initialPageCount = log?.pageCount ?? undefined;
+	const initialPagesRead = log?.pagesRead ?? 0;
+	const hasChanges =
+		!!log &&
+		(status !== (log.status as LogStatus) ||
+			pageCount !== initialPageCount ||
+			pagesRead !== initialPagesRead);
+
+	const isReadingBook = mediaType === "book" && status === "reading";
+	const canSave =
+		!!log && (!isReadingBook || (pageCount !== undefined && pageCount > 0));
+
+	const progressPercent =
+		isReadingBook && pageCount !== undefined && pageCount > 0
+			? Math.min(100, Math.round(((pagesRead ?? 0) / pageCount) * 100))
+			: undefined;
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -261,6 +295,78 @@ export default function MediaLogDetailsDialog({
 								</div>
 							</div>
 
+							{isReadingBook && (
+								<div className="space-y-3 rounded-lg border border-border p-4">
+									<p className="section-label">
+										Reading progress
+									</p>
+
+									<div className="grid grid-cols-2 gap-3">
+										<div className="space-y-2">
+											<label
+												className="section-label"
+												htmlFor="total-pages"
+											>
+												Total pages
+											</label>
+											<Input
+												id="total-pages"
+												inputMode="numeric"
+												onChange={(e) =>
+													setPageCount(
+														parsePageValue(
+															e.target.value,
+														),
+													)
+												}
+												onFocus={(e) =>
+													e.currentTarget.select()
+												}
+												placeholder="300"
+												type="text"
+												value={pageCount ?? ""}
+											/>
+										</div>
+
+										<div className="space-y-2">
+											<label
+												className="section-label"
+												htmlFor="pages-read"
+											>
+												Pages read
+											</label>
+											<Input
+												id="pages-read"
+												inputMode="numeric"
+												onChange={(e) =>
+													setPagesRead(
+														parsePageValue(
+															e.target.value,
+														),
+													)
+												}
+												onFocus={(e) =>
+													e.currentTarget.select()
+												}
+												placeholder="0"
+												type="text"
+												value={pagesRead ?? 0}
+											/>
+										</div>
+									</div>
+
+									{progressPercent !== undefined && (
+										<BookProgress
+											progress={{
+												percent: progressPercent,
+												read: pagesRead ?? 0,
+												total: pageCount ?? 0,
+											}}
+										/>
+									)}
+								</div>
+							)}
+
 							{/* ── Footer actions ── */}
 							<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
 								<Button
@@ -287,7 +393,9 @@ export default function MediaLogDetailsDialog({
 									</Button>
 									<Button
 										className="w-full sm:w-auto"
-										disabled={isLoading || !hasChanges}
+										disabled={
+											isLoading || !hasChanges || !canSave
+										}
 										onClick={handleSave}
 									>
 										Save

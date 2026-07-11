@@ -2,6 +2,7 @@ import { Image } from "@unpic/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
+import BookProgress, { type BookProgressData } from "./book-progress";
 import MediaTypeIcon from "./media-type-icon";
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 	};
 	displayOnly?: boolean;
 	onClick?: () => void;
+	progress?: BookProgressData | null;
 };
 
 export default function MediaPosterCard(props: Props) {
@@ -73,6 +75,9 @@ export default function MediaPosterCard(props: Props) {
 					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
 						{props.media.releaseYear}
 					</p>
+				)}
+				{props.progress && (
+					<BookProgress className="pt-1" progress={props.progress} />
 				)}
 			</div>
 		</div>
