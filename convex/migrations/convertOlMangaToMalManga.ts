@@ -4,10 +4,10 @@ import { internalAction } from "../_generated/server";
 
 // ─────────────────────────────────────────────
 // Convert incorrectly classified ol:manga records
-// to mal:manga by searching Jikan for the title.
+// to mal:manga by searching MyAnimeList for the title.
 //
 // Each invocation handles one batch, then schedules
-// the next invocation to respect Jikan rate limits.
+// the next invocation to respect MyAnimeList rate limits.
 // ─────────────────────────────────────────────
 
 export const convertOlMangaToMalManga = internalAction({
@@ -32,7 +32,7 @@ export const convertOlMangaToMalManga = internalAction({
 		}>;
 		failed: Array<{ id: string; name: string; reason: string }>;
 	}> => {
-		// Jikan: 3 requests/sec, 60 requests/min.
+		// MyAnimeList API: conservative rate-limiting.
 		// 10 items × 1.2 s = 12 s of delays + fetch time, under 30 s timeout.
 		const batchSize = Math.min(args.limit ?? 10, 15);
 		const requestGapMs = 1200;
@@ -55,46 +55,59 @@ export const convertOlMangaToMalManga = internalAction({
 
 		for (const media of records) {
 			try {
-				// Respect Jikan rate limit (~3 req/s, 60 req/min).
+				// Respect MyAnimeList API rate limit.
 				await new Promise((resolve) =>
 					setTimeout(resolve, requestGapMs),
 				);
 
+				const clientId = process.env.MAL_CLIENT_ID;
+				if (!clientId) {
+					throw new Error("MAL_CLIENT_ID is not configured");
+				}
+
+				const searchParams = new URLSearchParams({
+					q: media.name,
+					limit: "1",
+					fields: "id,title,alternative_titles,main_picture,nsfw",
+				});
+
 				const response = await fetch(
-					`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(
-						media.name,
-					)}&limit=1&sfw=true`,
+					`https://api.myanimelist.net/v2/manga?${searchParams.toString()}`,
+					{
+						headers: { "X-MAL-CLIENT-ID": clientId },
+					},
 				);
 
 				if (!response.ok) {
-					throw new Error(`Jikan search returned ${response.status}`);
+					throw new Error(
+						`MyAnimeList search returned ${response.status}`,
+					);
 				}
 
 				const data = (await response.json()) as {
 					data?: Array<{
-						mal_id: number;
-						title: string;
-						title_english: string | null;
-						images: {
-							webp: {
-								large_image_url: string;
-							};
+						node: {
+							id: number;
+							title: string;
+							alternative_titles?: { en?: string | null } | null;
+							main_picture?: { large?: string } | null;
+							nsfw?: "white" | "gray" | "black";
 						};
 					}>;
 				};
-				const match = data.data?.[0];
+				const match = data.data?.[0]?.node;
 
-				if (!match) {
+				if (!match || match.nsfw === "black") {
 					failed.push({
 						id: media._id,
 						name: media.name,
-						reason: "no Jikan match",
+						reason: "no MyAnimeList match",
 					});
 					continue;
 				}
 
-				const newSourceMediaId = `mal:manga:${match.mal_id}`;
-				const newName = match.title_english ?? match.title;
+				const newSourceMediaId = `mal:manga:${match.id}`;
+				const newName = match.alternative_titles?.en ?? match.title;
 
 				const result = await ctx.runMutation(
 					internal.migrations._mutations.updateOlMangaToMal,
@@ -102,8 +115,7 @@ export const convertOlMangaToMalManga = internalAction({
 						mediaId: media._id,
 						newSourceMediaId,
 						newName,
-						newImage:
-							match.images?.webp?.large_image_url ?? media.image,
+						newImage: match.main_picture?.large ?? media.image,
 					},
 				);
 

@@ -1,7 +1,7 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
-import { searchJikanManga } from "@/actions/search-jikan-manga";
+import { searchMalManga } from "@/actions/search-mal-manga";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { standardizePersonName } from "@/lib/standardize-person-name";
@@ -24,7 +24,7 @@ export default function SearchMangaResultsGrid({
 		isEnabled,
 	} = useQuery({
 		queryKey: ["search", "media-content", "manga", searchQuery],
-		queryFn: async () => await searchJikanManga({ data: { searchQuery } }),
+		queryFn: async () => await searchMalManga({ data: { searchQuery } }),
 		enabled: searchQuery.length !== 0,
 	});
 

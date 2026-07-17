@@ -59,10 +59,10 @@ export const animeSearchAPIOutput = z.object({
 			mal_id: z.number(),
 			images: z.object({
 				jpg: z.object({
-					large_image_url: z.string(),
+					large_image_url: z.string().nullable(),
 				}),
 				webp: z.object({
-					large_image_url: z.string(),
+					large_image_url: z.string().nullable(),
 				}),
 			}),
 			title: z.string().nullable().optional(),
@@ -82,16 +82,16 @@ export const animeSearchAPIOutput = z.object({
 });
 export type AnimeSearchOutput = z.infer<typeof animeSearchAPIOutput>;
 
-export const jikanMangaSearchAPIOutput = z.object({
+export const mangaSearchAPIOutput = z.object({
 	data: z.array(
 		z.object({
 			mal_id: z.number(),
 			images: z.object({
 				jpg: z.object({
-					large_image_url: z.string(),
+					large_image_url: z.string().nullable(),
 				}),
 				webp: z.object({
-					large_image_url: z.string(),
+					large_image_url: z.string().nullable(),
 				}),
 			}),
 			title: z.string().nullable().optional(),
@@ -109,7 +109,7 @@ export const jikanMangaSearchAPIOutput = z.object({
 		}),
 	),
 });
-export type JikanMangaSearchOutput = z.infer<typeof jikanMangaSearchAPIOutput>;
+export type MangaSearchOutput = z.infer<typeof mangaSearchAPIOutput>;
 
 /*
 export const bookSearchAPIOutput = z.object({

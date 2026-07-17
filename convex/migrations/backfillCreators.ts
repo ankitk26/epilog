@@ -38,7 +38,7 @@ export const backfillCreators = internalAction({
 	}> => {
 		// Per-API rate limits drive the delay between requests.
 		// Batch size is capped so a single invocation stays inside Convex's
-		// 30 s action timeout even for the slowest API (Jikan).
+		// 30 s action timeout even for the slowest API (MyAnimeList).
 		const batchSize = Math.min(args.batchSize ?? 10, 15);
 		const nextBatchDelayMs = 3000;
 

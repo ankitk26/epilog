@@ -7,8 +7,8 @@ export function getRequestDelayMs(sourceMediaId: string): number {
 
 	switch (source) {
 		case "mal":
-			// Jikan: 3 requests/sec, 60 requests/min.
-			// 1200 ms keeps us well under both limits.
+			// MyAnimeList API: conservative delay to avoid rate-limiting.
+			// 1200 ms keeps us well under likely limits.
 			return 1200;
 		case "tmdb":
 			// TMDB free tier: ~40 requests / 10 sec.
@@ -92,9 +92,9 @@ export async function fetchCreatorForMedia(
 		case "tmdb":
 			return fetchTmdbCreator(nativeId, mediaType as "movie" | "tv");
 		case "mal":
-			return fetchJikanCreator(nativeId, mediaType as "anime" | "manga");
+			return fetchMalCreator(nativeId, mediaType as "anime" | "manga");
 		case "ol":
-			// Manga should be resolved via Jikan (mal: source).
+			// Manga should be resolved via MyAnimeList (mal: source).
 			// Only use OpenLibrary for books.
 			if (mediaType === "manga") {
 				return undefined;
@@ -145,35 +145,49 @@ async function fetchTmdbCreator(
 	return data.networks?.[0]?.name ?? data.created_by?.[0]?.name ?? null;
 }
 
-async function fetchJikanCreator(
+async function fetchMalCreator(
 	malId: string,
 	mediaType: "anime" | "manga",
 ): Promise<string | null> {
+	const clientId = process.env.MAL_CLIENT_ID;
+	if (!clientId) {
+		throw new Error("MAL_CLIENT_ID is not configured");
+	}
+
+	const fields =
+		mediaType === "anime" ? "studios" : "authors{first_name,last_name}";
+
 	const response = await fetch(
-		`https://api.jikan.moe/v4/${mediaType}/${malId}`,
+		`https://api.myanimelist.net/v2/${mediaType}/${malId}?fields=${fields}`,
+		{
+			headers: { "X-MAL-CLIENT-ID": clientId },
+		},
 	);
 
-	// Jikan is rate-limited to ~3 requests/second.
+	// MyAnimeList API is rate-limited; stay conservative.
 	await new Promise((resolve) => setTimeout(resolve, 400));
 
 	if (!response.ok) {
 		throw new Error(
-			`Jikan ${mediaType} details returned ${response.status}`,
+			`MyAnimeList ${mediaType} details returned ${response.status}`,
 		);
 	}
 
 	const data = (await response.json()) as {
-		data?: {
-			authors?: Array<{ name: string }>;
-			studios?: Array<{ name: string }>;
-		};
+		studios?: Array<{ name: string }>;
+		authors?: Array<{
+			node: { first_name: string; last_name: string };
+		}>;
 	};
 
 	if (mediaType === "anime") {
-		return data.data?.studios?.[0]?.name ?? null;
+		return data.studios?.[0]?.name ?? null;
 	}
 
-	return standardizePersonName(data.data?.authors?.[0]?.name);
+	const author = data.authors?.[0]?.node;
+	return standardizePersonName(
+		author ? `${author.first_name} ${author.last_name}`.trim() : null,
+	);
 }
 
 async function fetchOpenLibraryCreator(

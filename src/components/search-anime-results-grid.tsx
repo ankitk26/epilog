@@ -1,7 +1,7 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
-import { searchJikanAnime } from "@/actions/search-jikan-anime";
+import { searchMalAnime } from "@/actions/search-mal-anime";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import SearchNoResultsEmptyState from "./search-no-results-empty-state";
@@ -23,7 +23,7 @@ export default function SearchAnimeResultsGrid({
 		isEnabled,
 	} = useQuery({
 		queryKey: ["search", "media-content", "anime", searchQuery],
-		queryFn: async () => await searchJikanAnime({ data: { searchQuery } }),
+		queryFn: async () => await searchMalAnime({ data: { searchQuery } }),
 		enabled: searchQuery.length !== 0,
 	});
 
