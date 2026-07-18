@@ -43,3 +43,13 @@ export const updateOlMangaToMal = internalMutation({
 		return { action: "patched" };
 	},
 });
+
+export const updateMediaImage = internalMutation({
+	args: {
+		mediaId: v.id("media"),
+		image: v.optional(v.union(v.string(), v.null())),
+	},
+	handler: async (ctx, args) => {
+		await ctx.db.patch(args.mediaId, { image: args.image });
+	},
+});

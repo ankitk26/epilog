@@ -13,6 +13,9 @@ type Props = {
 		releaseYear: number | null;
 		sourceId: string;
 		type: MediaType;
+		seriesName?: string;
+		seriesPosition?: number;
+		seriesTotal?: number;
 	};
 	isLogged?: boolean;
 	onClick?: () => void;
@@ -63,11 +66,28 @@ export default function SearchMediaListItem({
 						{media.secondaryText}
 					</p>
 				)}
-				{media.releaseYear && (
-					<p className="mt-1 text-xs text-muted-foreground tabular-nums lg:mt-2 lg:text-sm">
-						{media.releaseYear}
-					</p>
-				)}
+				<div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-muted-foreground lg:mt-2 lg:text-sm">
+					{media.releaseYear && (
+						<span className="tabular-nums">
+							{media.releaseYear}
+						</span>
+					)}
+					{media.releaseYear && media.seriesName && (
+						<span className="text-border">•</span>
+					)}
+					{media.seriesName && (
+						<span className="line-clamp-1">
+							{media.seriesPosition != null
+								? `Book ${media.seriesPosition}`
+								: media.seriesName}
+							{media.seriesTotal != null &&
+								media.seriesPosition != null &&
+								` of ${media.seriesTotal}`}
+							{media.seriesPosition != null &&
+								` in ${media.seriesName}`}
+						</span>
+					)}
+				</div>
 
 				{isLogged && (
 					<span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary lg:mt-3 lg:text-sm">

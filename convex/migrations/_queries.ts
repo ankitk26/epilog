@@ -64,3 +64,28 @@ export const getOlMangaRecords = internalQuery({
 		return olManga.slice(0, args.limit);
 	},
 });
+
+export const getBookMedia = internalQuery({
+	args: {
+		cursor: v.optional(v.id("media")),
+		limit: v.number(),
+	},
+	handler: async (ctx, args) => {
+		const allMedia = await ctx.db.query("media").collect();
+		const books = allMedia.filter((media) => media.type === "book");
+
+		let startIndex = 0;
+		if (args.cursor) {
+			const idx = books.findIndex((media) => media._id === args.cursor);
+			startIndex = idx === -1 ? 0 : idx + 1;
+		}
+
+		const page = books.slice(startIndex, startIndex + args.limit);
+
+		return {
+			media: page,
+			nextCursor:
+				page.length === args.limit ? page[page.length - 1]._id : null,
+		};
+	},
+});

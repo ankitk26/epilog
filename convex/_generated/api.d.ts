@@ -21,6 +21,7 @@ import type * as migrations_migrateStatuses from "../migrations/migrateStatuses.
 import type * as migrations_normalizeOlBookSourceIds from "../migrations/normalizeOlBookSourceIds.js";
 import type * as migrations_removeUnusedMedia from "../migrations/removeUnusedMedia.js";
 import type * as migrations_separateMangaAndStandardizeSourceIds from "../migrations/separateMangaAndStandardizeSourceIds.js";
+import type * as migrations_updateBookCovers from "../migrations/updateBookCovers.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
 
@@ -44,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   "migrations/normalizeOlBookSourceIds": typeof migrations_normalizeOlBookSourceIds;
   "migrations/removeUnusedMedia": typeof migrations_removeUnusedMedia;
   "migrations/separateMangaAndStandardizeSourceIds": typeof migrations_separateMangaAndStandardizeSourceIds;
+  "migrations/updateBookCovers": typeof migrations_updateBookCovers;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
 }>;
