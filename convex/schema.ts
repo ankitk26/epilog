@@ -26,6 +26,22 @@ export default defineSchema({
 		seriesKey: v.optional(v.string()),
 	}).index("by_sourceId", ["sourceMediaId"]),
 
+	// Temporary backup of book media records before running cover-image migrations.
+	mediaBackup: defineTable({
+		originalId: v.id("media"),
+		name: v.string(),
+		image: v.optional(v.union(v.string(), v.null())),
+		releaseYear: v.union(v.number(), v.null()),
+		creator: v.optional(v.union(v.string(), v.null())),
+		sourceMediaId: v.string(),
+		type: v.literal("book"),
+		seriesName: v.optional(v.string()),
+		seriesPosition: v.optional(v.number()),
+		seriesTotal: v.optional(v.number()),
+		seriesKey: v.optional(v.string()),
+	}).index("by_originalId", ["originalId"])
+		.index("by_sourceId", ["sourceMediaId"]),
+
 	// Logs track a user's relationship with a piece of media.
 	// Status values are type-specific and validated at the API layer:
 	//   book/manga : tbr | reading | finished | dnf

@@ -15,6 +15,7 @@ import type * as migrations__helpers from "../migrations/_helpers.js";
 import type * as migrations__mutations from "../migrations/_mutations.js";
 import type * as migrations__queries from "../migrations/_queries.js";
 import type * as migrations_backfillCreators from "../migrations/backfillCreators.js";
+import type * as migrations_backupBookMedia from "../migrations/backupBookMedia.js";
 import type * as migrations_convertOlMangaToMalManga from "../migrations/convertOlMangaToMalManga.js";
 import type * as migrations_flipOlMangaToMangaType from "../migrations/flipOlMangaToMangaType.js";
 import type * as migrations_migrateStatuses from "../migrations/migrateStatuses.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   "migrations/_mutations": typeof migrations__mutations;
   "migrations/_queries": typeof migrations__queries;
   "migrations/backfillCreators": typeof migrations_backfillCreators;
+  "migrations/backupBookMedia": typeof migrations_backupBookMedia;
   "migrations/convertOlMangaToMalManga": typeof migrations_convertOlMangaToMalManga;
   "migrations/flipOlMangaToMangaType": typeof migrations_flipOlMangaToMangaType;
   "migrations/migrateStatuses": typeof migrations_migrateStatuses;
