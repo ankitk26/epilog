@@ -327,9 +327,17 @@ export const updateStatus = mutation({
 			);
 		}
 
+		const pagesRead =
+			args.status === "finished" &&
+			media.type === "book" &&
+			existingLog.pageCount !== undefined
+				? existingLog.pageCount
+				: undefined;
+
 		await ctx.db.patch(args.logId, {
 			status: args.status,
 			updatedTime: Date.now(),
+			...(pagesRead !== undefined && { pagesRead }),
 		});
 	},
 });
@@ -379,10 +387,16 @@ export const update = mutation({
 			args.pagesRead !== undefined
 				? args.pagesRead
 				: existingLog.pagesRead;
+
+		// finishing a book automatically marks it fully read
 		const pagesRead =
-			totalPages !== undefined && rawPagesRead !== undefined
-				? Math.min(rawPagesRead, totalPages)
-				: rawPagesRead;
+			args.status === "finished" &&
+			media.type === "book" &&
+			totalPages !== undefined
+				? totalPages
+				: totalPages !== undefined && rawPagesRead !== undefined
+					? Math.min(rawPagesRead, totalPages)
+					: rawPagesRead;
 
 		await ctx.db.patch(args.logId, {
 			status: args.status,
