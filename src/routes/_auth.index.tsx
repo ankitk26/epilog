@@ -3,6 +3,7 @@ import { api } from "@convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 import HomeLoadingState from "@/components/home-loading-state";
+import MediaTypeBottomBar from "@/components/media-type-bottom-bar";
 import MediaViewContent from "@/components/media-view-content";
 import MediaViewToolbar from "@/components/media-view-toolbar";
 import { mediaFiltersSearchValidator } from "@/lib/media-filters";
@@ -17,11 +18,16 @@ export const Route = createFileRoute("/_auth/")({
 
 function Home() {
 	return (
-		<Suspense fallback={<HomeLoadingState />}>
-			<div className="animate-reveal-fade space-y-6 lg:space-y-8">
-				<MediaViewToolbar />
-				<MediaViewContent />
-			</div>
-		</Suspense>
+		<>
+			<Suspense fallback={<HomeLoadingState />}>
+				<div className="animate-reveal-fade space-y-6 lg:space-y-8">
+					<MediaViewToolbar />
+					<MediaViewContent />
+					{/* Clearance for the fixed bottom bar on mobile */}
+					<div aria-hidden className="h-8 sm:hidden" />
+				</div>
+			</Suspense>
+			<MediaTypeBottomBar />
+		</>
 	);
 }

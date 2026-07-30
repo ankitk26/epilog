@@ -12,13 +12,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "./ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaViewToolbar() {
@@ -70,8 +63,15 @@ export default function MediaViewToolbar() {
 
 	return (
 		<div className="flex items-center justify-between gap-3">
-			{/* Media type — pill buttons on desktop, select on mobile */}
+			{/* Media type — pill buttons on desktop, bottom bar on mobile */}
 			<div className="flex flex-1 items-center">
+				{/* Mobile: active collection context */}
+				<div className="flex items-center gap-2 sm:hidden">
+					<span className="section-label">{currentType?.label}</span>
+					<span className="flex min-w-5 items-center justify-center rounded-lg bg-secondary px-1 py-1 text-xs leading-none font-semibold text-muted-foreground tabular-nums">
+						{currentType?.count}
+					</span>
+				</div>
 				{/* Desktop: pill buttons */}
 				<div className="hidden flex-wrap gap-4 sm:flex sm:items-center">
 					{logCountsByType.map((item) => {
@@ -105,39 +105,6 @@ export default function MediaViewToolbar() {
 							</Button>
 						);
 					})}
-				</div>
-
-				{/* Mobile: select */}
-				<div className="flex sm:hidden">
-					<Select
-						value={type}
-						onValueChange={(value) => setType(value as MediaType)}
-					>
-						<SelectTrigger className="h-8 w-36 gap-1.5 border-border bg-canvas-soft px-2 text-xs">
-							<SelectValue>
-								{currentType && (
-									<span className="flex items-center gap-2">
-										{currentType.label}
-										<span className="flex min-w-[1.25rem] items-center justify-center rounded-md bg-secondary px-1 text-xs font-semibold text-muted-foreground tabular-nums">
-											{currentType.count}
-										</span>
-									</span>
-								)}
-							</SelectValue>
-						</SelectTrigger>
-						<SelectContent align="start">
-							{logCountsByType.map((item) => (
-								<SelectItem key={item.type} value={item.type}>
-									<span className="flex flex-1 items-center justify-between gap-3">
-										{item.label}
-										<span className="flex min-w-[1.25rem] items-center justify-center rounded-md bg-secondary px-1 text-xs font-semibold text-muted-foreground tabular-nums">
-											{item.count}
-										</span>
-									</span>
-								</SelectItem>
-							))}
-						</SelectContent>
-					</Select>
 				</div>
 			</div>
 

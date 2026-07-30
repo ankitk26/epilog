@@ -39,7 +39,8 @@ export default defineSchema({
 		seriesPosition: v.optional(v.number()),
 		seriesTotal: v.optional(v.number()),
 		seriesKey: v.optional(v.string()),
-	}).index("by_originalId", ["originalId"])
+	})
+		.index("by_originalId", ["originalId"])
 		.index("by_sourceId", ["sourceMediaId"]),
 
 	// Logs track a user's relationship with a piece of media.

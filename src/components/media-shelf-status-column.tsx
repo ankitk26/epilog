@@ -1,7 +1,6 @@
 import type { api } from "@convex/_generated/api";
 import type { Icon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
-import EmptyStateMessage from "./empty-state-message";
 import MediaShelfCard from "./media-shelf-card";
 
 type Props = {
@@ -35,12 +34,6 @@ export default function MediaShelfStatusColumn(props: Props) {
 
 			{/* Column Content */}
 			<div className="min-w-0 flex-1 p-3">
-				{props.logs.length === 0 && (
-					<div className="px-3 pt-3">
-						<EmptyStateMessage />
-					</div>
-				)}
-
 				{props.logs.length > 0 && (
 					<div className="flex flex-col divide-y divide-border/70">
 						{props.logs.map((log) => (

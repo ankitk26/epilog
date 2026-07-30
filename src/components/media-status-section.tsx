@@ -6,7 +6,6 @@ import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { getBookProgress } from "@/lib/book-progress";
 import { cn } from "@/lib/utils";
-import EmptyStateMessage from "./empty-state-message";
 import MediaListRowCard from "./media-list-row-card";
 import MediaLogDetailsDialog from "./media-log-details-dialog";
 import MediaPosterCard from "./media-poster-card";
@@ -99,7 +98,6 @@ export default function MediaSectionByStatus(props: Props) {
 			)}
 
 			{/* No data section */}
-			{props.logs.length === 0 && <EmptyStateMessage />}
 
 			<MediaLogDetailsDialog
 				log={selectedLog}

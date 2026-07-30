@@ -2,6 +2,7 @@ import {
 	BookIcon,
 	BookOpenIcon,
 	FilmSlateIcon,
+	SparkleIcon,
 	TelevisionIcon,
 } from "@phosphor-icons/react";
 import type { IconProps } from "@phosphor-icons/react";
@@ -23,6 +24,10 @@ export default function MediaTypeIcon({
 
 	if (type === "movie") {
 		return <FilmSlateIcon {...props} />;
+	}
+
+	if (type === "anime") {
+		return <SparkleIcon {...props} />;
 	}
 
 	return <TelevisionIcon {...props} />;
