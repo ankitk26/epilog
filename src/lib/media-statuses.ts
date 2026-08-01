@@ -2,8 +2,8 @@ export const mediaTypes = ["movie", "tv", "anime", "book", "manga"] as const;
 export type MediaType = (typeof mediaTypes)[number];
 
 export const mediaStatusConfig = {
-	interested: { label: "Interested", mediaTypes: ["book"] },
 	tbr: { label: "TBR", mediaTypes: ["book", "manga"] },
+	interested: { label: "Interested", mediaTypes: ["book"] },
 	reading: { label: "Reading", mediaTypes: ["book", "manga"] },
 	finished: { label: "Finished", mediaTypes: ["book", "manga"] },
 	dnf: { label: "DNF", mediaTypes: ["book", "manga"] },
