@@ -158,7 +158,11 @@ export default function MediaLogDetailsDialog({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<BottomSheetDialogContent showCloseButton initialFocus={false}>
+			<BottomSheetDialogContent
+				className="h-screen max-h-screen rounded-none sm:h-auto sm:max-h-[85vh] sm:rounded-lg"
+				showCloseButton
+				initialFocus={false}
+			>
 				{log && (
 					<div className="flex flex-col overflow-y-auto">
 						{/* ── Hero: blurred ambient backdrop + poster card ── */}
