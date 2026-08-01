@@ -148,8 +148,11 @@ export default function MediaLogDetailsDialog({
 			pagesRead !== initialPagesRead);
 
 	const isReadingBook = mediaType === "book" && status === "reading";
-	const canSave =
-		!!log && (!isReadingBook || (pageCount !== undefined && pageCount > 0));
+	const hasValidPageProgress =
+		pageCount !== undefined &&
+		pageCount > 0 &&
+		(pagesRead ?? 0) <= pageCount;
+	const canSave = !!log && (!isReadingBook || hasValidPageProgress);
 
 	const progressPercent =
 		isReadingBook && pageCount !== undefined && pageCount > 0
@@ -360,6 +363,15 @@ export default function MediaLogDetailsDialog({
 											/>
 										</div>
 									</div>
+
+									{isReadingBook &&
+										pagesRead !== undefined &&
+										pageCount !== undefined &&
+										pagesRead > pageCount && (
+											<p className="text-xs text-destructive">
+												Pages read cannot exceed total pages.
+											</p>
+										)}
 
 									{progressPercent !== undefined && (
 										<BookProgress
