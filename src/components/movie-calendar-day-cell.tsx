@@ -90,7 +90,15 @@ export default function MovieCalendarDayCell({
 				{/* Mobile: Show colored bars only */}
 				<div className="flex flex-col gap-1 sm:hidden">
 					{events.slice(0, 3).map((_, index) => (
-						<div key={index} className="h-1.5 w-full bg-primary" />
+						<div
+							key={index}
+							className={cn(
+								"h-1.5 w-full",
+								isCurrentDayCell
+									? "bg-primary-foreground"
+									: "bg-primary",
+							)}
+						/>
 					))}
 					{events.length > 3 && (
 						<div className="text-center text-xs text-muted-foreground">

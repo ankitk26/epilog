@@ -41,7 +41,11 @@ export default function MovieCalendarMonthGrid() {
 		day: number;
 		month: number;
 		year: number;
-	} | null>(null);
+	}>({
+		day: today.getDate(),
+		month: currentMonth,
+		year: currentYear,
+	});
 	const [addMovieDate, setAddMovieDate] = useState<{
 		day: number;
 		month: number;
@@ -160,10 +164,14 @@ export default function MovieCalendarMonthGrid() {
 	};
 
 	return (
-		<div className="col-span-12 flex h-full flex-col space-y-4">
-			<div className="flex items-center justify-start">
-				<div className="flex items-center gap-2">
-					<Button variant="outline" onClick={goToCurrentMonth}>
+		<div className="col-span-12 flex h-full flex-col gap-6">
+			<div className="flex flex-wrap items-center justify-between gap-3 pb-2">
+				<div className="flex items-center gap-1">
+					<Button
+						size={isMobile ? "sm" : "default"}
+						variant="outline"
+						onClick={goToCurrentMonth}
+					>
 						Current month
 					</Button>
 					<Button
@@ -182,17 +190,17 @@ export default function MovieCalendarMonthGrid() {
 					</Button>
 				</div>
 
-				<h1 className="ml-auto p-2 sm:ml-0">
+				<h1 className="order-first px-0 text-lg font-medium tracking-tight sm:order-none">
 					{months[selectedMonth]} {selectedYear}
 				</h1>
 			</div>
 
-			<div className="h-full p-2">
+			<div className="h-full px-0 pt-1 sm:p-2">
 				<div className="grid grid-cols-7">
 					{weekDays.map((weekDay) => (
 						<span
 							key={weekDay}
-							className="col-span-1 mb-1 text-center text-xs text-muted-foreground sm:mb-2"
+							className="col-span-1 mb-2 text-center text-xs font-medium tracking-wide text-muted-foreground uppercase sm:mb-3"
 						>
 							{weekDay}
 						</span>

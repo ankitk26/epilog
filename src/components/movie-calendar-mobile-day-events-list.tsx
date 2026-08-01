@@ -11,8 +11,6 @@ import MovieCalendarEventDetailsDialog from "./movie-calendar-event-details-dial
 type Props = {
 	selectedDate: { day: number; month: number; year: number } | null;
 	events: CalendarMovieEvent[];
-	isTodayInSelectedMonth: boolean;
-	currentDay: number;
 };
 
 const weekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
@@ -34,8 +32,6 @@ const months = [
 export default function MovieCalendarMobileDayEventsList({
 	selectedDate,
 	events,
-	isTodayInSelectedMonth,
-	currentDay,
 }: Props) {
 	const [selectedEvent, setSelectedEvent] =
 		useState<CalendarMovieEvent | null>(null);
@@ -58,21 +54,19 @@ export default function MovieCalendarMobileDayEventsList({
 		displayDate.day,
 	);
 	const dayOfWeek = weekDays[dateObj.getDay()];
-	const isToday = isTodayInSelectedMonth && displayDate.day === currentDay;
-
 	const getEventColor = () => {
 		return "bg-primary";
 	};
 
 	return (
 		<>
-			<div className="mt-4 border-t pt-4 sm:hidden">
+			<div className="mt-4 pt-4 sm:hidden">
 				<div className="mb-4 flex items-center justify-between px-2">
 					<div className="flex items-center gap-2">
 						<span
 							className={cn(
 								"text-3xl font-semibold",
-								isToday ? "text-primary" : "text-foreground",
+								"text-foreground",
 							)}
 						>
 							{displayDate.day}
@@ -88,7 +82,7 @@ export default function MovieCalendarMobileDayEventsList({
 					>
 						<button
 							type="button"
-							className="inline-flex h-8 w-8 items-center justify-center bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+							className="inline-flex h-8 w-8 items-center justify-center border border-border text-foreground transition-colors hover:bg-secondary"
 						>
 							<PlusIcon className="size-5" />
 						</button>
