@@ -4,6 +4,7 @@ import { mutation, query } from "./_generated/server";
 import { getCurrentUserOrThrow } from "./model/users";
 
 const allStatusLiterals = v.union(
+	v.literal("interested"),
 	v.literal("tbr"),
 	v.literal("reading"),
 	v.literal("finished"),
@@ -30,6 +31,7 @@ function defaultStatusForType(
 ): string {
 	switch (type) {
 		case "book":
+			return "interested";
 		case "manga":
 			return "tbr";
 		case "movie":
@@ -44,7 +46,7 @@ const validStatusesByType: Record<
 	"anime" | "movie" | "tv" | "book" | "manga",
 	Set<string>
 > = {
-	book: new Set(["tbr", "reading", "finished", "dnf"]),
+	book: new Set(["interested", "tbr", "reading", "finished", "dnf"]),
 	manga: new Set(["tbr", "reading", "finished", "dnf"]),
 	movie: new Set(["watchlist", "watching", "watched"]),
 	tv: new Set([
@@ -260,6 +262,7 @@ export const add = mutation({
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
 			status: status as
+				| "interested"
 				| "tbr"
 				| "reading"
 				| "finished"

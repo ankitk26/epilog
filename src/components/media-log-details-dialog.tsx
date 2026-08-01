@@ -37,6 +37,8 @@ function formatLogDate(timestamp: number) {
 
 function statusPhrase(status: LogStatus, date: string): string {
 	switch (status) {
+		case "interested":
+			return `Interested since ${date}`;
 		case "tbr":
 			return `TBR'd on ${date}`;
 		case "reading":

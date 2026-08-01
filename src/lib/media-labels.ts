@@ -6,12 +6,15 @@ import {
 	EyeIcon,
 	HourglassIcon,
 	ListPlusIcon,
+	StarIcon,
 	XCircleIcon,
 } from "@phosphor-icons/react";
 import type { LogStatus, MediaType } from "@/types";
 
 export function getStatusIcon(status: LogStatus): Icon {
 	switch (status) {
+		case "interested":
+			return StarIcon;
 		case "tbr":
 			return BookmarkSimpleIcon;
 		case "watchlist":
@@ -35,6 +38,8 @@ export function getStatusIcon(status: LogStatus): Icon {
 
 export function statusLabel(status: LogStatus, _type: MediaType): string {
 	switch (status) {
+		case "interested":
+			return "Interested";
 		case "tbr":
 			return "TBR";
 		case "reading":

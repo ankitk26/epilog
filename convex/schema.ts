@@ -45,18 +45,21 @@ export default defineSchema({
 
 	// Logs track a user's relationship with a piece of media.
 	// Status values are type-specific and validated at the API layer:
-	//   book/manga : tbr | reading | finished | dnf
+	//   book      : interested | tbr | reading | finished | dnf
+	//   manga     : tbr | reading | finished | dnf
 	//   movie      : watchlist | watching | watched
 	//   tv/anime   : plan_to_watch | watching | waiting | completed | dropped
 	logs: defineTable({
 		userId: v.id("users"),
 		dbMediaId: v.id("media"),
 		status: v.union(
-			// book / manga
+			// book
+			v.literal("interested"),
 			v.literal("tbr"),
 			v.literal("reading"),
 			v.literal("finished"),
 			v.literal("dnf"),
+			// manga
 			// movie
 			v.literal("watchlist"),
 			v.literal("watching"),

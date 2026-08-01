@@ -5,6 +5,7 @@ import {
 	CheckCircleIcon,
 	ClockIcon,
 	EyeIcon,
+	StarIcon,
 	XCircleIcon,
 	type Icon,
 } from "@phosphor-icons/react";
@@ -20,6 +21,7 @@ import MediaLogDetailsDialog from "./media-log-details-dialog";
 import MediaShelfStatusColumn from "./media-shelf-status-column";
 
 const iconByStatus: Record<LogStatus, Icon> = {
+	interested: StarIcon,
 	tbr: CalendarBlankIcon,
 	reading: ClockIcon,
 	finished: CheckCircleIcon,

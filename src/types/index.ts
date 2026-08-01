@@ -7,6 +7,7 @@ export const mediaTypes = ["movie", "tv", "anime", "book", "manga"] as const;
 export type MediaType = (typeof mediaTypes)[number];
 
 export const logStatuses = [
+	"interested",
 	"tbr",
 	"reading",
 	"finished",
@@ -22,7 +23,7 @@ export const logStatuses = [
 export type LogStatus = (typeof logStatuses)[number];
 
 export const statusesByMediaType: Record<MediaType, LogStatus[]> = {
-	book: ["reading", "tbr", "finished", "dnf"],
+	book: ["interested", "tbr", "reading", "finished", "dnf"],
 	manga: ["reading", "tbr", "finished", "dnf"],
 	movie: ["watching", "watchlist", "watched"],
 	tv: ["watching", "plan_to_watch", "waiting", "completed", "dropped"],
@@ -30,7 +31,7 @@ export const statusesByMediaType: Record<MediaType, LogStatus[]> = {
 };
 
 export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
-	book: "tbr",
+	book: "interested",
 	manga: "tbr",
 	movie: "watchlist",
 	tv: "plan_to_watch",
