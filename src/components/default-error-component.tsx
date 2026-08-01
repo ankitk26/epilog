@@ -29,14 +29,19 @@ export default function DefaultErrorComponent() {
 					</p>
 				</div>
 
-				<div className="mt-6 flex flex-wrap gap-3">
-					<Link search={defaultMediaFilters} to="/">
-						<Button className="gap-2">
+				<div className="mt-6 flex flex-col gap-3 sm:flex-row">
+					<Link
+						className="w-full sm:w-auto"
+						search={defaultMediaFilters}
+						to="/"
+					>
+						<Button className="w-full gap-2 sm:w-auto">
 							<HouseIcon className="size-4" />
 							Home
 						</Button>
 					</Link>
 					<Button
+						className="w-full sm:w-auto"
 						onClick={() => window.location.reload()}
 						variant="outline"
 					>
