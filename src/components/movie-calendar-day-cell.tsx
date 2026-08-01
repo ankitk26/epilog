@@ -79,7 +79,7 @@ export default function MovieCalendarDayCell({
 						? "bg-primary text-primary-foreground"
 						: "",
 					isSelected && !isCurrentDayCell
-						? "bg-muted ring-2 ring-primary"
+						? "ring-2 ring-primary ring-inset"
 						: "",
 				)}
 			>
