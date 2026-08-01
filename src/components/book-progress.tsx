@@ -20,33 +20,27 @@ export default function BookProgress({ progress, className }: Props) {
 	const filledSegments = Math.round(progress.percent / 10);
 
 	return (
-		<div className={cn("flex flex-col gap-1", className)}>
-			<div className="flex items-baseline justify-between">
-				<span className="font-heading text-xs font-medium text-foreground tabular-nums">
-					{progress.percent}%
-				</span>
-				<span className="text-xs text-muted-foreground tabular-nums">
-					{progress.read} / {progress.total}
+		<div className={cn("flex max-w-48 flex-col gap-2", className)}>
+			<div className="flex items-baseline justify-between gap-3">
+				<span className="font-heading text-xs font-semibold text-foreground tabular-nums">
+					{progress.percent}% ({progress.read}/{progress.total})
 				</span>
 			</div>
 
 			<div
 				aria-label={`Reading progress ${progress.percent}%`}
-				className="flex items-end gap-1"
+				className="flex h-1.5 w-full gap-1"
 				role="img"
 			>
-				{Array.from({ length: 10 }, (_, i) => {
-					const filled = i < filledSegments;
-					return (
-						<span
-							className={cn(
-								"w-1 rounded-full transition-all duration-500 ease-out",
-								filled ? "h-2 bg-primary" : "h-1 bg-secondary",
-							)}
-							key={i}
-						/>
-					);
-				})}
+				{Array.from({ length: 10 }, (_, i) => (
+					<span
+						className={cn(
+							"h-full flex-1 rounded-full transition-colors duration-500",
+							i < filledSegments ? "bg-primary" : "bg-secondary",
+						)}
+						key={i}
+					/>
+				))}
 			</div>
 		</div>
 	);
