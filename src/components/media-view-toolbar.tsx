@@ -7,6 +7,7 @@ import {
 	ListIcon,
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,12 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 export default function MediaViewToolbar() {
 	const { setType, setView, type, view } = useMediaFilters();
 	const isMobile = useIsMobile();
+
+	useEffect(() => {
+		if (isMobile && (view === "grid" || view === "shelf")) {
+			setView("list");
+		}
+	}, [isMobile, setView, view]);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -109,7 +116,12 @@ export default function MediaViewToolbar() {
 			</div>
 
 			{/* View switcher — icon buttons */}
-			<div className="hidden shrink-0 items-center gap-1 border border-border bg-card/50 p-1 sm:flex">
+			<div
+				className={cn(
+					"shrink-0 items-center gap-1 border border-border bg-card/50 p-1",
+					isMobile && type !== "movie" ? "hidden" : "flex",
+				)}
+			>
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
