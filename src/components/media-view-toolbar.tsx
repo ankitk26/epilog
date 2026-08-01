@@ -109,13 +109,16 @@ export default function MediaViewToolbar() {
 			</div>
 
 			{/* View switcher — icon buttons */}
-			<div className="flex shrink-0 items-center gap-1 rounded-lg border border-border bg-card/50 p-1">
+			<div className="hidden shrink-0 items-center gap-1 rounded-lg border border-border bg-card/50 p-1 sm:flex">
 				{viewOptions.map((option) => {
 					if (type !== "movie" && option.value === "calendar") {
 						return null;
 					}
 
-					if (isMobile && option.value === "shelf") {
+					if (
+						isMobile &&
+						(option.value === "shelf" || option.value === "grid")
+					) {
 						return null;
 					}
 

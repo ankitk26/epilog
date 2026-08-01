@@ -4,6 +4,7 @@ import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { getBookProgress } from "@/lib/book-progress";
 import { cn } from "@/lib/utils";
 import MediaListRowCard from "./media-list-row-card";
@@ -21,6 +22,8 @@ type Props = {
 
 export default function MediaSectionByStatus(props: Props) {
 	const { view } = useMediaFilters();
+	const isMobile = useIsMobile();
+	const effectiveView = isMobile && view === "grid" ? "list" : view;
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [selectedLog, setSelectedLog] = useState<
@@ -63,15 +66,15 @@ export default function MediaSectionByStatus(props: Props) {
 			{!isCollapsed && props.logs.length !== 0 && (
 				<div
 					className={
-						view === "list"
-							? "flex flex-col divide-y divide-border border-b border-border"
+						effectiveView === "list"
+							? "flex flex-col gap-2"
 							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-6"
 					}
 				>
 					{props.logs.map((log) => {
 						const progress = getBookProgress(log);
 
-						return view === "list" ? (
+						return effectiveView === "list" ? (
 							<MediaListRowCard
 								key={log._id}
 								log={log}
