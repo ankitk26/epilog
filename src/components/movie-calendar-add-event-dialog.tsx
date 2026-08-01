@@ -68,14 +68,19 @@ export default function MovieCalendarAddEventDialog({
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			{children && <DialogTrigger render={children} />}
-			<DialogContent className="flex max-h-[80vh] flex-col overflow-hidden sm:max-w-md">
-				<DialogHeader>
-					<DialogTitle>Add movie</DialogTitle>
+			<DialogContent className="flex max-h-[80vh] flex-col gap-6 overflow-hidden sm:max-w-md">
+				<DialogHeader className="gap-2 pb-2">
+					<DialogTitle className="text-lg tracking-tight">
+						Add movie
+					</DialogTitle>
+					<p className="text-xs text-muted-foreground">
+						Search for a movie to add to your calendar.
+					</p>
 				</DialogHeader>
-				<div className="flex min-h-0 flex-1 flex-col gap-3">
+				<div className="flex min-h-0 flex-1 flex-col gap-4">
 					<form
+						className="flex flex-col gap-3 sm:flex-row sm:items-center"
 						onSubmit={handleQuerySubmit}
-						className="flex items-center gap-2"
 					>
 						<Input
 							onChange={(e) => {
@@ -86,7 +91,11 @@ export default function MovieCalendarAddEventDialog({
 							value={query}
 							className="flex-1"
 						/>
-						<Button type="submit" disabled={!query || isFetching}>
+						<Button
+							className="w-full sm:w-auto"
+							disabled={!query || isFetching}
+							type="submit"
+						>
 							{isFetching ? (
 								<SpinnerIcon className="size-3.5 animate-spin" />
 							) : (
@@ -94,7 +103,7 @@ export default function MovieCalendarAddEventDialog({
 							)}
 						</Button>
 					</form>
-					<div className="min-h-0 flex-1 overflow-y-auto pr-1">
+					<div className="min-h-0 flex-1 overflow-y-auto pt-1 pr-1">
 						{isFetching && (
 							<div className="flex items-center justify-center gap-2 py-8 text-muted-foreground">
 								<SpinnerIcon className="size-4 animate-spin" />
