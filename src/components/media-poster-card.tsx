@@ -33,14 +33,14 @@ export default function MediaPosterCard(props: Props) {
 	return (
 		<div
 			className={cn(
-				"group flex w-full flex-col overflow-hidden rounded-lg bg-card p-3 ring-1 ring-border transition-all duration-300 ease-out",
+				"group flex w-full flex-col overflow-hidden bg-card p-3 ring-1 ring-border transition-all duration-300 ease-out",
 				isClickable &&
 					"cursor-pointer hover:shadow-lift hover:ring-2 hover:ring-border",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}
 		>
-			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary">
+			<div className="relative aspect-[2/3] overflow-hidden bg-secondary">
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}

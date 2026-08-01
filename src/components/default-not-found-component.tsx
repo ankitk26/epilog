@@ -6,9 +6,9 @@ import { Button } from "./ui/button";
 export default function DefaultNotFoundComponent() {
 	return (
 		<div className="flex min-h-[60vh] items-center justify-center px-4 py-8">
-			<div className="w-full max-w-xl rounded-lg border border-border bg-card p-8 shadow-soft">
+			<div className="w-full max-w-xl border border-border bg-card p-8 shadow-soft">
 				<div className="mb-6 flex items-start gap-4">
-					<div className="rounded-lg bg-muted p-3 text-muted-foreground">
+					<div className="bg-muted p-3 text-muted-foreground">
 						<MagnifyingGlassIcon className="size-6" />
 					</div>
 					<div className="space-y-2">

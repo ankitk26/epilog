@@ -222,7 +222,7 @@ export default function MovieCalendarEventDetailsDialog({
 				<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 					{/* Media summary */}
 					<div className="flex gap-4">
-						<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border sm:w-20">
+						<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden bg-secondary shadow-soft ring-1 ring-border sm:w-20">
 							{event.image ? (
 								<Image
 									alt={event.name || "Media poster"}

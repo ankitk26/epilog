@@ -145,7 +145,7 @@ export default function AddMediaToLogDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:w-36">
+								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden bg-secondary shadow-lift ring-1 ring-border sm:w-36">
 									{media.imageUrl ? (
 										<Image
 											alt={media.name || "Media poster"}
@@ -192,7 +192,7 @@ export default function AddMediaToLogDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden rounded-lg border border-border">
+								<div className="flex flex-col overflow-hidden border border-border">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);

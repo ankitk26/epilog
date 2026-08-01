@@ -17,7 +17,7 @@ export default function MediaShelfStatusColumn(props: Props) {
 	const Icon = props.column.icon;
 
 	return (
-		<div className="flex min-h-48 flex-col rounded-lg border border-border bg-canvas-soft/50">
+		<div className="flex min-h-48 flex-col border border-border bg-canvas-soft/50">
 			{/* Column header */}
 			<div className="flex items-center gap-3 border-b border-border px-5 py-4">
 				<Icon

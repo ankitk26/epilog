@@ -1,6 +1,10 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
-import { CalendarBlankIcon, TrashSimpleIcon } from "@phosphor-icons/react";
+import {
+	CalendarBlankIcon,
+	TrashSimpleIcon,
+	XIcon,
+} from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
@@ -9,6 +13,7 @@ import { toast } from "sonner";
 import {
 	BottomSheetDialogContent,
 	Dialog,
+	DialogClose,
 } from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -162,10 +167,22 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<BottomSheetDialogContent
-				className="h-screen max-h-screen rounded-none sm:h-auto sm:max-h-[85vh] sm:rounded-lg"
-				showCloseButton
+				className="sm: h-screen max-h-screen sm:h-auto sm:max-h-[85vh]"
+				showCloseButton={false}
 				initialFocus={false}
 			>
+				<DialogClose
+					render={
+						<Button
+							className="absolute top-5 right-5 z-10"
+							size="icon-sm"
+							variant="ghost"
+						/>
+					}
+				>
+					<XIcon />
+					<span className="sr-only">Close</span>
+				</DialogClose>
 				{log && (
 					<div className="flex flex-col overflow-y-auto">
 						{/* ── Hero: blurred ambient backdrop + poster card ── */}
@@ -190,7 +207,7 @@ export default function MediaLogDetailsDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:w-36">
+								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden bg-secondary shadow-lift ring-1 ring-border sm:w-36">
 									{log.metadata.image ? (
 										<Image
 											alt={
@@ -256,7 +273,7 @@ export default function MediaLogDetailsDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden rounded-lg border border-border">
+								<div className="flex flex-col overflow-hidden border border-border">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);
@@ -305,7 +322,7 @@ export default function MediaLogDetailsDialog({
 							</div>
 
 							{isReadingBook && (
-								<div className="space-y-3 rounded-lg border border-border p-4">
+								<div className="space-y-3 border border-border p-4">
 									<p className="section-label">
 										Reading progress
 									</p>
@@ -369,7 +386,8 @@ export default function MediaLogDetailsDialog({
 										pageCount !== undefined &&
 										pagesRead > pageCount && (
 											<p className="text-xs text-destructive">
-												Pages read cannot exceed total pages.
+												Pages read cannot exceed total
+												pages.
 											</p>
 										)}
 

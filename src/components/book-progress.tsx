@@ -35,7 +35,7 @@ export default function BookProgress({ progress, className }: Props) {
 				{Array.from({ length: 10 }, (_, i) => (
 					<span
 						className={cn(
-							"h-full flex-1 rounded-full transition-colors duration-500",
+							"h-full flex-1 transition-colors duration-500",
 							i < filledSegments ? "bg-primary" : "bg-secondary",
 						)}
 						key={i}

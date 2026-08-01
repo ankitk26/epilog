@@ -15,12 +15,12 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-6 rounded-xl border border-transparent py-3 transition-all duration-300 ease-out hover:border-border hover:bg-canvas-soft hover:shadow-soft"
+			className="group flex cursor-pointer items-center gap-6 border border-transparent py-3 transition-all duration-300 ease-out hover:border-border hover:bg-canvas-soft hover:shadow-soft"
 			onClick={onClick}
 			role="button"
 		>
 			{/* Poster */}
-			<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border/70">
+			<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden bg-secondary shadow-soft ring-1 ring-border/70">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata.name || "Media poster"}

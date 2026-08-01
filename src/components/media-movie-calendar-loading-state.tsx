@@ -18,9 +18,9 @@ function CalendarCellSkeleton({
 					}
 				/>
 				<div className="space-y-2 sm:space-y-2">
-					<Skeleton className="h-1.5 w-full rounded-full sm:h-3.5" />
+					<Skeleton className="h-1.5 w-full sm:h-3.5" />
 					{isCurrentMonth ? (
-						<Skeleton className="hidden h-1.5 w-2/3 rounded-full sm:block sm:h-3.5" />
+						<Skeleton className="hidden h-1.5 w-2/3 sm:block sm:h-3.5" />
 					) : null}
 				</div>
 			</div>

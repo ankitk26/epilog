@@ -31,13 +31,13 @@ export default function SearchMediaListItem({
 	return (
 		<button
 			className={cn(
-				"group flex w-full items-center gap-4 rounded-lg py-3 pr-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:py-4 lg:pr-4",
+				"group flex w-full items-center gap-4 py-3 pr-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:py-4 lg:pr-4",
 				onClick && "cursor-pointer",
 			)}
 			onClick={onClick}
 			type="button"
 		>
-			<div className="aspect-[2/3] w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border lg:w-24">
+			<div className="aspect-[2/3] w-12 flex-shrink-0 overflow-hidden bg-secondary ring-1 ring-border lg:w-24">
 				{media.imageUrl && !imageFailed ? (
 					<Image
 						alt={media.name}

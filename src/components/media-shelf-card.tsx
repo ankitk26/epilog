@@ -15,12 +15,12 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-lg px-3 py-3 transition-colors duration-300 ease-out hover:bg-card"
+			className="group flex cursor-pointer items-center gap-3 overflow-hidden px-3 py-3 transition-colors duration-300 ease-out hover:bg-card"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-border">
+			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden bg-secondary ring-1 ring-border">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}

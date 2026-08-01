@@ -5,7 +5,7 @@ import {
 	XCircleIcon,
 	SpinnerIcon,
 } from "@phosphor-icons/react";
-import { useTheme } from "better-themes";
+import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -22,7 +22,6 @@ const Toaster = ({ ...props }: ToasterProps) => {
 				error: <XCircleIcon className="size-4" />,
 				loading: <SpinnerIcon className="size-4 animate-spin" />,
 			}}
-			duration={1000}
 			style={
 				{
 					"--normal-bg": "var(--popover)",

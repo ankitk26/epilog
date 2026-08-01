@@ -2,20 +2,20 @@ import { Skeleton } from "./ui/skeleton";
 
 function MediaShelfCardSkeleton() {
 	return (
-		<div className="flex items-center gap-3 overflow-hidden rounded-lg bg-card/70 p-3">
-			<Skeleton className="h-20 w-14 rounded-md" />
+		<div className="flex items-center gap-3 overflow-hidden bg-card/70 p-3">
+			<Skeleton className="h-20 w-14" />
 			<div className="min-w-0 flex-1 space-y-3">
 				<Skeleton className="h-4 w-4/5" />
 				<Skeleton className="h-3 w-16" />
 			</div>
-			<Skeleton className="h-6 w-6 rounded-full" />
+			<Skeleton className="h-6 w-6" />
 		</div>
 	);
 }
 
 function MediaShelfStatusColumnSkeleton() {
 	return (
-		<div className="flex flex-col space-y-2 rounded-lg border border-border bg-canvas-soft/50">
+		<div className="flex flex-col space-y-2 border border-border bg-canvas-soft/50">
 			<div className="space-y-3 p-2">
 				{Array.from({ length: 3 }).map((_, index) => (
 					<MediaShelfCardSkeleton
