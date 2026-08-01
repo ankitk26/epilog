@@ -3,40 +3,18 @@ import { z } from "zod";
 export const filterMediaViews = ["grid", "shelf", "list", "calendar"] as const;
 export type FilterMediaView = (typeof filterMediaViews)[number];
 
-export const mediaTypes = ["movie", "tv", "anime", "book", "manga"] as const;
-export type MediaType = (typeof mediaTypes)[number];
+export {
+	defaultStatusByMediaType,
+	mediaStatusConfig,
+	mediaTypes,
+	statusesByMediaType,
+	validStatusesByMediaType,
+} from "../lib/media-statuses";
+export type { LogStatus, MediaType } from "../lib/media-statuses";
+import { mediaStatusConfig } from "../lib/media-statuses";
+import type { LogStatus } from "../lib/media-statuses";
 
-export const logStatuses = [
-	"interested",
-	"tbr",
-	"reading",
-	"finished",
-	"dnf",
-	"watchlist",
-	"watching",
-	"watched",
-	"plan_to_watch",
-	"waiting",
-	"completed",
-	"dropped",
-] as const;
-export type LogStatus = (typeof logStatuses)[number];
-
-export const statusesByMediaType: Record<MediaType, LogStatus[]> = {
-	book: ["interested", "tbr", "reading", "finished", "dnf"],
-	manga: ["reading", "tbr", "finished", "dnf"],
-	movie: ["watching", "watchlist", "watched"],
-	tv: ["watching", "plan_to_watch", "waiting", "completed", "dropped"],
-	anime: ["watching", "plan_to_watch", "waiting", "completed", "dropped"],
-};
-
-export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
-	book: "interested",
-	manga: "tbr",
-	movie: "watchlist",
-	tv: "plan_to_watch",
-	anime: "plan_to_watch",
-};
+export const logStatuses = Object.keys(mediaStatusConfig) as LogStatus[];
 
 export const mediaSearchAPIOutput = z.object({
 	results: z.array(

@@ -1,4 +1,9 @@
 import { v } from "convex/values";
+import {
+	defaultStatusByMediaType,
+	validStatusesByMediaType,
+} from "../src/lib/media-statuses";
+import type { MediaType } from "../src/lib/media-statuses";
 import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { getCurrentUserOrThrow } from "./model/users";
@@ -26,44 +31,9 @@ const mediaTypeLiteral = v.union(
 	v.literal("manga"),
 );
 
-function defaultStatusForType(
-	type: "anime" | "movie" | "tv" | "book" | "manga",
-): string {
-	switch (type) {
-		case "book":
-			return "interested";
-		case "manga":
-			return "tbr";
-		case "movie":
-			return "watchlist";
-		case "tv":
-		case "anime":
-			return "plan_to_watch";
-	}
+function defaultStatusForType(type: MediaType): string {
+	return defaultStatusByMediaType[type];
 }
-
-const validStatusesByType: Record<
-	"anime" | "movie" | "tv" | "book" | "manga",
-	Set<string>
-> = {
-	book: new Set(["interested", "tbr", "reading", "finished", "dnf"]),
-	manga: new Set(["tbr", "reading", "finished", "dnf"]),
-	movie: new Set(["watchlist", "watching", "watched"]),
-	tv: new Set([
-		"plan_to_watch",
-		"watching",
-		"waiting",
-		"completed",
-		"dropped",
-	]),
-	anime: new Set([
-		"plan_to_watch",
-		"watching",
-		"waiting",
-		"completed",
-		"dropped",
-	]),
-};
 
 export const all = query({
 	args: {},
@@ -245,7 +215,7 @@ export const add = mutation({
 		// determine status: use provided if valid for type, otherwise default
 		let status = defaultStatusForType(args.media.type);
 		if (args.status) {
-			const valid = validStatusesByType[args.media.type];
+			const valid = validStatusesByMediaType[args.media.type];
 			if (valid.has(args.status)) {
 				status = args.status;
 			}
@@ -323,7 +293,7 @@ export const updateStatus = mutation({
 			throw new Error("media not found");
 		}
 
-		const valid = validStatusesByType[media.type];
+		const valid = validStatusesByMediaType[media.type];
 		if (!valid.has(args.status)) {
 			throw new Error(
 				`invalid status "${args.status}" for media type "${media.type}"`,
@@ -366,7 +336,7 @@ export const update = mutation({
 			throw new Error("media not found");
 		}
 
-		const valid = validStatusesByType[media.type];
+		const valid = validStatusesByMediaType[media.type];
 		if (!valid.has(args.status)) {
 			throw new Error(
 				`invalid status "${args.status}" for media type "${media.type}"`,
@@ -436,7 +406,7 @@ export const bulkUpdateStatus = mutation({
 			if (!media) {
 				throw new Error("media not found");
 			}
-			const valid = validStatusesByType[media.type];
+			const valid = validStatusesByMediaType[media.type];
 			if (!valid.has(args.status)) {
 				throw new Error(
 					`invalid status "${args.status}" for media type "${media.type}"`,
