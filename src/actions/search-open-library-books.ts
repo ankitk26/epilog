@@ -299,7 +299,6 @@ async function fetchOpenLibrarySearch(query: string) {
 			method: "GET",
 			query: {
 				q: query,
-				language: "eng",
 				limit: String(SEARCH_LIMIT),
 				fields: openLibrarySearchFields.join(","),
 			},
