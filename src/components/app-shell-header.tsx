@@ -1,5 +1,5 @@
 import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
-import { useHotkey } from "@tanstack/react-hotkeys";
+import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useAddLibrarySheet } from "@/components/add-library-sheet";
 import { authClient } from "@/lib/auth-client";
@@ -63,10 +63,10 @@ export default function AppShellHeader() {
 								</Button>
 							}
 						/>
-						<TooltipContent>
+						<TooltipContent className="rounded-lg">
 							Search library
-							<kbd className="ml-2 bg-background/20 px-1.5 py-0.5 text-xs font-medium">
-								Mod+K
+							<kbd className="ml-2 rounded-md bg-background/20 px-1.5 py-0.5 text-xs font-medium">
+								{formatForDisplay("Mod+K")}
 							</kbd>
 						</TooltipContent>
 					</Tooltip>
