@@ -131,6 +131,22 @@ export default function MediaShelfView() {
 				</div>
 			</div>
 
+			<div className="flex items-center justify-center gap-2 lg:hidden">
+				{columns.map((column, index) => (
+					<button
+						aria-current={activeTab === index ? "step" : undefined}
+						aria-label={`Show ${column.title}`}
+						className={
+							activeTab === index
+								? "h-1 w-8 rounded-full bg-foreground transition-all"
+								: "h-1 w-4 rounded-full bg-border transition-all"
+						}
+						onClick={() => setActiveTab(index)}
+						type="button"
+					/>
+				))}
+			</div>
+
 			{/* Desktop: multi-column grid */}
 			<div
 				className="hidden gap-6 lg:grid lg:items-start"
