@@ -89,7 +89,7 @@ export default function MovieCalendarMobileDayEventsList({
 					</MovieCalendarAddEventDialog>
 				</div>
 
-				<div className="flex flex-col">
+				<div className="flex flex-col gap-2">
 					{events.length === 0 ? (
 						<div className="px-2 py-4 text-center text-sm text-muted-foreground">
 							No events on {months[displayDate.month]}{" "}
@@ -101,7 +101,7 @@ export default function MovieCalendarMobileDayEventsList({
 								<button
 									key={event.movieEventId}
 									onClick={() => setSelectedEvent(event)}
-									className="flex items-center gap-3 rounded-lg border border-border/70 bg-card px-2 py-3 text-left shadow-soft transition-all hover:bg-secondary hover:shadow-lift"
+									className="flex items-center gap-3 rounded-lg border border-border/70 bg-card px-3 py-3 text-left shadow-soft transition-all hover:bg-secondary hover:shadow-lift"
 								>
 									<div
 										className={cn(

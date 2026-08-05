@@ -73,10 +73,10 @@ export default function MovieCalendarDayCell({
 			<div
 				onClick={handleDayClick}
 				className={cn(
-					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 rounded-xl border border-border/70 bg-card p-1 text-left text-xs shadow-soft transition-all hover:shadow-lift sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
+					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 rounded-xl border border-border/70 bg-card/70 p-1 text-left text-xs shadow-none transition-all hover:shadow-soft sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3",
 					isCurrentMonth ? "" : "text-muted-foreground",
 					isCurrentDayCell
-						? "bg-primary text-primary-foreground"
+						? "bg-primary/10 font-medium text-foreground ring-1 ring-primary/60"
 						: "",
 					isSelected && !isCurrentDayCell
 						? "ring-2 ring-primary ring-inset"
@@ -93,10 +93,8 @@ export default function MovieCalendarDayCell({
 						<div
 							key={index}
 							className={cn(
-								"h-1.5 w-full",
-								isCurrentDayCell
-									? "bg-primary-foreground"
-									: "bg-primary",
+								"h-1.5 w-full rounded-full",
+								isCurrentDayCell ? "bg-primary" : "bg-primary",
 							)}
 						/>
 					))}

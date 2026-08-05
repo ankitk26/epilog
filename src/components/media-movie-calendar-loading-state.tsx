@@ -8,7 +8,7 @@ function CalendarCellSkeleton({
 	isCurrentMonth?: boolean;
 }) {
 	return (
-		<div className="col-span-1 flex min-h-14 flex-col gap-1 border p-1 sm:min-h-20 sm:gap-2 sm:p-2 lg:min-h-24 lg:p-3">
+		<div className="col-span-1 flex min-h-14 flex-col gap-1 rounded-xl border border-border/70 bg-card/40 p-1 shadow-soft sm:min-h-20 sm:gap-2 sm:p-2 lg:min-h-24 lg:p-3">
 			<div className="space-y-2 sm:space-y-2">
 				<Skeleton
 					className={
@@ -32,7 +32,7 @@ export default function MediaMovieCalendarLoadingState() {
 	return (
 		<div className="col-span-12 flex h-full flex-col space-y-4">
 			<div className="h-full p-2">
-				<div className="grid grid-cols-7">
+				<div className="grid grid-cols-7 gap-1 sm:gap-2">
 					{weekDays.map((weekDay) => (
 						<span
 							key={weekDay}
