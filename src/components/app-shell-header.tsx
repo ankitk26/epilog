@@ -37,14 +37,14 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="fixed top-0 right-0 left-0 z-30 bg-canvas/80 px-6 backdrop-blur-md backdrop-saturate-150 lg:px-12">
+		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border/40 bg-canvas/75 px-6 shadow-soft backdrop-blur-md backdrop-saturate-150 lg:px-12">
 			<div className="mx-auto flex h-16 max-w-[88rem] items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-sm font-semibold tracking-[0.15em] text-foreground uppercase transition-opacity group-hover:opacity-60">
+					<span className="font-heading text-sm font-semibold tracking-[0.2em] text-foreground uppercase transition-opacity group-hover:opacity-60">
 						epilog
 					</span>
 				</Link>
@@ -77,11 +77,11 @@ export default function AppShellHeader() {
 						<DropdownMenuTrigger
 							render={
 								<Button
-									className="overflow-hidden p-0"
+									className="overflow-hidden border-0 p-0"
 									size="icon"
 									variant="outline"
 								>
-									<Avatar className="rounded-none p-0 *:rounded-none after:rounded-none">
+									<Avatar className="p-0 shadow-soft after:border-0">
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}

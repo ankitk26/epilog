@@ -17,7 +17,7 @@ export default function MediaTypeBottomBar() {
 	return (
 		<nav
 			aria-label="Media type"
-			className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-canvas/80 backdrop-blur-md backdrop-saturate-150 sm:hidden"
+			className="fixed inset-x-0 bottom-0 z-30 rounded-t-xl border-t border-border bg-canvas/85 shadow-lift backdrop-blur-md backdrop-saturate-150 sm:hidden"
 		>
 			<div className="flex items-stretch">
 				{items.map((item) => {

@@ -167,7 +167,7 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<BottomSheetDialogContent
-				className="sm: h-screen max-h-screen sm:h-auto sm:max-h-[85vh]"
+				className="h-screen max-h-screen rounded-t-xl sm:h-auto sm:max-h-[85vh] sm:rounded-xl"
 				showCloseButton={false}
 				initialFocus={false}
 			>
@@ -207,7 +207,7 @@ export default function MediaLogDetailsDialog({
 							{/* Content: poster + info */}
 							<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
 								{/* Vertical poster */}
-								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden bg-secondary shadow-lift ring-1 ring-border sm:w-36">
+								<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:w-36">
 									{log.metadata.image ? (
 										<Image
 											alt={
@@ -273,7 +273,7 @@ export default function MediaLogDetailsDialog({
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							{/* ── Status selector ── */}
 							<div className="space-y-3">
-								<div className="flex flex-col overflow-hidden border border-border">
+								<div className="flex flex-col overflow-hidden rounded-lg border border-border/70 bg-card shadow-soft">
 									{validStatuses.map((s, index) => {
 										const isActive = status === s;
 										const StatusIcon = getStatusIcon(s);
@@ -322,7 +322,7 @@ export default function MediaLogDetailsDialog({
 							</div>
 
 							{isReadingBook && (
-								<div className="space-y-3 border border-border p-4">
+								<div className="space-y-3 rounded-lg border border-border/70 bg-card p-4 shadow-soft">
 									<p className="section-label">
 										Reading progress
 									</p>

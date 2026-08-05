@@ -31,17 +31,17 @@ export default function SearchMediaListItem({
 	return (
 		<button
 			className={cn(
-				"group flex w-full items-center gap-4 py-3 pr-3 text-left transition-all duration-200 hover:bg-canvas-soft/60 lg:gap-6 lg:py-4 lg:pr-4",
+				"group flex w-full items-center gap-4 rounded-xl border border-border/70 bg-card px-3 py-3 text-left shadow-soft transition-all duration-200 hover:shadow-lift focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:gap-6 lg:py-4 lg:pr-4",
 				onClick && "cursor-pointer",
 			)}
 			onClick={onClick}
 			type="button"
 		>
-			<div className="aspect-[2/3] w-12 flex-shrink-0 overflow-hidden bg-secondary ring-1 ring-border lg:w-24">
+			<div className="aspect-[2/3] w-12 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border lg:w-24">
 				{media.imageUrl && !imageFailed ? (
 					<Image
 						alt={media.name}
-						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+						className="h-full w-full object-cover"
 						height={144}
 						onError={() => setImageFailed(true)}
 						src={media.imageUrl}

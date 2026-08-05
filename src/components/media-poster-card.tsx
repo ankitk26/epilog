@@ -33,21 +33,18 @@ export default function MediaPosterCard(props: Props) {
 	return (
 		<div
 			className={cn(
-				"group flex w-full flex-col overflow-hidden bg-card p-3 ring-1 ring-border transition-all duration-300 ease-out",
+				"group flex w-full flex-col overflow-hidden rounded-xl bg-card p-3 shadow-soft transition-all duration-300 ease-out hover:shadow-lift hover:ring-2 hover:ring-border",
 				isClickable &&
 					"cursor-pointer hover:shadow-lift hover:ring-2 hover:ring-border",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}
 		>
-			<div className="relative aspect-[2/3] overflow-hidden bg-secondary">
+			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary">
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
-						className={cn(
-							"h-full w-full object-cover object-top transition-transform duration-700 ease-out",
-							!displayOnly && "group-hover:scale-[1.04]",
-						)}
+						className="h-full w-full object-cover object-top"
 						height={396}
 						onError={() => setImageFailed(true)}
 						src={props.media.imageUrl}
@@ -62,7 +59,7 @@ export default function MediaPosterCard(props: Props) {
 					</div>
 				)}
 			</div>
-			<div className="flex flex-col gap-1 pt-3">
+			<div className="flex flex-col gap-2 pt-3">
 				<h4 className="line-clamp-2 font-heading text-sm leading-snug font-medium text-foreground">
 					{props.media.name}
 				</h4>

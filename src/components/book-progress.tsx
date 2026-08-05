@@ -29,13 +29,13 @@ export default function BookProgress({ progress, className }: Props) {
 
 			<div
 				aria-label={`Reading progress ${progress.percent}%`}
-				className="flex h-1.5 w-full gap-1"
+				className="flex h-1.5 w-full gap-1 rounded-full"
 				role="img"
 			>
 				{Array.from({ length: 10 }, (_, i) => (
 					<span
 						className={cn(
-							"h-full flex-1 transition-colors duration-500",
+							"h-full flex-1 rounded-full transition-colors duration-500",
 							i < filledSegments ? "bg-primary" : "bg-secondary",
 						)}
 						key={i}

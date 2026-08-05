@@ -75,7 +75,7 @@ export default function MediaViewToolbar() {
 				{/* Mobile: active collection context */}
 				<div className="flex items-center gap-2 sm:hidden">
 					<span className="section-label">{currentType?.label}</span>
-					<span className="flex min-w-5 items-center justify-center bg-secondary px-1 py-1 text-xs leading-none font-semibold text-muted-foreground tabular-nums">
+					<span className="flex min-w-5 items-center justify-center rounded-full bg-secondary px-1 py-1 text-xs leading-none font-semibold text-muted-foreground tabular-nums">
 						{currentType?.count}
 					</span>
 				</div>
@@ -101,7 +101,7 @@ export default function MediaViewToolbar() {
 								{item.label}
 								<span
 									className={cn(
-										"flex min-w-5 items-center justify-center px-1 text-xs leading-none font-semibold tabular-nums",
+										"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none font-semibold tabular-nums",
 										isActive
 											? "bg-primary-foreground/20 text-primary-foreground"
 											: "bg-secondary text-muted-foreground group-hover:text-foreground",
@@ -118,7 +118,7 @@ export default function MediaViewToolbar() {
 			{/* View switcher — icon buttons */}
 			<div
 				className={cn(
-					"shrink-0 items-center gap-1 border border-border bg-card/50 p-1",
+					"shrink-0 items-center gap-1 rounded-xl border border-border bg-card/50 p-1 shadow-soft",
 					isMobile && type !== "movie" ? "hidden" : "flex",
 				)}
 			>
@@ -142,6 +142,7 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
+											"!rounded-lg",
 											isActive
 												? "bg-card text-foreground shadow-soft"
 												: "text-muted-foreground hover:text-foreground",

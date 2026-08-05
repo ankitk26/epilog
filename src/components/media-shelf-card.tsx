@@ -15,16 +15,16 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden px-3 py-3 transition-colors duration-300 ease-out hover:bg-card"
+			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-card px-3 py-3 transition-all duration-300 ease-out hover:shadow-lift hover:ring-2 hover:ring-border focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden bg-secondary ring-1 ring-border">
+			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}
-						className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+						className="h-full w-full object-cover"
 						height={96}
 						src={log.metadata.image}
 						width={64}
