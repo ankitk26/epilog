@@ -88,7 +88,7 @@ export default function MediaViewToolbar() {
 								className={cn(
 									"group text-xs font-semibold tracking-wide uppercase active:scale-[0.97]",
 									isActive
-										? "bg-primary! text-primary-foreground hover:text-primary-foreground"
+										? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
 										: "text-muted-foreground hover:text-foreground",
 								)}
 								key={item.type}
@@ -104,7 +104,7 @@ export default function MediaViewToolbar() {
 										"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none font-semibold tabular-nums",
 										isActive
 											? "bg-primary-foreground/20 text-primary-foreground"
-											: "bg-secondary text-muted-foreground group-hover:text-foreground",
+											: "bg-secondary text-muted-foreground fine-hover:group-hover:text-foreground",
 									)}
 								>
 									{item.count}

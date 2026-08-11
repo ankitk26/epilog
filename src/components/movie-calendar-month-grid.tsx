@@ -156,9 +156,6 @@ export default function MovieCalendarMonthGrid() {
 		);
 	};
 
-	const isTodayInSelectedMonth =
-		selectedMonth === currentMonth && selectedYear === currentYear;
-
 	const handleAddMovie = (day: number, month: number, year: number) => {
 		setAddMovieDate({ day, month, year });
 	};
@@ -338,8 +335,6 @@ export default function MovieCalendarMonthGrid() {
 				<MovieCalendarMobileDayEventsList
 					selectedDate={selectedDate}
 					events={getSelectedDateEvents()}
-					isTodayInSelectedMonth={isTodayInSelectedMonth}
-					currentDay={today.getDate()}
 				/>
 			</div>
 

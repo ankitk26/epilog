@@ -17,7 +17,7 @@ export default function MovieCalendarEventChip({
 			type="button"
 			onClick={(e) => onClick(e)}
 			className={cn(
-				"truncate rounded-full px-1 py-1 text-left text-xs leading-tight shadow-none transition-all hover:opacity-90 hover:shadow-soft sm:px-2 sm:py-1 sm:text-xs",
+				"truncate rounded-full px-1 py-1 text-left text-xs leading-tight shadow-none transition-all sm:px-2 sm:py-1 sm:text-xs fine-hover:hover:opacity-90 fine-hover:hover:shadow-soft",
 				isCurrentDayCell
 					? "bg-primary text-primary-foreground"
 					: "bg-primary text-primary-foreground",

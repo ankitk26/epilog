@@ -101,7 +101,7 @@ export default function MediaShelfView() {
 		<div className="-mx-6 space-y-8 overflow-x-hidden lg:mx-0">
 			{/* Mobile and tablet: Single column with swipe */}
 			<div
-				className="lg:hidden"
+				className="touch-pan-y select-none lg:hidden"
 				onTouchEnd={handleTouchEnd}
 				onTouchMove={handleTouchMove}
 				onTouchStart={handleTouchStart}

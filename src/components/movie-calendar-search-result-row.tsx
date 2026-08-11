@@ -87,7 +87,7 @@ export default function MovieCalendarSearchResultRow({
 	return (
 		<button
 			type="button"
-			className="flex w-full items-start gap-3 rounded-lg border border-border/70 bg-card p-3 text-left shadow-soft transition-all duration-200 hover:shadow-lift focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+			className="flex w-full items-start gap-3 rounded-lg border border-border/70 bg-card p-3 text-left shadow-soft transition-all duration-200 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift"
 			onClick={handleMovieClick}
 		>
 			<div className="relative aspect-[2/3] w-10 shrink-0 overflow-hidden rounded-md bg-secondary">

@@ -15,7 +15,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-card px-3 py-3 transition-all duration-300 ease-out hover:shadow-lift hover:ring-2 hover:ring-border focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-card px-3 py-3 transition-all duration-300 ease-out focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>

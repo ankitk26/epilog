@@ -26,10 +26,10 @@ export default function SearchMediaTypeTabs({ onChange, value }: Props) {
 					return (
 						<button
 							className={cn(
-								"h-9 cursor-pointer rounded-full border px-4 text-xs font-semibold tracking-wide shadow-soft transition-all duration-200 hover:shadow-lift lg:h-9",
+								"h-9 cursor-pointer rounded-full border px-4 text-xs font-semibold tracking-wide shadow-soft transition-all duration-200 lg:h-9 fine-hover:hover:shadow-lift",
 								isActive
 									? "border-transparent bg-primary text-primary-foreground"
-									: "border-border bg-transparent text-muted-foreground hover:border-border hover:text-foreground",
+									: "border-border bg-transparent text-muted-foreground fine-hover:hover:border-border fine-hover:hover:text-foreground",
 							)}
 							key={option.value}
 							onClick={() => onChange(option.value)}

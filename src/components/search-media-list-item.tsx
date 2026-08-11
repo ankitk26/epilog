@@ -31,7 +31,7 @@ export default function SearchMediaListItem({
 	return (
 		<button
 			className={cn(
-				"group flex w-full items-center gap-4 rounded-xl border border-border/70 bg-card px-3 py-3 text-left shadow-soft transition-all duration-200 hover:shadow-lift focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:gap-6 lg:py-4 lg:pr-4",
+				"group flex w-full items-center gap-4 rounded-xl border border-border/70 bg-card px-3 py-3 text-left shadow-soft transition-all duration-200 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none lg:gap-6 lg:py-4 lg:pr-4 fine-hover:hover:shadow-lift",
 				onClick && "cursor-pointer",
 			)}
 			onClick={onClick}
@@ -58,7 +58,7 @@ export default function SearchMediaListItem({
 			</div>
 
 			<div className="min-w-0 flex-1">
-				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground transition-colors group-hover:text-foreground lg:line-clamp-3 lg:text-base">
+				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground transition-colors lg:line-clamp-3 lg:text-base fine-hover:group-hover:text-foreground">
 					{media.name}
 				</h4>
 				{media.secondaryText && (

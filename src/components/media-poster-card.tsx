@@ -33,9 +33,9 @@ export default function MediaPosterCard(props: Props) {
 	return (
 		<div
 			className={cn(
-				"group flex w-full flex-col overflow-hidden rounded-xl bg-card p-3 shadow-soft transition-all duration-300 ease-out hover:shadow-lift hover:ring-2 hover:ring-border",
+				"group flex w-full flex-col overflow-hidden rounded-xl bg-card p-3 shadow-soft transition-all duration-300 ease-out fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border",
 				isClickable &&
-					"cursor-pointer hover:shadow-lift hover:ring-2 hover:ring-border",
+					"cursor-pointer fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}

@@ -68,7 +68,7 @@ export default function MovieCalendarAddEventDialog({
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			{children && <DialogTrigger render={children} />}
-			<DialogContent className="flex max-h-[80vh] flex-col gap-6 overflow-hidden sm:max-w-md">
+			<DialogContent className="flex max-h-[80dvh] flex-col gap-6 overflow-hidden sm:max-w-md">
 				<DialogHeader className="gap-2 pb-2">
 					<DialogTitle className="text-lg tracking-tight">
 						Add movie

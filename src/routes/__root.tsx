@@ -9,7 +9,7 @@ import {
 	useRouteContext,
 } from "@tanstack/react-router";
 import { ThemeProvider } from "better-themes";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { getAuth } from "@/actions/get-auth";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,7 +37,13 @@ export const Route = createRootRouteWithContext<{
 			},
 			{
 				name: "viewport",
-				content: "width=device-width, initial-scale=1",
+				content:
+					"width=device-width, initial-scale=1, viewport-fit=cover",
+			},
+			{
+				id: "theme-color",
+				name: "theme-color",
+				content: "#ffffff",
 			},
 			{
 				title: "epilog",
@@ -67,20 +73,46 @@ function RootComponent() {
 	);
 }
 
+function ThemeColorSync() {
+	useEffect(() => {
+		const updateThemeColor = () => {
+			const isDark = document.documentElement.classList.contains("dark");
+			const themeColor =
+				document.querySelector<HTMLMetaElement>("meta#theme-color");
+
+			themeColor?.setAttribute("content", isDark ? "#0a0a0a" : "#ffffff");
+		};
+
+		updateThemeColor();
+		const observer = new MutationObserver(updateThemeColor);
+		observer.observe(document.documentElement, {
+			attributeFilter: ["class"],
+			attributes: true,
+		});
+
+		return () => observer.disconnect();
+	}, []);
+
+	return null;
+}
+
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
-			<body style={{ overflowX: "hidden" }}>
+			<body>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"
 					disableTransitionOnChange
 					enableSystem
 				>
-					<TooltipProvider>{children}</TooltipProvider>
+					<TooltipProvider>
+						<ThemeColorSync />
+						{children}
+					</TooltipProvider>
 					<Toaster style={{ fontFamily: "inherit" }} />
 				</ThemeProvider>
 				<Scripts />

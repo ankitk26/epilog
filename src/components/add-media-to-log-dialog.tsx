@@ -204,7 +204,7 @@ export default function AddMediaToLogDialog({
 														"border-t border-border",
 													isActive
 														? "bg-primary/[0.04]"
-														: "hover:bg-secondary/60",
+														: "fine-hover:hover:bg-secondary/60",
 												)}
 												disabled={isLoading}
 												key={s}

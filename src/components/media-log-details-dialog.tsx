@@ -167,7 +167,7 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<BottomSheetDialogContent
-				className="h-screen max-h-screen rounded-t-xl sm:h-auto sm:max-h-[85vh] sm:rounded-xl"
+				className="h-[100dvh] max-h-[100dvh] rounded-t-xl sm:h-auto sm:max-h-[85dvh] sm:rounded-xl"
 				showCloseButton={false}
 				initialFocus={false}
 			>
@@ -285,7 +285,7 @@ export default function MediaLogDetailsDialog({
 														"border-t border-border",
 													isActive
 														? "bg-primary/[0.04]"
-														: "hover:bg-secondary/60",
+														: "fine-hover:hover:bg-secondary/60",
 												)}
 												disabled={isLoading}
 												key={s}
