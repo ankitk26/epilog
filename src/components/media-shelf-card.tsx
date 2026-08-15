@@ -44,9 +44,16 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
 					{log.metadata.name}
 				</h4>
-				<p className="line-clamp-1 text-xs text-muted-foreground">
-					{log.metadata.creator ?? log.metadata.releaseYear}
-				</p>
+				{log.metadata.releaseYear != null && (
+					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+						{log.metadata.releaseYear}
+					</p>
+				)}
+				{log.metadata.creator && (
+					<p className="line-clamp-1 text-xs text-muted-foreground">
+						{log.metadata.creator}
+					</p>
+				)}
 				{progress && <BookProgress progress={progress} />}
 			</div>
 		</div>

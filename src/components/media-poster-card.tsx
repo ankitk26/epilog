@@ -63,14 +63,14 @@ export default function MediaPosterCard(props: Props) {
 				<h4 className="line-clamp-2 font-heading text-sm leading-snug font-medium text-foreground">
 					{props.media.name}
 				</h4>
+				{props.media.releaseYear != null && (
+					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+						{props.media.releaseYear}
+					</p>
+				)}
 				{props.media.creator && (
 					<p className="line-clamp-1 text-xs text-muted-foreground">
 						{props.media.creator}
-					</p>
-				)}
-				{props.media.releaseYear && !props.media.creator && (
-					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
-						{props.media.releaseYear}
 					</p>
 				)}
 				{props.progress && (

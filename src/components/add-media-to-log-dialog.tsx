@@ -86,7 +86,7 @@ export default function AddMediaToLogDialog({
 		addMutation.mutate({
 			media: {
 				name: media.name,
-				releaseYear: media.releaseYear ?? 2025,
+				releaseYear: media.releaseYear,
 				sourceMediaId: media.sourceId,
 				type: media.type,
 				image: media.imageUrl ?? "",

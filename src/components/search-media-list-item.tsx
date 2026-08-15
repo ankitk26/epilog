@@ -67,12 +67,12 @@ export default function SearchMediaListItem({
 					</p>
 				)}
 				<div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-muted-foreground lg:mt-2 lg:text-sm">
-					{media.releaseYear && (
+					{media.releaseYear != null && (
 						<span className="tabular-nums">
 							{media.releaseYear}
 						</span>
 					)}
-					{media.releaseYear && media.seriesName && (
+					{media.releaseYear != null && media.seriesName && (
 						<span className="text-border">•</span>
 					)}
 					{media.seriesName && (

@@ -44,9 +44,14 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-foreground transition-colors fine-hover:group-hover:text-foreground">
 					{log.metadata?.name || "Untitled"}
 				</h3>
-				{(log.metadata?.creator ?? log.metadata?.releaseYear) && (
+				{log.metadata?.releaseYear != null && (
+					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+						{log.metadata.releaseYear}
+					</p>
+				)}
+				{log.metadata?.creator && (
 					<p className="line-clamp-1 text-xs text-muted-foreground">
-						{log.metadata.creator ?? log.metadata.releaseYear}
+						{log.metadata.creator}
 					</p>
 				)}
 				{progress && <BookProgress progress={progress} />}
