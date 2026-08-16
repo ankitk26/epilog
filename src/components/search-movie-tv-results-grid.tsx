@@ -2,6 +2,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
+import SearchErrorState from "@/components/search-error-state";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
 import SearchResultsLoadingList from "@/components/search-results-loading-list";
@@ -25,6 +26,7 @@ export default function SearchMovieTvResultsGrid({
 		data: mediaContent,
 		isPending,
 		isEnabled,
+		isError,
 	} = useQuery({
 		queryKey: ["search", "media-content", mediaType, searchQuery],
 		queryFn: async () =>
@@ -32,6 +34,7 @@ export default function SearchMovieTvResultsGrid({
 				data: { searchQuery, mediaType },
 			}),
 		enabled: searchQuery.length !== 0,
+		retry: false,
 	});
 
 	const sourceMediaIds = (mediaContent?.results ?? []).map((media) =>
@@ -49,6 +52,10 @@ export default function SearchMovieTvResultsGrid({
 
 	if (!searchQuery) {
 		return null;
+	}
+
+	if (isError) {
+		return <SearchErrorState />;
 	}
 
 	if (!mediaContent || mediaContent.results.length === 0) {

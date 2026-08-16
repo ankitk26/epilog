@@ -2,6 +2,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchOpenLibraryBooks } from "@/actions/search-open-library-books";
+import SearchErrorState from "@/components/search-error-state";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
 import SearchResultsLoadingList from "@/components/search-results-loading-list";
@@ -21,6 +22,7 @@ export default function SearchBookResultsGrid({
 		data: books,
 		isPending,
 		isEnabled,
+		isError,
 	} = useQuery({
 		queryKey: ["search", "book", searchQuery],
 		queryFn: async () => {
@@ -30,6 +32,7 @@ export default function SearchBookResultsGrid({
 			return results.data;
 		},
 		enabled: searchQuery.length > 0,
+		retry: false,
 		staleTime: 1000 * 60 * 2,
 	});
 
@@ -48,6 +51,10 @@ export default function SearchBookResultsGrid({
 
 	if (!searchQuery) {
 		return null;
+	}
+
+	if (isError) {
+		return <SearchErrorState />;
 	}
 
 	if (!books || books.length === 0) {

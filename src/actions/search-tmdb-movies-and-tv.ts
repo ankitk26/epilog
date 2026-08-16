@@ -3,6 +3,8 @@ import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
 import { mediaSearchAPIOutput, mediaTypes } from "@/types";
 
+const SEARCH_TIMEOUT_MS = 10_000;
+
 export const searchTmdbMoviesAndTv = createServerFn({ method: "GET" })
 	.inputValidator(
 		z.object({
@@ -18,10 +20,11 @@ export const searchTmdbMoviesAndTv = createServerFn({ method: "GET" })
 
 		const TMDB_TOKEN = process.env.TMDB_TOKEN;
 
-		const { data: mediaContent } = await betterFetch(
+		const { data: mediaContent, error } = await betterFetch(
 			`https://api.themoviedb.org/3/search/${searchType}`,
 			{
 				method: "GET",
+				signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 				query: {
 					query: data.searchQuery,
 				},
@@ -31,6 +34,11 @@ export const searchTmdbMoviesAndTv = createServerFn({ method: "GET" })
 				output: mediaSearchAPIOutput,
 			},
 		);
+
+		if (error || !mediaContent) {
+			console.error("TMDB search failed:", error);
+			throw new Error("TMDB search failed");
+		}
 
 		return mediaContent;
 	});

@@ -22,6 +22,7 @@ export function getRouter() {
 	const queryClient: QueryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
+				refetchOnWindowFocus: false,
 				queryKeyHashFn: convexQueryClient.hashFn(),
 				queryFn: convexQueryClient.queryFn(),
 			},

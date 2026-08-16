@@ -5,6 +5,7 @@ import { type AnimeSearchOutput, animeSearchAPIOutput } from "@/types";
 import { malAnimeSearchAPIOutput } from "@/types/mal";
 
 const MAL_API_URL = "https://api.myanimelist.net/v2/anime";
+const SEARCH_TIMEOUT_MS = 10_000;
 
 export const searchMalAnime = createServerFn({ method: "GET" })
 	.inputValidator(z.object({ searchQuery: z.string() }))
@@ -13,11 +14,12 @@ export const searchMalAnime = createServerFn({ method: "GET" })
 
 		if (!clientId) {
 			console.error("MAL_CLIENT_ID is not set");
-			return { data: [] } as AnimeSearchOutput;
+			throw new Error("MyAnimeList search is unavailable");
 		}
 
 		const { data: rawContent, error } = await betterFetch(MAL_API_URL, {
 			method: "GET",
+			signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 			query: {
 				q: data.searchQuery,
 				limit: "25",
@@ -41,7 +43,7 @@ export const searchMalAnime = createServerFn({ method: "GET" })
 					2,
 				),
 			);
-			return { data: [] } as AnimeSearchOutput;
+			throw new Error("MyAnimeList search failed");
 		}
 
 		const mapped: AnimeSearchOutput = {

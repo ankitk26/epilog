@@ -1,6 +1,5 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
 import { type BookSearchOutput, openLibraryBookSearchAPIOutput } from "@/types";
 
 const collectionPatterns =
@@ -11,6 +10,7 @@ const latinTextPattern = /\p{Script=Latin}/u;
 const SEARCH_LIMIT = 20;
 const SERIES_SEARCH_LIMIT = 10;
 const MAX_SERIES_EXPANSIONS = 3;
+const SEARCH_TIMEOUT_MS = 10_000;
 
 const openLibrarySearchFields = [
 	"key",
@@ -82,9 +82,22 @@ function looksLikeCollection(book: OpenLibraryBookDoc) {
 	return collectionPatterns.test(book.title) || /^\d+[-–]\d+$/.test(position);
 }
 
+function isEnglishEdition(edition: { language?: string[] }) {
+	return (
+		edition.language?.some((language) => {
+			const normalizedLanguage = language.toLowerCase();
+			return (
+				normalizedLanguage === "en" ||
+				normalizedLanguage === "eng" ||
+				normalizedLanguage.endsWith("/eng")
+			);
+		}) ?? false
+	);
+}
+
 function getSearchEditionTitle(book: OpenLibraryBookDoc): string | null {
-	const firstEnglishEdition = book.editions?.docs.find((edition) =>
-		edition.language?.includes("eng"),
+	const firstEnglishEdition = book.editions?.docs.find(
+		(edition) => isEnglishEdition(edition) && edition.title,
 	);
 
 	return firstEnglishEdition?.title ?? null;
@@ -92,7 +105,7 @@ function getSearchEditionTitle(book: OpenLibraryBookDoc): string | null {
 
 function getSearchEditionCoverId(book: OpenLibraryBookDoc): number | null {
 	const firstEnglishEdition = book.editions?.docs.find((edition) =>
-		edition.language?.includes("eng"),
+		isEnglishEdition(edition),
 	);
 
 	return firstEnglishEdition?.cover_i ?? book.cover_i ?? null;
@@ -130,6 +143,7 @@ async function fetchOpenLibrarySearch(query: string) {
 		"https://openlibrary.org/search.json",
 		{
 			method: "GET",
+			signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 			query: {
 				q: query,
 				limit: String(SEARCH_LIMIT),
@@ -152,7 +166,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 	.handler(async ({ data }) => {
 		const initialSearch = await fetchOpenLibrarySearch(data.searchQuery);
 		if (!initialSearch) {
-			return { data: [] } satisfies BookSearchOutput;
+			throw new Error("Open Library search is unavailable");
 		}
 
 		const initialBooks = initialSearch.docs.filter(

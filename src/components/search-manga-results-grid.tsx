@@ -2,6 +2,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchMalManga } from "@/actions/search-mal-manga";
+import SearchErrorState from "@/components/search-error-state";
 import SearchMediaListItem from "@/components/search-media-list-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { standardizePersonName } from "@/lib/standardize-person-name";
@@ -22,10 +23,12 @@ export default function SearchMangaResultsGrid({
 		data: mangaContent,
 		isPending,
 		isEnabled,
+		isError,
 	} = useQuery({
 		queryKey: ["search", "media-content", "manga", searchQuery],
 		queryFn: async () => await searchMalManga({ data: { searchQuery } }),
 		enabled: searchQuery.length !== 0,
+		retry: false,
 	});
 
 	const sourceMediaIds = (mangaContent?.data ?? []).map((manga) =>
@@ -43,6 +46,10 @@ export default function SearchMangaResultsGrid({
 
 	if (!searchQuery) {
 		return null;
+	}
+
+	if (isError) {
+		return <SearchErrorState />;
 	}
 
 	if (!mangaContent || mangaContent.data.length === 0) {
