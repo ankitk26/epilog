@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#0e0d0c" />
+		<title>epilog — offline</title>
+		<style>
+			:root {
+				color-scheme: dark;
+				font-family: "Avenir Next", "Segoe UI", sans-serif;
+				background: #0e0d0c;
+				color: #f3eee6;
+			}
+			body {
+				box-sizing: border-box;
+				min-height: 100svh;
+				margin: 0;
+				display: grid;
+				place-items: center;
+				padding: 2rem;
+				text-align: center;
+				background:
+					radial-gradient(
+						ellipse 90% 55% at 50% -10%,
+						#1f1d1a,
+						transparent 58%
+					),
+					#0e0d0c;
+			}
+			main {
+				max-width: 24rem;
+			}
+			p {
+				color: #a59d91;
+				line-height: 1.6;
+			}
+			button {
+				border: 0;
+				border-radius: 999px;
+				padding: 0.75rem 1.25rem;
+				background: #f3eee6;
+				color: #161513;
+				font: inherit;
+				font-weight: 600;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1>epilog</h1>
+			<p>
+				You’re offline. Your saved shell will be here when the
+				connection returns.
+			</p>
+			<button type="button" onclick="location.reload()">Try again</button>
+		</main>
+	</body>
+</html>

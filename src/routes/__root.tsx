@@ -43,7 +43,7 @@ export const Route = createRootRouteWithContext<{
 			{
 				id: "theme-color",
 				name: "theme-color",
-				content: "#ffffff",
+				content: "#f4eee4",
 			},
 			{
 				title: "epilog",
@@ -52,8 +52,29 @@ export const Route = createRootRouteWithContext<{
 				name: "color-scheme",
 				content: "light dark",
 			},
+			{
+				name: "mobile-web-app-capable",
+				content: "yes",
+			},
+			{
+				name: "apple-mobile-web-app-capable",
+				content: "yes",
+			},
+			{
+				name: "apple-mobile-web-app-status-bar-style",
+				content: "black-translucent",
+			},
+			{
+				name: "apple-mobile-web-app-title",
+				content: "epilog",
+			},
 		],
-		links: [{ rel: "stylesheet", href: appCss }],
+		links: [
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "manifest", href: "/manifest.webmanifest" },
+			{ rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+			{ rel: "apple-touch-icon", href: "/icons/icon-192.png" },
+		],
 	}),
 	component: RootComponent,
 });
@@ -80,7 +101,7 @@ function ThemeColorSync() {
 			const themeColor =
 				document.querySelector<HTMLMetaElement>("meta#theme-color");
 
-			themeColor?.setAttribute("content", isDark ? "#0a0a0a" : "#ffffff");
+			themeColor?.setAttribute("content", isDark ? "#0e0d0c" : "#f4eee4");
 		};
 
 		updateThemeColor();
@@ -91,6 +112,16 @@ function ThemeColorSync() {
 		});
 
 		return () => observer.disconnect();
+	}, []);
+
+	return null;
+}
+
+function ServiceWorkerRegistration() {
+	useEffect(() => {
+		if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
+
+		void navigator.serviceWorker.register("/sw.js");
 	}, []);
 
 	return null;
@@ -110,6 +141,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 					enableSystem
 				>
 					<TooltipProvider>
+						<ServiceWorkerRegistration />
 						<ThemeColorSync />
 						{children}
 					</TooltipProvider>
