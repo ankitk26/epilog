@@ -108,7 +108,7 @@ function getSearchEditionCoverId(book: OpenLibraryBookDoc): number | null {
 		isEnglishEdition(edition),
 	);
 
-	return firstEnglishEdition?.cover_i ?? book.cover_i ?? null;
+	return firstEnglishEdition?.cover_i ?? null;
 }
 
 function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
@@ -146,6 +146,7 @@ async function fetchOpenLibrarySearch(query: string) {
 			signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 			query: {
 				q: query,
+				language: "eng",
 				limit: String(SEARCH_LIMIT),
 				fields: openLibrarySearchFields.join(","),
 			},
@@ -170,7 +171,9 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 		}
 
 		const initialBooks = initialSearch.docs.filter(
-			(book) => !looksLikeCollection(book),
+			(book) =>
+				!looksLikeCollection(book) &&
+				getSearchEditionTitle(book) !== null,
 		);
 		const directResults = initialBooks.map(mapOpenLibraryBook);
 		const directResultIds = new Set(
@@ -204,7 +207,11 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 				if (!seriesSearch) continue;
 
 				const seriesBooks = seriesSearch.docs
-					.filter((book) => !looksLikeCollection(book))
+					.filter(
+						(book) =>
+							!looksLikeCollection(book) &&
+							getSearchEditionTitle(book) !== null,
+					)
 					.map(mapOpenLibraryBook)
 					.filter((book) => !directResultIds.has(book.id));
 
