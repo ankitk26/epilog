@@ -16,19 +16,24 @@ import {
 } from "./ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
+function isMediaType(value: string | null): value is MediaType {
+	return value !== null && mediaTypes.some((type) => type === value);
+}
+
 export default function AppShellHeader() {
 	const navigate = useNavigate();
 	const { data } = authClient.useSession();
 	const { isSearchPage, selectedMediaType } = useRouterState({
 		select: (state) => {
-			const type = (state.location.search as { type?: unknown }).type;
+			const type = new URL(
+				state.location.href,
+				"http://localhost",
+			).searchParams.get("type");
 			return {
 				isSearchPage: state.location.pathname === "/search",
-				selectedMediaType:
-					typeof type === "string" &&
-					mediaTypes.includes(type as MediaType)
-						? (type as MediaType)
-						: defaultMediaFilters.type,
+				selectedMediaType: isMediaType(type)
+					? type
+					: defaultMediaFilters.type,
 			};
 		},
 	});

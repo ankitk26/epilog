@@ -7,10 +7,10 @@ import DefaultNotFoundComponent from "./components/default-not-found-component";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
-	if (typeof document !== "undefined") {
-		notifyManager.setScheduler(window.requestAnimationFrame);
+	if (globalThis.document) {
+		notifyManager.setScheduler(globalThis.window.requestAnimationFrame);
 	}
-	const convexUrl = (import.meta as any).env.VITE_CONVEX_URL!;
+	const convexUrl = import.meta.env.VITE_CONVEX_URL;
 	if (!convexUrl) {
 		throw new Error("VITE_CONVEX_URL is not set");
 	}

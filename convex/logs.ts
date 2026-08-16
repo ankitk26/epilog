@@ -231,6 +231,7 @@ export const add = mutation({
 		// add log for media with chosen or default status
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
+			// SAFETY: status is selected from validStatusesByMediaType or its typed default.
 			status: status as
 				| "interested"
 				| "tbr"

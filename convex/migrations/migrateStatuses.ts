@@ -4,7 +4,7 @@ import { internalMutation } from "../_generated/server";
 // Status migration: old 3-value enum → per-type statuses
 // ─────────────────────────────────────────────
 
-const oldToNewStatus: Record<string, Record<string, string>> = {
+const oldToNewStatus = {
 	book: { planned: "tbr", in_progress: "reading", completed: "finished" },
 	manga: { planned: "tbr", in_progress: "reading", completed: "finished" },
 	movie: {
@@ -22,7 +22,7 @@ const oldToNewStatus: Record<string, Record<string, string>> = {
 		in_progress: "watching",
 		completed: "completed",
 	},
-};
+} satisfies Record<string, Record<string, string>>;
 
 export const migrateStatuses = internalMutation({
 	args: {},
@@ -51,13 +51,16 @@ export const migrateStatuses = internalMutation({
 				continue;
 			}
 
-			const newStatus = mapping[log.status];
+			const newStatus = Object.entries(mapping).find(
+				([oldStatus]) => oldStatus === log.status,
+			)?.[1];
 			if (!newStatus) {
 				// Already a new status or unknown old status
 				skipped++;
 				continue;
 			}
 
+			// SAFETY: every migration map value is a valid current log status.
 			await ctx.db.patch(log._id, {
 				status: newStatus as
 					| "tbr"

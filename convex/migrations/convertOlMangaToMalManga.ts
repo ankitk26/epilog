@@ -84,6 +84,7 @@ export const convertOlMangaToMalManga = internalAction({
 					);
 				}
 
+				// SAFETY: MyAnimeList responses are consumed only through these optional fields.
 				const data = (await response.json()) as {
 					data?: Array<{
 						node: {

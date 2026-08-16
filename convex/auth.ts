@@ -57,7 +57,9 @@ export const createAuth = (ctx: GenericCtx<DataModel>) => {
 
 		socialProviders: {
 			google: {
+				// SAFETY: deployment configuration requires these environment variables.
 				clientId: process.env.GOOGLE_CLIENT_ID as string,
+				// SAFETY: deployment configuration requires these environment variables.
 				clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 
 				// Google only issues a refresh token the first time a user consents to your app. If the user has already authorized your app, subsequent OAuth flows will only return an access token, not a refresh token.

@@ -8,9 +8,9 @@ import {
 } from "@/types";
 
 export const defaultMediaFilters = {
-	type: "movie" as MediaType,
-	view: "grid" as FilterMediaView,
-};
+	type: "movie",
+	view: "grid",
+} satisfies { type: MediaType; view: FilterMediaView };
 
 // Calendar is only supported for movies, so invalid combinations fall back
 // to the same grid default the old store used.

@@ -15,7 +15,9 @@ export type { LogStatus, MediaType } from "../lib/media-statuses";
 import { mediaStatusConfig } from "../lib/media-statuses";
 import type { LogStatus } from "../lib/media-statuses";
 
-export const logStatuses = Object.keys(mediaStatusConfig) as LogStatus[];
+export const logStatuses = Object.keys(mediaStatusConfig).filter(
+	(status): status is LogStatus => status in mediaStatusConfig,
+);
 
 export const mediaSearchAPIOutput = z.object({
 	results: z.array(

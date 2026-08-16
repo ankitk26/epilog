@@ -26,7 +26,8 @@ function collectInferTypeParameterNames(
 		}
 		if (!Array.isArray(value)) continue;
 		for (const child of value) {
-			if (isNode(child)) collectInferTypeParameterNames(child, visitorKeys, names);
+			if (isNode(child))
+				collectInferTypeParameterNames(child, visitorKeys, names);
 		}
 	}
 }
@@ -47,12 +48,20 @@ export function lexicalTypeParameterNames(
 		}
 		if (
 			current.type === "TSMappedType" &&
-			(descendant === current.nameType || descendant === current.typeAnnotation)
+			(descendant === current.nameType ||
+				descendant === current.typeAnnotation)
 		) {
 			names.add(current.key.name);
 		}
-		if (current.type === "TSConditionalType" && descendant === current.trueType) {
-			collectInferTypeParameterNames(current.extendsType, visitorKeys, names);
+		if (
+			current.type === "TSConditionalType" &&
+			descendant === current.trueType
+		) {
+			collectInferTypeParameterNames(
+				current.extendsType,
+				visitorKeys,
+				names,
+			);
 		}
 		descendant = current;
 		current = current.parent;

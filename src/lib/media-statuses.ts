@@ -18,35 +18,48 @@ export const mediaStatusConfig = {
 
 export type LogStatus = keyof typeof mediaStatusConfig;
 
-// This is the original order used by list, grid, add, and status-picker views.
-export const statusesByMediaType = Object.fromEntries(
-	mediaTypes.map((type) => [
-		type,
-		(Object.keys(mediaStatusConfig) as LogStatus[]).filter((status) =>
-			mediaStatusConfig[status].mediaTypes.some(
-				(mediaType) => mediaType === type,
-			),
+const logStatuses = Object.keys(mediaStatusConfig).filter(
+	(status): status is LogStatus => status in mediaStatusConfig,
+);
+
+function statusesForType(type: MediaType): LogStatus[] {
+	return logStatuses.filter((status) =>
+		mediaStatusConfig[status].mediaTypes.some(
+			(mediaType) => mediaType === type,
 		),
-	]),
-) as Record<MediaType, LogStatus[]>;
+	);
+}
+
+// This is the original order used by list, grid, add, and status-picker views.
+export const statusesByMediaType = {
+	movie: statusesForType("movie"),
+	tv: statusesForType("tv"),
+	anime: statusesForType("anime"),
+	book: statusesForType("book"),
+	manga: statusesForType("manga"),
+} satisfies Record<MediaType, LogStatus[]>;
 
 // Shelf-only order: follow the natural movement through a library.
-export const shelfStatusesByMediaType: Record<MediaType, LogStatus[]> = {
+export const shelfStatusesByMediaType = {
 	book: ["interested", "tbr", "reading", "finished", "dnf"],
 	manga: ["tbr", "reading", "finished", "dnf"],
 	movie: ["watchlist", "watching", "watched"],
 	tv: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
 	anime: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
-};
+} satisfies Record<MediaType, LogStatus[]>;
 
-export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
+export const defaultStatusByMediaType = {
 	book: "interested",
 	manga: "tbr",
 	movie: "watchlist",
 	tv: "plan_to_watch",
 	anime: "plan_to_watch",
-};
+} satisfies Record<MediaType, LogStatus>;
 
-export const validStatusesByMediaType = Object.fromEntries(
-	mediaTypes.map((type) => [type, new Set(statusesByMediaType[type])]),
-) as Record<MediaType, Set<LogStatus>>;
+export const validStatusesByMediaType = {
+	movie: new Set(statusesByMediaType.movie),
+	tv: new Set(statusesByMediaType.tv),
+	anime: new Set(statusesByMediaType.anime),
+	book: new Set(statusesByMediaType.book),
+	manga: new Set(statusesByMediaType.manga),
+} satisfies Record<MediaType, Set<LogStatus>>;

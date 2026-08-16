@@ -1,12 +1,12 @@
 import type { MediaType } from "@/types";
 
-const sourceByMediaType: Record<MediaType, "tmdb" | "mal" | "ol"> = {
+const sourceByMediaType = {
 	movie: "tmdb",
 	tv: "tmdb",
 	anime: "mal",
 	manga: "mal",
 	book: "ol",
-};
+} satisfies Record<MediaType, "tmdb" | "mal" | "ol">;
 
 export function buildSourceMediaId(
 	mediaType: MediaType,

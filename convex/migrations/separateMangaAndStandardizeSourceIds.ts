@@ -135,6 +135,7 @@ export const separateMangaAndStandardizeSourceIds = internalMutation({
 			}
 
 			// Patch the canonical doc with the new type + sourceMediaId.
+			// SAFETY: newType is created only from the migration's known media type mapping.
 			await ctx.db.patch(canonical.doc._id, {
 				type: canonical.target.newType as
 					| "anime"

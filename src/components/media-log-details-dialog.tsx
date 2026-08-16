@@ -36,6 +36,11 @@ type Props = {
 	onOpenChange: (open: boolean) => void;
 };
 
+function asLogStatus(status: string): LogStatus {
+	// SAFETY: log statuses are constrained by the Convex schema.
+	return status as LogStatus;
+}
+
 function formatLogDate(timestamp: number) {
 	return new Intl.DateTimeFormat("en-US", {
 		month: "short",
@@ -92,7 +97,8 @@ export default function MediaLogDetailsDialog({
 
 	useEffect(() => {
 		if (log) {
-			setStatus(log.status as LogStatus);
+			// SAFETY: Convex log status values are validated by the logs schema.
+			setStatus(asLogStatus(log.status));
 			setPageCount(log.pageCount ?? undefined);
 			setPagesRead(log.pagesRead ?? 0);
 		}
@@ -150,9 +156,10 @@ export default function MediaLogDetailsDialog({
 
 	const initialPageCount = log?.pageCount ?? undefined;
 	const initialPagesRead = log?.pagesRead ?? 0;
+	// SAFETY: log.status is a validated LogStatus from the Convex data model.
 	const hasChanges =
 		!!log &&
-		(status !== (log.status as LogStatus) ||
+		(status !== asLogStatus(log.status) ||
 			pageCount !== initialPageCount ||
 			pagesRead !== initialPagesRead);
 
@@ -267,7 +274,7 @@ export default function MediaLogDetailsDialog({
 										/>
 										<span>
 											{statusPhrase(
-												log.status as LogStatus,
+												asLogStatus(log.status),
 												formatLogDate(log.updatedTime),
 											)}
 										</span>

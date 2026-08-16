@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import { FilterMediaView, MediaType } from "@/types";
+import type { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
@@ -29,31 +29,35 @@ export default function MediaViewToolbar() {
 
 	const logCountsByType = [
 		{
-			type: "movie" as MediaType,
+			type: "movie",
 			label: "Movies",
 			count: logs.filter((log) => log.metadata.type === "movie").length,
 		},
 		{
-			type: "tv" as MediaType,
+			type: "tv",
 			label: "TV Shows",
 			count: logs.filter((log) => log.metadata.type === "tv").length,
 		},
 		{
-			type: "anime" as MediaType,
+			type: "anime",
 			label: "Anime",
 			count: logs.filter((log) => log.metadata.type === "anime").length,
 		},
 		{
-			type: "book" as MediaType,
+			type: "book",
 			label: "Books",
 			count: logs.filter((log) => log.metadata.type === "book").length,
 		},
 		{
-			type: "manga" as MediaType,
+			type: "manga",
 			label: "Manga",
 			count: logs.filter((log) => log.metadata.type === "manga").length,
 		},
-	];
+	] satisfies Array<{
+		type: MediaType;
+		label: string;
+		count: number;
+	}>;
 
 	const viewOptions: {
 		value: FilterMediaView;

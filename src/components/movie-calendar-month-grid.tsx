@@ -63,6 +63,7 @@ export default function MovieCalendarMonthGrid() {
 
 	const movieCalendarEventsByDate = new Map<string, CalendarMovieEvent[]>();
 
+	// SAFETY: the generated Convex query returns the getAll event-group shape.
 	for (const eventGroup of movieCalendarEvents as FunctionReturnType<
 		typeof api.movieEvents.getAll
 	>) {
@@ -72,6 +73,7 @@ export default function MovieCalendarMonthGrid() {
 			continue;
 		}
 
+		// SAFETY: the generated event payload stores each date value as movie events.
 		movieCalendarEventsByDate.set(
 			eventDate,
 			movies as CalendarMovieEvent[],

@@ -9,6 +9,7 @@ import { useEffect, useRef } from "react";
 let hasGuard = false;
 let manualClose = false;
 let nextId = 0;
+let hasInstalledBackHandler = false;
 
 // Active dialog callbacks (stack — top = most recently opened)
 type CallbackEntry = { id: number; close: () => void };
@@ -17,8 +18,8 @@ const callbacks: CallbackEntry[] = [];
 // ── Keyboard helpers ────────────────────────────────────────
 
 function isInputFocused(): boolean {
-	const el = document.activeElement as HTMLElement | null;
-	if (!el) return false;
+	const el = document.activeElement;
+	if (!(el instanceof HTMLElement)) return false;
 	return (
 		el.tagName === "INPUT" ||
 		el.tagName === "TEXTAREA" ||
@@ -28,8 +29,8 @@ function isInputFocused(): boolean {
 }
 
 function blurActiveInput(): void {
-	const el = document.activeElement as HTMLElement | null;
-	if (el?.blur) el.blur();
+	const el = document.activeElement;
+	if (el instanceof HTMLElement) el.blur();
 }
 
 // ── Stack management ────────────────────────────────────────
@@ -102,9 +103,9 @@ function handlePopState(): void {
 	}
 }
 
-if (typeof window !== "undefined" && !(window as any).__epilogBackHandler) {
-	window.addEventListener("popstate", handlePopState);
-	(window as any).__epilogBackHandler = true;
+if (globalThis.window && !hasInstalledBackHandler) {
+	globalThis.window.addEventListener("popstate", handlePopState);
+	hasInstalledBackHandler = true;
 }
 
 // ═══════════════════════════════════════════════════════════════

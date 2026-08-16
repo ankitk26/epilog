@@ -90,8 +90,10 @@ export async function fetchCreatorForMedia(
 
 	switch (source) {
 		case "tmdb":
+			// SAFETY: source IDs created by the app use only movie or tv for tmdb.
 			return fetchTmdbCreator(nativeId, mediaType as "movie" | "tv");
 		case "mal":
+			// SAFETY: source IDs created by the app use only anime or manga for mal.
 			return fetchMalCreator(nativeId, mediaType as "anime" | "manga");
 		case "ol":
 			// Manga should be resolved via MyAnimeList (mal: source).
@@ -99,6 +101,7 @@ export async function fetchCreatorForMedia(
 			if (mediaType === "manga") {
 				return undefined;
 			}
+			// SAFETY: Open Library source IDs are reserved for books here.
 			return fetchOpenLibraryCreator(nativeId, mediaType as "book");
 		default:
 			return undefined;
@@ -124,6 +127,7 @@ async function fetchTmdbCreator(
 		if (!response.ok) {
 			throw new Error(`TMDB movie credits returned ${response.status}`);
 		}
+		// SAFETY: TMDB credits responses expose an optional crew array with job and name fields.
 		const data = (await response.json()) as {
 			crew?: Array<{ job: string; name: string }>;
 		};
@@ -137,6 +141,7 @@ async function fetchTmdbCreator(
 	if (!response.ok) {
 		throw new Error(`TMDB TV details returned ${response.status}`);
 	}
+	// SAFETY: the TMDB TV details response is consumed only through these optional fields.
 	const data = (await response.json()) as {
 		created_by?: Array<{ name: string }>;
 		networks?: Array<{ name: string }>;
@@ -173,6 +178,7 @@ async function fetchMalCreator(
 		);
 	}
 
+	// SAFETY: MyAnimeList creator responses are consumed only through these optional fields.
 	const data = (await response.json()) as {
 		studios?: Array<{ name: string }>;
 		authors?: Array<{
@@ -211,6 +217,7 @@ async function fetchOpenLibraryCreator(
 		if (!response.ok) {
 			throw new Error(`OpenLibrary edition returned ${response.status}`);
 		}
+		// SAFETY: Open Library edition responses may contain an optional works array.
 		const edition = (await response.json()) as {
 			works?: Array<{ key: string }>;
 		};
@@ -238,6 +245,7 @@ async function fetchOpenLibraryCreator(
 		if (!response.ok) {
 			throw new Error(`OpenLibrary edition returned ${response.status}`);
 		}
+		// SAFETY: Open Library edition responses may contain an optional works array.
 		const edition = (await response.json()) as {
 			works?: Array<{ key: string }>;
 		};
@@ -259,6 +267,7 @@ async function fetchOpenLibraryCreator(
 		);
 
 		if (response.ok) {
+			// SAFETY: Open Library edition responses may contain an optional works array.
 			const edition = (await response.json()) as {
 				works?: Array<{ key: string }>;
 			};
@@ -289,6 +298,7 @@ async function fetchOpenLibraryCreator(
 
 	if (!workData) return null;
 
+	// SAFETY: workData came from an Open Library work endpoint after status validation.
 	const work = workData as {
 		authors?: Array<{ author?: { key: string } }>;
 	};
@@ -301,6 +311,7 @@ async function fetchOpenLibraryCreator(
 	if (!authorResponse.ok) {
 		throw new Error(`OpenLibrary author returned ${authorResponse.status}`);
 	}
+	// SAFETY: Open Library author responses expose an optional name field.
 	const author = (await authorResponse.json()) as { name?: string };
 	return author.name ?? null;
 }

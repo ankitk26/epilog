@@ -20,7 +20,7 @@ import type { LogStatus } from "@/types";
 import MediaLogDetailsDialog from "./media-log-details-dialog";
 import MediaShelfStatusColumn from "./media-shelf-status-column";
 
-const iconByStatus: Record<LogStatus, Icon> = {
+const iconByStatus = {
 	interested: StarIcon,
 	tbr: CalendarBlankIcon,
 	reading: ClockIcon,
@@ -33,7 +33,7 @@ const iconByStatus: Record<LogStatus, Icon> = {
 	waiting: ClockIcon,
 	completed: CheckCircleIcon,
 	dropped: XCircleIcon,
-};
+} satisfies Record<LogStatus, Icon>;
 
 export default function MediaShelfView() {
 	const { type: mediaType } = useMediaFilters();
