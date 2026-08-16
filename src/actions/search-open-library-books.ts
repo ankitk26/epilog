@@ -11,7 +11,6 @@ const latinTextPattern = /\p{Script=Latin}/u;
 const SEARCH_LIMIT = 20;
 const SERIES_SEARCH_LIMIT = 10;
 const MAX_SERIES_EXPANSIONS = 3;
-const EDITIONS_CONCURRENCY = 5;
 
 const openLibrarySearchFields = [
 	"key",
@@ -24,27 +23,10 @@ const openLibrarySearchFields = [
 	"series_name",
 	"series_position",
 	"editions",
-	"editions.key",
 	"editions.title",
 	"editions.cover_i",
 	"editions.language",
-	"editions.publish_year",
 ];
-
-const openLibraryEditionsAPIOutput = z.object({
-	entries: z.array(
-		z.object({
-			key: z.string(),
-			title: z.string().optional(),
-			subtitle: z.string().optional(),
-			covers: z.array(z.number()).optional(),
-			publish_date: z.string().optional(),
-			languages: z.array(z.object({ key: z.string() })).optional(),
-			physical_format: z.string().optional(),
-			edition_name: z.string().optional(),
-		}),
-	),
-});
 
 type OpenLibraryBookDoc = {
 	key: string;
@@ -58,11 +40,9 @@ type OpenLibraryBookDoc = {
 	series_position?: string[];
 	editions?: {
 		docs: Array<{
-			key?: string;
 			title?: string;
 			cover_i?: number;
 			language?: string[];
-			publish_year?: number[];
 		}>;
 	};
 };
@@ -103,166 +83,19 @@ function looksLikeCollection(book: OpenLibraryBookDoc) {
 }
 
 function getSearchEditionTitle(book: OpenLibraryBookDoc): string | null {
-	const englishEditions =
-		book.editions?.docs.filter((edition) =>
-			edition.language?.includes("eng"),
-		) ?? [];
+	const firstEnglishEdition = book.editions?.docs.find((edition) =>
+		edition.language?.includes("eng"),
+	);
 
-	const latestEnglish = englishEditions.sort((a, b) => {
-		const yearA = a.publish_year?.[0] ?? 0;
-		const yearB = b.publish_year?.[0] ?? 0;
-		return yearB - yearA;
-	})[0];
-
-	return latestEnglish?.title ?? null;
+	return firstEnglishEdition?.title ?? null;
 }
 
 function getSearchEditionCoverId(book: OpenLibraryBookDoc): number | null {
-	const editions = book.editions?.docs ?? [];
-	if (editions.length === 0) {
-		return book.cover_i ?? null;
-	}
-
-	const editionsByYear = [...editions].sort((a, b) => {
-		const yearA = a.publish_year?.[0] ?? 0;
-		const yearB = b.publish_year?.[0] ?? 0;
-		return yearB - yearA;
-	});
-
-	const englishEditions = editionsByYear.filter((edition) =>
+	const firstEnglishEdition = book.editions?.docs.find((edition) =>
 		edition.language?.includes("eng"),
 	);
-	const candidateEditions =
-		englishEditions.length > 0 ? englishEditions : editionsByYear;
 
-	const latestWithCover = candidateEditions.find(
-		(edition) => edition.cover_i,
-	);
-	return latestWithCover?.cover_i ?? book.cover_i ?? null;
-}
-
-function extractYear(publishDate: string | undefined): number | null {
-	if (!publishDate) return null;
-	const match = publishDate.match(/\d{4}/);
-	return match ? parseInt(match[0], 10) : null;
-}
-
-const specialEditionPatterns =
-	/\b(audiobook|audio\s*cd|eaudiobook|deluxe|collector'?s|limited|special|signed|annotated|boxed\s*set|omnibus|library\s*binding|graphic\s*novel|comic|manga)\b/i;
-
-function isStandardEdition(entry: {
-	title?: string;
-	subtitle?: string;
-	physical_format?: string;
-	edition_name?: string;
-}): boolean {
-	const text = `${entry.title ?? ""} ${entry.subtitle ?? ""} ${entry.physical_format ?? ""} ${entry.edition_name ?? ""}`;
-
-	if (specialEditionPatterns.test(text)) {
-		return false;
-	}
-
-	return true;
-}
-
-async function runWithConcurrency<T, R>(
-	items: T[],
-	concurrency: number,
-	fn: (item: T) => Promise<R>,
-): Promise<R[]> {
-	const results: R[] = [];
-	let index = 0;
-
-	async function worker() {
-		while (index < items.length) {
-			const currentIndex = index++;
-			results[currentIndex] = await fn(items[currentIndex]);
-		}
-	}
-
-	const workers = Array.from({ length: concurrency }, () => worker());
-	await Promise.all(workers);
-	return results;
-}
-
-async function fetchWorkLatestEditionInfo(workId: string): Promise<{
-	title: string | null;
-	coverId: number | null;
-}> {
-	const { data, error } = await betterFetch(
-		`https://openlibrary.org/works/${workId}/editions.json`,
-		{
-			method: "GET",
-			query: {
-				sort: "published",
-				limit: "50",
-			},
-			output: openLibraryEditionsAPIOutput,
-		},
-	);
-
-	if (error || !data) {
-		console.error(`OpenLibrary editions API error for ${workId}:`, error);
-		return { title: null, coverId: null };
-	}
-
-	const editionsWithYear = data.entries
-		.map((entry) => ({
-			...entry,
-			year: extractYear(entry.publish_date),
-			isEnglish: entry.languages?.some(
-				(language) => language.key === "/languages/eng",
-			),
-		}))
-		.filter((entry) => entry.year != null);
-
-	if (editionsWithYear.length === 0) {
-		return { title: null, coverId: null };
-	}
-
-	const englishEditions = editionsWithYear.filter((entry) => entry.isEnglish);
-	const hasEnglishEdition = englishEditions.length > 0;
-
-	const standardEnglishEditions = hasEnglishEdition
-		? englishEditions.filter(isStandardEdition)
-		: [];
-	const standardEditions = editionsWithYear.filter(isStandardEdition);
-
-	const titleCandidates =
-		standardEnglishEditions.length > 0
-			? standardEnglishEditions
-			: hasEnglishEdition
-				? englishEditions
-				: editionsWithYear;
-	const title = titleCandidates.sort(
-		(a, b) => (b.year ?? 0) - (a.year ?? 0),
-	)[0]?.title;
-
-	const coverCandidates =
-		standardEnglishEditions.length > 0
-			? standardEnglishEditions.filter(
-					(entry) => entry.covers != null && entry.covers.length > 0,
-				)
-			: standardEditions.length > 0
-				? standardEditions.filter(
-						(entry) =>
-							entry.covers != null && entry.covers.length > 0,
-					)
-				: hasEnglishEdition
-					? englishEditions.filter(
-							(entry) =>
-								entry.covers != null && entry.covers.length > 0,
-						)
-					: editionsWithYear.filter(
-							(entry) =>
-								entry.covers != null && entry.covers.length > 0,
-						);
-
-	const coverId =
-		coverCandidates.sort((a, b) => (b.year ?? 0) - (a.year ?? 0))[0]
-			?.covers?.[0] ?? null;
-
-	return { title: title ?? null, coverId };
+	return firstEnglishEdition?.cover_i ?? book.cover_i ?? null;
 }
 
 function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
@@ -378,25 +211,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 		const results = seriesResults.slice(0, SERIES_SEARCH_LIMIT);
 		const allResults = [...directResults, ...results];
 
-		const resultsWithLatestEditionInfo = await runWithConcurrency(
-			allResults,
-			EDITIONS_CONCURRENCY,
-			async (book) => {
-				const { title, coverId } = await fetchWorkLatestEditionInfo(
-					book.id,
-				);
-
-				const updates: Partial<typeof book> = {};
-				if (title) updates.title = title;
-				if (coverId) {
-					updates.imageUrl = `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`;
-				}
-
-				return { ...book, ...updates };
-			},
-		);
-
 		return {
-			data: resultsWithLatestEditionInfo,
+			data: allResults,
 		} satisfies BookSearchOutput;
 	});
