@@ -7,6 +7,7 @@ export {
 	defaultStatusByMediaType,
 	mediaStatusConfig,
 	mediaTypes,
+	shelfStatusesByMediaType,
 	statusesByMediaType,
 	validStatusesByMediaType,
 } from "../lib/media-statuses";

@@ -18,6 +18,7 @@ export const mediaStatusConfig = {
 
 export type LogStatus = keyof typeof mediaStatusConfig;
 
+// This is the original order used by list, grid, add, and status-picker views.
 export const statusesByMediaType = Object.fromEntries(
 	mediaTypes.map((type) => [
 		type,
@@ -28,6 +29,15 @@ export const statusesByMediaType = Object.fromEntries(
 		),
 	]),
 ) as Record<MediaType, LogStatus[]>;
+
+// Shelf-only order: follow the natural movement through a library.
+export const shelfStatusesByMediaType: Record<MediaType, LogStatus[]> = {
+	book: ["interested", "tbr", "reading", "finished", "dnf"],
+	manga: ["tbr", "reading", "finished", "dnf"],
+	movie: ["watchlist", "watching", "watched"],
+	tv: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+	anime: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+};
 
 export const defaultStatusByMediaType: Record<MediaType, LogStatus> = {
 	book: "interested",

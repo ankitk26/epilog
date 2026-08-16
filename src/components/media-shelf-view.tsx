@@ -15,7 +15,7 @@ import { useMemo, useRef, useState } from "react";
 import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { statusLabel } from "@/lib/media-labels";
-import { statusesByMediaType } from "@/types";
+import { shelfStatusesByMediaType } from "@/types";
 import type { LogStatus } from "@/types";
 import MediaLogDetailsDialog from "./media-log-details-dialog";
 import MediaShelfStatusColumn from "./media-shelf-status-column";
@@ -54,7 +54,7 @@ export default function MediaShelfView() {
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
-	const columns = statusesByMediaType[mediaType].map((status) => ({
+	const columns = shelfStatusesByMediaType[mediaType].map((status) => ({
 		status,
 		title: statusLabel(status, mediaType),
 		icon: iconByStatus[status],
