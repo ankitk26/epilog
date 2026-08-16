@@ -68,7 +68,7 @@ export default function MediaSectionByStatus(props: Props) {
 					className={
 						effectiveView === "list"
 							? "flex flex-col gap-2"
-							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] lg:gap-6"
+							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] lg:gap-6"
 					}
 				>
 					{props.logs.map((log) => {
