@@ -2,6 +2,7 @@ import type { api } from "@convex/_generated/api";
 import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { getBookProgress } from "@/lib/book-progress";
+import { shouldShowReleaseYear } from "@/lib/media-labels";
 import BookProgress from "./book-progress";
 import MediaTypeIcon from "./media-type-icon";
 
@@ -44,11 +45,12 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
 					{log.metadata.name}
 				</h4>
-				{log.metadata.releaseYear != null && (
-					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
-						{log.metadata.releaseYear}
-					</p>
-				)}
+				{shouldShowReleaseYear(log.metadata.type) &&
+					log.metadata.releaseYear != null && (
+						<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+							{log.metadata.releaseYear}
+						</p>
+					)}
 				{log.metadata.creator && (
 					<p className="line-clamp-1 text-xs text-muted-foreground">
 						{log.metadata.creator}

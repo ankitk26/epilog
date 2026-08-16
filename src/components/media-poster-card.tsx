@@ -1,5 +1,6 @@
 import { Image } from "@unpic/react";
 import { useState } from "react";
+import { shouldShowReleaseYear } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import BookProgress, { type BookProgressData } from "./book-progress";
@@ -63,11 +64,12 @@ export default function MediaPosterCard(props: Props) {
 				<h4 className="line-clamp-2 font-heading text-sm leading-snug font-medium text-foreground">
 					{props.media.name}
 				</h4>
-				{props.media.releaseYear != null && (
-					<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
-						{props.media.releaseYear}
-					</p>
-				)}
+				{shouldShowReleaseYear(props.media.type) &&
+					props.media.releaseYear != null && (
+						<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
+							{props.media.releaseYear}
+						</p>
+					)}
 				{props.media.creator && (
 					<p className="line-clamp-1 text-xs text-muted-foreground">
 						{props.media.creator}

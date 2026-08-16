@@ -18,7 +18,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { creatorPhrase } from "@/lib/creator-phrase";
-import { getStatusIcon, statusLabel } from "@/lib/media-labels";
+import {
+	getStatusIcon,
+	shouldShowReleaseYear,
+	statusLabel,
+} from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { LogStatus } from "@/types";
 import { statusesByMediaType } from "@/types";
@@ -237,11 +241,14 @@ export default function MediaLogDetailsDialog({
 									</h2>
 
 									<div className="mt-2 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
-										{log.metadata.releaseYear && (
-											<span className="tabular-nums">
-												{log.metadata.releaseYear}
-											</span>
-										)}
+										{shouldShowReleaseYear(
+											log.metadata.type,
+										) &&
+											log.metadata.releaseYear && (
+												<span className="tabular-nums">
+													{log.metadata.releaseYear}
+												</span>
+											)}
 									</div>
 
 									{log.metadata.creator && (

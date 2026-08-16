@@ -40,3 +40,7 @@ export function getStatusIcon(status: LogStatus): Icon {
 export function statusLabel(status: LogStatus, _type: MediaType): string {
 	return mediaStatusConfig[status].label;
 }
+
+export function shouldShowReleaseYear(type: MediaType): boolean {
+	return type === "movie" || type === "tv";
+}

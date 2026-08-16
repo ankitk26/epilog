@@ -1,6 +1,7 @@
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import { Image } from "@unpic/react";
 import { useState } from "react";
+import { shouldShowReleaseYear } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import MediaTypeIcon from "./media-type-icon";
@@ -67,14 +68,17 @@ export default function SearchMediaListItem({
 					</p>
 				)}
 				<div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-muted-foreground lg:mt-2 lg:text-sm">
-					{media.releaseYear != null && (
-						<span className="tabular-nums">
-							{media.releaseYear}
-						</span>
-					)}
-					{media.releaseYear != null && media.seriesName && (
-						<span className="text-border">•</span>
-					)}
+					{shouldShowReleaseYear(media.type) &&
+						media.releaseYear != null && (
+							<span className="tabular-nums">
+								{media.releaseYear}
+							</span>
+						)}
+					{shouldShowReleaseYear(media.type) &&
+						media.releaseYear != null &&
+						media.seriesName && (
+							<span className="text-border">•</span>
+						)}
 					{media.seriesName && (
 						<span className="line-clamp-1">
 							{media.seriesPosition != null
