@@ -25,7 +25,7 @@ import {
 } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { LogStatus } from "@/types";
-import { statusesByMediaType } from "@/types";
+import { shelfStatusesByMediaType } from "@/types";
 import BookProgress from "./book-progress";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
@@ -85,7 +85,7 @@ export default function MediaLogDetailsDialog({
 	onOpenChange,
 }: Props) {
 	const mediaType = log?.metadata.type ?? "movie";
-	const validStatuses = statusesByMediaType[mediaType];
+	const validStatuses = shelfStatusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus>(validStatuses[0]);
 	const [pageCount, setPageCount] = useState<number | undefined>(undefined);
 	const [pagesRead, setPagesRead] = useState<number | undefined>(undefined);

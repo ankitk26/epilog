@@ -18,7 +18,7 @@ import {
 	statusLabel,
 } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
-import { statusesByMediaType } from "@/types";
+import { shelfStatusesByMediaType } from "@/types";
 import type { LogStatus, MediaType } from "@/types";
 
 type Media = {
@@ -46,7 +46,7 @@ export default function AddMediaToLogDialog({
 	onOpenChange,
 }: Props) {
 	const mediaType = media?.type ?? "movie";
-	const validStatuses = statusesByMediaType[mediaType];
+	const validStatuses = shelfStatusesByMediaType[mediaType];
 	const [status, setStatus] = useState<LogStatus | null>(null);
 	const [pageCount, setPageCount] = useState<number | undefined>(undefined);
 
