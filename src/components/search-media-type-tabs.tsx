@@ -18,28 +18,25 @@ export default function SearchMediaTypeTabs({ onChange, value }: Props) {
 	];
 
 	return (
-		<div className="space-y-3">
-			<p className="section-label hidden lg:block">Select media type</p>
-			<div className="flex flex-wrap items-center gap-2">
-				{options.map((option) => {
-					const isActive = mediaType === option.value;
-					return (
-						<button
-							className={cn(
-								"h-9 cursor-pointer rounded-full border px-4 text-xs font-semibold tracking-wide shadow-soft transition-all duration-200 lg:h-9 fine-hover:hover:shadow-lift",
-								isActive
-									? "border-transparent bg-primary text-primary-foreground"
-									: "border-border bg-transparent text-muted-foreground fine-hover:hover:border-border fine-hover:hover:text-foreground",
-							)}
-							key={option.value}
-							onClick={() => onChange(option.value)}
-							type="button"
-						>
-							{option.label}
-						</button>
-					);
-				})}
-			</div>
+		<div className="flex flex-wrap items-center gap-2">
+			{options.map((option) => {
+				const isActive = mediaType === option.value;
+				return (
+					<button
+						className={cn(
+							"h-7 cursor-pointer rounded-full border px-3 text-xs font-semibold tracking-wide shadow-soft transition-all duration-200 fine-hover:hover:shadow-lift",
+							isActive
+								? "border-transparent bg-primary text-primary-foreground"
+								: "border-border bg-transparent text-muted-foreground fine-hover:hover:border-border fine-hover:hover:text-foreground",
+						)}
+						key={option.value}
+						onClick={() => onChange(option.value)}
+						type="button"
+					>
+						{option.label}
+					</button>
+				);
+			})}
 		</div>
 	);
 }

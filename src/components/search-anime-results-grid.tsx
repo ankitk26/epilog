@@ -57,7 +57,7 @@ export default function SearchAnimeResultsGrid({
 				</span>
 				<div className="h-px flex-1 bg-border" />
 			</div>
-			<div className="flex flex-col gap-1">
+			<div className="grid grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5">
 				{animeContent.data.map((anime) => {
 					const sourceId = buildSourceMediaId("anime", anime.mal_id);
 

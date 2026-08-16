@@ -34,10 +34,11 @@ export default function SearchQueryInput({
 					value={value}
 				/>
 				<Button
+					aria-label="Search"
 					className="absolute top-1/2 right-1.5 -translate-y-1/2"
 					size="icon-sm"
 					type="submit"
-					variant="ghost"
+					variant="secondary"
 				>
 					<ArrowRightIcon />
 				</Button>

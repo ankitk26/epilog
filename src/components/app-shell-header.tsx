@@ -1,9 +1,9 @@
 import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { useAddLibrarySheet } from "@/components/add-library-sheet";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { defaultMediaFilters } from "@/lib/media-filters";
+import { mediaTypes, type MediaType } from "@/types";
 import { ThemeModeToggle } from "./theme-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -19,11 +19,39 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 export default function AppShellHeader() {
 	const navigate = useNavigate();
 	const { data } = authClient.useSession();
-	const { open: openAddLibrarySheet } = useAddLibrarySheet();
-
-	useHotkey("Mod+K", () => {
-		openAddLibrarySheet();
+	const { isSearchPage, selectedMediaType } = useRouterState({
+		select: (state) => {
+			const type = (state.location.search as { type?: unknown }).type;
+			return {
+				isSearchPage: state.location.pathname === "/search",
+				selectedMediaType:
+					typeof type === "string" &&
+					mediaTypes.includes(type as MediaType)
+						? (type as MediaType)
+						: defaultMediaFilters.type,
+			};
+		},
 	});
+
+	const toggleSearch = () => {
+		if (isSearchPage) {
+			void navigate({
+				to: "/",
+				search: {
+					...defaultMediaFilters,
+					type: selectedMediaType,
+				},
+			});
+			return;
+		}
+
+		void navigate({
+			to: "/search",
+			search: { type: selectedMediaType },
+		});
+	};
+
+	useHotkey("Mod+K", toggleSearch);
 
 	const handleSignOut = async () => {
 		await navigate({ to: "/sign-in" });
@@ -38,7 +66,7 @@ export default function AppShellHeader() {
 
 	return (
 		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border/40 bg-canvas/75 px-6 pt-[env(safe-area-inset-top)] shadow-soft backdrop-blur-md backdrop-saturate-150 lg:px-12">
-			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between lg:h-20">
+			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
@@ -54,8 +82,12 @@ export default function AppShellHeader() {
 						<TooltipTrigger
 							render={
 								<Button
-									aria-label="Search library"
-									onClick={openAddLibrarySheet}
+									aria-label={
+										isSearchPage
+											? "Back to library"
+											: "Search library"
+									}
+									onClick={toggleSearch}
 									size="icon"
 									variant="outline"
 								>
@@ -64,7 +96,9 @@ export default function AppShellHeader() {
 							}
 						/>
 						<TooltipContent className="rounded-lg">
-							Search library
+							{isSearchPage
+								? "Back to library"
+								: "Search library"}
 							<kbd className="ml-2 rounded-md bg-background/20 px-1.5 py-0.5 text-xs font-medium">
 								{formatForDisplay("Mod+K")}
 							</kbd>
