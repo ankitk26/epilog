@@ -11,5 +11,6 @@
 			"@/*": ["./src/*"],
 			"@convex/*": ["./convex/*"]
 		}
-	}
+	},
+	"exclude": ["tools/oxlint/anti-slop/**"]
 }
