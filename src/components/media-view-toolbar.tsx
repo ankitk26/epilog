@@ -126,7 +126,7 @@ export default function MediaViewToolbar() {
 			{/* View switcher — icon buttons */}
 			<div
 				className={cn(
-					"shrink-0 items-center gap-1 rounded-full border border-border bg-card/50 p-1 shadow-soft",
+					"shrink-0 items-center gap-1",
 					isMobile && type !== "movie" ? "hidden" : "flex",
 				)}
 			>
@@ -154,12 +154,12 @@ export default function MediaViewToolbar() {
 										className={cn(
 											"!rounded-full",
 											isActive
-												? "bg-card text-foreground shadow-soft"
+												? "bg-secondary text-foreground"
 												: "text-muted-foreground hover:text-foreground",
 										)}
 										onClick={() => setView(option.value)}
 										title={option.label}
-										variant="ghost"
+										variant={isActive ? "ghost" : "outline"}
 										size="icon"
 									>
 										<Icon />

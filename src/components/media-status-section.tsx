@@ -87,7 +87,6 @@ export default function MediaSectionByStatus(props: Props) {
 							/>
 						) : (
 							<MediaPosterCard
-								displayOnly
 								key={log._id}
 								media={{
 									imageUrl: log.metadata.image,

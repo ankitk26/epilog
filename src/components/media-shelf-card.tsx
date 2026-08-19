@@ -1,10 +1,7 @@
 import type { api } from "@convex/_generated/api";
-import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { getBookProgress } from "@/lib/book-progress";
-import { shouldShowReleaseYear } from "@/lib/media-labels";
-import BookProgress from "./book-progress";
-import MediaTypeIcon from "./media-type-icon";
+import LogItem from "./log-item";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
@@ -12,57 +9,17 @@ type Props = {
 };
 
 export default function MediaShelfCard({ log, onClick }: Props) {
-	const progress = getBookProgress(log);
-
 	return (
-		<div
-			className="flex cursor-pointer flex-col overflow-hidden focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+		<LogItem.Shelf
+			media={{
+				imageUrl: log.metadata.image,
+				name: log.metadata.name || "Untitled",
+				releaseYear: log.metadata.releaseYear,
+				creator: log.metadata.creator,
+				type: log.metadata.type,
+			}}
 			onClick={onClick}
-			role={onClick ? "button" : undefined}
-		>
-			{/* Poster Thumbnail */}
-			<div className="relative aspect-[2/3] w-1/2 self-center overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border/70">
-				{log.metadata?.image ? (
-					<Image
-						alt={log.metadata?.name || "Media"}
-						className="h-full w-full object-cover"
-						height={96}
-						src={log.metadata.image}
-						width={64}
-					/>
-				) : (
-					<div className="flex h-full w-full items-center justify-center">
-						<MediaTypeIcon
-							className="size-4 text-muted-foreground/40"
-							type={log.metadata?.type}
-						/>
-					</div>
-				)}
-			</div>
-
-			{/* Content */}
-			<div className="flex min-w-0 flex-1 flex-col items-center gap-1 pt-3 text-center">
-				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
-					{log.metadata.name}
-				</h4>
-				{shouldShowReleaseYear(log.metadata.type) &&
-					log.metadata.releaseYear != null && (
-						<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
-							{log.metadata.releaseYear}
-						</p>
-					)}
-				{log.metadata.creator && (
-					<p className="line-clamp-1 text-xs text-muted-foreground">
-						{log.metadata.creator}
-					</p>
-				)}
-				{progress && (
-					<BookProgress
-						className="w-full max-w-none pt-1"
-						progress={progress}
-					/>
-				)}
-			</div>
-		</div>
+			progress={getBookProgress(log)}
+		/>
 	);
 }

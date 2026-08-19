@@ -1,10 +1,7 @@
 import type { api } from "@convex/_generated/api";
-import { Image } from "@unpic/react";
 import type { FunctionReturnType } from "convex/server";
 import { getBookProgress } from "@/lib/book-progress";
-import { shouldShowReleaseYear } from "@/lib/media-labels";
-import BookProgress from "./book-progress";
-import MediaTypeIcon from "./media-type-icon";
+import LogItem from "./log-item";
 
 type Props = {
 	log: FunctionReturnType<typeof api.logs.all>[0];
@@ -12,52 +9,17 @@ type Props = {
 };
 
 export default function MediaListRowCard({ log, onClick }: Props) {
-	const progress = getBookProgress(log);
-
 	return (
-		<div
-			className="flex cursor-pointer items-center gap-6 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+		<LogItem.List
+			media={{
+				imageUrl: log.metadata.image,
+				name: log.metadata.name || "Untitled",
+				releaseYear: log.metadata.releaseYear,
+				creator: log.metadata.creator,
+				type: log.metadata.type,
+			}}
 			onClick={onClick}
-			role="button"
-		>
-			{/* Poster */}
-			<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border/70">
-				{log.metadata?.image ? (
-					<Image
-						alt={log.metadata.name || "Media poster"}
-						className="h-full w-full object-cover"
-						height={132}
-						src={log.metadata.image || "/placeholder.svg"}
-						width={88}
-					/>
-				) : (
-					<div className="flex h-full w-full items-center justify-center">
-						<MediaTypeIcon
-							className="size-5 text-muted-foreground/40"
-							type={log.metadata.type}
-						/>
-					</div>
-				)}
-			</div>
-
-			{/* Content */}
-			<div className="flex min-w-0 flex-1 flex-col gap-3">
-				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-foreground">
-					{log.metadata?.name || "Untitled"}
-				</h3>
-				{shouldShowReleaseYear(log.metadata.type) &&
-					log.metadata?.releaseYear != null && (
-						<p className="line-clamp-1 text-xs text-muted-foreground tabular-nums">
-							{log.metadata.releaseYear}
-						</p>
-					)}
-				{log.metadata?.creator && (
-					<p className="line-clamp-1 text-xs text-muted-foreground">
-						{log.metadata.creator}
-					</p>
-				)}
-				{progress && <BookProgress progress={progress} />}
-			</div>
-		</div>
+			progress={getBookProgress(log)}
+		/>
 	);
 }
