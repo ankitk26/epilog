@@ -84,14 +84,10 @@ export default function AddMediaToLogDialog({
 	const isLoading = addMutation.isPending;
 	const creator = media?.creator ?? tmdbCreatorQuery.data;
 	const isReadingBook = mediaType === "book" && status === "reading";
-	const canAdd =
-		!!status &&
-		(!isReadingBook || (pageCount !== undefined && pageCount > 0));
+	const canAdd = !!status;
 
 	const handleAdd = () => {
 		if (!media || !status) return;
-		if (isReadingBook && (!pageCount || pageCount <= 0)) return;
-
 		addMutation.mutate({
 			media: {
 				name: media.name,
@@ -106,8 +102,8 @@ export default function AddMediaToLogDialog({
 				seriesKey: media.seriesKey,
 			},
 			status,
-			pageCount: isReadingBook ? pageCount : undefined,
-			pagesRead: isReadingBook ? 0 : undefined,
+			...(isReadingBook && pageCount !== undefined && { pageCount }),
+			...(isReadingBook && { pagesRead: 0 }),
 		});
 	};
 

@@ -221,13 +221,6 @@ export const add = mutation({
 			}
 		}
 
-		// reading books need a page count to track progress
-		if (status === "reading" && args.media.type === "book") {
-			if (!args.pageCount || args.pageCount <= 0) {
-				throw new Error("page count is required for reading books");
-			}
-		}
-
 		// add log for media with chosen or default status
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
