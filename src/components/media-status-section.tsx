@@ -6,10 +6,10 @@ import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getBookProgress } from "@/lib/book-progress";
+import { toMediaCardMedia } from "@/lib/build-media-card-media";
 import { cn } from "@/lib/utils";
-import MediaListRowCard from "./media-list-row-card";
+import MediaCard from "./media-card";
 import MediaLogDetailsDialog from "./media-log-details-dialog";
-import MediaPosterCard from "./media-poster-card";
 import { Button } from "./ui/button";
 
 type Props = {
@@ -80,24 +80,26 @@ export default function MediaSectionByStatus(props: Props) {
 						const progress = getBookProgress(log);
 
 						return effectiveView === "list" ? (
-							<MediaListRowCard
+							<MediaCard.List
 								key={log._id}
-								log={log}
+								media={toMediaCardMedia(log)}
 								onClick={() => setSelectedLog(log)}
+								footer={
+									<MediaCard.ProgressFooter
+										progress={progress}
+									/>
+								}
 							/>
 						) : (
-							<MediaPosterCard
+							<MediaCard.Grid
 								key={log._id}
-								media={{
-									imageUrl: log.metadata.image,
-									name: log.metadata.name || "NA",
-									releaseYear: log.metadata.releaseYear,
-									creator: log.metadata.creator,
-									sourceId: log.metadata.sourceMediaId,
-									type: log.metadata.type,
-								}}
+								media={toMediaCardMedia(log)}
 								onClick={() => setSelectedLog(log)}
-								progress={progress}
+								footer={
+									<MediaCard.ProgressFooter
+										progress={progress}
+									/>
+								}
 							/>
 						);
 					})}

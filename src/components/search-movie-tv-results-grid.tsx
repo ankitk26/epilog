@@ -3,7 +3,7 @@ import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
 import SearchErrorState from "@/components/search-error-state";
-import SearchMediaListItem from "@/components/search-media-list-item";
+import SearchMediaItem from "@/components/search-media-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
 import SearchResultsLoadingList from "@/components/search-results-loading-list";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
@@ -94,7 +94,7 @@ export default function SearchMovieTvResultsGrid({
 					};
 
 					return (
-						<SearchMediaListItem
+						<SearchMediaItem
 							key={media.id}
 							isLogged={!!loggedStatuses?.[sourceId]}
 							media={searchMedia}

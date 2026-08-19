@@ -3,7 +3,7 @@ import { api } from "@convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
 import { searchMalAnime } from "@/actions/search-mal-anime";
 import SearchErrorState from "@/components/search-error-state";
-import SearchMediaListItem from "@/components/search-media-list-item";
+import SearchMediaItem from "@/components/search-media-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import SearchNoResultsEmptyState from "./search-no-results-empty-state";
 import SearchResultsLoadingList from "./search-results-loading-list";
@@ -80,7 +80,7 @@ export default function SearchAnimeResultsGrid({
 					};
 
 					return (
-						<SearchMediaListItem
+						<SearchMediaItem
 							key={anime.mal_id}
 							isLogged={!!loggedStatuses?.[sourceId]}
 							media={searchMedia}

@@ -1,7 +1,9 @@
 import type { api } from "@convex/_generated/api";
 import type { Icon } from "@phosphor-icons/react";
 import type { FunctionReturnType } from "convex/server";
-import MediaShelfCard from "./media-shelf-card";
+import { getBookProgress } from "@/lib/book-progress";
+import { toMediaCardMedia } from "@/lib/build-media-card-media";
+import MediaCard from "./media-card";
 
 type Props = {
 	column: {
@@ -31,10 +33,15 @@ export default function MediaShelfStatusColumn(props: Props) {
 				{props.logs.length > 0 ? (
 					<div className="flex flex-col gap-8">
 						{props.logs.map((log) => (
-							<MediaShelfCard
+							<MediaCard.Shelf
 								key={log._id}
-								log={log}
+								media={toMediaCardMedia(log)}
 								onClick={() => props.onLogClick?.(log)}
+								footer={
+									<MediaCard.ProgressFooter
+										progress={getBookProgress(log)}
+									/>
+								}
 							/>
 						))}
 					</div>
