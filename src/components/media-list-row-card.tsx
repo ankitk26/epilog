@@ -16,7 +16,7 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-6 rounded-xl bg-card px-4 py-3 shadow-soft transition-all duration-300 ease-out focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border"
+			className="flex cursor-pointer items-center gap-6 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
 			onClick={onClick}
 			role="button"
 		>
@@ -42,7 +42,7 @@ export default function MediaListRowCard({ log, onClick }: Props) {
 
 			{/* Content */}
 			<div className="flex min-w-0 flex-1 flex-col gap-3">
-				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-foreground transition-colors fine-hover:group-hover:text-foreground">
+				<h3 className="font-heading text-sm leading-tight font-medium tracking-tight text-foreground">
 					{log.metadata?.name || "Untitled"}
 				</h3>
 				{shouldShowReleaseYear(log.metadata.type) &&

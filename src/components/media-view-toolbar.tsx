@@ -23,6 +23,10 @@ export default function MediaViewToolbar() {
 		if (isMobile && (view === "grid" || view === "shelf")) {
 			setView("list");
 		}
+
+		if (!isMobile && view === "list") {
+			setView("grid");
+		}
 	}, [isMobile, setView, view]);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
@@ -122,7 +126,7 @@ export default function MediaViewToolbar() {
 			{/* View switcher — icon buttons */}
 			<div
 				className={cn(
-					"shrink-0 items-center gap-1 rounded-xl border border-border bg-card/50 p-1 shadow-soft",
+					"shrink-0 items-center gap-1 rounded-full border border-border bg-card/50 p-1 shadow-soft",
 					isMobile && type !== "movie" ? "hidden" : "flex",
 				)}
 			>
@@ -132,8 +136,10 @@ export default function MediaViewToolbar() {
 					}
 
 					if (
-						isMobile &&
-						(option.value === "shelf" || option.value === "grid")
+						(isMobile &&
+							(option.value === "shelf" ||
+								option.value === "grid")) ||
+						(!isMobile && option.value === "list")
 					) {
 						return null;
 					}
@@ -146,7 +152,7 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"!rounded-lg",
+											"!rounded-full",
 											isActive
 												? "bg-card text-foreground shadow-soft"
 												: "text-muted-foreground hover:text-foreground",

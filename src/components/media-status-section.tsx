@@ -23,7 +23,12 @@ type Props = {
 export default function MediaSectionByStatus(props: Props) {
 	const { view } = useMediaFilters();
 	const isMobile = useIsMobile();
-	const effectiveView = isMobile && view === "grid" ? "list" : view;
+	const effectiveView =
+		isMobile && (view === "grid" || view === "shelf")
+			? "list"
+			: !isMobile && view === "list"
+				? "grid"
+				: view;
 
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [selectedLog, setSelectedLog] = useState<
@@ -67,8 +72,8 @@ export default function MediaSectionByStatus(props: Props) {
 				<div
 					className={
 						effectiveView === "list"
-							? "flex flex-col gap-2"
-							: "grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] lg:gap-6"
+							? "flex flex-col gap-8"
+							: "grid auto-rows-max grid-cols-2 items-start gap-8 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] lg:gap-8"
 					}
 				>
 					{props.logs.map((log) => {

@@ -12,36 +12,29 @@ type Props = {
 };
 
 /**
- * Reading progress visualized as a row of page-edge segments.
- * Read segments stand tall in the accent color, remaining pages sit short
- * and muted — reading progress reads like the side of a book's pages.
+ * A quiet progress line: one continuous bar and the percentage at the edge.
  */
 export default function BookProgress({ progress, className }: Props) {
-	const filledSegments = Math.round(progress.percent / 10);
+	const percent = Math.min(100, Math.max(0, progress.percent));
 
 	return (
-		<div className={cn("flex max-w-48 flex-col gap-2", className)}>
-			<div className="flex items-baseline justify-between gap-3">
-				<span className="font-heading text-xs font-semibold text-foreground tabular-nums">
-					{progress.percent}% ({progress.read}/{progress.total})
-				</span>
-			</div>
-
+		<div className={cn("flex max-w-48 items-center gap-2", className)}>
 			<div
-				aria-label={`Reading progress ${progress.percent}%`}
-				className="flex h-1.5 w-full gap-1 rounded-full"
-				role="img"
+				aria-label={`Reading progress ${percent}%`}
+				className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-secondary"
+				role="progressbar"
+				aria-valuemax={100}
+				aria-valuemin={0}
+				aria-valuenow={percent}
 			>
-				{Array.from({ length: 10 }, (_, i) => (
-					<span
-						className={cn(
-							"h-full flex-1 rounded-full transition-colors duration-500",
-							i < filledSegments ? "bg-primary" : "bg-secondary",
-						)}
-						key={i}
-					/>
-				))}
+				<span
+					className="block h-full rounded-full bg-primary transition-[width] duration-500"
+					style={{ width: `${percent}%` }}
+				/>
 			</div>
+			<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+				{percent}%
+			</span>
 		</div>
 	);
 }

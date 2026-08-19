@@ -16,12 +16,12 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 
 	return (
 		<div
-			className="group flex cursor-pointer items-center gap-3 overflow-hidden rounded-xl bg-card px-3 py-3 transition-all duration-300 ease-out focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border"
+			className="flex cursor-pointer flex-col overflow-hidden focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
 			onClick={onClick}
 			role={onClick ? "button" : undefined}
 		>
 			{/* Poster Thumbnail */}
-			<div className="aspect-[2/3] w-16 flex-shrink-0 overflow-hidden rounded-lg bg-secondary ring-1 ring-border">
+			<div className="relative aspect-[2/3] w-1/2 self-center overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border/70">
 				{log.metadata?.image ? (
 					<Image
 						alt={log.metadata?.name || "Media"}
@@ -41,7 +41,7 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 			</div>
 
 			{/* Content */}
-			<div className="flex min-w-0 flex-1 flex-col gap-1">
+			<div className="flex min-w-0 flex-1 flex-col items-center gap-1 pt-3 text-center">
 				<h4 className="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground">
 					{log.metadata.name}
 				</h4>
@@ -56,7 +56,12 @@ export default function MediaShelfCard({ log, onClick }: Props) {
 						{log.metadata.creator}
 					</p>
 				)}
-				{progress && <BookProgress progress={progress} />}
+				{progress && (
+					<BookProgress
+						className="w-full max-w-none pt-1"
+						progress={progress}
+					/>
+				)}
 			</div>
 		</div>
 	);

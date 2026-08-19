@@ -72,7 +72,7 @@ export default function SearchMovieTvResultsGrid({
 				<div className="h-px flex-1 bg-border" />
 			</div>
 
-			<div className="grid grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5">
+			<div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8 xl:grid-cols-6">
 				{mediaContent.results.map((media) => {
 					const releaseYear = getTmdbMediaReleaseYear(
 						media.release_date,

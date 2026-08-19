@@ -14,7 +14,7 @@ function GridCardSkeleton() {
 
 export default function MediaGridLoadingState() {
 	return (
-		<div className="grid grid-cols-2 gap-4 pt-4 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] lg:gap-6 lg:pt-0">
+		<div className="grid grid-cols-2 gap-8 pt-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] lg:gap-8 lg:pt-0">
 			{Array.from({ length: 12 }).map((_, cardIndex) => (
 				<GridCardSkeleton key={`grid-card-skeleton-${cardIndex + 1}`} />
 			))}

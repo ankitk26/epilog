@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 export default function SearchResultsLoadingList() {
 	return (
-		<div className="grid grid-cols-1 gap-2 lg:grid-cols-4 lg:gap-4 xl:grid-cols-5">
+		<div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8 xl:grid-cols-5">
 			{Array.from({ length: 12 }).map((_, index) => (
 				<div key={index}>
 					<div className="flex items-center gap-4 rounded-xl border border-border/70 bg-card px-3 py-3 shadow-soft lg:hidden">

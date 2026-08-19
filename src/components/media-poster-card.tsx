@@ -34,14 +34,13 @@ export default function MediaPosterCard(props: Props) {
 	return (
 		<div
 			className={cn(
-				"group flex w-full flex-col overflow-hidden rounded-xl bg-card p-3 shadow-soft transition-all duration-300 ease-out fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border",
-				isClickable &&
-					"cursor-pointer fine-hover:hover:shadow-lift fine-hover:hover:ring-2 fine-hover:hover:ring-border",
+				"flex h-full w-full flex-col",
+				isClickable && "cursor-pointer",
 			)}
 			onClick={props.onClick}
 			role={isClickable ? "button" : undefined}
 		>
-			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary">
+			<div className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border/70">
 				{props.media.imageUrl && !imageFailed ? (
 					<Image
 						alt={props.media.name}
@@ -60,7 +59,7 @@ export default function MediaPosterCard(props: Props) {
 					</div>
 				)}
 			</div>
-			<div className="flex flex-col gap-2 pt-3">
+			<div className="flex flex-1 flex-col gap-2 pt-3">
 				<h4 className="line-clamp-2 font-heading text-sm leading-snug font-medium text-foreground">
 					{props.media.name}
 				</h4>
@@ -75,8 +74,15 @@ export default function MediaPosterCard(props: Props) {
 						{props.media.creator}
 					</p>
 				)}
-				{props.progress && (
-					<BookProgress className="pt-1" progress={props.progress} />
+				{props.media.type === "book" && (
+					<div className="mt-auto min-h-6">
+						{props.progress && (
+							<BookProgress
+								className="max-w-none pt-1"
+								progress={props.progress}
+							/>
+						)}
+					</div>
 				)}
 			</div>
 		</div>

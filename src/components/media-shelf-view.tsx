@@ -149,7 +149,7 @@ export default function MediaShelfView() {
 
 			{/* Desktop: multi-column grid */}
 			<div
-				className="hidden gap-6 lg:grid lg:items-start"
+				className="hidden gap-8 lg:grid lg:items-start"
 				style={{
 					gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
 				}}

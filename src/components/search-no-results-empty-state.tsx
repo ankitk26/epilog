@@ -7,7 +7,7 @@ type Props = {
 
 export default function SearchNoResultsEmptyState({ type: mediaType }: Props) {
 	return (
-		<div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border bg-card py-14 text-center shadow-soft">
+		<div className="flex flex-col items-center justify-center gap-3 py-14 text-center">
 			<MediaTypeIcon
 				className="size-7 text-muted-foreground/60"
 				type={mediaType}
