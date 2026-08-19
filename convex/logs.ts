@@ -270,6 +270,19 @@ export const remove = mutation({
 		}
 
 		await ctx.db.delete(args.logId);
+
+		// Media is shared between users, so only remove it once no logs still
+		// reference it.
+		const remainingLog = await ctx.db
+			.query("logs")
+			.withIndex("by_media_and_status", (q) =>
+				q.eq("dbMediaId", existingLog.dbMediaId),
+			)
+			.first();
+
+		if (!remainingLog) {
+			await ctx.db.delete(existingLog.dbMediaId);
+		}
 	},
 });
 
@@ -446,5 +459,21 @@ export const bulkDelete = mutation({
 
 		// Delete all media logs
 		await Promise.all(args.logIds.map((id) => ctx.db.delete(id)));
+
+		// Media is shared between users. Clean up media whose last log was
+		// removed by this bulk operation.
+		const mediaIds = new Set(logs.map((log) => log!.dbMediaId));
+		for (const mediaId of mediaIds) {
+			const remainingLog = await ctx.db
+				.query("logs")
+				.withIndex("by_media_and_status", (q) =>
+					q.eq("dbMediaId", mediaId),
+				)
+				.first();
+
+			if (!remainingLog) {
+				await ctx.db.delete(mediaId);
+			}
+		}
 	},
 });

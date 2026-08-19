@@ -71,7 +71,10 @@ export default function SearchMangaResultsGrid({
 
 					const searchMedia: SearchMedia = {
 						imageUrl: manga.images.webp?.large_image_url,
-						name: manga.title_english?.trim() || manga.title?.trim() || "Untitled",
+						name:
+							manga.title_english?.trim() ||
+							manga.title?.trim() ||
+							"Untitled",
 						releaseYear: manga.published.from
 							? new Date(manga.published.from).getFullYear()
 							: null,
