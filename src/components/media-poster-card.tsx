@@ -1,6 +1,5 @@
 import type { MediaType } from "@/types";
-import type { BookProgressData } from "./book-progress";
-import LogItem from "./log-item";
+import LogItem, { type LogItemProgress } from "./log-item";
 
 type Props = {
 	media: {
@@ -17,7 +16,7 @@ type Props = {
 		seriesKey?: string;
 	};
 	onClick?: () => void;
-	progress?: BookProgressData | null;
+	progress?: LogItemProgress | null;
 };
 
 export default function MediaPosterCard(props: Props) {

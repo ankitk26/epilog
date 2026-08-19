@@ -1,9 +1,9 @@
 import { Image } from "@unpic/react";
 import { useState, type ReactNode } from "react";
 import { shouldShowReleaseYear } from "@/lib/media-labels";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
-import BookProgress, { type BookProgressData } from "./book-progress";
 import MediaTypeIcon from "./media-type-icon";
 
 export type LogItemMedia = {
@@ -14,10 +14,14 @@ export type LogItemMedia = {
 	type: MediaType;
 };
 
+export type LogItemProgress = {
+	percent: number;
+};
+
 type LogItemProps = {
 	media: LogItemMedia;
 	onClick?: () => void;
-	progress?: BookProgressData | null;
+	progress?: LogItemProgress | null;
 };
 
 type RootProps = {
@@ -121,12 +125,18 @@ function Grid({ media, onClick, progress }: LogItemProps) {
 				titleClassName="line-clamp-2 font-heading text-sm leading-snug font-medium text-foreground"
 			>
 				{media.type === "book" && (
-					<div className="mt-auto min-h-6">
+					<div className="mt-auto flex min-h-6 items-center gap-2 pt-1">
 						{progress && (
-							<BookProgress
-								className="max-w-none pt-1"
-								progress={progress}
-							/>
+							<>
+								<Progress
+									aria-label={`Reading progress ${progress.percent}%`}
+									className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+									value={progress.percent}
+								/>
+								<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+									{progress.percent}%
+								</span>
+							</>
 						)}
 					</div>
 				)}
@@ -149,7 +159,18 @@ function List({ media, onClick, progress }: LogItemProps) {
 				media={media}
 				titleClassName="font-heading text-sm leading-tight font-medium tracking-tight text-foreground"
 			>
-				{progress && <BookProgress progress={progress} />}
+				{progress && (
+					<div className="flex max-w-48 items-center gap-2">
+						<Progress
+							aria-label={`Reading progress ${progress.percent}%`}
+							className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+							value={progress.percent}
+						/>
+						<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+							{progress.percent}%
+						</span>
+					</div>
+				)}
 			</Details>
 		</Root>
 	);
@@ -170,10 +191,16 @@ function Shelf({ media, onClick, progress }: LogItemProps) {
 				titleClassName="line-clamp-2 font-heading text-sm leading-tight font-medium text-foreground"
 			>
 				{progress && (
-					<BookProgress
-						className="w-full max-w-none pt-1"
-						progress={progress}
-					/>
+					<div className="flex w-full items-center gap-2 pt-1">
+						<Progress
+							aria-label={`Reading progress ${progress.percent}%`}
+							className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+							value={progress.percent}
+						/>
+						<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+							{progress.percent}%
+						</span>
+					</div>
 				)}
 			</Details>
 		</Root>

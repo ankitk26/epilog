@@ -18,6 +18,7 @@ import {
 } from "@/components/bottom-sheet-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import { creatorPhrase } from "@/lib/creator-phrase";
 import {
 	getStatusIcon,
@@ -27,7 +28,6 @@ import {
 import { cn } from "@/lib/utils";
 import type { LogStatus } from "@/types";
 import { shelfStatusesByMediaType } from "@/types";
-import BookProgress from "./book-progress";
 
 type Log = FunctionReturnType<typeof api.logs.all>[0];
 
@@ -395,13 +395,16 @@ export default function MediaLogDetailsDialog({
 										)}
 
 									{progressPercent !== undefined && (
-										<BookProgress
-											progress={{
-												percent: progressPercent,
-												read: pagesRead ?? 0,
-												total: pageCount ?? 0,
-											}}
-										/>
+										<div className="flex max-w-48 items-center gap-2">
+											<Progress
+												aria-label={`Reading progress ${progressPercent}%`}
+												className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+												value={progressPercent}
+											/>
+											<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+												{progressPercent}%
+											</span>
+										</div>
 									)}
 								</div>
 							)}
