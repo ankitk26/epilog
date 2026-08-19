@@ -1,5 +1,6 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { SpinnerIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -132,43 +133,25 @@ export default function MovieCalendarEventDetailsDialog({
 
 	const updateEventDateMutation = useMutation({
 		mutationFn: useConvexMutation(api.movieEvents.updateEventDate),
-		onMutate: () => {
-			toast.loading("Updating event date...");
-		},
 		onSuccess: (response: string) => {
-			toast.dismiss();
-
 			if (response === "Already added") {
 				toast.error("Movie already added for that day");
 				return;
 			}
 
-			if (response === "No changes") {
-				toast.info("No changes");
-				return;
-			}
-
 			onOpenChange(false);
-			toast.success(response);
 		},
 		onError: () => {
-			toast.dismiss();
 			toast.error("Something went wrong!");
 		},
 	});
 
 	const deleteEventMutation = useMutation({
 		mutationFn: useConvexMutation(api.movieEvents.remove),
-		onMutate: () => {
-			toast.loading("Deleting event...");
-		},
-		onSuccess: (response: string) => {
-			toast.dismiss();
+		onSuccess: () => {
 			onOpenChange(false);
-			toast.success(response);
 		},
 		onError: () => {
-			toast.dismiss();
 			toast.error("Something went wrong!");
 		},
 	});
@@ -385,7 +368,11 @@ export default function MovieCalendarEventDetailsDialog({
 							}
 							variant="destructive"
 						>
-							Delete event
+							{deleteEventMutation.isPending ? (
+								<SpinnerIcon className="size-4 animate-spin" />
+							) : (
+								"Delete event"
+							)}
 						</Button>
 
 						<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -413,7 +400,11 @@ export default function MovieCalendarEventDetailsDialog({
 									});
 								}}
 							>
-								Update date
+								{updateEventDateMutation.isPending ? (
+									<SpinnerIcon className="size-4 animate-spin" />
+								) : (
+									"Update date"
+								)}
 							</Button>
 						</div>
 					</div>

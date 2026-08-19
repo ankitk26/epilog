@@ -208,7 +208,7 @@ export const add = mutation({
 
 		// do nothing if given media is already logged
 		if (existingLog) {
-			// return message to display in sonner
+			// Let the caller explain why the media was not added.
 			return "Already added";
 		}
 
@@ -251,7 +251,6 @@ export const add = mutation({
 			pagesRead: status === "reading" ? (args.pagesRead ?? 0) : undefined,
 		});
 
-		// return message to display in sonner
 		return "Added to library";
 	},
 });

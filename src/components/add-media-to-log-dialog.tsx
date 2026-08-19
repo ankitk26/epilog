@@ -1,5 +1,6 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { SpinnerIcon } from "@phosphor-icons/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
 import { useState } from "react";
@@ -65,18 +66,17 @@ export default function AddMediaToLogDialog({
 
 	const addMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.add),
-		onMutate: () => {
-			toast.loading("Adding...");
-		},
 		onSuccess: (response: string) => {
-			toast.dismiss();
-			toast.success(response);
+			if (response === "Already added") {
+				toast.error("This media is already in your library");
+				return;
+			}
+
 			setStatus(null);
 			setPageCount(undefined);
 			onOpenChange(false);
 		},
 		onError: () => {
-			toast.dismiss();
 			toast.error("Something went wrong!");
 		},
 	});
@@ -286,7 +286,11 @@ export default function AddMediaToLogDialog({
 									disabled={isLoading || !canAdd}
 									onClick={handleAdd}
 								>
-									Add to library
+									{isLoading ? (
+										<SpinnerIcon className="size-4 animate-spin" />
+									) : (
+										"Add to library"
+									)}
 								</Button>
 							</div>
 						</div>

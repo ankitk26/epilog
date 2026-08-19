@@ -1,7 +1,9 @@
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
+import { SpinnerIcon } from "@phosphor-icons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Image } from "@unpic/react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
@@ -39,13 +41,37 @@ export default function MovieCalendarSearchResultRow({
 
 	const posterImage = buildTmdbPosterImageUrl(movie.poster_path);
 
+	const [isAdding, setIsAdding] = useState(false);
 	const addMovieEventMutation = useMutation({
 		mutationFn: useConvexMutation(api.movieEvents.add),
-		onMutate: () => {
-			toast.loading("Adding movie event...");
-		},
-		onSuccess: (response: string) => {
-			toast.dismiss();
+	});
+
+	const handleMovieClick = async () => {
+		if (isAdding) return;
+
+		setIsAdding(true);
+		try {
+			const formattedDate = `${year.toString().padStart(4, "0")}${(
+				month + 1
+			)
+				.toString()
+				.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
+
+			const sourceMediaId = buildSourceMediaId("movie", movie.id);
+			const creator = await getTmdbMediaCreator({
+				data: { sourceMediaId, type: "movie" },
+			});
+
+			const response = await addMovieEventMutation.mutateAsync({
+				eventDate: formattedDate,
+				media: {
+					name: movie.name ?? movie.title ?? "N/A",
+					releaseYear,
+					creator,
+					sourceMediaId,
+					image: posterImage,
+				},
+			});
 
 			if (response === "Already added") {
 				toast.error("Movie already added for this day");
@@ -53,41 +79,18 @@ export default function MovieCalendarSearchResultRow({
 			}
 
 			closeDialog();
-			toast.success(response);
-		},
-		onError: () => {
-			toast.dismiss();
+		} catch {
 			toast.error("Something went wrong!");
-		},
-	});
-
-	const handleMovieClick = async () => {
-		const formattedDate = `${year.toString().padStart(4, "0")}${(month + 1)
-			.toString()
-			.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
-
-		const sourceMediaId = buildSourceMediaId("movie", movie.id);
-
-		const creator = await getTmdbMediaCreator({
-			data: { sourceMediaId, type: "movie" },
-		});
-
-		addMovieEventMutation.mutate({
-			eventDate: formattedDate,
-			media: {
-				name: movie.name ?? movie.title ?? "N/A",
-				releaseYear,
-				creator,
-				sourceMediaId,
-				image: posterImage,
-			},
-		});
+		} finally {
+			setIsAdding(false);
+		}
 	};
 
 	return (
 		<button
 			type="button"
 			className="flex w-full items-start gap-3 rounded-lg border border-border/70 bg-card p-3 text-left shadow-soft transition-all duration-200 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift"
+			disabled={isAdding}
 			onClick={handleMovieClick}
 		>
 			<div className="relative aspect-[2/3] w-10 shrink-0 overflow-hidden rounded-md bg-secondary">
@@ -109,9 +112,14 @@ export default function MovieCalendarSearchResultRow({
 				)}
 			</div>
 			<div className="min-w-0 flex-1">
-				<h4 className="truncate font-heading text-sm font-normal text-foreground">
-					{movie.name ?? movie.title ?? "N/A"}
-				</h4>
+				<div className="flex items-center gap-2">
+					{isAdding && (
+						<SpinnerIcon className="size-3.5 animate-spin text-muted-foreground" />
+					)}
+					<h4 className="truncate font-heading text-sm font-normal text-foreground">
+						{movie.name ?? movie.title ?? "N/A"}
+					</h4>
+				</div>
 				{releaseYear && (
 					<p className="mt-1 text-xs text-muted-foreground tabular-nums">
 						{releaseYear}

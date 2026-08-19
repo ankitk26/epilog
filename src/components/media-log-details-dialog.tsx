@@ -2,6 +2,7 @@ import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import {
 	CalendarBlankIcon,
+	SpinnerIcon,
 	TrashSimpleIcon,
 	XIcon,
 } from "@phosphor-icons/react";
@@ -106,32 +107,20 @@ export default function MediaLogDetailsDialog({
 
 	const updateMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.update),
-		onMutate: () => {
-			toast.loading("Saving changes...");
-		},
 		onSuccess: () => {
-			toast.dismiss();
-			toast.success("Log updated");
 			onOpenChange(false);
 		},
 		onError: () => {
-			toast.dismiss();
 			toast.error("Something went wrong!");
 		},
 	});
 
 	const removeMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.remove),
-		onMutate: () => {
-			toast.loading("Removing log...");
-		},
 		onSuccess: () => {
-			toast.dismiss();
-			toast.success("Removed log");
 			onOpenChange(false);
 		},
 		onError: () => {
-			toast.dismiss();
 			toast.error("Something went wrong!");
 		},
 	});
@@ -425,11 +414,17 @@ export default function MediaLogDetailsDialog({
 									onClick={handleDelete}
 									variant="destructive"
 								>
-									<TrashSimpleIcon
-										className="size-3.5"
-										weight="bold"
-									/>
-									Delete
+									{removeMutation.isPending ? (
+										<SpinnerIcon className="size-4 animate-spin" />
+									) : (
+										<TrashSimpleIcon
+											className="size-3.5"
+											weight="bold"
+										/>
+									)}
+									{removeMutation.isPending
+										? "Deleting…"
+										: "Delete"}
 								</Button>
 
 								<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -448,7 +443,11 @@ export default function MediaLogDetailsDialog({
 										}
 										onClick={handleSave}
 									>
-										Save
+										{updateMutation.isPending ? (
+											<SpinnerIcon className="size-4 animate-spin" />
+										) : (
+											"Save"
+										)}
 									</Button>
 								</div>
 							</div>

@@ -71,9 +71,9 @@ export const add = mutation({
 			)
 			.unique();
 
-		// do nothing if give movie is already entered
+		// do nothing if given movie is already entered
 		if (existingEvent) {
-			// return message to display in sonner
+			// Let the caller explain why the movie was not added.
 			return "Already added";
 		}
 
