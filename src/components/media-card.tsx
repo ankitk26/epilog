@@ -97,7 +97,7 @@ function Title({
 	className: string;
 	media: MediaCardMedia;
 }) {
-	return <h4 className={className}>{media.name}</h4>;
+	return <h4 className={className}>{media.name || "Untitled"}</h4>;
 }
 
 function Secondary({ media }: { media: MediaCardMedia }) {
