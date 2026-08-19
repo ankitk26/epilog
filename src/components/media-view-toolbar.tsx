@@ -154,12 +154,12 @@ export default function MediaViewToolbar() {
 										className={cn(
 											"!rounded-full",
 											isActive
-												? "bg-secondary text-foreground"
+												? "text-primary-foreground"
 												: "text-muted-foreground hover:text-foreground",
 										)}
 										onClick={() => setView(option.value)}
 										title={option.label}
-										variant={isActive ? "ghost" : "outline"}
+										variant={isActive ? "default" : "outline"}
 										size="icon"
 									>
 										<Icon />
