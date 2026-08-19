@@ -1,7 +1,7 @@
 import { Image } from "@unpic/react";
 import { useState, type ReactNode } from "react";
-import { shouldShowReleaseYear } from "@/lib/media-labels";
 import { Progress } from "@/components/ui/progress";
+import { shouldShowReleaseYear } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import MediaTypeIcon from "./media-type-icon";
