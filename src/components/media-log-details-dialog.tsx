@@ -17,6 +17,7 @@ import {
 	ReadingProgressSection,
 } from "@/components/media-log-dialog-parts";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { shelfStatusesByMediaType } from "@/types";
 import type { LogStatus } from "@/types";
 
@@ -178,7 +179,12 @@ export default function MediaLogDetailsDialog({
 						/>
 
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
-							<div className="grid items-start gap-4 sm:grid-cols-2 sm:gap-6">
+							<div
+								className={cn(
+									"grid items-start gap-4 sm:gap-6",
+									isReadingBook && "sm:grid-cols-2",
+								)}
+							>
 								<MediaLogStatusPicker
 									disabled={isLoading}
 									mediaType={mediaType}
