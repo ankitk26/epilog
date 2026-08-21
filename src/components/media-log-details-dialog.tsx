@@ -144,14 +144,14 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<BottomSheetDialogContent
-				className="h-[100dvh] max-h-[100dvh] rounded-t-xl sm:h-auto sm:max-h-[85dvh] sm:rounded-xl"
+				className="h-[100dvh] max-h-[100dvh] rounded-t-xl sm:h-auto sm:max-h-[85dvh] sm:max-w-xl sm:rounded-xl"
 				showCloseButton={false}
 				initialFocus={false}
 			>
 				<DialogClose
 					render={
 						<Button
-							className="absolute top-5 right-5 z-10"
+							className="absolute top-4 right-4 z-10"
 							size="icon-sm"
 							variant="ghost"
 						/>
@@ -164,7 +164,6 @@ export default function MediaLogDetailsDialog({
 				{log && (
 					<div className="flex flex-col overflow-y-auto">
 						<MediaLogDialogHero
-							creator={log.metadata.creator}
 							media={{
 								imageUrl: log.metadata.image,
 								name: log.metadata.name || "Untitled",
@@ -179,62 +178,64 @@ export default function MediaLogDetailsDialog({
 						/>
 
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
-							<MediaLogStatusPicker
-								disabled={isLoading}
-								mediaType={mediaType}
-								onChange={setStatus}
-								value={status}
-							/>
+							<div className="grid items-start gap-4 sm:grid-cols-2 sm:gap-6">
+								<MediaLogStatusPicker
+									disabled={isLoading}
+									mediaType={mediaType}
+									onChange={setStatus}
+									value={status}
+								/>
 
-							{isReadingBook && (
-								<ReadingProgressSection
-									error={
-										pagesRead !== undefined &&
-										pageCount !== undefined &&
-										pagesRead > pageCount
-											? "Pages read cannot exceed total pages."
-											: undefined
-									}
-									progressPercent={progressPercent}
-								>
-									<div className="grid grid-cols-2 gap-3">
-										<ReadingProgressField
-											id="total-pages"
-											label="Total pages"
-											onChange={(event) =>
-												setPageCount(
-													parsePageValue(
-														event.target.value,
-													),
-												)
-											}
-											onFocus={(event) =>
-												event.currentTarget.select()
-											}
-											placeholder="300"
-											value={pageCount}
-										/>
-										<ReadingProgressField
-											id="pages-read"
-											label="Pages read"
-											onChange={(event) =>
-												setPagesRead(
-													parsePageValue(
-														event.target.value,
-													),
-												)
-											}
-											onFocus={(event) =>
-												event.currentTarget.select()
-											}
-											placeholder="0"
-											value={pagesRead}
-										/>
-									</div>
-								</ReadingProgressSection>
-							)}
+								{isReadingBook && (
+									<ReadingProgressSection
+										error={
+											pagesRead !== undefined &&
+											pageCount !== undefined &&
+											pagesRead > pageCount
+												? "Pages read cannot exceed total pages."
+												: undefined
+										}
+										progressPercent={progressPercent}
+									>
+										<div className="grid grid-cols-2 gap-3">
+											<ReadingProgressField
+												id="total-pages"
+												label="Total pages"
+												onChange={(event) =>
+													setPageCount(
+														parsePageValue(
+															event.target.value,
+														),
+													)
+												}
+												onFocus={(event) =>
+													event.currentTarget.select()
+												}
+												placeholder="300"
+												value={pageCount}
+											/>
+											<ReadingProgressField
+												id="pages-read"
+												label="Pages read"
+												onChange={(event) =>
+													setPagesRead(
+														parsePageValue(
+															event.target.value,
+														),
+													)
+												}
+												onFocus={(event) =>
+													event.currentTarget.select()
+												}
+												placeholder="0"
+												value={pagesRead}
+											/>
+										</div>
+									</ReadingProgressSection>
+								)}
+							</div>
 
-							<div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+							<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
 								<Button
 									className="w-full sm:w-auto"
 									disabled={isLoading}
@@ -271,7 +272,10 @@ export default function MediaLogDetailsDialog({
 										onClick={handleSave}
 									>
 										{updateMutation.isPending ? (
-											<SpinnerIcon className="size-4 animate-spin" />
+											<>
+												<SpinnerIcon className="size-4 animate-spin" />
+												Saving…
+											</>
 										) : (
 											"Save"
 										)}

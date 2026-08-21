@@ -159,7 +159,9 @@ export default function MediaViewToolbar() {
 										)}
 										onClick={() => setView(option.value)}
 										title={option.label}
-										variant={isActive ? "default" : "outline"}
+										variant={
+											isActive ? "default" : "outline"
+										}
 										size="icon"
 									>
 										<Icon />

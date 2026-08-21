@@ -1,4 +1,3 @@
-import { CalendarBlankIcon } from "@phosphor-icons/react";
 import { Image } from "@unpic/react";
 import type { ChangeEvent, FocusEvent, ReactNode } from "react";
 import { creatorPhrase } from "@/lib/creator-phrase";
@@ -33,6 +32,8 @@ export function MediaLogDialogHero({
 	statusDate,
 }: MediaLogDialogHeroProps) {
 	const resolvedCreator = creator ?? media.creator;
+	const showYear =
+		shouldShowReleaseYear(media.type) && media.releaseYear != null;
 
 	return (
 		<div className="relative flex-shrink-0">
@@ -71,33 +72,32 @@ export function MediaLogDialogHero({
 				</div>
 
 				<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-					<h2 className="line-clamp-2 font-heading text-lg leading-tight font-medium tracking-tight text-foreground">
+					<h2 className="line-clamp-2 font-heading text-lg leading-tight font-semibold tracking-tight text-foreground">
 						{media.name || "Untitled"}
 					</h2>
 
-					{shouldShowReleaseYear(media.type) &&
-						media.releaseYear != null && (
-							<div className="mt-2 flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
+					{(showYear || resolvedCreator) && (
+						<div className="mt-2 flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground">
+							{showYear && (
 								<span className="tabular-nums">
 									{media.releaseYear}
 								</span>
-							</div>
-						)}
-
-					{resolvedCreator && (
-						<p className="mt-1 text-xs font-medium text-foreground/70">
-							{creatorPhrase(media.type, resolvedCreator)}
-						</p>
+							)}
+							{showYear && resolvedCreator && (
+								<span aria-hidden="true">·</span>
+							)}
+							{resolvedCreator && (
+								<span className="font-medium text-foreground/70">
+									{creatorPhrase(media.type, resolvedCreator)}
+								</span>
+							)}
+						</div>
 					)}
 
 					{statusDate && (
-						<div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground/60">
-							<CalendarBlankIcon
-								className="hidden size-3 sm:block"
-								weight="bold"
-							/>
-							<span>{statusDate}</span>
-						</div>
+						<p className="mt-2 text-xs text-muted-foreground">
+							{statusDate}
+						</p>
 					)}
 				</div>
 			</div>
@@ -119,13 +119,18 @@ export function MediaLogStatusPicker({
 	value,
 }: MediaLogStatusPickerProps) {
 	return (
-		<div className="flex flex-col overflow-hidden rounded-lg border border-border/70 bg-card shadow-soft">
+		<div
+			aria-label="Status"
+			className="flex flex-col overflow-hidden rounded-lg border border-border/70 bg-card shadow-soft"
+			role="radiogroup"
+		>
 			{shelfStatusesByMediaType[mediaType].map((status, index) => {
 				const isActive = value === status;
 				const StatusIcon = getStatusIcon(status);
 
 				return (
 					<button
+						aria-checked={isActive}
 						className={cn(
 							"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
 							index > 0 && "border-t border-border",
@@ -136,6 +141,7 @@ export function MediaLogStatusPicker({
 						disabled={disabled}
 						key={status}
 						onClick={() => onChange(status)}
+						role="radio"
 						type="button"
 					>
 						<StatusIcon
@@ -149,10 +155,10 @@ export function MediaLogStatusPicker({
 						/>
 						<span
 							className={cn(
-								"flex-1 font-medium transition-colors duration-150",
+								"flex-1 transition-colors duration-150",
 								isActive
-									? "text-foreground"
-									: "text-muted-foreground",
+									? "font-semibold text-foreground"
+									: "font-medium text-muted-foreground",
 							)}
 						>
 							{statusLabel(status, mediaType)}
@@ -182,11 +188,12 @@ export function ReadingProgressField({
 	value,
 }: ReadingProgressFieldProps) {
 	return (
-		<div className="space-y-2">
+		<div className="flex flex-col items-start gap-2">
 			<label className="section-label" htmlFor={id}>
 				{label}
 			</label>
 			<Input
+				className="bg-input/40 px-3 text-sm tabular-nums"
 				id={id}
 				inputMode="numeric"
 				onChange={onChange}
@@ -211,8 +218,10 @@ export function ReadingProgressSection({
 	progressPercent,
 }: ReadingProgressSectionProps) {
 	return (
-		<div className="space-y-3 rounded-lg border border-border/70 bg-card p-4 shadow-soft">
-			<p className="section-label">Reading progress</p>
+		<div className="space-y-3">
+			<h3 className="text-sm font-semibold tracking-tight text-foreground">
+				Reading progress
+			</h3>
 			{children}
 			{error && <p className="text-xs text-destructive">{error}</p>}
 			{progressPercent !== undefined && (
