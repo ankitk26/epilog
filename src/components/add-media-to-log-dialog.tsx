@@ -162,7 +162,10 @@ export default function AddMediaToLogDialog({
 									onClick={handleAdd}
 								>
 									{isLoading ? (
-										<SpinnerIcon className="size-4 animate-spin" />
+										<>
+											<SpinnerIcon className="size-4 animate-spin" />
+											Adding…
+										</>
 									) : (
 										"Add to library"
 									)}
