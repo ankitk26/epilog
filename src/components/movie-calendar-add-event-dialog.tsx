@@ -98,10 +98,10 @@ export default function MovieCalendarAddEventDialog({
 						>
 							{isFetching ? (
 								<>
-								<SpinnerIcon className="size-3.5 animate-spin" />
-								Searching…
-							</>
-								) : (
+									<SpinnerIcon className="size-3.5 animate-spin" />
+									Searching…
+								</>
+							) : (
 								"Search"
 							)}
 						</Button>
