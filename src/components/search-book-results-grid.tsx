@@ -5,7 +5,7 @@ import { searchOpenLibraryBooks } from "@/actions/search-open-library-books";
 import SearchErrorState from "@/components/search-error-state";
 import SearchMediaItem from "@/components/search-media-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
-import SearchResultsLoadingList from "@/components/search-results-loading-list";
+import SearchResultsLoadingState from "@/components/search-results-loading-state";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import type { SearchMedia } from "./search-results-panel";
 
@@ -46,7 +46,7 @@ export default function SearchBookResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingList />;
+		return <SearchResultsLoadingState />;
 	}
 
 	if (!searchQuery) {

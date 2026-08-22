@@ -5,7 +5,7 @@ import { searchTmdbMoviesAndTv } from "@/actions/search-tmdb-movies-and-tv";
 import SearchErrorState from "@/components/search-error-state";
 import SearchMediaItem from "@/components/search-media-item";
 import SearchNoResultsEmptyState from "@/components/search-no-results-empty-state";
-import SearchResultsLoadingList from "@/components/search-results-loading-list";
+import SearchResultsLoadingState from "@/components/search-results-loading-state";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { buildTmdbPosterImageUrl } from "@/lib/build-tmdb-poster-image-url";
 import { getTmdbMediaReleaseYear } from "@/lib/get-tmdb-media-release-year";
@@ -47,7 +47,7 @@ export default function SearchMovieTvResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingList />;
+		return <SearchResultsLoadingState />;
 	}
 
 	if (!searchQuery) {

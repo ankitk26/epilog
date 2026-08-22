@@ -7,7 +7,7 @@ import SearchMediaItem from "@/components/search-media-item";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
 import { standardizePersonName } from "@/lib/standardize-person-name";
 import SearchNoResultsEmptyState from "./search-no-results-empty-state";
-import SearchResultsLoadingList from "./search-results-loading-list";
+import SearchResultsLoadingState from "./search-results-loading-state";
 import type { SearchMedia } from "./search-results-panel";
 
 type Props = {
@@ -41,7 +41,7 @@ export default function SearchMangaResultsGrid({
 	});
 
 	if (isEnabled && isPending) {
-		return <SearchResultsLoadingList />;
+		return <SearchResultsLoadingState />;
 	}
 
 	if (!searchQuery) {
