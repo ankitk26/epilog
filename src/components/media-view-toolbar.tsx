@@ -94,7 +94,7 @@ export default function MediaViewToolbar() {
 						return (
 							<Button
 								className={cn(
-									"group text-xs font-semibold tracking-wide uppercase active:scale-[0.97]",
+									"group text-xs",
 									isActive
 										? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
 										: "text-muted-foreground hover:text-foreground",
@@ -103,13 +103,13 @@ export default function MediaViewToolbar() {
 								onClick={() => {
 									setType(item.type);
 								}}
-								size="lg"
+								size="sm"
 								variant="outline"
 							>
 								{item.label}
 								<span
 									className={cn(
-										"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none font-semibold tabular-nums",
+										"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none",
 										isActive
 											? "bg-primary-foreground/20 text-primary-foreground"
 											: "bg-secondary text-muted-foreground fine-hover:group-hover:text-foreground",

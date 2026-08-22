@@ -143,7 +143,7 @@ export default function AppShellHeader() {
 							</div>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								className="text-sm"
+								className="text-xs"
 								onClick={handleSignOut}
 							>
 								<SignOutIcon className="size-4" />

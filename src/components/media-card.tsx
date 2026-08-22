@@ -179,12 +179,12 @@ function Grid({ children, footer, media, onClick }: MediaCardLayoutProps) {
 			<Poster
 				fallbackIconClassName="size-12 text-muted-foreground/40"
 				media={media}
-				className="relative aspect-[2/3] overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border/70"
+				className="relative aspect-2/3 overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border/70"
 				size={{ height: 396, width: 264 }}
 			/>
-			<div className="flex flex-1 flex-col gap-2 pt-3">
+			<div className="flex flex-1 flex-col gap-1 pt-3">
 				<Title
-					className="line-clamp-2 text-sm leading-snug font-medium text-foreground"
+					className="line-clamp-2 text-xs leading-snug font-medium text-foreground"
 					media={media}
 				/>
 				<Secondary media={media} />
