@@ -55,7 +55,7 @@ export default function BookCoverPicker({
 					<span className="sr-only">Back</span>
 				</Button>
 
-				{!isPending && editions && (
+				{!isPending && editionCount > 0 && (
 					<span className="text-foreground tabular-nums">
 						{editionCount}{" "}
 						{editionCount === 1 ? "edition" : "editions"}
@@ -86,21 +86,25 @@ export default function BookCoverPicker({
 							onSelect={() => setSelected(null)}
 							src={defaultImage ?? null}
 						/>
-						{editions.map((edition) => (
-							<BookCoverTile
-								caption={
-									edition.publicationDate ??
-									edition.title ??
-									"Edition"
-								}
-								isSelected={selected === edition.coverUrl}
-								key={edition.id}
-								onSelect={() =>
-									setSelected(edition.coverUrl ?? null)
-								}
-								src={edition.coverUrl}
-							/>
-						))}
+						{editions
+							.filter(
+								(edition) => edition.coverUrl !== defaultImage,
+							)
+							.map((edition) => (
+								<BookCoverTile
+									caption={
+										edition.publicationDate ??
+										edition.title ??
+										"Edition"
+									}
+									isSelected={selected === edition.coverUrl}
+									key={edition.id}
+									onSelect={() =>
+										setSelected(edition.coverUrl ?? null)
+									}
+									src={edition.coverUrl}
+								/>
+							))}
 					</div>
 				)}
 			</div>
