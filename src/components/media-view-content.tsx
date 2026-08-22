@@ -1,7 +1,7 @@
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import MediaListStatusGroups from "./media-list-status-groups";
-import MediaMovieCalendarView from "./media-movie-calendar-view";
 import MediaShelfView from "./media-shelf-view";
+import MovieCalendarMonthGrid from "./movie-calendar-month-grid";
 
 export default function MediaViewContent() {
 	const { view } = useMediaFilters();
@@ -11,7 +11,11 @@ export default function MediaViewContent() {
 	}
 
 	if (view === "calendar") {
-		return <MediaMovieCalendarView />;
+		return (
+			<div className="flex h-full flex-col">
+				<MovieCalendarMonthGrid />
+			</div>
+		);
 	}
 
 	return <MediaListStatusGroups />;

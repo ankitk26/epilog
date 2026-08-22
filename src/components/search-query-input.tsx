@@ -35,7 +35,7 @@ export default function SearchQueryInput({
 				/>
 				<Button
 					aria-label="Search"
-					className="absolute text-muted-foreground top-1/2 right-1.5 -translate-y-1/2"
+					className="absolute top-1/2 right-1.5 -translate-y-1/2 text-muted-foreground"
 					size="icon-sm"
 					type="submit"
 					variant="secondary"
