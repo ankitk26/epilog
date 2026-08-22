@@ -195,7 +195,7 @@ export default function MovieCalendarEventDetailsDialog({
 				<DialogHeader className="relative z-10 flex-shrink-0">
 					<DialogTitle
 						ref={titleRef}
-						className="font-heading text-xl leading-tight font-normal tracking-tight text-foreground"
+						className="text-xl leading-tight font-normal tracking-tight text-foreground"
 						tabIndex={-1}
 					>
 						{event.name || "Untitled"}
@@ -205,7 +205,7 @@ export default function MovieCalendarEventDetailsDialog({
 				<div className="relative z-10 flex flex-col gap-6 overflow-y-auto">
 					{/* Media summary */}
 					<div className="flex gap-4">
-						<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-soft ring-1 ring-border sm:w-20">
+						<div className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border sm:w-20">
 							{event.image ? (
 								<Image
 									alt={event.name || "Media poster"}

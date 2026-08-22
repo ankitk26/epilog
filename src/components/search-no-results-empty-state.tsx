@@ -12,7 +12,7 @@ export default function SearchNoResultsEmptyState({ type: mediaType }: Props) {
 				className="size-7 text-muted-foreground/60"
 				type={mediaType}
 			/>
-			<p className="font-heading text-lg font-normal text-foreground">
+			<p className="text-lg font-normal text-foreground">
 				No results found
 			</p>
 			<p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

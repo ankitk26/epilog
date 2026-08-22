@@ -7,7 +7,7 @@ export default function SearchErrorState() {
 				className="size-7 text-destructive/70"
 				weight="fill"
 			/>
-			<p className="font-heading text-lg font-normal text-foreground">
+			<p className="text-lg font-normal text-foreground">
 				Search service is down
 			</p>
 		</div>

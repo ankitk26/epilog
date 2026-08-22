@@ -8,7 +8,7 @@ function CalendarCellSkeleton({
 	isCurrentMonth?: boolean;
 }) {
 	return (
-		<div className="col-span-1 flex min-h-14 flex-col gap-1 rounded-xl border border-border/70 bg-card/40 p-1 shadow-soft sm:min-h-20 sm:gap-2 sm:p-2 lg:min-h-24 lg:p-3">
+		<div className="col-span-1 flex min-h-14 flex-col gap-1 rounded-xl border border-border/70 bg-card/40 p-1 shadow-sm sm:min-h-20 sm:gap-2 sm:p-2 lg:min-h-24 lg:p-3">
 			<div className="space-y-2 sm:space-y-2">
 				<Skeleton
 					className={

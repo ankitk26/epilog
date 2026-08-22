@@ -6,13 +6,13 @@ import { Button } from "./ui/button";
 export default function DefaultErrorComponent() {
 	return (
 		<div className="flex min-h-[60vh] items-center justify-center px-4 py-8">
-			<div className="w-full max-w-xl rounded-xl border border-border/70 bg-card p-8 shadow-lift">
+			<div className="w-full max-w-xl rounded-xl border border-border/70 bg-card p-8 shadow-lg">
 				<div className="mb-6 flex items-start gap-4">
 					<div className="rounded-lg bg-destructive/10 p-3 text-destructive">
 						<VideoCameraSlashIcon className="size-6" />
 					</div>
 					<div className="space-y-2">
-						<h1 className="font-heading text-xl font-medium tracking-tight">
+						<h1 className="text-xl font-medium tracking-tight">
 							Unexpected error
 						</h1>
 						<p className="text-sm text-muted-foreground">

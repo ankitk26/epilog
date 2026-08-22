@@ -24,7 +24,7 @@ export default function SearchMediaTypeTabs({ onChange, value }: Props) {
 				return (
 					<button
 						className={cn(
-							"h-7 cursor-pointer rounded-full border px-3 text-xs font-semibold tracking-wide shadow-soft transition-all duration-200 fine-hover:hover:shadow-lift",
+							"h-7 cursor-pointer rounded-full border px-3 text-xs font-semibold tracking-wide shadow-sm transition-all duration-200 fine-hover:hover:shadow-lg",
 							isActive
 								? "border-transparent bg-primary text-primary-foreground"
 								: "border-border bg-transparent text-muted-foreground fine-hover:hover:border-border fine-hover:hover:text-foreground",

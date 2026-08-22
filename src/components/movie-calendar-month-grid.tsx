@@ -189,12 +189,12 @@ export default function MovieCalendarMonthGrid() {
 					</Button>
 				</div>
 
-				<h1 className="order-first px-0 font-heading text-2xl font-light tracking-tight text-foreground sm:order-none">
+				<h1 className="order-first px-0 text-2xl font-light tracking-tight text-foreground sm:order-none">
 					{months[selectedMonth]} {selectedYear}
 				</h1>
 			</div>
 
-			<div className="h-full rounded-xl border border-border/70 bg-card/40 p-2 shadow-soft sm:p-3">
+			<div className="h-full rounded-xl border border-border/70 bg-card/40 p-2 shadow-sm sm:p-3">
 				<div className="grid grid-cols-7 gap-1 sm:gap-2">
 					{weekDays.map((weekDay) => (
 						<span

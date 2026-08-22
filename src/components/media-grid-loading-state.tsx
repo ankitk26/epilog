@@ -2,7 +2,7 @@ import { Skeleton } from "./ui/skeleton";
 
 function GridCardSkeleton() {
 	return (
-		<div className="w-full overflow-hidden rounded-2xl border border-border/60 bg-card/85 p-4 shadow-soft">
+		<div className="w-full overflow-hidden rounded-2xl border border-border/60 bg-card/85 p-4 shadow-sm">
 			<Skeleton className="aspect-[2/3] w-full rounded-xl" />
 			<div className="space-y-2 pt-4">
 				<Skeleton className="h-3.5 w-5/6" />

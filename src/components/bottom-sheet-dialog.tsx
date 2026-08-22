@@ -26,7 +26,7 @@ function BottomSheetDialogContent({
 	return (
 		<DialogContent
 			className={cn(
-				"safe-area-bottom top-auto right-0 bottom-0 left-0 flex max-h-[85dvh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-xl border border-b-0 border-border p-0 shadow-lift sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl sm:border-b",
+				"safe-area-bottom top-auto right-0 bottom-0 left-0 flex max-h-[85dvh] max-w-full translate-x-0 translate-y-0 flex-col overflow-hidden rounded-t-xl border border-b-0 border-border p-0 shadow-lg sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:max-w-md sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl sm:border-b",
 				className,
 			)}
 			showCloseButton={showCloseButton}

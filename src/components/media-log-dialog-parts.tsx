@@ -53,7 +53,7 @@ export function MediaLogDialogHero({
 			<div className="absolute inset-x-0 bottom-0 z-[1] h-16 bg-gradient-to-t from-popover to-transparent" />
 
 			<div className="relative z-[2] flex gap-3 px-4 pt-6 pb-4 sm:gap-4 sm:px-6 sm:pt-8 sm:pb-6">
-				<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lift ring-1 ring-border sm:w-36">
+				<div className="aspect-[2/3] w-28 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-lg ring-1 ring-border sm:w-36">
 					{media.imageUrl ? (
 						<Image
 							alt={media.name || "Media poster"}
@@ -64,7 +64,7 @@ export function MediaLogDialogHero({
 						/>
 					) : (
 						<div className="flex h-full w-full items-center justify-center">
-							<span className="font-heading text-3xl text-muted-foreground/20">
+							<span className="text-3xl text-muted-foreground/20">
 								{(media.name || "?").charAt(0).toUpperCase()}
 							</span>
 						</div>
@@ -72,7 +72,7 @@ export function MediaLogDialogHero({
 				</div>
 
 				<div className="flex min-w-0 flex-1 flex-col justify-end pb-1">
-					<h2 className="line-clamp-2 font-heading text-lg leading-tight font-semibold tracking-tight text-foreground">
+					<h2 className="line-clamp-2 text-lg leading-tight font-semibold tracking-tight text-foreground">
 						{media.name || "Untitled"}
 					</h2>
 
@@ -121,7 +121,7 @@ export function MediaLogStatusPicker({
 	return (
 		<div
 			aria-label="Status"
-			className="flex flex-col overflow-hidden rounded-lg border border-border/70 bg-card shadow-soft"
+			className="flex flex-col overflow-hidden rounded-lg border border-border/70 bg-card shadow-sm"
 			role="radiogroup"
 		>
 			{shelfStatusesByMediaType[mediaType].map((status, index) => {

@@ -70,14 +70,14 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border/40 bg-canvas/75 px-6 pt-[env(safe-area-inset-top)] shadow-soft backdrop-blur-md backdrop-saturate-150 lg:px-12">
+		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border/40 bg-background/75 px-6 pt-[env(safe-area-inset-top)] shadow-sm backdrop-blur-md backdrop-saturate-150 lg:px-12">
 			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"
 					search={defaultMediaFilters}
 					to="/"
 				>
-					<span className="font-heading text-sm font-semibold tracking-[0.2em] text-foreground uppercase transition-opacity fine-hover:hover:opacity-60">
+					<span className="text-sm font-semibold tracking-[0.2em] text-foreground uppercase transition-opacity fine-hover:hover:opacity-60">
 						epilog
 					</span>
 				</Link>
@@ -120,7 +120,7 @@ export default function AppShellHeader() {
 									size="icon"
 									variant="outline"
 								>
-									<Avatar className="p-0 shadow-soft after:border-0">
+									<Avatar className="p-0 shadow-sm after:border-0">
 										<AvatarImage
 											alt={data?.user.name}
 											src={data?.user.image ?? ""}
@@ -134,7 +134,7 @@ export default function AppShellHeader() {
 						/>
 						<DropdownMenuContent align="end" className="w-52">
 							<div className="px-3 py-2">
-								<p className="font-heading text-sm font-medium text-foreground">
+								<p className="text-sm font-medium text-foreground">
 									{data?.user.name}
 								</p>
 								<p className="mt-1 text-xs text-muted-foreground">

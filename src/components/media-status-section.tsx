@@ -42,7 +42,7 @@ export default function MediaSectionByStatus(props: Props) {
 			{/* Section header — large uppercase title with count */}
 			<div className="flex items-end justify-between gap-4">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-heading text-2xl font-light tracking-tight text-foreground lg:text-3xl">
+					<h2 className="text-2xl font-light tracking-tight text-foreground lg:text-3xl">
 						{props.section.title}
 					</h2>
 					<span className="section-label shrink-0 pl-1 whitespace-nowrap">

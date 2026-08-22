@@ -89,7 +89,7 @@ export default function MovieCalendarSearchResultRow({
 	return (
 		<button
 			type="button"
-			className="flex w-full items-start gap-3 rounded-lg border border-border/70 bg-card p-3 text-left shadow-soft transition-all duration-200 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lift"
+			className="flex w-full items-start gap-3 rounded-lg border border-border/70 bg-card p-3 text-left shadow-sm transition-all duration-200 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none fine-hover:hover:shadow-lg"
 			disabled={isAdding}
 			onClick={handleMovieClick}
 		>
@@ -116,7 +116,7 @@ export default function MovieCalendarSearchResultRow({
 					{isAdding && (
 						<SpinnerIcon className="size-3.5 animate-spin text-muted-foreground" />
 					)}
-					<h4 className="truncate font-heading text-sm font-normal text-foreground">
+					<h4 className="truncate text-sm font-normal text-foreground">
 						{movie.name ?? movie.title ?? "N/A"}
 					</h4>
 				</div>
