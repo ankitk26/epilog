@@ -73,6 +73,8 @@ export default defineSchema({
 		updatedTime: v.number(),
 		pageCount: v.optional(v.number()),
 		pagesRead: v.optional(v.number()),
+		// User-selected edition cover. Falls back to media.image when null.
+		customImage: v.optional(v.union(v.string(), v.null())),
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
 		.index("by_user_and_mediaId", ["userId", "dbMediaId"])

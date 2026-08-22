@@ -168,3 +168,24 @@ export const bookSearchAPIOutput = z.object({
 });
 
 export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
+
+export const openLibraryWorkEditionsAPIOutput = z.object({
+	entries: z
+		.array(
+			z.object({
+				key: z.string().optional(),
+				title: z.string().nullable().optional(),
+				covers: z.array(z.number()).optional(),
+				languages: z
+					.array(z.union([z.string(), z.object({ key: z.string() })]))
+					.optional(),
+				publication_date: z.string().nullable().optional(),
+			}),
+		)
+		.optional()
+		.default([]),
+});
+
+export type BookEditionOutput = z.infer<
+	typeof openLibraryWorkEditionsAPIOutput
+>;

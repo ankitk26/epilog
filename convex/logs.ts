@@ -327,6 +327,7 @@ export const update = mutation({
 		status: allStatusLiterals,
 		pageCount: v.optional(v.number()),
 		pagesRead: v.optional(v.number()),
+		customImage: v.optional(v.union(v.string(), v.null())),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -384,6 +385,29 @@ export const update = mutation({
 				pageCount: args.pageCount,
 			}),
 			...(pagesRead !== undefined && { pagesRead }),
+			...(args.customImage !== undefined && {
+				customImage: args.customImage,
+			}),
+		});
+	},
+});
+
+export const updateCover = mutation({
+	args: {
+		logId: v.id("logs"),
+		customImage: v.union(v.string(), v.null()),
+	},
+	handler: async (ctx, args) => {
+		const userId = await getCurrentUserOrThrow(ctx);
+
+		const existingLog = await ctx.db.get(args.logId);
+
+		if (!existingLog || existingLog.userId !== userId) {
+			throw new Error("invalid request");
+		}
+
+		await ctx.db.patch(args.logId, {
+			customImage: args.customImage,
 		});
 	},
 });

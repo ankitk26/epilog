@@ -6,7 +6,7 @@ type Log = FunctionReturnType<typeof api.logs.all>[0];
 
 export function toMediaCardMedia(log: Log): MediaCardMedia {
 	return {
-		imageUrl: log.metadata.image,
+		imageUrl: log.customImage ?? log.metadata.image,
 		name: log.metadata.name || "Untitled",
 		releaseYear: log.metadata.releaseYear,
 		creator: log.metadata.creator,
