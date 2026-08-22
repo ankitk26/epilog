@@ -1,4 +1,4 @@
-import { CaretLeftIcon } from "@phosphor-icons/react";
+import { CaretLeftIcon, SpinnerIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getBookEditionCovers } from "@/actions/get-book-editions";
@@ -42,7 +42,7 @@ export default function BookCoverPicker({
 	const hasSelectionChanged = selected !== value;
 
 	return (
-		<div className="flex h-full flex-col">
+		<div className="flex min-h-0 flex-1 flex-col">
 			<div className="flex flex-col items-start gap-1.5 px-4 pt-4 pb-3 sm:px-6">
 				<Button
 					className="-ml-2"
@@ -117,7 +117,14 @@ export default function BookCoverPicker({
 					}
 					onClick={() => onApply(selected)}
 				>
-					Update cover
+					{isApplying ? (
+						<>
+							<SpinnerIcon className="size-4 animate-spin" />
+							Updating…
+						</>
+					) : (
+						"Update cover"
+					)}
 				</Button>
 			</div>
 		</div>

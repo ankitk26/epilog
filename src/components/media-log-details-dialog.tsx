@@ -214,7 +214,7 @@ function MediaLogDetailsDialogContent({
 					workId={log.metadata.sourceMediaId.split(":").pop() ?? ""}
 				/>
 			) : (
-				<div className="flex h-full flex-col overflow-hidden">
+				<div className="flex min-h-0 flex-1 flex-col overflow-hidden">
 					<MediaLogDialogHero
 						media={{
 							imageUrl:
