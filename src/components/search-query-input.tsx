@@ -25,7 +25,7 @@ export default function SearchQueryInput({
 	return (
 		<form onSubmit={handleQuerySubmit}>
 			<div className="relative">
-				<MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-muted-foreground" />
+				<MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
 				<Input
 					autoFocus={autoFocus}
 					className="pr-12 pl-12 text-sm"
@@ -35,7 +35,7 @@ export default function SearchQueryInput({
 				/>
 				<Button
 					aria-label="Search"
-					className="absolute top-1/2 right-1.5 -translate-y-1/2"
+					className="absolute text-muted-foreground top-1/2 right-1.5 -translate-y-1/2"
 					size="icon-sm"
 					type="submit"
 					variant="secondary"
