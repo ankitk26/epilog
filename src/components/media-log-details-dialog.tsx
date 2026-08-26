@@ -56,6 +56,8 @@ function statusPhrase(status: LogStatus, date: string): string {
 			return `TBR'd on ${date}`;
 		case "reading":
 			return `Started reading on ${date}`;
+		case "paused":
+			return `Paused on ${date}`;
 		case "finished":
 			return `Finished on ${date}`;
 		case "dnf":
@@ -191,13 +193,14 @@ function MediaLogDetailsDialogContent({
 		(status !== asLogStatus(log.status) ||
 			pageCount !== initialPageCount ||
 			pagesRead !== initialPagesRead);
-	const isReadingBook = mediaType === "book" && status === "reading";
+	const isBookWithProgress =
+		mediaType === "book" && (status === "reading" || status === "paused");
 	const hasValidPageProgress =
 		pageCount === undefined ||
 		(pageCount > 0 && (pagesRead ?? 0) <= pageCount);
-	const canSave = !!log && (!isReadingBook || hasValidPageProgress);
+	const canSave = !!log && (!isBookWithProgress || hasValidPageProgress);
 	const progressPercent =
-		isReadingBook && pageCount !== undefined && pageCount > 0
+		isBookWithProgress && pageCount !== undefined && pageCount > 0
 			? Math.min(100, Math.round(((pagesRead ?? 0) / pageCount) * 100))
 			: undefined;
 
@@ -237,7 +240,7 @@ function MediaLogDetailsDialogContent({
 						<div
 							className={cn(
 								"grid items-start gap-4 sm:gap-6",
-								isReadingBook && "sm:grid-cols-2",
+								isBookWithProgress && "sm:grid-cols-2",
 							)}
 						>
 							<MediaLogStatusPicker
@@ -247,7 +250,7 @@ function MediaLogDetailsDialogContent({
 								value={status}
 							/>
 
-							{isReadingBook && (
+							{isBookWithProgress && (
 								<ReadingProgressSection
 									error={
 										pagesRead !== undefined &&

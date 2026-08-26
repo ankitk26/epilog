@@ -12,6 +12,7 @@ const allStatusLiterals = v.union(
 	v.literal("interested"),
 	v.literal("tbr"),
 	v.literal("reading"),
+	v.literal("paused"),
 	v.literal("finished"),
 	v.literal("dnf"),
 	v.literal("watchlist"),
@@ -229,6 +230,7 @@ export const add = mutation({
 				| "interested"
 				| "tbr"
 				| "reading"
+				| "paused"
 				| "finished"
 				| "dnf"
 				| "watchlist"
@@ -240,8 +242,14 @@ export const add = mutation({
 				| "dropped",
 			updatedTime: Date.now(),
 			userId,
-			pageCount: status === "reading" ? args.pageCount : undefined,
-			pagesRead: status === "reading" ? (args.pagesRead ?? 0) : undefined,
+			pageCount:
+				status === "reading" || status === "paused"
+					? args.pageCount
+					: undefined,
+			pagesRead:
+				status === "reading" || status === "paused"
+					? (args.pagesRead ?? 0)
+					: undefined,
 		});
 
 		return "Added to library";
@@ -351,7 +359,7 @@ export const update = mutation({
 		}
 
 		if (
-			args.status === "reading" &&
+			(args.status === "reading" || args.status === "paused") &&
 			media.type === "book" &&
 			args.pageCount !== undefined &&
 			args.pageCount <= 0

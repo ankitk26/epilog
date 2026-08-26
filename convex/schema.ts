@@ -45,10 +45,10 @@ export default defineSchema({
 
 	// Logs track a user's relationship with a piece of media.
 	// Status values are type-specific and validated at the API layer:
-	//   book      : interested | tbr | reading | finished | dnf
-	//   manga     : tbr | reading | finished | dnf
-	//   movie      : watchlist | watching | watched
-	//   tv/anime   : plan_to_watch | watching | waiting | completed | dropped
+	//   book      : interested | tbr | reading | paused | finished | dnf
+	//   manga     : tbr | reading | paused | finished | dnf
+	//   movie      : watchlist | watching | paused | watched
+	//   tv/anime   : plan_to_watch | watching | paused | waiting | completed | dropped
 	logs: defineTable({
 		userId: v.id("users"),
 		dbMediaId: v.id("media"),
@@ -69,6 +69,8 @@ export default defineSchema({
 			v.literal("waiting"),
 			v.literal("completed"),
 			v.literal("dropped"),
+			// shared
+			v.literal("paused"),
 		),
 		updatedTime: v.number(),
 		pageCount: v.optional(v.number()),

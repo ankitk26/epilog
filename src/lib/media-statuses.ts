@@ -4,6 +4,10 @@ export type MediaType = (typeof mediaTypes)[number];
 export const mediaStatusConfig = {
 	reading: { label: "Reading", mediaTypes: ["book", "manga"] },
 	watching: { label: "Watching", mediaTypes: ["movie", "tv", "anime"] },
+	paused: {
+		label: "Paused",
+		mediaTypes: ["book", "manga", "movie", "tv", "anime"],
+	},
 	tbr: { label: "TBR", mediaTypes: ["book", "manga"] },
 	interested: { label: "Interested", mediaTypes: ["book"] },
 	finished: { label: "Finished", mediaTypes: ["book", "manga"] },
@@ -41,11 +45,25 @@ export const statusesByMediaType = {
 
 // Shelf-only order: follow the natural movement through a library.
 export const shelfStatusesByMediaType = {
-	book: ["interested", "tbr", "reading", "finished", "dnf"],
-	manga: ["tbr", "reading", "finished", "dnf"],
-	movie: ["watchlist", "watching", "watched"],
-	tv: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
-	anime: ["plan_to_watch", "watching", "waiting", "completed", "dropped"],
+	book: ["interested", "tbr", "reading", "paused", "finished", "dnf"],
+	manga: ["tbr", "reading", "paused", "finished", "dnf"],
+	movie: ["watchlist", "watching", "paused", "watched"],
+	tv: [
+		"plan_to_watch",
+		"watching",
+		"paused",
+		"waiting",
+		"completed",
+		"dropped",
+	],
+	anime: [
+		"plan_to_watch",
+		"watching",
+		"paused",
+		"waiting",
+		"completed",
+		"dropped",
+	],
 } satisfies Record<MediaType, LogStatus[]>;
 
 export const defaultStatusByMediaType = {

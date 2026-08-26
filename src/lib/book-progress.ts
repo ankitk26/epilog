@@ -4,7 +4,10 @@ import type { FunctionReturnType } from "convex/server";
 export type LogWithProgress = FunctionReturnType<typeof api.logs.all>[0];
 
 export function getBookProgress(log: LogWithProgress) {
-	if (log.metadata.type !== "book" || log.status !== "reading") {
+	if (
+		log.metadata.type !== "book" ||
+		(log.status !== "reading" && log.status !== "paused")
+	) {
 		return null;
 	}
 

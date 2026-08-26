@@ -6,6 +6,7 @@ import {
 	EyeIcon,
 	HourglassIcon,
 	ListPlusIcon,
+	PauseIcon,
 	StarIcon,
 	XCircleIcon,
 } from "@phosphor-icons/react";
@@ -25,6 +26,8 @@ export function getStatusIcon(status: LogStatus): Icon {
 			return BookOpenTextIcon;
 		case "watching":
 			return EyeIcon;
+		case "paused":
+			return PauseIcon;
 		case "finished":
 		case "watched":
 		case "completed":

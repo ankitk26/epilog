@@ -83,7 +83,8 @@ export default function AddMediaToLogDialog({
 
 	const isLoading = addMutation.isPending;
 	const creator = media?.creator ?? tmdbCreatorQuery.data;
-	const isReadingBook = mediaType === "book" && status === "reading";
+	const isBookWithProgress =
+		mediaType === "book" && (status === "reading" || status === "paused");
 	const canAdd = !!status;
 
 	const handleAdd = () => {
@@ -102,8 +103,8 @@ export default function AddMediaToLogDialog({
 				seriesKey: media.seriesKey,
 			},
 			status,
-			...(isReadingBook && pageCount !== undefined && { pageCount }),
-			...(isReadingBook && { pagesRead: 0 }),
+			...(isBookWithProgress && pageCount !== undefined && { pageCount }),
+			...(isBookWithProgress && { pagesRead: 0 }),
 		});
 	};
 
@@ -131,7 +132,7 @@ export default function AddMediaToLogDialog({
 								value={status}
 							/>
 
-							{isReadingBook && (
+							{isBookWithProgress && (
 								<div className="space-y-2">
 									<ReadingProgressField
 										id="book-page-count"
