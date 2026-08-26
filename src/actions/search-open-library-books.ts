@@ -112,7 +112,7 @@ function getSearchEditionCoverId(book: OpenLibraryBookDoc): number | null {
 }
 
 function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
-	const coverId = getSearchEditionCoverId(book);
+	const coverId = getSearchEditionCoverId(book) ?? book.cover_i ?? null;
 	const imageUrl = coverId
 		? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
 		: null;
