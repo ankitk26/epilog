@@ -11,6 +11,7 @@ import SearchMediaTypeTabs from "@/components/search-media-type-tabs";
 import SearchQueryInput from "@/components/search-query-input";
 import SearchResultsPanel from "@/components/search-results-panel";
 import { Button } from "@/components/ui/button";
+import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import { defaultMediaFilters } from "@/lib/media-filters";
 import { mediaTypes, type MediaType } from "@/types";
 
@@ -45,6 +46,15 @@ function SearchPage() {
 	const [submittedQuery, setSubmittedQuery] = useState(queryParam);
 	const [mediaType, setMediaType] = useState<MediaType>(typeParam);
 
+	// While the profile loads we cannot validate yet; once ready, a type
+	// disabled in settings is derived away immediately — no wrong-content
+	// frame and no redirect.
+	const { enabled: enabledMediaTypes, isReady } = useProfileMediaTypes();
+	const activeType =
+		isReady && !enabledMediaTypes.includes(mediaType)
+			? (enabledMediaTypes[0] ?? defaultMediaFilters.type)
+			: mediaType;
+
 	useEffect(() => {
 		setQuery(queryParam);
 		setSubmittedQuery(queryParam);
@@ -59,7 +69,7 @@ function SearchPage() {
 		setSubmittedQuery(nextQuery);
 		void navigate({
 			to: "/search",
-			search: { q: nextQuery, type: mediaType },
+			search: { q: nextQuery, type: activeType },
 		});
 	};
 
@@ -85,7 +95,7 @@ function SearchPage() {
 										to: "/",
 										search: {
 											...defaultMediaFilters,
-											type: mediaType,
+											type: activeType,
 										},
 									})
 								}
@@ -98,7 +108,7 @@ function SearchPage() {
 						</div>
 						<SearchMediaTypeTabs
 							onChange={handleMediaTypeChange}
-							value={mediaType}
+							value={activeType}
 						/>
 					</div>
 					<SearchQueryInput
@@ -109,7 +119,7 @@ function SearchPage() {
 					/>
 				</div>
 
-				<SearchResultsPanel query={submittedQuery} type={mediaType} />
+				<SearchResultsPanel query={submittedQuery} type={activeType} />
 			</section>
 		</div>
 	);

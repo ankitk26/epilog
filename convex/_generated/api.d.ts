@@ -25,6 +25,7 @@ import type * as migrations_separateMangaAndStandardizeSourceIds from "../migrat
 import type * as migrations_updateBookCovers from "../migrations/updateBookCovers.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -50,6 +51,7 @@ declare const fullApi: ApiFromModules<{
   "migrations/updateBookCovers": typeof migrations_updateBookCovers;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
+  users: typeof users;
 }>;
 
 /**

@@ -1,4 +1,8 @@
-import { MagnifyingGlassIcon, SignOutIcon } from "@phosphor-icons/react";
+import {
+	GearIcon,
+	MagnifyingGlassIcon,
+	SignOutIcon,
+} from "@phosphor-icons/react";
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
@@ -142,6 +146,15 @@ export default function AppShellHeader() {
 								</p>
 							</div>
 							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								className="text-xs"
+								onClick={() =>
+									void navigate({ to: "/settings" })
+								}
+							>
+								<GearIcon className="size-4" />
+								Settings
+							</DropdownMenuItem>
 							<DropdownMenuItem
 								className="text-xs"
 								onClick={handleSignOut}

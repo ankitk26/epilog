@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import AppShellHeader from "@/components/app-shell-header";
+import { userProfileQueryOptions } from "@/queries/user-profile";
 
 export const Route = createFileRoute("/_auth")({
 	component: AuthWrapper,
@@ -7,6 +8,11 @@ export const Route = createFileRoute("/_auth")({
 		if (!context.isAuthenticated) {
 			throw redirect({ to: "/sign-in" });
 		}
+	},
+	// Prefetch media type preferences so the library and search pages can
+	// render the user's customized tabs without any intermediate state.
+	loader: ({ context }) => {
+		void context.queryClient.ensureQueryData(userProfileQueryOptions);
 	},
 });
 

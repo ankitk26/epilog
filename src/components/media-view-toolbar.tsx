@@ -10,9 +10,11 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import { cn } from "@/lib/utils";
 import type { FilterMediaView, MediaType } from "@/types";
 import { Button } from "./ui/button";
+import { Skeleton } from "./ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaViewToolbar() {
@@ -30,6 +32,19 @@ export default function MediaViewToolbar() {
 	}, [isMobile, setView, view]);
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
+
+	const { enabled: enabledMediaTypes, isReady } = useProfileMediaTypes();
+
+	// Keep the URL in sync when the active type is disabled in settings.
+	// Rendering already derives the effective type, so this never changes
+	// what is on screen — it only normalizes the address bar.
+	useEffect(() => {
+		if (!isReady || enabledMediaTypes.includes(type)) {
+			return;
+		}
+
+		setType(enabledMediaTypes[0]!);
+	}, [enabledMediaTypes, isReady, setType, type]);
 
 	const logCountsByType = [
 		{
@@ -74,6 +89,10 @@ export default function MediaViewToolbar() {
 		{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
 	];
 
+	const visibleTypePills = logCountsByType.filter((item) =>
+		enabledMediaTypes.includes(item.type),
+	);
+
 	const currentType = logCountsByType.find((item) => item.type === type);
 
 	return (
@@ -89,37 +108,44 @@ export default function MediaViewToolbar() {
 				</div>
 				{/* Desktop: pill buttons */}
 				<div className="hidden flex-wrap gap-4 sm:flex sm:items-center">
-					{logCountsByType.map((item) => {
-						const isActive = type === item.type;
-						return (
-							<Button
-								className={cn(
-									"group text-xs",
-									isActive
-										? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
-										: "text-muted-foreground hover:text-foreground",
-								)}
-								key={item.type}
-								onClick={() => {
-									setType(item.type);
-								}}
-								size="sm"
-								variant="outline"
-							>
-								{item.label}
-								<span
-									className={cn(
-										"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none",
-										isActive
-											? "bg-primary-foreground/20 text-primary-foreground"
-											: "bg-secondary text-muted-foreground fine-hover:group-hover:text-foreground",
-									)}
-								>
-									{item.count}
-								</span>
-							</Button>
-						);
-					})}
+					{!isReady
+						? Array.from({ length: 4 }).map((_, index) => (
+								<Skeleton
+									className="h-7 w-24 rounded-full"
+									key={`media-type-pill-skeleton-${index}`}
+								/>
+							))
+						: visibleTypePills.map((item) => {
+								const isActive = type === item.type;
+								return (
+									<Button
+										className={cn(
+											"group text-xs",
+											isActive
+												? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
+												: "text-muted-foreground hover:text-foreground",
+										)}
+										key={item.type}
+										onClick={() => {
+											setType(item.type);
+										}}
+										size="sm"
+										variant="outline"
+									>
+										{item.label}
+										<span
+											className={cn(
+												"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none",
+												isActive
+													? "bg-primary-foreground/20 text-primary-foreground"
+													: "bg-secondary text-muted-foreground fine-hover:group-hover:text-foreground",
+											)}
+										>
+											{item.count}
+										</span>
+									</Button>
+								);
+							})}
 				</div>
 			</div>
 

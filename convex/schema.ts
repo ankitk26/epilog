@@ -5,6 +5,18 @@ export default defineSchema({
 	users: defineTable({
 		email: v.string(),
 		authId: v.string(),
+		// Which media types the user tracks. When omitted, all types are shown.
+		mediaTypes: v.optional(
+			v.array(
+				v.union(
+					v.literal("anime"),
+					v.literal("movie"),
+					v.literal("tv"),
+					v.literal("book"),
+					v.literal("manga"),
+				),
+			),
+		),
 	}).index("by_auth_id", ["authId"]),
 
 	media: defineTable({
