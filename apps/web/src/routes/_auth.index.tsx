@@ -2,6 +2,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
+import MediaStatusFilter from "@/components/media-status-filter";
 import MediaTypeBottomBar from "@/components/media-type-bottom-bar";
 import MediaViewContent from "@/components/media-view-content";
 import MediaViewLoadingState from "@/components/media-view-loading-state";
@@ -28,6 +29,7 @@ function Home() {
 			>
 				<div className="animate-reveal-fade space-y-6 lg:space-y-8">
 					<MediaViewToolbar />
+					<MediaStatusFilter />
 					<MediaViewContent />
 					{/* Clearance for the fixed bottom bar on mobile */}
 					<div aria-hidden className="h-8 sm:hidden" />

@@ -3,8 +3,9 @@ import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import {
 	defaultMediaFilters,
 	normalizeMediaFilterView,
+	normalizeStatusFilter,
 } from "@/lib/media-filters";
-import type { FilterMediaView, MediaType } from "@/types";
+import type { FilterMediaView, LogStatus, MediaType } from "@/types";
 
 export function useMediaFilters() {
 	const search = useSearch({ from: "/_auth/" });
@@ -20,6 +21,9 @@ export function useMediaFilters() {
 			: (enabled[0] ?? defaultMediaFilters.type)
 		: search.type;
 	const view = normalizeMediaFilterView(type, search.view);
+	// Normalizing against the effective type also covers the profile-loading
+	// window, where the URL type may be swapped for the first enabled one.
+	const status = normalizeStatusFilter(type, search.status);
 
 	const setType = (nextType: MediaType) => {
 		void navigate({
@@ -47,10 +51,26 @@ export function useMediaFilters() {
 		});
 	};
 
+	const setStatus = (nextStatus: LogStatus) => {
+		void navigate({
+			replace: true,
+			search: (prev) => ({
+				type: prev.type ?? defaultMediaFilters.type,
+				view: normalizeMediaFilterView(
+					prev.type ?? defaultMediaFilters.type,
+					prev.view ?? defaultMediaFilters.view,
+				),
+				status: nextStatus,
+			}),
+		});
+	};
+
 	return {
 		type,
 		view,
+		status,
 		setType,
 		setView,
+		setStatus,
 	};
 }

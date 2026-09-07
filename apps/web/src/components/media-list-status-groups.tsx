@@ -8,7 +8,7 @@ import { statusesByMediaType } from "@/types";
 import MediaStatusSection from "./media-status-section";
 
 export default function MediaListStatusGroups() {
-	const { type: mediaType } = useMediaFilters();
+	const { type: mediaType, status: statusFilter } = useMediaFilters();
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
@@ -18,10 +18,12 @@ export default function MediaListStatusGroups() {
 		[logs, mediaType],
 	);
 
-	const sections = statusesByMediaType[mediaType].map((status) => ({
-		title: statusLabel(status, mediaType),
-		status,
-	}));
+	const sections = statusesByMediaType[mediaType]
+		.filter((status) => !statusFilter || status === statusFilter)
+		.map((status) => ({
+			title: statusLabel(status, mediaType),
+			status,
+		}));
 
 	return (
 		<div className="space-y-14 lg:space-y-20">

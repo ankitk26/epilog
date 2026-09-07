@@ -4,8 +4,6 @@ export const filterMediaViews = ["grid", "shelf", "list", "calendar"] as const;
 export type FilterMediaView = (typeof filterMediaViews)[number];
 
 export {
-	defaultStatusByMediaType,
-	mediaStatusConfig,
 	mediaTypes,
 	shelfStatusesByMediaType,
 	statusesByMediaType,
