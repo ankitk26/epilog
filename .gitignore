@@ -4,5 +4,6 @@ node_modules/
 .env.local
 tasks.md
 .output
+.vercel
 .impeccable/
 nul
