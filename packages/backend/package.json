@@ -1,0 +1,20 @@
+{
+	"name": "@epilog/backend",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "convex dev",
+		"deploy:convex": "convex deploy --yes"
+	},
+	"dependencies": {
+		"@convex-dev/better-auth": "catalog:",
+		"better-auth": "catalog:",
+		"convex": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@epilog/config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

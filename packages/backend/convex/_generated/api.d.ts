@@ -10,6 +10,8 @@
 
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as lib_mediaStatuses from "../lib/mediaStatuses.js";
+import type * as lib_standardizePersonName from "../lib/standardizePersonName.js";
 import type * as logs from "../logs.js";
 import type * as migrations__helpers from "../migrations/_helpers.js";
 import type * as migrations__mutations from "../migrations/_mutations.js";
@@ -36,6 +38,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
+  "lib/mediaStatuses": typeof lib_mediaStatuses;
+  "lib/standardizePersonName": typeof lib_standardizePersonName;
   logs: typeof logs;
   "migrations/_helpers": typeof migrations__helpers;
   "migrations/_mutations": typeof migrations__mutations;

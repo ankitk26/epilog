@@ -1,11 +1,11 @@
 import { v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
+import { mutation, query } from "./_generated/server";
 import {
 	defaultStatusByMediaType,
 	validStatusesByMediaType,
-} from "../src/lib/media-statuses";
-import type { MediaType } from "../src/lib/media-statuses";
-import type { Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
+} from "./lib/mediaStatuses";
+import type { MediaType } from "./lib/mediaStatuses";
 import { getCurrentUserOrThrow } from "./model/users";
 
 const allStatusLiterals = v.union(

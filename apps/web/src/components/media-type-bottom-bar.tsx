@@ -3,7 +3,6 @@ import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
 import MediaTypeIcon from "./media-type-icon";
-import MediaTypeIcon from "./media-type-icon";
 import { Skeleton } from "./ui/skeleton";
 
 const items: { type: MediaType; label: string }[] = [

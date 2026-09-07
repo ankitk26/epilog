@@ -1,3 +1,0 @@
-{
-	"ignoreCommand": "git diff --quiet HEAD^ HEAD -- src convex public vite.config.ts package.json pnpm-lock.yaml tsconfig.json components.json convex.json .oxlintrc.json vercel.json"
-}

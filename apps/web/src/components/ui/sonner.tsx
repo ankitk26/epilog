@@ -15,6 +15,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
 	return (
 		<Sonner
+			// SAFETY: useTheme returns a compatible theme string union;
+			// narrowing to Sonner's own theme type is safe here.
 			theme={theme as ToasterProps["theme"]}
 			className="toaster group"
 			icons={{
@@ -24,6 +26,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
 				error: <OctagonXIcon className="size-4" />,
 				loading: <Loader2Icon className="size-4 animate-spin" />,
 			}}
+			// SAFETY: the object only holds CSS custom properties, which is
+			// exactly what React.CSSProperties allows.
 			style={
 				{
 					"--normal-bg": "var(--popover)",

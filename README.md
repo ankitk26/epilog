@@ -92,12 +92,14 @@ Track everything you watch and read — movies, TV, anime, books, and manga — 
 3. Set up Convex:
 
     ```bash
-    npx convex dev
+    pnpm dev:convex
     ```
 
     Follow the prompts to create a new Convex project and get your deployment URL.
 
-4. Create a `.env.local` file in the root directory:
+4. Create two `.env.local` files:
+
+    `packages/backend/.env.local` (used by `convex dev`):
 
     ```env
     # Convex (Required)
@@ -107,7 +109,6 @@ Track everything you watch and read — movies, TV, anime, books, and manga — 
     VITE_CONVEX_SITE_URL=https://your_project_url.convex.site
 
     # Site URL (Required)
-    VITE_SITE_URL=http://localhost:3000
     SITE_URL=http://localhost:3000
 
     # Better Auth (Required for authentication)
@@ -117,6 +118,20 @@ Track everything you watch and read — movies, TV, anime, books, and manga — 
     GOOGLE_CLIENT_ID=your_google_client_id
     GOOGLE_CLIENT_SECRET=your_google_client_secret
 
+    # Optional: enhanced book covers
+    HARDCOVER_API_TOKEN=your_hardcover_token
+
+    # Optional: rate limiting / caching
+    UPSTASH_REDIS_REST_URL=your_upstash_url
+    UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+    ```
+
+    `apps/web/.env.local` (used by Vite / server functions):
+
+    ```env
+    VITE_CONVEX_URL=https://your_project_url.convex.cloud
+    VITE_CONVEX_SITE_URL=https://your_project_url.convex.site
+
     # TMDB (Required for movies & TV search)
     TMDB_API_KEY=your_tmdb_api_key
     TMDB_TOKEN=your_tmdb_bearer_token
@@ -124,13 +139,6 @@ Track everything you watch and read — movies, TV, anime, books, and manga — 
     # MyAnimeList (Required for anime & manga search)
     MAL_CLIENT_ID=your_mal_client_id
     MAL_CLIENT_SECRET=your_mal_client_secret
-
-    # Optional: enhanced book covers
-    HARDCOVER_API_TOKEN=your_hardcover_token
-
-    # Optional: rate limiting / caching
-    UPSTASH_REDIS_REST_URL=your_upstash_url
-    UPSTASH_REDIS_REST_TOKEN=your_upstash_token
     ```
 
 5. Run the development servers (Vite and Convex together):

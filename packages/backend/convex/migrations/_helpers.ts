@@ -1,6 +1,6 @@
-import { standardizePersonName } from "../../src/lib/standardize-person-name";
 import type { Doc, Id } from "../_generated/dataModel";
 import type { MutationCtx } from "../_generated/server";
+import { standardizePersonName } from "../lib/standardizePersonName";
 
 export function getRequestDelayMs(sourceMediaId: string): number {
 	const [source] = sourceMediaId.split(":");

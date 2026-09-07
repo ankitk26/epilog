@@ -1,7 +1,7 @@
 import { v } from "convex/values";
-import { mediaTypes } from "../src/lib/media-statuses";
-import type { MediaType } from "../src/lib/media-statuses";
 import { mutation, query } from "./_generated/server";
+import { mediaTypes } from "./lib/mediaStatuses";
+import type { MediaType } from "./lib/mediaStatuses";
 import { getCurrentUserOrThrow } from "./model/users";
 
 const mediaTypeValue = v.union(

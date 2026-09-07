@@ -1,16 +1,7 @@
 {
-	"compilerOptions": {
-		"jsx": "react-jsx",
-		"moduleResolution": "bundler",
-		"module": "ESNext",
-		"target": "ES2022",
-		"skipLibCheck": true,
-		"strict": true,
-		"strictNullChecks": true,
-		"paths": {
-			"@/*": ["./src/*"],
-			"@convex/*": ["./convex/*"]
-		}
-	},
+	"name": "epilog",
+	"private": true,
+	"type": "module",
+	"extends": "@epilog/config/tsconfig.base.json",
 	"exclude": ["tools/oxlint/anti-slop/**"]
 }

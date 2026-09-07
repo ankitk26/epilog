@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { userProfileQueryOptions } from "@/queries/user-profile";
-import { mediaTypes, type MediaType } from "@/types";
+import { mediaTypes } from "@/types";
 
 // Non-suspense on purpose: callers render skeleton pills until isReady
 // instead of holding the page. Falls back to every media type while the

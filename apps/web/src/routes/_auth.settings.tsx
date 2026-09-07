@@ -96,13 +96,14 @@ function LibrarySettingsSection() {
 
 	// Optimistically write the new preference into the cache so navigating
 	// back to the library renders the updated tabs on the first paint.
+	const applyOptimistic = (nextTypes: MediaType[]) => {
+		queryClient.setQueryData(userProfileQueryOptions.queryKey, (old) =>
+			old ? { ...old, mediaTypes: nextTypes } : old,
+		);
+	};
+
 	const updateMutation = useMutation({
 		mutationFn: useConvexMutation(api.users.updateMediaTypes),
-		onMutate: ({ mediaTypes: nextTypes }) => {
-			queryClient.setQueryData(userProfileQueryOptions.queryKey, (old) =>
-				old ? { ...old, mediaTypes: nextTypes } : old,
-			);
-		},
 	});
 
 	const enabledTypes = new Set<MediaType>(profile.mediaTypes);
@@ -126,6 +127,7 @@ function LibrarySettingsSection() {
 			enabledTypes.has(mediaType),
 		);
 
+		applyOptimistic(nextTypes);
 		updateMutation.mutate({ mediaTypes: nextTypes });
 	};
 
