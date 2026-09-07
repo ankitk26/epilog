@@ -1,3 +1,0 @@
-{
-	"ignoreCommand": "git diff --quiet HEAD^ HEAD -- apps/web/src packages/backend pnpm-lock.yaml package.json pnpm-workspace.yaml apps/web/package.json apps/web/tsconfig.json apps/web/vite.config.ts apps/web/components.json .oxlintrc.json"
-}

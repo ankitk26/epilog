@@ -11,7 +11,7 @@
 		"dev:web": "pnpm --filter web dev",
 		"dev:convex": "pnpm --filter @epilog/backend dev",
 		"dev:all": "concurrently -n vite,convex -c blue,green \"pnpm dev:web\" \"pnpm dev:convex\"",
-		"build": "pnpm --filter web build && node -e \"const fs = require('node:fs'); fs.existsSync('apps/web/.vercel/output') && fs.cpSync('apps/web/.vercel/output', '.vercel/output', { recursive: true });\"",
+		"build": "pnpm --filter web build",
 		"types": "pnpm --filter web types",
 		"check": "oxlint && oxfmt --write",
 		"fmt": "oxfmt",
