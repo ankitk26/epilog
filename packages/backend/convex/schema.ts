@@ -89,6 +89,24 @@ export default defineSchema({
 		pagesRead: v.optional(v.number()),
 		// User-selected edition cover. Falls back to media.image when null.
 		customImage: v.optional(v.union(v.string(), v.null())),
+		// Denormalized display snapshot of the media this log points to. Keeps
+		// library queries (logs.all) a single indexed scan instead of one
+		// db.get per log. Written at log creation, refreshed when media is
+		// merged, and backfilled for legacy logs by a migration.
+		mediaName: v.optional(v.string()),
+		mediaImage: v.optional(v.union(v.string(), v.null())),
+		mediaReleaseYear: v.optional(v.union(v.number(), v.null())),
+		mediaCreator: v.optional(v.union(v.string(), v.null())),
+		mediaType: v.optional(
+			v.union(
+				v.literal("anime"),
+				v.literal("movie"),
+				v.literal("tv"),
+				v.literal("book"),
+				v.literal("manga"),
+			),
+		),
+		mediaSourceMediaId: v.optional(v.string()),
 	})
 		.index("by_media_and_status", ["dbMediaId", "status"])
 		.index("by_user_and_mediaId", ["userId", "dbMediaId"])

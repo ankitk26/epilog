@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
+import { refreshMediaSnapshots } from "./lib/mediaSnapshots";
 import {
 	defaultStatusByMediaType,
 	validStatusesByMediaType,
@@ -49,21 +50,35 @@ export const all = query({
 			.order("desc")
 			.collect();
 
+		// Logs carry a denormalized media snapshot, so the common case needs
+		// no extra reads. Join against the media table only for legacy logs
+		// that have not been backfilled yet.
 		const rawLogs = await Promise.all(
 			logs.map(async (log) => {
+				if (
+					log.mediaName !== undefined &&
+					log.mediaType !== undefined &&
+					log.mediaSourceMediaId !== undefined
+				) {
+					return {
+						...log,
+						metadata: {
+							name: log.mediaName,
+							image: log.mediaImage,
+							releaseYear: log.mediaReleaseYear ?? null,
+							creator: log.mediaCreator,
+							type: log.mediaType,
+							sourceMediaId: log.mediaSourceMediaId,
+						},
+					};
+				}
+
 				const media = await ctx.db.get(log.dbMediaId);
-				return { ...log, metadata: media };
+				return media ? { ...log, metadata: media } : null;
 			}),
 		);
 
-		const finalLogs = rawLogs
-			.filter((log) => log.metadata !== null)
-			.map((log) => ({
-				...log,
-				metadata: log.metadata!,
-			}));
-
-		return finalLogs;
+		return rawLogs.filter((log) => log !== null);
 	},
 });
 
@@ -74,37 +89,36 @@ export const getLoggedStatuses = query({
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
 
-		const results: Record<
-			string,
-			{ status: string; logId: string } | null
-		> = {};
+		// Parallel lookups: this query re-runs whenever logs change and is
+		// subscribed to per search-results grid.
+		const entries = await Promise.all(
+			args.sourceMediaIds.map(async (sourceMediaId) => {
+				const media = await ctx.db
+					.query("media")
+					.withIndex("by_sourceId", (q) =>
+						q.eq("sourceMediaId", sourceMediaId),
+					)
+					.first();
 
-		for (const sourceMediaId of args.sourceMediaIds) {
-			const media = await ctx.db
-				.query("media")
-				.withIndex("by_sourceId", (q) =>
-					q.eq("sourceMediaId", sourceMediaId),
-				)
-				.first();
+				if (!media) {
+					return [sourceMediaId, null] as const;
+				}
 
-			if (!media) {
-				results[sourceMediaId] = null;
-				continue;
-			}
+				const log = await ctx.db
+					.query("logs")
+					.withIndex("by_user_and_mediaId", (q) =>
+						q.eq("userId", userId).eq("dbMediaId", media._id),
+					)
+					.unique();
 
-			const log = await ctx.db
-				.query("logs")
-				.withIndex("by_user_and_mediaId", (q) =>
-					q.eq("userId", userId).eq("dbMediaId", media._id),
-				)
-				.unique();
+				return [
+					sourceMediaId,
+					log ? { status: log.status, logId: log._id } : null,
+				] as const;
+			}),
+		);
 
-			results[sourceMediaId] = log
-				? { status: log.status, logId: log._id }
-				: null;
-		}
-
-		return results;
+		return Object.fromEntries(entries);
 	},
 });
 
@@ -181,6 +195,11 @@ export const add = mutation({
 				await ctx.db.patch(mediaId, {
 					creator: args.media.creator,
 				});
+				// keep logs' denormalized snapshots in sync with the media doc
+				await refreshMediaSnapshots(ctx, {
+					...existingMedia,
+					creator: args.media.creator,
+				});
 			}
 		} else {
 			// create new media entry and get its ID
@@ -222,7 +241,19 @@ export const add = mutation({
 			}
 		}
 
-		// add log for media with chosen or default status
+		// add log for media with chosen or default status, snapshotting the
+		// media's display fields so library queries don't need a join
+		const snapshotSource = existingMedia
+			? {
+					name: existingMedia.name,
+					image: existingMedia.image,
+					releaseYear: existingMedia.releaseYear,
+					creator: existingMedia.creator ?? args.media.creator,
+					sourceMediaId: existingMedia.sourceMediaId,
+					type: existingMedia.type,
+				}
+			: args.media;
+
 		await ctx.db.insert("logs", {
 			dbMediaId: mediaId,
 			// SAFETY: status is selected from validStatusesByMediaType or its typed default.
@@ -250,6 +281,12 @@ export const add = mutation({
 				status === "reading" || status === "paused"
 					? (args.pagesRead ?? 0)
 					: undefined,
+			mediaName: snapshotSource.name,
+			mediaImage: snapshotSource.image,
+			mediaReleaseYear: snapshotSource.releaseYear,
+			mediaCreator: snapshotSource.creator,
+			mediaType: snapshotSource.type,
+			mediaSourceMediaId: snapshotSource.sourceMediaId,
 		});
 
 		return "Added to library";
@@ -302,21 +339,25 @@ export const updateStatus = mutation({
 			throw new Error("invalid request");
 		}
 
-		const media = await ctx.db.get(existingLog.dbMediaId);
-		if (!media) {
+		// Validate against the log's own media snapshot when present; read the
+		// media doc only for legacy logs that were never backfilled.
+		const mediaType =
+			existingLog.mediaType ??
+			(await ctx.db.get(existingLog.dbMediaId))?.type;
+		if (!mediaType) {
 			throw new Error("media not found");
 		}
 
-		const valid = validStatusesByMediaType[media.type];
+		const valid = validStatusesByMediaType[mediaType];
 		if (!valid.has(args.status)) {
 			throw new Error(
-				`invalid status "${args.status}" for media type "${media.type}"`,
+				`invalid status "${args.status}" for media type "${mediaType}"`,
 			);
 		}
 
 		const pagesRead =
 			args.status === "finished" &&
-			media.type === "book" &&
+			mediaType === "book" &&
 			existingLog.pageCount !== undefined
 				? existingLog.pageCount
 				: undefined;
@@ -346,21 +387,25 @@ export const update = mutation({
 			throw new Error("invalid request");
 		}
 
-		const media = await ctx.db.get(existingLog.dbMediaId);
-		if (!media) {
+		// Validate against the log's own media snapshot when present; read the
+		// media doc only for legacy logs that were never backfilled.
+		const mediaType =
+			existingLog.mediaType ??
+			(await ctx.db.get(existingLog.dbMediaId))?.type;
+		if (!mediaType) {
 			throw new Error("media not found");
 		}
 
-		const valid = validStatusesByMediaType[media.type];
+		const valid = validStatusesByMediaType[mediaType];
 		if (!valid.has(args.status)) {
 			throw new Error(
-				`invalid status "${args.status}" for media type "${media.type}"`,
+				`invalid status "${args.status}" for media type "${mediaType}"`,
 			);
 		}
 
 		if (
 			(args.status === "reading" || args.status === "paused") &&
-			media.type === "book" &&
+			mediaType === "book" &&
 			args.pageCount !== undefined &&
 			args.pageCount <= 0
 		) {
@@ -379,7 +424,7 @@ export const update = mutation({
 		// finishing a book automatically marks it fully read
 		const pagesRead =
 			args.status === "finished" &&
-			media.type === "book" &&
+			mediaType === "book" &&
 			totalPages !== undefined
 				? totalPages
 				: totalPages !== undefined && rawPagesRead !== undefined

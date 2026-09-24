@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "convex dev",
-		"deploy:convex": "convex deploy --yes"
+		"deploy:convex": "convex deploy --yes && convex run migrations/backfillLogMediaSnapshots:backfillLogMediaSnapshots '{}' --prod"
 	},
 	"dependencies": {
 		"@convex-dev/better-auth": "catalog:",

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
+import { refreshMediaSnapshots } from "./lib/mediaSnapshots";
 import { getCurrentUserOrThrow } from "./model/users";
 
 function normalizeEventDate(eventDate: string) {
@@ -45,6 +46,11 @@ export const add = mutation({
 			// backfill creator if it was never stored
 			if (!existingMedia.creator && args.media.creator) {
 				await ctx.db.patch(mediaId, {
+					creator: args.media.creator,
+				});
+				// keep logs' denormalized snapshots in sync with the media doc
+				await refreshMediaSnapshots(ctx, {
+					...existingMedia,
 					creator: args.media.creator,
 				});
 			}
@@ -95,6 +101,12 @@ export const add = mutation({
 				dbMediaId: mediaId,
 				status: "watched",
 				updatedTime: Date.now(),
+				mediaName: args.media.name,
+				mediaImage: args.media.image,
+				mediaReleaseYear: args.media.releaseYear,
+				mediaCreator: args.media.creator,
+				mediaType: "movie",
+				mediaSourceMediaId: args.media.sourceMediaId,
 			});
 		}
 

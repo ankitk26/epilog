@@ -10,21 +10,11 @@
 
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as lib_mediaSnapshots from "../lib/mediaSnapshots.js";
 import type * as lib_mediaStatuses from "../lib/mediaStatuses.js";
 import type * as lib_standardizePersonName from "../lib/standardizePersonName.js";
 import type * as logs from "../logs.js";
-import type * as migrations__helpers from "../migrations/_helpers.js";
-import type * as migrations__mutations from "../migrations/_mutations.js";
-import type * as migrations__queries from "../migrations/_queries.js";
-import type * as migrations_backfillCreators from "../migrations/backfillCreators.js";
-import type * as migrations_backupBookMedia from "../migrations/backupBookMedia.js";
-import type * as migrations_convertOlMangaToMalManga from "../migrations/convertOlMangaToMalManga.js";
-import type * as migrations_flipOlMangaToMangaType from "../migrations/flipOlMangaToMangaType.js";
-import type * as migrations_migrateStatuses from "../migrations/migrateStatuses.js";
-import type * as migrations_normalizeOlBookSourceIds from "../migrations/normalizeOlBookSourceIds.js";
-import type * as migrations_removeUnusedMedia from "../migrations/removeUnusedMedia.js";
-import type * as migrations_separateMangaAndStandardizeSourceIds from "../migrations/separateMangaAndStandardizeSourceIds.js";
-import type * as migrations_updateBookCovers from "../migrations/updateBookCovers.js";
+import type * as migrations_backfillLogMediaSnapshots from "../migrations/backfillLogMediaSnapshots.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
 import type * as users from "../users.js";
@@ -38,21 +28,11 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
+  "lib/mediaSnapshots": typeof lib_mediaSnapshots;
   "lib/mediaStatuses": typeof lib_mediaStatuses;
   "lib/standardizePersonName": typeof lib_standardizePersonName;
   logs: typeof logs;
-  "migrations/_helpers": typeof migrations__helpers;
-  "migrations/_mutations": typeof migrations__mutations;
-  "migrations/_queries": typeof migrations__queries;
-  "migrations/backfillCreators": typeof migrations_backfillCreators;
-  "migrations/backupBookMedia": typeof migrations_backupBookMedia;
-  "migrations/convertOlMangaToMalManga": typeof migrations_convertOlMangaToMalManga;
-  "migrations/flipOlMangaToMangaType": typeof migrations_flipOlMangaToMangaType;
-  "migrations/migrateStatuses": typeof migrations_migrateStatuses;
-  "migrations/normalizeOlBookSourceIds": typeof migrations_normalizeOlBookSourceIds;
-  "migrations/removeUnusedMedia": typeof migrations_removeUnusedMedia;
-  "migrations/separateMangaAndStandardizeSourceIds": typeof migrations_separateMangaAndStandardizeSourceIds;
-  "migrations/updateBookCovers": typeof migrations_updateBookCovers;
+  "migrations/backfillLogMediaSnapshots": typeof migrations_backfillLogMediaSnapshots;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
   users: typeof users;
