@@ -12,9 +12,10 @@ import {
 } from "@phosphor-icons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { FunctionReturnType } from "convex/server";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDialogHistory } from "@/hooks/use-dialog-history";
 import { useMediaFilters } from "@/hooks/use-media-filters";
+import { currentStatusByMediaType } from "@/lib/media-filters";
 import { statusLabel } from "@/lib/media-labels";
 import { shelfStatusesByMediaType } from "@/types";
 import type { LogStatus } from "@/types";
@@ -40,7 +41,19 @@ const iconByStatus = {
 export default function MediaShelfView() {
 	const { type: mediaType } = useMediaFilters();
 
-	const [activeTab, setActiveTab] = useState(0);
+	// The shelf opens on the in-progress column (reading/watching),
+	// matching the status filter's default for the other views.
+	const defaultTabIndex = Math.max(
+		shelfStatusesByMediaType[mediaType].indexOf(
+			currentStatusByMediaType[mediaType],
+		),
+		0,
+	);
+	const [activeTab, setActiveTab] = useState(defaultTabIndex);
+
+	useEffect(() => {
+		setActiveTab(defaultTabIndex);
+	}, [defaultTabIndex]);
 	const [touchStart, setTouchStart] = useState(0);
 	const [touchEnd, setTouchEnd] = useState(0);
 	const containerRef = useRef<HTMLDivElement>(null);
