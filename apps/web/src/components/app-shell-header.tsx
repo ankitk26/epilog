@@ -74,7 +74,7 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border/40 bg-background/75 px-6 pt-[env(safe-area-inset-top)] shadow-sm backdrop-blur-md backdrop-saturate-150 lg:px-12">
+		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border bg-background px-6 pt-[env(safe-area-inset-top)] lg:px-12">
 			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between lg:h-20">
 				<Link
 					className="group flex items-baseline"

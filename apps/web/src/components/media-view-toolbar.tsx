@@ -111,7 +111,7 @@ export default function MediaViewToolbar() {
 					{!isReady
 						? Array.from({ length: 4 }).map((_, index) => (
 								<Skeleton
-									className="h-7 w-24 rounded-full"
+									className="h-7 w-24 rounded-md"
 									key={`media-type-pill-skeleton-${index}`}
 								/>
 							))
@@ -178,7 +178,6 @@ export default function MediaViewToolbar() {
 								render={
 									<Button
 										className={cn(
-											"!rounded-full",
 											isActive
 												? "text-primary-foreground"
 												: "text-muted-foreground hover:text-foreground",

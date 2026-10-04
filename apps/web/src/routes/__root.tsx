@@ -44,7 +44,7 @@ export const Route = createRootRouteWithContext<{
 			{
 				id: "theme-color",
 				name: "theme-color",
-				content: "#f4eee4",
+				content: "#fbf9f2",
 			},
 			{
 				title: "epilog",
@@ -108,7 +108,7 @@ function ThemeColorSync() {
 			const themeColor =
 				document.querySelector<HTMLMetaElement>("meta#theme-color");
 
-			themeColor?.setAttribute("content", isDark ? "#0e0d0c" : "#f4eee4");
+			themeColor?.setAttribute("content", isDark ? "#18211c" : "#fbf9f2");
 		};
 
 		updateThemeColor();

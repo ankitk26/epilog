@@ -93,7 +93,7 @@ export default function MediaLogDetailsDialog({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<BottomSheetDialogContent
-				className="h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[85dvh] sm:max-w-xl sm:rounded-xl"
+				className="h-[100dvh] max-h-[100dvh] sm:h-auto sm:max-h-[92dvh] sm:max-w-xl sm:rounded-xl"
 				showCloseButton={false}
 				initialFocus={false}
 			>
@@ -236,7 +236,7 @@ function MediaLogDetailsDialogContent({
 					/>
 
 					{/* Scrollable main content */}
-					<div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
+					<div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-3 sm:gap-6 sm:px-6 sm:pb-3">
 						<div
 							className={cn(
 								"grid items-start gap-4 sm:gap-6",
@@ -312,53 +312,49 @@ function MediaLogDetailsDialogContent({
 								<CaretRightIcon />
 							</Button>
 						)}
+					</div>
 
-						<div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-3 border-t border-border px-4 pt-4 pb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pb-6">
+						<Button
+							className="w-full sm:w-auto"
+							disabled={isLoading}
+							onClick={handleDelete}
+							variant="destructive"
+						>
+							{removeMutation.isPending ? (
+								<SpinnerIcon className="size-4 animate-spin" />
+							) : (
+								<TrashSimpleIcon
+									className="size-3.5"
+									weight="bold"
+								/>
+							)}
+							{removeMutation.isPending ? "Deleting…" : "Delete"}
+						</Button>
+
+						<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
 							<Button
 								className="w-full sm:w-auto"
 								disabled={isLoading}
-								onClick={handleDelete}
-								variant="destructive"
+								onClick={() => onOpenChange(false)}
+								variant="outline"
 							>
-								{removeMutation.isPending ? (
-									<SpinnerIcon className="size-4 animate-spin" />
-								) : (
-									<TrashSimpleIcon
-										className="size-3.5"
-										weight="bold"
-									/>
-								)}
-								{removeMutation.isPending
-									? "Deleting…"
-									: "Delete"}
+								Cancel
 							</Button>
-
-							<div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
-								<Button
-									className="w-full sm:w-auto"
-									disabled={isLoading}
-									onClick={() => onOpenChange(false)}
-									variant="outline"
-								>
-									Cancel
-								</Button>
-								<Button
-									className="w-full sm:w-auto"
-									disabled={
-										isLoading || !hasChanges || !canSave
-									}
-									onClick={handleSave}
-								>
-									{updateMutation.isPending ? (
-										<>
-											<SpinnerIcon className="size-4 animate-spin" />
-											Saving…
-										</>
-									) : (
-										"Save"
-									)}
-								</Button>
-							</div>
+							<Button
+								className="w-full sm:w-auto"
+								disabled={isLoading || !hasChanges || !canSave}
+								onClick={handleSave}
+							>
+								{updateMutation.isPending ? (
+									<>
+										<SpinnerIcon className="size-4 animate-spin" />
+										Saving…
+									</>
+								) : (
+									"Save"
+								)}
+							</Button>
 						</div>
 					</div>
 				</div>

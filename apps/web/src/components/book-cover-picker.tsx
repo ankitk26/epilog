@@ -43,7 +43,7 @@ export default function BookCoverPicker({
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col">
-			<div className="flex flex-col items-start gap-1.5 px-4 pt-4 pb-3 sm:px-6">
+			<div className="flex flex-col items-start gap-1.5 border-b border-border px-4 pt-4 pb-3 sm:px-6">
 				<Button
 					className="-ml-2"
 					disabled={isApplying}
@@ -63,7 +63,7 @@ export default function BookCoverPicker({
 				)}
 			</div>
 
-			<div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 sm:px-6">
+			<div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4 sm:px-6">
 				{isPending ? (
 					<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
 						{Array.from({ length: 8 }).map((_, index) => (
@@ -109,7 +109,7 @@ export default function BookCoverPicker({
 				)}
 			</div>
 
-			<div className="px-4 pt-2 pb-4 sm:px-6 sm:pb-6">
+			<div className="border-t border-border px-4 pt-4 pb-4 sm:px-6 sm:pb-6">
 				<Button
 					className="w-full"
 					disabled={

@@ -179,7 +179,7 @@ function Grid({ children, footer, media, onClick }: MediaCardLayoutProps) {
 			<Poster
 				fallbackIconClassName="size-12 text-muted-foreground/40"
 				media={media}
-				className="relative aspect-2/3 overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border/70"
+				className="relative aspect-2/3 overflow-hidden rounded-md bg-secondary ring-1 ring-border"
 				size={{ height: 396, width: 264 }}
 			/>
 			<div className="flex flex-1 flex-col gap-1 pt-3">
@@ -202,7 +202,7 @@ function List({ children, footer, media, onClick }: MediaCardLayoutProps) {
 			<Poster
 				fallbackIconClassName="size-5 text-muted-foreground/40"
 				media={media}
-				className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border/70"
+				className="aspect-[2/3] w-24 flex-shrink-0 overflow-hidden rounded-md bg-secondary ring-1 ring-border"
 				size={{ height: 132, width: 88 }}
 			/>
 			<div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -225,7 +225,7 @@ function Shelf({ children, footer, media, onClick }: MediaCardLayoutProps) {
 			<Poster
 				fallbackIconClassName="size-4 text-muted-foreground/40"
 				media={media}
-				className="relative aspect-[2/3] w-1/2 self-center overflow-hidden rounded-lg bg-secondary shadow-sm ring-1 ring-border/70"
+				className="relative aspect-[2/3] w-1/2 self-center overflow-hidden rounded-md bg-secondary ring-1 ring-border"
 				size={{ height: 96, width: 64 }}
 			/>
 			<div className="flex min-w-0 flex-1 flex-col items-center gap-1 pt-3 text-center">
