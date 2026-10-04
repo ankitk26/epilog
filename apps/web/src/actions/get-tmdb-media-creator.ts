@@ -90,7 +90,7 @@ async function fetchTvCreator(sourceMediaId: string): Promise<string | null> {
 }
 
 export const getTmdbMediaCreator = createServerFn({ method: "GET" })
-	.inputValidator(
+	.validator(
 		z.object({
 			sourceMediaId: z.string(),
 			type: z.enum(["movie", "tv"]),

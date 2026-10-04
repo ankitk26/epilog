@@ -6,7 +6,7 @@ import { mediaSearchAPIOutput, mediaTypes } from "@/types";
 const SEARCH_TIMEOUT_MS = 10_000;
 
 export const searchTmdbMoviesAndTv = createServerFn({ method: "GET" })
-	.inputValidator(
+	.validator(
 		z.object({
 			searchQuery: z.string(),
 			mediaType: z.enum(mediaTypes),

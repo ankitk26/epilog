@@ -163,7 +163,7 @@ async function fetchOpenLibrarySearch(query: string) {
 }
 
 export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
-	.inputValidator((data: { searchQuery: string }) => data)
+	.validator((data: { searchQuery: string }) => data)
 	.handler(async ({ data }) => {
 		const initialSearch = await fetchOpenLibrarySearch(data.searchQuery);
 		if (!initialSearch) {

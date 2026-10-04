@@ -8,7 +8,7 @@ const MAL_API_URL = "https://api.myanimelist.net/v2/manga";
 const SEARCH_TIMEOUT_MS = 10_000;
 
 export const searchMalManga = createServerFn({ method: "GET" })
-	.inputValidator(z.object({ searchQuery: z.string() }))
+	.validator(z.object({ searchQuery: z.string() }))
 	.handler(async ({ data }) => {
 		const clientId = process.env.MAL_CLIENT_ID;
 

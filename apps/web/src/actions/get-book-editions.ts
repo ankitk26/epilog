@@ -31,7 +31,7 @@ function getEditionCoverUrl(entry: WorkEditionEntry): string | null {
 }
 
 export const getBookEditionCovers = createServerFn({ method: "GET" })
-	.inputValidator((data: { workId: string }) => data)
+	.validator((data: { workId: string }) => data)
 	.handler(async ({ data }): Promise<BookEditionCover[]> => {
 		const { data: editions, error } = await betterFetch(
 			`https://openlibrary.org/works/${data.workId}/editions.json`,
