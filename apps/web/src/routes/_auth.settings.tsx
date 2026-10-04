@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
-import MediaShelfLoadingState from "@/components/media-shelf-loading-state";
 import MediaTypeIcon from "@/components/media-type-icon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -41,15 +40,35 @@ function SettingsPage() {
 
 function SettingsLoading() {
 	return (
-		<div className="space-y-8">
-			<div className="flex items-center gap-4 rounded-2xl border border-border bg-background p-6">
-				<Skeleton className="size-12 rounded-full" />
-				<div className="space-y-2">
-					<Skeleton className="h-4 w-32" />
-					<Skeleton className="h-3 w-48" />
+		<div className="space-y-8 lg:space-y-10">
+			{/* Account section */}
+			<div className="space-y-4">
+				<Skeleton className="h-3 w-16" />
+				<div className="flex items-center gap-4 rounded-2xl border border-border bg-background p-6">
+					<Skeleton className="size-12 rounded-full" />
+					<div className="space-y-2">
+						<Skeleton className="h-4 w-32" />
+						<Skeleton className="h-3 w-48" />
+					</div>
 				</div>
 			</div>
-			<MediaShelfLoadingState />
+
+			{/* Library section */}
+			<div className="space-y-4">
+				<Skeleton className="h-3 w-16" />
+				<Skeleton className="h-3 w-72" />
+				<div className="rounded-2xl border border-border bg-background p-6">
+					<div className="flex flex-wrap gap-2">
+						{mediaTypes.map((type) => (
+							<Skeleton
+								className="h-7 w-24 rounded-md"
+								key={type}
+							/>
+						))}
+					</div>
+					<Skeleton className="mt-4 h-3 w-64" />
+				</div>
+			</div>
 		</div>
 	);
 }
