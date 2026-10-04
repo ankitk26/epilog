@@ -5,31 +5,16 @@ import { useState } from "react";
 import AddMediaToLogDialog from "@/components/add-media-to-log-dialog";
 import MediaLogDetailsDialog from "@/components/media-log-details-dialog";
 import { useDialogHistory } from "@/hooks/use-dialog-history";
+import type { SearchMedia } from "@/hooks/use-media-search";
 import type { MediaType } from "@/types";
-import SearchAnimeResultsGrid from "./search-anime-results-grid";
-import SearchBookResultsGrid from "./search-book-results-grid";
-import SearchMangaResultsGrid from "./search-manga-results-grid";
-import SearchMovieTvResultsGrid from "./search-movie-tv-results-grid";
-
-export type SearchMedia = {
-	imageUrl: string | undefined | null;
-	name: string;
-	releaseYear: number | null;
-	sourceId: string;
-	type: "movie" | "tv" | "anime" | "book" | "manga";
-	creator?: string | null;
-	seriesName?: string;
-	seriesPosition?: number;
-	seriesTotal?: number;
-	seriesKey?: string;
-};
+import SearchResultsList from "./search-results-list";
 
 type Props = {
 	query: string;
 	type: MediaType;
 };
 
-export default function SearchResultsPanel({ query, type: mediaType }: Props) {
+export default function SearchResultsPanel({ query, type }: Props) {
 	const [selectedMedia, setSelectedMedia] = useState<SearchMedia | null>(
 		null,
 	);
@@ -49,31 +34,11 @@ export default function SearchResultsPanel({ query, type: mediaType }: Props) {
 
 	return (
 		<div>
-			{mediaType === "book" && (
-				<SearchBookResultsGrid
-					onMediaClick={setSelectedMedia}
-					query={query}
-				/>
-			)}
-			{(mediaType === "movie" || mediaType === "tv") && (
-				<SearchMovieTvResultsGrid
-					mediaType={mediaType}
-					onMediaClick={setSelectedMedia}
-					query={query}
-				/>
-			)}
-			{mediaType === "anime" && (
-				<SearchAnimeResultsGrid
-					onMediaClick={setSelectedMedia}
-					query={query}
-				/>
-			)}
-			{mediaType === "manga" && (
-				<SearchMangaResultsGrid
-					onMediaClick={setSelectedMedia}
-					query={query}
-				/>
-			)}
+			<SearchResultsList
+				onMediaClick={setSelectedMedia}
+				query={query}
+				type={type}
+			/>
 
 			{existingLog ? (
 				<MediaLogDetailsDialog

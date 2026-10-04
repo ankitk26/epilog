@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AuthIndexRouteImport } from './routes/_auth.index'
-import { Route as AuthSearchRouteImport } from './routes/_auth.search'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
 import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
 
@@ -30,11 +29,6 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthSearchRoute = AuthSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => AuthRoute,
-} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -49,13 +43,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/sign-in': typeof SignInRoute
-  '/search': typeof AuthSearchRoute
   '/settings': typeof AuthSettingsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
-  '/search': typeof AuthSearchRoute
   '/settings': typeof AuthSettingsRoute
   '/': typeof AuthIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -64,21 +56,19 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/sign-in': typeof SignInRoute
-  '/_auth/search': typeof AuthSearchRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/': typeof AuthIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/search' | '/settings' | '/api/auth/$'
+  fullPaths: '/' | '/sign-in' | '/settings' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/search' | '/settings' | '/' | '/api/auth/$'
+  to: '/sign-in' | '/settings' | '/' | '/api/auth/$'
   id:
     | '__root__'
     | '/_auth'
     | '/sign-in'
-    | '/_auth/search'
     | '/_auth/settings'
     | '/_auth/'
     | '/api/auth/$'
@@ -113,13 +103,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_auth/search': {
-      id: '/_auth/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof AuthSearchRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -138,13 +121,11 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
-  AuthSearchRoute: typeof AuthSearchRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthSearchRoute: AuthSearchRoute,
   AuthSettingsRoute: AuthSettingsRoute,
   AuthIndexRoute: AuthIndexRoute,
 }

@@ -4,10 +4,10 @@ import {
 	SignOutIcon,
 } from "@phosphor-icons/react";
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useSearchSheet } from "@/components/search-sheet";
 import { authClient } from "@/lib/auth-client";
 import { defaultMediaFilters } from "@/lib/media-filters";
-import { mediaTypes, type MediaType } from "@/types";
 import { ThemeModeToggle } from "./theme-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -20,47 +20,12 @@ import {
 } from "./ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-function isMediaType(value: string | null): value is MediaType {
-	return value !== null && mediaTypes.some((type) => type === value);
-}
-
 export default function AppShellHeader() {
 	const navigate = useNavigate();
 	const { data } = authClient.useSession();
-	const { isSearchPage, selectedMediaType } = useRouterState({
-		select: (state) => {
-			const type = new URL(
-				state.location.href,
-				"http://localhost",
-			).searchParams.get("type");
-			return {
-				isSearchPage: state.location.pathname === "/search",
-				selectedMediaType: isMediaType(type)
-					? type
-					: defaultMediaFilters.type,
-			};
-		},
-	});
+	const { open: openSearchSheet } = useSearchSheet();
 
-	const toggleSearch = () => {
-		if (isSearchPage) {
-			void navigate({
-				to: "/",
-				search: {
-					...defaultMediaFilters,
-					type: selectedMediaType,
-				},
-			});
-			return;
-		}
-
-		void navigate({
-			to: "/search",
-			search: { type: selectedMediaType },
-		});
-	};
-
-	useHotkey("Mod+K", toggleSearch);
+	useHotkey("Mod+K", openSearchSheet);
 
 	const handleSignOut = async () => {
 		await navigate({ to: "/sign-in" });
@@ -91,12 +56,8 @@ export default function AppShellHeader() {
 						<TooltipTrigger
 							render={
 								<Button
-									aria-label={
-										isSearchPage
-											? "Back to library"
-											: "Search library"
-									}
-									onClick={toggleSearch}
+									aria-label="Search library"
+									onClick={openSearchSheet}
 									size="icon"
 									variant="outline"
 								>
@@ -105,9 +66,7 @@ export default function AppShellHeader() {
 							}
 						/>
 						<TooltipContent className="rounded-lg">
-							{isSearchPage
-								? "Back to library"
-								: "Search library"}
+							Search library
 							<kbd className="ml-2 rounded-md bg-background/20 px-1.5 py-0.5 text-xs font-medium">
 								{formatForDisplay("Mod+K")}
 							</kbd>
