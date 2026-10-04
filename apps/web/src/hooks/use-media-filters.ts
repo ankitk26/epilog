@@ -8,19 +8,26 @@ import {
 import type { FilterMediaView, LogStatus, MediaType } from "@/types";
 
 export function useMediaFilters() {
-	const search = useSearch({ from: "/_auth/" });
-	const navigate = useNavigate({ from: "/" });
+	// Not tied to a route: the hook is consumed by shared chrome (the
+	// search sheet) that also renders outside "/_auth/", where the index
+	// route has no active match.
+	const search = useSearch({ strict: false });
+	const navigate = useNavigate();
 	const { enabled, isReady } = useProfileMediaTypes();
 
 	// While the profile is loading we cannot validate the type yet, so the
 	// URL type is used as-is. Once ready, a type disabled in settings is
 	// derived away immediately — no wrong-content frame and no redirect.
+	const urlType = search.type ?? defaultMediaFilters.type;
 	const type = isReady
-		? enabled.includes(search.type)
-			? search.type
+		? enabled.includes(urlType)
+			? urlType
 			: (enabled[0] ?? defaultMediaFilters.type)
-		: search.type;
-	const view = normalizeMediaFilterView(type, search.view);
+		: urlType;
+	const view = normalizeMediaFilterView(
+		type,
+		search.view ?? defaultMediaFilters.view,
+	);
 	// Normalizing against the effective type also covers the profile-loading
 	// window, where the URL type may be swapped for the first enabled one.
 	const status = normalizeStatusFilter(type, search.status);
