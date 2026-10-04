@@ -32,6 +32,9 @@ export function useMediaFilters() {
 	// window, where the URL type may be swapped for the first enabled one.
 	const status = normalizeStatusFilter(type, search.status);
 
+	// Setters always write the effective type (already normalized against
+	// the profile's enabled types), so a pill click can never be reverted
+	// by the route validator seeing a status invalid for a stale URL type.
 	const setType = (nextType: MediaType) => {
 		void navigate({
 			replace: true,
@@ -49,11 +52,9 @@ export function useMediaFilters() {
 		void navigate({
 			replace: true,
 			search: (prev) => ({
-				type: prev.type ?? defaultMediaFilters.type,
-				view: normalizeMediaFilterView(
-					prev.type ?? defaultMediaFilters.type,
-					nextView,
-				),
+				type,
+				view: normalizeMediaFilterView(type, nextView),
+				status: normalizeStatusFilter(type, prev.status),
 			}),
 		});
 	};
@@ -62,9 +63,9 @@ export function useMediaFilters() {
 		void navigate({
 			replace: true,
 			search: (prev) => ({
-				type: prev.type ?? defaultMediaFilters.type,
+				type,
 				view: normalizeMediaFilterView(
-					prev.type ?? defaultMediaFilters.type,
+					type,
 					prev.view ?? defaultMediaFilters.view,
 				),
 				status: nextStatus,
