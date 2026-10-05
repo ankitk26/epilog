@@ -96,19 +96,29 @@ function isEnglishEdition(edition: { language?: string[] }) {
 }
 
 function getSearchEditionTitle(book: OpenLibraryBookDoc): string | null {
-	const firstEnglishEdition = book.editions?.docs.find(
-		(edition) => isEnglishEdition(edition) && edition.title,
-	);
+	const docs = book.editions?.docs ?? [];
 
-	return firstEnglishEdition?.title ?? null;
+	return (
+		docs.find((edition) => isEnglishEdition(edition) && edition.title)
+			?.title ??
+		docs.find((edition) => edition.title)?.title ??
+		null
+	);
 }
 
 function getSearchEditionCoverId(book: OpenLibraryBookDoc): number | null {
-	const firstEnglishEdition = book.editions?.docs.find((edition) =>
-		isEnglishEdition(edition),
-	);
+	const docs = book.editions?.docs ?? [];
 
-	return firstEnglishEdition?.cover_i ?? null;
+	const edition =
+		docs.find((edition) => isEnglishEdition(edition) && edition.cover_i) ??
+		docs.find((edition) => edition.cover_i) ??
+		null;
+
+	return edition?.cover_i ?? null;
+}
+
+function hasUsableEdition(book: OpenLibraryBookDoc): boolean {
+	return getSearchEditionTitle(book) !== null;
 }
 
 function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
@@ -146,7 +156,6 @@ async function fetchOpenLibrarySearch(query: string) {
 			signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 			query: {
 				q: query,
-				language: "eng",
 				limit: String(SEARCH_LIMIT),
 				fields: openLibrarySearchFields.join(","),
 			},
@@ -171,9 +180,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 		}
 
 		const initialBooks = initialSearch.docs.filter(
-			(book) =>
-				!looksLikeCollection(book) &&
-				getSearchEditionTitle(book) !== null,
+			(book) => !looksLikeCollection(book) && hasUsableEdition(book),
 		);
 		const directResults = initialBooks.map(mapOpenLibraryBook);
 		const directResultIds = new Set(
@@ -210,7 +217,7 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 					.filter(
 						(book) =>
 							!looksLikeCollection(book) &&
-							getSearchEditionTitle(book) !== null,
+							hasUsableEdition(book),
 					)
 					.map(mapOpenLibraryBook)
 					.filter((book) => !directResultIds.has(book.id));
