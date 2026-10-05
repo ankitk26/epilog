@@ -24,6 +24,10 @@ export default defineSchema({
 		image: v.optional(v.union(v.string(), v.null())),
 		releaseYear: v.union(v.number(), v.null()),
 		creator: v.optional(v.union(v.string(), v.null())),
+		// OpenLibrary author id (e.g. "OL382524A") for books, used to link
+		// logged books to the author page. Named book* so other media types
+		// may adopt namespaced ids later.
+		bookAuthorId: v.optional(v.string()),
 		sourceMediaId: v.string(),
 		type: v.union(
 			v.literal("anime"),
@@ -80,6 +84,7 @@ export default defineSchema({
 		mediaImage: v.optional(v.union(v.string(), v.null())),
 		mediaReleaseYear: v.optional(v.union(v.number(), v.null())),
 		mediaCreator: v.optional(v.union(v.string(), v.null())),
+		mediaBookAuthorId: v.optional(v.string()),
 		mediaType: v.optional(
 			v.union(
 				v.literal("anime"),

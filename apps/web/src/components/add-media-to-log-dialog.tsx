@@ -24,6 +24,7 @@ type Media = {
 	sourceId: string;
 	type: MediaType;
 	creator?: string | null;
+	bookAuthorId?: string | null;
 	seriesName?: string;
 	seriesPosition?: number;
 	seriesTotal?: number;
@@ -97,6 +98,7 @@ export default function AddMediaToLogDialog({
 				type: media.type,
 				image: media.imageUrl ?? "",
 				creator: media.creator ?? tmdbCreatorQuery.data ?? null,
+				bookAuthorId: media.bookAuthorId ?? undefined,
 				seriesName: media.seriesName,
 				seriesPosition: media.seriesPosition,
 				seriesTotal: media.seriesTotal,
@@ -122,7 +124,15 @@ export default function AddMediaToLogDialog({
 			<BottomSheetDialogContent showCloseButton initialFocus={false}>
 				{media && (
 					<div className="flex flex-col overflow-y-auto">
-						<MediaLogDialogHero creator={creator} media={media} />
+						<MediaLogDialogHero
+							creator={creator}
+							creatorHref={
+								mediaType === "book"
+									? (media?.bookAuthorId ?? null)
+									: null
+							}
+							media={media}
+						/>
 
 						<div className="flex flex-col gap-4 px-4 pb-4 sm:gap-6 sm:px-6 sm:pb-6">
 							<MediaLogStatusPicker

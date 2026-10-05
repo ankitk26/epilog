@@ -1,17 +1,22 @@
 import type { MediaType } from "@/types";
 
-export function creatorPhrase(type: MediaType, creator: string): string {
+export function creatorPhrasePrefix(type: MediaType): string | null {
 	switch (type) {
 		case "tv":
-			return `Watch on ${creator}`;
+			return "Watch on";
 		case "movie":
-			return `Directed by ${creator}`;
+			return "Directed by";
 		case "book":
 		case "manga":
-			return `Written by ${creator}`;
+			return "Written by";
 		case "anime":
-			return `Animated by ${creator}`;
+			return "Animated by";
 		default:
-			return creator;
+			return null;
 	}
+}
+
+export function creatorPhrase(type: MediaType, creator: string): string {
+	const prefix = creatorPhrasePrefix(type);
+	return prefix ? `${prefix} ${creator}` : creator;
 }

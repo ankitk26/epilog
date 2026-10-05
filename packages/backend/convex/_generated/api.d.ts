@@ -15,6 +15,7 @@ import type * as lib_mediaStatuses from "../lib/mediaStatuses.js";
 import type * as lib_standardizePersonName from "../lib/standardizePersonName.js";
 import type * as logs from "../logs.js";
 import type * as migrations_backfillLogMediaSnapshots from "../migrations/backfillLogMediaSnapshots.js";
+import type * as migrations_backfillMediaBookAuthorIds from "../migrations/backfillMediaBookAuthorIds.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
 import type * as users from "../users.js";
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   "lib/standardizePersonName": typeof lib_standardizePersonName;
   logs: typeof logs;
   "migrations/backfillLogMediaSnapshots": typeof migrations_backfillLogMediaSnapshots;
+  "migrations/backfillMediaBookAuthorIds": typeof migrations_backfillMediaBookAuthorIds;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
   users: typeof users;

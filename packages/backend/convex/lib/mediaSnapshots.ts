@@ -8,6 +8,7 @@ export const mediaSnapshotFields = (media: Doc<"media">) => ({
 	mediaImage: media.image,
 	mediaReleaseYear: media.releaseYear,
 	mediaCreator: media.creator,
+	mediaBookAuthorId: media.bookAuthorId,
 	mediaType: media.type,
 	mediaSourceMediaId: media.sourceMediaId,
 });

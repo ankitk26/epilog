@@ -155,6 +155,7 @@ export const bookSearchAPIOutput = z.object({
 			id: z.string(),
 			title: z.string(),
 			author: z.string().nullable(),
+			bookAuthorId: z.string().nullable(),
 			imageUrl: z.string().nullable(),
 			publishYear: z.number().nullable(),
 			seriesName: z.string().nullable(),
@@ -187,3 +188,49 @@ export const openLibraryWorkEditionsAPIOutput = z.object({
 export type BookEditionOutput = z.infer<
 	typeof openLibraryWorkEditionsAPIOutput
 >;
+
+export const openLibraryAuthorAPIOutput = z.object({
+	name: z.string().optional(),
+	alternate_names: z.array(z.string()).optional(),
+	photos: z.array(z.number()).optional(),
+});
+
+export type OpenLibraryAuthorOutput = z.infer<
+	typeof openLibraryAuthorAPIOutput
+>;
+
+export const openLibraryWorkSearchAPIOutput = z.object({
+	numFound: z.number(),
+	docs: z.array(
+		z.object({
+			key: z.string(),
+			title: z.string().nullable().optional(),
+			cover_i: z.number().optional(),
+			first_publish_year: z.number().optional(),
+		}),
+	),
+});
+
+export type OpenLibraryWorkSearchOutput = z.infer<
+	typeof openLibraryWorkSearchAPIOutput
+>;
+
+export const authorWorksOutput = z.object({
+	data: z.object({
+		author: z.object({
+			id: z.string(),
+			name: z.string(),
+			imageUrl: z.string().nullable(),
+		}),
+		works: z.array(
+			z.object({
+				id: z.string(),
+				title: z.string(),
+				imageUrl: z.string().nullable(),
+				publishYear: z.number().nullable(),
+			}),
+		),
+	}),
+});
+
+export type AuthorWorksOutput = z.infer<typeof authorWorksOutput>;

@@ -67,6 +67,7 @@ export const all = query({
 							image: log.mediaImage,
 							releaseYear: log.mediaReleaseYear ?? null,
 							creator: log.mediaCreator,
+							bookAuthorId: log.mediaBookAuthorId ?? null,
 							type: log.mediaType,
 							sourceMediaId: log.mediaSourceMediaId,
 						},
@@ -162,6 +163,7 @@ export const add = mutation({
 			image: v.optional(v.string()),
 			releaseYear: v.union(v.number(), v.null()),
 			creator: v.optional(v.union(v.string(), v.null())),
+			bookAuthorId: v.optional(v.string()),
 			sourceMediaId: v.string(),
 			type: mediaTypeLiteral,
 			seriesName: v.optional(v.string()),
@@ -208,6 +210,7 @@ export const add = mutation({
 				name: args.media.name,
 				releaseYear: args.media.releaseYear,
 				creator: args.media.creator,
+				bookAuthorId: args.media.bookAuthorId,
 				sourceMediaId: args.media.sourceMediaId,
 				type: args.media.type,
 				seriesName: args.media.seriesName,
@@ -249,6 +252,8 @@ export const add = mutation({
 					image: existingMedia.image,
 					releaseYear: existingMedia.releaseYear,
 					creator: existingMedia.creator ?? args.media.creator,
+					bookAuthorId:
+						existingMedia.bookAuthorId ?? args.media.bookAuthorId,
 					sourceMediaId: existingMedia.sourceMediaId,
 					type: existingMedia.type,
 				}
@@ -285,6 +290,7 @@ export const add = mutation({
 			mediaImage: snapshotSource.image,
 			mediaReleaseYear: snapshotSource.releaseYear,
 			mediaCreator: snapshotSource.creator,
+			mediaBookAuthorId: snapshotSource.bookAuthorId,
 			mediaType: snapshotSource.type,
 			mediaSourceMediaId: snapshotSource.sourceMediaId,
 		});

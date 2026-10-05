@@ -139,6 +139,7 @@ function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
 		id: book.key.replace(/^\/works\//, ""),
 		title: getSearchEditionTitle(book) ?? book.title,
 		author: getAuthorName(book),
+		bookAuthorId: book.author_key?.[0] ?? null,
 		imageUrl,
 		publishYear: book.first_publish_year ?? null,
 		seriesName,

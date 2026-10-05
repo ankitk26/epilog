@@ -1,6 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import type { ChangeEvent, FocusEvent, ReactNode } from "react";
-import { creatorPhrase } from "@/lib/creator-phrase";
+import { creatorPhrase, creatorPhrasePrefix } from "@/lib/creator-phrase";
 import {
 	getStatusIcon,
 	shouldShowReleaseYear,
@@ -23,17 +24,26 @@ export type MediaDialogMedia = {
 type MediaLogDialogHeroProps = {
 	media: MediaDialogMedia;
 	creator?: string | null;
+	// When provided (books only today), the creator name becomes a link to
+	// the author page at /authors/{bookAuthorId}.
+	creatorHref?: string | null;
+	onCreatorNavigate?: () => void;
 	statusDate?: string;
 };
 
 export function MediaLogDialogHero({
 	creator,
 	media,
+	creatorHref,
+	onCreatorNavigate,
 	statusDate,
 }: MediaLogDialogHeroProps) {
 	const resolvedCreator = creator ?? media.creator;
 	const showYear =
 		shouldShowReleaseYear(media.type) && media.releaseYear != null;
+	const creatorPrefix = resolvedCreator
+		? creatorPhrasePrefix(media.type)
+		: null;
 
 	return (
 		<div className="relative flex-shrink-0">
@@ -88,7 +98,35 @@ export function MediaLogDialogHero({
 							)}
 							{resolvedCreator && (
 								<span className="font-medium text-foreground/70">
-									{creatorPhrase(media.type, resolvedCreator)}
+									{creatorHref ? (
+										<>
+											{creatorPrefix && (
+												<span>{creatorPrefix} </span>
+											)}
+											<Link
+												className="decoration-border underline-offset-2 transition-colors duration-150 hover:text-foreground hover:underline"
+												// creatorHref is an OpenLibrary
+												// author id ("OL382524A"); the
+												// Link builds the href and SPA
+												// navigation. Closing the dialog
+												// in the same click is purely
+												// visual — navigation happens
+												// router-side regardless.
+												onClick={onCreatorNavigate}
+												params={{
+													bookAuthorId: creatorHref,
+												}}
+												to="/authors/$bookAuthorId"
+											>
+												{resolvedCreator}
+											</Link>
+										</>
+									) : (
+										creatorPhrase(
+											media.type,
+											resolvedCreator,
+										)
+									)}
 								</span>
 							)}
 						</div>

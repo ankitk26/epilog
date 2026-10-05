@@ -18,6 +18,7 @@ export type SearchMedia = {
 	sourceId: string;
 	type: "movie" | "tv" | "anime" | "book" | "manga";
 	creator?: string | null;
+	bookAuthorId?: string | null;
 	seriesName?: string;
 	seriesPosition?: number;
 	seriesTotal?: number;
@@ -75,6 +76,7 @@ async function searchByType(query: string, type: MediaType) {
 					sourceId: buildSourceMediaId("book", book.id),
 					type: "book",
 					creator: book.author,
+					bookAuthorId: book.bookAuthorId,
 					seriesName: book.seriesName ?? undefined,
 					seriesPosition: book.seriesPosition ?? undefined,
 					seriesTotal: book.seriesTotal ?? undefined,

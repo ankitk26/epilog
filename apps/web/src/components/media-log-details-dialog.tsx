@@ -219,6 +219,11 @@ function MediaLogDetailsDialogContent({
 			) : (
 				<div className="flex min-h-0 flex-1 flex-col overflow-hidden">
 					<MediaLogDialogHero
+						creatorHref={
+							mediaType === "book" && log.metadata.bookAuthorId
+								? log.metadata.bookAuthorId
+								: null
+						}
 						media={{
 							imageUrl:
 								customImage ??
@@ -229,6 +234,7 @@ function MediaLogDetailsDialogContent({
 							creator: log.metadata.creator,
 							type: log.metadata.type,
 						}}
+						onCreatorNavigate={() => onOpenChange(false)}
 						statusDate={statusPhrase(
 							asLogStatus(log.status),
 							formatLogDate(log.updatedTime),

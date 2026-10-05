@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AuthIndexRouteImport } from './routes/_auth.index'
 import { Route as AuthSettingsRouteImport } from './routes/_auth.settings'
+import { Route as AuthAuthorsBookAuthorIdRouteImport } from './routes/_auth.authors.$bookAuthorId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api.auth.$'
 
 const AuthRoute = AuthRouteImport.update({
@@ -34,6 +35,11 @@ const AuthSettingsRoute = AuthSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAuthorsBookAuthorIdRoute = AuthAuthorsBookAuthorIdRouteImport.update({
+  id: '/authors/$bookAuthorId',
+  path: '/authors/$bookAuthorId',
+  getParentRoute: () => AuthRoute,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -44,12 +50,14 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/sign-in': typeof SignInRoute
   '/settings': typeof AuthSettingsRoute
+  '/authors/$bookAuthorId': typeof AuthAuthorsBookAuthorIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/settings': typeof AuthSettingsRoute
   '/': typeof AuthIndexRoute
+  '/authors/$bookAuthorId': typeof AuthAuthorsBookAuthorIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,22 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/_auth/settings': typeof AuthSettingsRoute
   '/_auth/': typeof AuthIndexRoute
+  '/_auth/authors/$bookAuthorId': typeof AuthAuthorsBookAuthorIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-in' | '/settings' | '/api/auth/$'
+  fullPaths:
+    '/' | '/sign-in' | '/settings' | '/authors/$bookAuthorId' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/sign-in' | '/settings' | '/' | '/api/auth/$'
+  to: '/sign-in' | '/settings' | '/' | '/authors/$bookAuthorId' | '/api/auth/$'
   id:
     | '__root__'
     | '/_auth'
     | '/sign-in'
     | '/_auth/settings'
     | '/_auth/'
+    | '/_auth/authors/$bookAuthorId'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -110,6 +121,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSettingsRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/authors/$bookAuthorId': {
+      id: '/_auth/authors/$bookAuthorId'
+      path: '/authors/$bookAuthorId'
+      fullPath: '/authors/$bookAuthorId'
+      preLoaderRoute: typeof AuthAuthorsBookAuthorIdRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -123,11 +141,13 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   AuthSettingsRoute: typeof AuthSettingsRoute
   AuthIndexRoute: typeof AuthIndexRoute
+  AuthAuthorsBookAuthorIdRoute: typeof AuthAuthorsBookAuthorIdRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthSettingsRoute: AuthSettingsRoute,
   AuthIndexRoute: AuthIndexRoute,
+  AuthAuthorsBookAuthorIdRoute: AuthAuthorsBookAuthorIdRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
