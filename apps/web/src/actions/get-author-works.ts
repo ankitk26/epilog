@@ -11,11 +11,29 @@ const OPEN_LIBRARY_TIMEOUT_MS = 10_000;
 const WORK_SEARCH_LIMIT = 100;
 // Safety net over the pagination loop: 10 pages × 100 works.
 const MAX_WORK_SEARCH_PAGES = 10;
+const ENGLISH_LANGUAGE_CODES = new Set(["en", "eng"]);
 const BOOK_AUTHOR_ID_PATTERN = /^OL\d+A$/;
 
-// Error artifacts and bulk listings that aren't individual books.
+// Error artifacts, bulk listings, and catalog records that aren't individual
+// works. Keep legitimate short-story collections and essay collections.
 const junkPatterns =
-	/\*INVALID\*|\bsparknotes\b|literature\s+guide|complete\s+(?:collection|series)|box(ed)?\s+set|set\s+of\s+\d+\s+books/i;
+	/\*INVALID\*|\bsparknotes\b|literature\s+guide|complete\s+(?:collection|series)|box(ed)?\s+set|set\s+of\s+\d+\s+books|\b(?:sampler|sample|header|copy\s+dump|stock\s+promotion|digital\s+download)\b|\b(?:catalog|catalogue|study\s+guide|textbook|workbook|anthology)\b|\b(?:chinese|japanese|french|german|spanish|italian|russian|korean)\s+edition\b|\b(?:trilogy|duology|tetralogy|omnibus|bundle)\b|\b(?:book|volume|vol\.?)\s*(?:one|two|three|four|five|\d+)\b|\b(?:one|two|three|four|five|\d+)\s+(?:books?|volumes?|novellas?|stories?)\b|\b(?:books?|stories|volumes?|vol\.?)\s+\d+\b|\b\d+\s*\/\s*\d+\b/i;
+
+const allowedEditionFormats = new Set([
+	"e-book",
+	"ebook",
+	"hardcover",
+	"mass market paperback",
+	"paperback",
+]);
+
+function normalizeWorkTitle(title: string) {
+	return title
+		.toLocaleLowerCase()
+		.replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+		.replace(/^(?:the|a|an)\s+/, "")
+		.trim();
+}
 
 const latinScriptPattern = /\p{Script=Latin}/u;
 
@@ -27,6 +45,35 @@ type AuthorWork = {
 	imageUrl: string | null;
 	publishYear: number | null;
 };
+
+function isEnglishEdition(edition: { language?: string[] }) {
+	return (
+		edition.language?.some((language) => {
+			const normalizedLanguage = language.toLowerCase();
+			return (
+				ENGLISH_LANGUAGE_CODES.has(normalizedLanguage) ||
+				normalizedLanguage.endsWith("/eng")
+			);
+		}) ?? false
+	);
+}
+
+function isAllowedEditionFormat(edition: { format?: string[] }) {
+	if (!edition.format || edition.format.length === 0) return true;
+
+	return edition.format.some((format) =>
+		allowedEditionFormats.has(format.toLowerCase().trim()),
+	);
+}
+
+function getEnglishEdition(doc: OpenLibraryWorkDoc) {
+	return doc.editions?.docs.find(
+		(edition) =>
+			edition.title?.trim() &&
+			isEnglishEdition(edition) &&
+			isAllowedEditionFormat(edition),
+	);
+}
 
 // Primary record names can be in a different script (村上春樹), so a
 // Latin-script alternate name is preferred for display; all-caps variants
@@ -91,9 +138,10 @@ async function fetchAuthorWorkDocs(
 				signal: AbortSignal.timeout(OPEN_LIBRARY_TIMEOUT_MS),
 				query: {
 					q: `author_key:${bookAuthorId}`,
+					language: "eng",
 					limit: String(WORK_SEARCH_LIMIT),
 					offset: String(offset),
-					fields: "key,title,cover_i,first_publish_year",
+					fields: "key,first_publish_year,editions,editions.title,editions.language,editions.cover_i,editions.format",
 				},
 				output: openLibraryWorkSearchAPIOutput,
 			},
@@ -128,26 +176,42 @@ export const getAuthorWorks = createServerFn({ method: "GET" })
 			fetchAuthorWorkDocs(data.bookAuthorId),
 		]);
 
+		const seenTitles = new Set<string>();
+		const currentYear = new Date().getFullYear();
 		const works: AuthorWork[] = workDocs
 			.map((doc) => {
-				const title = doc.title?.trim() ?? "";
+				const englishEdition = getEnglishEdition(doc);
+				const title = englishEdition?.title?.trim() ?? "";
+				const coverId = englishEdition?.cover_i;
 
 				return {
 					title,
 					id: doc.key.replace(/^\/works\//, ""),
 					imageUrl:
-						doc.cover_i && doc.cover_i > 0
-							? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`
+						coverId && coverId > 0
+							? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
 							: null,
 					publishYear: doc.first_publish_year ?? null,
 				};
 			})
-			.filter((work) => work.title && !junkPatterns.test(work.title))
+			.filter(
+				(work) =>
+					work.title &&
+					!junkPatterns.test(work.title) &&
+					(work.publishYear === null ||
+						work.publishYear <= currentYear),
+			)
 			.sort(
 				(a, b) =>
 					(a.publishYear ?? 9999) - (b.publishYear ?? 9999) ||
 					a.title.localeCompare(b.title),
-			);
+			)
+			.filter((work) => {
+				const normalizedTitle = normalizeWorkTitle(work.title);
+				if (seenTitles.has(normalizedTitle)) return false;
+				seenTitles.add(normalizedTitle);
+				return true;
+			});
 
 		return {
 			data: {

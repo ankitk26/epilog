@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 
 let hasGuard = false;
 let manualClose = false;
+let suppressBackOnce = false;
 let nextId = 0;
 let hasInstalledBackHandler = false;
 
@@ -40,7 +41,9 @@ function addCallback(close: () => void): number {
 	callbacks.push({ id, close });
 	if (callbacks.length === 1) {
 		hasGuard = true;
-		history.pushState({ __epilogGuard: true }, "");
+		// Preserve TanStack Router's history metadata so links clicked from the
+		// dialog can calculate their next history index correctly.
+		history.pushState({ ...history.state, __epilogGuard: true }, "");
 	}
 	return id;
 }
@@ -48,10 +51,37 @@ function addCallback(close: () => void): number {
 function removeCallback(id: number): void {
 	const idx = callbacks.findIndex((c) => c.id === id);
 	if (idx !== -1) callbacks.splice(idx, 1);
+
+	// The caller is leaving the page entirely (clicking a router link from
+	// inside the dialog). The guard entry is already below the new route
+	// entry, so popping it with history.back() would fight the navigation
+	// and undo it. Drop the guard silently; the next popstate consumes it.
+	if (suppressBackOnce) {
+		suppressBackOnce = false;
+		manualClose = false;
+		hasGuard = false;
+		callbacks.length = 0;
+		return;
+	}
+
 	if (callbacks.length === 0 && hasGuard) {
 		hasGuard = false;
 		manualClose = true;
 		history.back();
+	}
+}
+
+// ── Using dialogs with router navigation ────────────────────
+
+/**
+ * Arms the dismiss-intercept to skip its `history.back()` when this
+ * dialog closes because the user navigated to another page from inside
+ * it (e.g. clicking a router link). Without this, the dialog unmount's
+ * guard pop races with — and cancels — the router navigation.
+ */
+export function skipDialogHistoryBack(): void {
+	if (hasGuard) {
+		suppressBackOnce = true;
 	}
 }
 
@@ -132,9 +162,7 @@ export function useDialogHistory(
 	const wasOpenRef = useRef(false);
 	const callbackIdRef = useRef<number | null>(null);
 
-	onCloseRef.current = onClose;
-
-	// Sync open/close with the global callback stack
+	onCloseRef.current = onClose; // Sync open/close with the global callback stack
 	useEffect(() => {
 		if (open && !wasOpenRef.current) {
 			wasOpenRef.current = true;

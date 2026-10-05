@@ -204,9 +204,19 @@ export const openLibraryWorkSearchAPIOutput = z.object({
 	docs: z.array(
 		z.object({
 			key: z.string(),
-			title: z.string().nullable().optional(),
-			cover_i: z.number().optional(),
 			first_publish_year: z.number().optional(),
+			editions: z
+				.object({
+					docs: z.array(
+						z.object({
+							title: z.string().nullable().optional(),
+							cover_i: z.number().optional(),
+							language: z.array(z.string()).optional(),
+							format: z.array(z.string()).optional(),
+						}),
+					),
+				})
+				.optional(),
 		}),
 	),
 });

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Image } from "@unpic/react";
 import type { ChangeEvent, FocusEvent, ReactNode } from "react";
+import { skipDialogHistoryBack } from "@/hooks/use-dialog-history";
 import { creatorPhrase, creatorPhrasePrefix } from "@/lib/creator-phrase";
 import {
 	getStatusIcon,
@@ -108,11 +109,16 @@ export function MediaLogDialogHero({
 												// creatorHref is an OpenLibrary
 												// author id ("OL382524A"); the
 												// Link builds the href and SPA
-												// navigation. Closing the dialog
-												// in the same click is purely
-												// visual — navigation happens
-												// router-side regardless.
-												onClick={onCreatorNavigate}
+												// navigation. Skip the dialog's
+												// history guard pop — it would
+												// otherwise cancel the router
+												// navigation when the dialog
+												// unmounts with this route
+												// change.
+												onClick={() => {
+													skipDialogHistoryBack();
+													onCreatorNavigate?.();
+												}}
 												params={{
 													bookAuthorId: creatorHref,
 												}}
