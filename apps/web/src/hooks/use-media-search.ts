@@ -116,10 +116,13 @@ export function useMediaSearch({
 		data: results,
 		isPending,
 		isError,
+		refetch,
 	} = useQuery({
 		queryKey: ["search", type, query],
 		queryFn: async () => await searchByType(query, type),
 		enabled: query.length > 0,
+		// Deterministic: a search either resolves on the run it is submitted
+		// or surfaces its error; recovery is the user's manual "try again".
 		retry: false,
 		staleTime: 1000 * 60 * 2,
 	});
@@ -137,6 +140,7 @@ export function useMediaSearch({
 		isPending,
 		isEnabled: query.length > 0,
 		isError,
+		refetch,
 		loggedStatuses,
 	};
 }

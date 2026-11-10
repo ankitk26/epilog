@@ -16,8 +16,15 @@ export default function SearchResultsList({
 	query,
 	type,
 }: Props) {
-	const { results, count, isEnabled, isPending, isError, loggedStatuses } =
-		useMediaSearch({ query, type });
+	const {
+		results,
+		count,
+		isEnabled,
+		isPending,
+		isError,
+		refetch,
+		loggedStatuses,
+	} = useMediaSearch({ query, type });
 
 	if (isEnabled && isPending) {
 		return <SearchResultsLoadingState />;
@@ -28,7 +35,7 @@ export default function SearchResultsList({
 	}
 
 	if (isError) {
-		return <SearchErrorState />;
+		return <SearchErrorState onRetry={() => void refetch()} />;
 	}
 
 	if (count === 0) {

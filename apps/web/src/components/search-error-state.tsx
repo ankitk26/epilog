@@ -1,6 +1,11 @@
 import { WarningCircleIcon } from "@phosphor-icons/react";
+import { Button } from "./ui/button";
 
-export default function SearchErrorState() {
+type Props = {
+	onRetry?: () => void;
+};
+
+export default function SearchErrorState({ onRetry }: Props) {
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 py-14 text-center">
 			<WarningCircleIcon
@@ -10,6 +15,11 @@ export default function SearchErrorState() {
 			<p className="text-lg font-normal text-foreground">
 				Search service is down
 			</p>
+			{onRetry && (
+				<Button onClick={onRetry} size="sm" variant="outline">
+					Try again
+				</Button>
+			)}
 		</div>
 	);
 }
