@@ -55,7 +55,7 @@ export default function MediaMovieCalendarLoadingState() {
 				</h1>
 			</div>
 
-			<div className="h-full rounded-xl border border-border/70 bg-card/40 p-2 shadow-sm sm:p-3">
+			<div className="h-full rounded-xl bg-card/40 p-2 shadow-sm sm:p-3">
 				<div className="grid grid-cols-7 gap-1 sm:gap-2">
 					{weekDays.map((weekDay) => (
 						<span

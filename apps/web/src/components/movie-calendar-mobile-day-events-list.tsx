@@ -101,7 +101,7 @@ export default function MovieCalendarMobileDayEventsList({
 								<button
 									key={event.movieEventId}
 									onClick={() => setSelectedEvent(event)}
-									className="flex items-center gap-3 rounded-lg border border-border/70 bg-card px-3 py-3 text-left shadow-sm transition-all fine-hover:hover:bg-secondary fine-hover:hover:shadow-lg"
+									className="flex items-center gap-3 rounded-lg bg-card px-3 py-3 text-left shadow-sm transition-all fine-hover:hover:bg-secondary fine-hover:hover:shadow-lg"
 								>
 									<div
 										className={cn(
