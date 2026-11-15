@@ -74,6 +74,8 @@ export default defineSchema({
 		updatedTime: v.number(),
 		pageCount: v.optional(v.number()),
 		pagesRead: v.optional(v.number()),
+		// The user's own rating, 0.5 to 5 in half star steps.
+		rating: v.optional(v.number()),
 		// User-selected edition cover. Falls back to media.image when null.
 		customImage: v.optional(v.union(v.string(), v.null())),
 		// Denormalized display snapshot of the media this log points to. Keeps

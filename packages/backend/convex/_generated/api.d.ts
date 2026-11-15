@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as lib_mediaSnapshots from "../lib/mediaSnapshots.js";
 import type * as lib_mediaStatuses from "../lib/mediaStatuses.js";
+import type * as lib_ratings from "../lib/ratings.js";
 import type * as lib_standardizePersonName from "../lib/standardizePersonName.js";
 import type * as logs from "../logs.js";
 import type * as migrations_backfillLogMediaSnapshots from "../migrations/backfillLogMediaSnapshots.js";
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   "lib/mediaSnapshots": typeof lib_mediaSnapshots;
   "lib/mediaStatuses": typeof lib_mediaStatuses;
+  "lib/ratings": typeof lib_ratings;
   "lib/standardizePersonName": typeof lib_standardizePersonName;
   logs: typeof logs;
   "migrations/backfillLogMediaSnapshots": typeof migrations_backfillLogMediaSnapshots;

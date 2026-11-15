@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { shouldShowReleaseYear } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import type { MediaType } from "@/types";
+import MediaRating from "./media-rating";
 import MediaTypeIcon from "./media-type-icon";
 
 export type MediaCardMedia = {
@@ -17,6 +18,7 @@ export type MediaCardMedia = {
 	seriesPosition?: number;
 	seriesTotal?: number;
 	type: MediaType;
+	rating?: number | null;
 };
 
 export type MediaCardProgressData = {
@@ -131,6 +133,12 @@ function Series({ media }: { media: MediaCardMedia }) {
 	);
 }
 
+function Rating({ media }: { media: MediaCardMedia }) {
+	if (media.rating == null) return null;
+
+	return <MediaRating readOnly size="sm" value={media.rating} />;
+}
+
 function Footer({ children }: { children?: ReactNode }) {
 	return <div className="mt-auto min-h-6">{children}</div>;
 }
@@ -189,6 +197,7 @@ function Grid({ children, footer, media, onClick }: MediaCardLayoutProps) {
 				/>
 				<Secondary media={media} />
 				<ReleaseYear media={media} />
+				<Rating media={media} />
 				{children}
 				{footer}
 			</div>
@@ -212,6 +221,7 @@ function List({ children, footer, media, onClick }: MediaCardLayoutProps) {
 				/>
 				<Secondary media={media} />
 				<ReleaseYear media={media} />
+				<Rating media={media} />
 				{children}
 				{footer}
 			</div>

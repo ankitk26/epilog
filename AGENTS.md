@@ -3,3 +3,4 @@
 - never run any type-check, lint or format unless asked to do so
 - never invoke any skills on your own
 - respect the app's spacing system in `apps/web/src/styles/app.css`: use only the allowed values for `space-*` (2 | 3 | 4 | 6 | 8 | 14 | 20), `gap-*` (1 | 2 | 3 | 4 | 6 | 8), `p-*` (0 | 1 | 2 | 3 | 4 | 6 | 8), and `m-*` (0 | 1 | 2 | 4 | 6 | 8); prefer standard Tailwind sizing scales for width/height over arbitrary values
+- before using ui-sdk, follow the ui-sdk skill if it's installed, and read `node_modules/@ui-sdk/react/docs/llms.txt`. To build a new component, also search `node_modules/@ui-sdk/react/docs/core.md` by heading, and read `rendering.md` next to it
