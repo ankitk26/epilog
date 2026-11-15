@@ -16,13 +16,13 @@ function BookCoverTile({
 	return (
 		<button
 			aria-pressed={isSelected}
-			className="group/tile flex cursor-pointer flex-col gap-1.5 text-left"
+			className="group/tile flex cursor-pointer flex-col gap-2 text-left"
 			onClick={onSelect}
 			type="button"
 		>
 			<div
 				className={cn(
-					"relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-secondary transition-all duration-200",
+					"relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-secondary",
 					isSelected
 						? "ring-2 ring-primary ring-offset-2 ring-offset-popover"
 						: "ring-1 ring-border group-hover/tile:ring-2 group-hover/tile:ring-ring/40",

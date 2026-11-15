@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/instrument-sans";
 
+/* Visual system source: https://designmd.me/discover/raycast/raw */
+
+
 @custom-variant dark (&:is(.dark *));
 @custom-variant fine-hover (@media (hover: hover) and (pointer: fine));
 
@@ -52,7 +55,8 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 
-	--font-sans: "Instrument Sans Variable", ui-sans-serif, sans-serif;
+	--font-sans:
+		"Instrument Sans Variable", "Instrument Sans", ui-sans-serif, sans-serif;
 
 	--animate-reveal-up: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 	--animate-reveal-fade: reveal-fade 0.9s ease-out both;
@@ -60,8 +64,10 @@
 
 /* Runtime (non-inlined) tokens so `.dark` can re-declare them */
 @theme {
-	--shadow-panel: 0 1px 2px oklch(0.3 0.02 60 / 10%);
-	--shadow-lift: 0 4px 12px -4px oklch(0.3 0.02 60 / 16%);
+	--shadow-panel: 0 1px 2px
+		color-mix(in srgb, var(--foreground) 10%, transparent);
+	--shadow-lift: 0 4px 12px -4px
+		color-mix(in srgb, var(--foreground) 16%, transparent);
 }
 
 @keyframes reveal-up {
@@ -85,100 +91,113 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Light: "morning in the valley" — storybook meadow, vivid
+   Light: Derived light theme — soft red paper
    ═══════════════════════════════════════════════════════════════ */
 :root {
-	--radius: 0.375rem;
+	color-scheme: light;
+	--radius: 0.5rem;
 
-	--background: oklch(0.985 0.008 88);
-	--foreground: oklch(0.245 0.02 60);
-	--card: oklch(0.996 0.004 88);
-	--card-foreground: oklch(0.245 0.02 60);
-	--popover: oklch(0.996 0.004 88);
-	--popover-foreground: oklch(0.245 0.02 60);
-	--primary: oklch(0.245 0.02 60);
-	--primary-foreground: oklch(0.985 0.008 88);
-	--secondary: oklch(0.955 0.012 84);
-	--secondary-foreground: oklch(0.245 0.02 60);
-	--muted: oklch(0.955 0.014 86);
-	--muted-foreground: oklch(0.5 0.024 64);
-	--accent: oklch(0.938 0.026 82);
-	--accent-foreground: oklch(0.245 0.02 60);
-	--destructive: oklch(0.58 0.19 25);
-	--border: oklch(0.905 0.018 80);
-	--input: oklch(0.93 0.018 82);
-	--ring: oklch(0.62 0.13 45);
+	--background: #fff7f7;
+	--foreground: #1d1515;
+	--card: #f5eded;
+	--card-foreground: #1d1515;
+	--popover: #f5eded;
+	--popover-foreground: #1d1515;
+	--primary: #1d1515;
+	--primary-foreground: #fff7f7;
+	--secondary: #ede6e6;
+	--secondary-foreground: #1d1515;
+	--muted: #ede6e6;
+	--muted-foreground: #716a6a;
+	--accent: #ede6e6;
+	--accent-foreground: #1d1515;
+	--destructive: #d30000;
+	--border: #dbd4d4;
+	--input: color-mix(in srgb, var(--foreground) 10%, transparent);
+	--ring: #716a6a;
 
-	/* Meadow accents */
-	--brand: oklch(0.655 0.145 45);
-	--brand-foreground: oklch(0.985 0.008 88);
-	--sage: oklch(0.64 0.09 135);
-	--wheat: oklch(0.82 0.1 85);
-	--river: oklch(0.64 0.07 265);
+	--brand: #1d1515;
+	--brand-foreground: #fff7f7;
+	--sage: var(--muted-foreground);
+	--wheat: var(--border);
+	--river: var(--muted-foreground);
 
-	--chart-1: oklch(0.62 0.09 135);
-	--chart-2: oklch(0.655 0.145 45);
-	--chart-3: oklch(0.82 0.1 85);
-	--chart-4: oklch(0.64 0.07 265);
-	--chart-5: oklch(0.42 0.05 145);
+	--chart-1: #1d1515;
+	--chart-2: #716a6a;
+	--chart-3: #dbd4d4;
+	--chart-4: #434345;
+	--chart-5: #1d1515;
 
-	--sidebar: oklch(0.972 0.008 85);
-	--sidebar-foreground: oklch(0.245 0.02 60);
-	--sidebar-primary: oklch(0.655 0.145 45);
-	--sidebar-primary-foreground: oklch(0.985 0.008 88);
-	--sidebar-accent: oklch(0.938 0.026 82);
-	--sidebar-accent-foreground: oklch(0.245 0.02 60);
-	--sidebar-border: oklch(0.905 0.018 80);
-	--sidebar-ring: oklch(0.62 0.13 45);
+	--sidebar: #f5eded;
+	--sidebar-foreground: #1d1515;
+	--sidebar-primary: #1d1515;
+	--sidebar-primary-foreground: #fff7f7;
+	--sidebar-accent: #ede6e6;
+	--sidebar-accent-foreground: #1d1515;
+	--sidebar-border: #dbd4d4;
+	--sidebar-ring: #716a6a;
+
+	--space-xxs: 0.25rem;
+	--space-xs: 0.5rem;
+	--space-sm: 0.75rem;
+	--space-md: 1rem;
+	--space-lg: 1.25rem;
+	--space-xl: 1.5rem;
+	--space-xxl: 2rem;
+	--space-section: 3rem;
+	--space-band: 4rem;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Dark: "last light in the pines" — warm ember dusk, high contrast
+   Dark: Near-black, minimal, and high contrast
    ═══════════════════════════════════════════════════════════════ */
 .dark {
-	--background: oklch(0.147 0.004 49.3);
-	--foreground: oklch(0.986 0.002 67.8);
-	--card: oklch(0.214 0.009 43.1);
-	--card-foreground: oklch(0.986 0.002 67.8);
-	--popover: oklch(0.214 0.009 43.1);
-	--popover-foreground: oklch(0.986 0.002 67.8);
-	--primary: oklch(0.922 0.005 34.3);
-	--primary-foreground: oklch(0.214 0.009 43.1);
-	--secondary: oklch(0.268 0.011 36.5);
-	--secondary-foreground: oklch(0.986 0.002 67.8);
-	--muted: oklch(0.268 0.011 36.5);
-	--muted-foreground: oklch(0.714 0.014 41.2);
-	--accent: oklch(0.268 0.011 36.5);
-	--accent-foreground: oklch(0.986 0.002 67.8);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.547 0.021 43.1);
+	color-scheme: dark;
+	--background: #07080a;
+	--foreground: #ffffff;
+	--card: #111214;
+	--card-foreground: #ffffff;
+	--popover: #111214;
+	--popover-foreground: #ffffff;
+	--primary: #e6e6e6;
+	--primary-foreground: #2f3031;
+	--secondary: #1b1c1e;
+	--secondary-foreground: #ffffff;
+	--muted: #1b1c1e;
+	--muted-foreground: #9c9c9d;
+	--accent: #1b1c1e;
+	--accent-foreground: #ffffff;
+	--destructive: #ff6363;
+	--border: #1b1c1e;
+	--input: color-mix(in srgb, var(--foreground) 12%, transparent);
+	--ring: #9c9c9d;
 
-	/* Meadow accents, embered for dusk */
-	--brand: oklch(0.72 0.14 45);
-	--brand-foreground: oklch(0.214 0.009 43.1);
-	--sage: oklch(0.72 0.08 135);
-	--wheat: oklch(0.84 0.08 85);
-	--river: oklch(0.7 0.06 265);
+	--brand: #e6e6e6;
+	--brand-foreground: #2f3031;
+	--sage: var(--muted-foreground);
+	--wheat: var(--border);
+	--river: var(--muted-foreground);
 
-	--chart-1: oklch(0.7 0.08 135);
-	--chart-2: oklch(0.72 0.14 45);
-	--chart-3: oklch(0.84 0.08 85);
-	--chart-4: oklch(0.7 0.06 265);
-	--chart-5: oklch(0.5 0.05 145);
+	--chart-1: #e6e6e6;
+	--chart-2: #e6e6e6;
+	--chart-3: #9c9c9d;
+	--chart-4: #434345;
+	--chart-5: #1b1c1e;
 
-	--sidebar: oklch(0.214 0.009 43.1);
-	--sidebar-foreground: oklch(0.986 0.002 67.8);
-	--sidebar-primary: oklch(0.72 0.14 45);
-	--sidebar-primary-foreground: oklch(0.214 0.009 43.1);
-	--sidebar-accent: oklch(0.268 0.011 36.5);
-	--sidebar-accent-foreground: oklch(0.986 0.002 67.8);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.547 0.021 43.1);
+	--sidebar: #111214;
+	--sidebar-foreground: #ffffff;
+	--sidebar-primary: #e6e6e6;
+	--sidebar-primary-foreground: #2f3031;
+	--sidebar-accent: #1b1c1e;
+	--sidebar-accent-foreground: #ffffff;
+	--sidebar-border: #1b1c1e;
+	--sidebar-ring: #9c9c9d;
 
-	--shadow-panel: 0 1px 2px oklch(0 0 0 / 24%);
-	--shadow-lift: 0 4px 12px -4px oklch(0 0 0 / 32%);
+	--shadow-panel: 0 1px 0 0
+		color-mix(in srgb, var(--foreground) 5%, transparent) inset;
+	--shadow-lift:
+		0 1px 0 0 color-mix(in srgb, var(--foreground) 10%, transparent) inset,
+		0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent) inset;
 }
 
 @layer base {
@@ -220,6 +239,10 @@
 		user-select: none;
 	}
 
+	button {
+		@apply cursor-pointer;
+	}
+
 	@media (hover: none), (pointer: coarse) {
 		button:active,
 		a:active,
@@ -232,16 +255,12 @@
 		}
 	}
 
-	button {
-		@apply cursor-pointer;
-	}
-
 	::selection {
 		background: var(--brand);
 		color: var(--brand-foreground);
 	}
 
-	/* Warm, quiet scrollbar */
+	/* Quiet micro-scrollbar */
 	* {
 		scrollbar-width: thin;
 		scrollbar-color: color-mix(
@@ -295,6 +314,10 @@
    ─────────────────────────────────────────────────────────────── */
 
 @layer components {
+	.safe-area-top {
+		padding-top: env(safe-area-inset-top);
+	}
+
 	.safe-area-bottom {
 		padding-bottom: env(safe-area-inset-bottom) !important;
 	}
@@ -302,15 +325,15 @@
 	/* Caption-uppercase section label */
 	.section-label {
 		font-family: var(--font-sans);
-		font-size: 0.6875rem;
-		line-height: 1;
+		font-size: 0.75rem;
+		line-height: 1.15;
 		font-weight: 500;
-		letter-spacing: 0.22em;
+		letter-spacing: 0.2px;
 		text-transform: uppercase;
 		color: var(--muted-foreground);
 	}
 
-	/* Solid paper card */
+	/* Surface panel */
 	.paper-panel {
 		background: var(--popover);
 		border: 1px solid var(--border);

@@ -44,7 +44,7 @@ export const Route = createRootRouteWithContext<{
 			{
 				id: "theme-color",
 				name: "theme-color",
-				content: "#fbf9f2",
+				content: "#07080a",
 			},
 			{
 				title: "epilog",
@@ -108,7 +108,7 @@ function ThemeColorSync() {
 			const themeColor =
 				document.querySelector<HTMLMetaElement>("meta#theme-color");
 
-			themeColor?.setAttribute("content", isDark ? "#18211c" : "#fbf9f2");
+			themeColor?.setAttribute("content", isDark ? "#07080a" : "#fff7f7");
 		};
 
 		updateThemeColor();
@@ -143,7 +143,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 			<body>
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="system"
+					defaultTheme="dark"
 					disableTransitionOnChange
 					enableSystem
 				>

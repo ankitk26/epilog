@@ -120,7 +120,7 @@ function AuthorWorksSection({ works }: { works: Work[] }) {
 	];
 
 	return (
-		<section className="animate-reveal-up space-y-6">
+		<section className="space-y-6">
 			<div className="flex items-end justify-between gap-4">
 				<div className="flex flex-col gap-1">
 					<h2 className="text-3xl font-medium tracking-tight text-foreground lg:text-4xl">

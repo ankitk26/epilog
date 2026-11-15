@@ -27,9 +27,11 @@ function Home() {
 					</div>
 				}
 			>
-				<div className="animate-reveal-fade space-y-6 lg:space-y-8">
-					<MediaViewToolbar />
-					<MediaStatusFilter />
+				<div className="animate-reveal-fade space-y-4">
+					<div className="flex items-center justify-between gap-4">
+						<MediaStatusFilter />
+						<MediaViewToolbar />
+					</div>
 					<MediaViewContent />
 					{/* Clearance for the fixed bottom bar on mobile */}
 					<div aria-hidden className="h-8 sm:hidden" />

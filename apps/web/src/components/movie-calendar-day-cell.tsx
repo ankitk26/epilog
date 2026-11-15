@@ -73,7 +73,7 @@ export default function MovieCalendarDayCell({
 			<div
 				onClick={handleDayClick}
 				className={cn(
-					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 rounded-xl bg-card/70 p-1 text-left text-xs shadow-none transition-all sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3 fine-hover:hover:shadow-sm",
+					"col-span-1 flex min-h-14 w-full cursor-pointer flex-col gap-1 rounded-xl bg-card/70 p-1 text-left text-xs shadow-none sm:min-h-20 sm:gap-2 sm:p-2 sm:text-xs lg:min-h-24 lg:p-3 fine-hover:hover:border-border",
 					isCurrentMonth ? "" : "text-muted-foreground",
 					isCurrentDayCell
 						? "bg-primary/10 font-medium text-foreground ring-1 ring-primary/60"

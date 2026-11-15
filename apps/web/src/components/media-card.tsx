@@ -143,7 +143,7 @@ function ProgressMeter({ progress }: { progress: MediaCardProgressData }) {
 				className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
 				value={progress.percent}
 			/>
-			<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+			<span className="shrink-0 text-xs font-semibold text-muted-foreground tabular-nums">
 				{progress.percent}%
 			</span>
 		</div>
@@ -198,7 +198,7 @@ function Grid({ children, footer, media, onClick }: MediaCardLayoutProps) {
 
 function List({ children, footer, media, onClick }: MediaCardLayoutProps) {
 	return (
-		<Root className="flex items-center gap-6" onClick={onClick}>
+		<Root className="flex items-center gap-4 sm:gap-6" onClick={onClick}>
 			<Poster
 				fallbackIconClassName="size-5 text-muted-foreground/40"
 				media={media}
@@ -219,29 +219,6 @@ function List({ children, footer, media, onClick }: MediaCardLayoutProps) {
 	);
 }
 
-function Shelf({ children, footer, media, onClick }: MediaCardLayoutProps) {
-	return (
-		<Root className="flex flex-col overflow-hidden" onClick={onClick}>
-			<Poster
-				fallbackIconClassName="size-4 text-muted-foreground/40"
-				media={media}
-				className="relative aspect-[2/3] w-1/2 self-center overflow-hidden rounded-md bg-secondary"
-				size={{ height: 96, width: 64 }}
-			/>
-			<div className="flex min-w-0 flex-1 flex-col items-center gap-1 pt-3 text-center">
-				<Title
-					className="line-clamp-2 text-sm leading-tight font-medium text-foreground"
-					media={media}
-				/>
-				<Secondary media={media} />
-				<ReleaseYear media={media} />
-				{children}
-				{footer}
-			</div>
-		</Root>
-	);
-}
-
 const MediaCard = {
 	Footer,
 	Grid,
@@ -250,7 +227,6 @@ const MediaCard = {
 	Progress: ProgressMeter,
 	ProgressFooter,
 	Series,
-	Shelf,
 };
 
 export default MediaCard;
@@ -262,5 +238,4 @@ export {
 	ProgressFooter as MediaCardProgressFooter,
 	ProgressMeter as MediaCardProgress,
 	Series as MediaCardSeries,
-	Shelf as MediaCardShelf,
 };

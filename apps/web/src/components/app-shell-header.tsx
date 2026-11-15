@@ -6,8 +6,15 @@ import {
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useSearchSheet } from "@/components/search-sheet";
+import { useMediaFilters } from "@/hooks/use-media-filters";
+import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import { authClient } from "@/lib/auth-client";
-import { defaultMediaFilters } from "@/lib/media-filters";
+import {
+	defaultMediaFilters,
+	normalizeMediaFilterView,
+} from "@/lib/media-filters";
+import { cn } from "@/lib/utils";
+import type { MediaType } from "@/types";
 import { ThemeModeToggle } from "./theme-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -20,8 +27,18 @@ import {
 } from "./ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
+const mediaTypeLinks: Array<{ type: MediaType; label: string }> = [
+	{ type: "movie", label: "Movies" },
+	{ type: "tv", label: "TV Shows" },
+	{ type: "anime", label: "Anime" },
+	{ type: "book", label: "Books" },
+	{ type: "manga", label: "Manga" },
+];
+
 export default function AppShellHeader() {
 	const navigate = useNavigate();
+	const { type, view } = useMediaFilters();
+	const { enabled: enabledMediaTypes } = useProfileMediaTypes();
 	const { data } = authClient.useSession();
 	const { open: openSearchSheet } = useSearchSheet();
 
@@ -39,17 +56,48 @@ export default function AppShellHeader() {
 	};
 
 	return (
-		<header className="fixed top-0 right-0 left-0 z-30 border-b border-border bg-background px-6 pt-[env(safe-area-inset-top)] lg:px-12">
-			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between lg:h-20">
-				<Link
-					className="group flex items-baseline"
-					search={defaultMediaFilters}
-					to="/"
-				>
-					<span className="text-sm font-semibold tracking-[0.2em] text-foreground uppercase transition-opacity fine-hover:hover:opacity-60">
+		<header className="safe-area-top sticky top-0 z-30 bg-background/90 px-6 backdrop-blur-xl lg:px-12">
+			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-6 lg:h-20">
+				<div className="flex min-w-0 items-center gap-6">
+					<Link
+						className="shrink-0 text-base font-semibold tracking-tight text-foreground"
+						search={defaultMediaFilters}
+						to="/"
+					>
 						epilog
-					</span>
-				</Link>
+					</Link>
+
+					<nav
+						aria-label="Media types"
+						className="no-scrollbar hidden min-w-0 items-center gap-4 overflow-x-auto lg:flex"
+					>
+						{mediaTypeLinks
+							.filter((item) =>
+								enabledMediaTypes.includes(item.type),
+							)
+							.map((item) => (
+								<Link
+									className={cn(
+										"shrink-0 text-sm font-medium hover:text-foreground",
+										item.type === type
+											? "text-foreground underline decoration-2 underline-offset-4"
+											: "text-muted-foreground no-underline",
+									)}
+									key={item.type}
+									search={{
+										type: item.type,
+										view: normalizeMediaFilterView(
+											item.type,
+											view,
+										),
+									}}
+									to="/"
+								>
+									{item.label}
+								</Link>
+							))}
+					</nav>
+				</div>
 
 				<div className="flex items-center gap-2 sm:gap-3">
 					<Tooltip>
@@ -67,7 +115,7 @@ export default function AppShellHeader() {
 						/>
 						<TooltipContent className="rounded-lg">
 							Search library
-							<kbd className="ml-2 rounded-md bg-background/20 px-1.5 py-0.5 text-xs font-medium">
+							<kbd className="ml-2 rounded-md bg-background/20 px-2 py-1 text-xs font-medium">
 								{formatForDisplay("Mod+K")}
 							</kbd>
 						</TooltipContent>

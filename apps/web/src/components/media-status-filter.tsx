@@ -13,16 +13,13 @@ export default function MediaStatusFilter() {
 
 	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
 
-	// Calendar shows movie events rather than status groups, and the shelf
-	// view keeps all its status columns, so the filter has no effect there.
-	if (view === "calendar" || view === "shelf") {
+	// Calendar shows movie events rather than status groups.
+	if (view === "calendar") {
 		return null;
 	}
 
 	const logsForType = logs.filter((log) => log.metadata.type === mediaType);
 
-	// Follow the shelf's natural library-movement order so the pills read
-	// the same way across views.
 	const items: {
 		status: LogStatus;
 		label: string;

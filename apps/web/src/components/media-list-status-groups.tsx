@@ -26,7 +26,7 @@ export default function MediaListStatusGroups() {
 		}));
 
 	return (
-		<div className="space-y-14 lg:space-y-20">
+		<div className="space-y-8">
 			{sections.map((section) => {
 				return (
 					<MediaStatusSection

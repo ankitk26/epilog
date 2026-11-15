@@ -20,9 +20,9 @@ export const Route = createFileRoute("/_auth")({
 function AuthWrapper() {
 	return (
 		<SearchSheetProvider>
-			<div className="relative flex h-dvh flex-col overflow-y-auto">
+			<div className="app-shell relative flex h-dvh flex-col overflow-y-auto">
 				<AppShellHeader />
-				<main className="relative z-10 flex-1 px-6 pt-24 pb-20 lg:px-12 lg:pt-32">
+				<main className="relative z-10 flex-1 px-6 pt-2 pb-20 lg:px-12 lg:pt-2">
 					<div className="mx-auto max-w-5xl">
 						<Outlet />
 					</div>

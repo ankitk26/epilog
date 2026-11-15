@@ -42,7 +42,7 @@ export default function MediaTypeBottomBar() {
 							return (
 								<button
 									aria-pressed={isActive}
-									className="flex flex-1 flex-col items-center gap-1 py-3 active:scale-[0.97]"
+									className="flex flex-1 flex-col items-center gap-1 py-3"
 									key={item.type}
 									onClick={() => setType(item.type)}
 									type="button"

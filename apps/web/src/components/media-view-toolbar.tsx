@@ -1,28 +1,22 @@
-import { convexQuery } from "@convex-dev/react-query";
-import { api } from "@convex/_generated/api";
 import {
 	CalendarBlankIcon,
-	KanbanIcon,
 	SquaresFourIcon,
 	ListIcon,
 } from "@phosphor-icons/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
 import { cn } from "@/lib/utils";
-import type { FilterMediaView, MediaType } from "@/types";
+import type { FilterMediaView } from "@/types";
 import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function MediaViewToolbar() {
-	const { setType, setView, type, view } = useMediaFilters();
+	const { setView, type, view } = useMediaFilters();
 	const isMobile = useIsMobile();
 
 	useEffect(() => {
-		if (isMobile && (view === "grid" || view === "shelf")) {
+		if (isMobile && view === "grid") {
 			setView("list");
 		}
 
@@ -31,53 +25,6 @@ export default function MediaViewToolbar() {
 		}
 	}, [isMobile, setView, view]);
 
-	const { data: logs } = useSuspenseQuery(convexQuery(api.logs.all, {}));
-
-	const { enabled: enabledMediaTypes, isReady } = useProfileMediaTypes();
-
-	// Keep the URL in sync when the active type is disabled in settings.
-	// Rendering already derives the effective type, so this never changes
-	// what is on screen — it only normalizes the address bar.
-	useEffect(() => {
-		if (!isReady || enabledMediaTypes.includes(type)) {
-			return;
-		}
-
-		setType(enabledMediaTypes[0]!);
-	}, [enabledMediaTypes, isReady, setType, type]);
-
-	const logCountsByType = [
-		{
-			type: "movie",
-			label: "Movies",
-			count: logs.filter((log) => log.metadata.type === "movie").length,
-		},
-		{
-			type: "tv",
-			label: "TV Shows",
-			count: logs.filter((log) => log.metadata.type === "tv").length,
-		},
-		{
-			type: "anime",
-			label: "Anime",
-			count: logs.filter((log) => log.metadata.type === "anime").length,
-		},
-		{
-			type: "book",
-			label: "Books",
-			count: logs.filter((log) => log.metadata.type === "book").length,
-		},
-		{
-			type: "manga",
-			label: "Manga",
-			count: logs.filter((log) => log.metadata.type === "manga").length,
-		},
-	] satisfies Array<{
-		type: MediaType;
-		label: string;
-		count: number;
-	}>;
-
 	const viewOptions: {
 		value: FilterMediaView;
 		label: string;
@@ -85,122 +32,56 @@ export default function MediaViewToolbar() {
 	}[] = [
 		{ value: "grid", label: "Grid", icon: SquaresFourIcon },
 		{ value: "list", label: "List", icon: ListIcon },
-		{ value: "shelf", label: "Shelf", icon: KanbanIcon },
 		{ value: "calendar", label: "Calendar", icon: CalendarBlankIcon },
 	];
 
-	const visibleTypePills = logCountsByType.filter((item) =>
-		enabledMediaTypes.includes(item.type),
-	);
+	const visibleOptions = viewOptions.filter((option) => {
+		if (type !== "movie" && option.value === "calendar") {
+			return false;
+		}
 
-	const currentType = logCountsByType.find((item) => item.type === type);
+		return !(
+			(isMobile && option.value === "grid") ||
+			(!isMobile && option.value === "list")
+		);
+	});
+
+	// A single view leaves nothing to switch between.
+	if (visibleOptions.length < 2) {
+		return null;
+	}
 
 	return (
-		<div className="flex items-center justify-between gap-3">
-			{/* Media type — pill buttons on desktop, bottom bar on mobile */}
-			<div className="flex flex-1 items-center">
-				{/* Mobile: active collection context */}
-				<div className="flex items-center gap-2 sm:hidden">
-					<span className="section-label">{currentType?.label}</span>
-					<span className="flex min-w-5 items-center justify-center rounded-full bg-secondary px-1 py-1 text-xs leading-none font-semibold text-muted-foreground tabular-nums">
-						{currentType?.count}
-					</span>
-				</div>
-				{/* Desktop: pill buttons */}
-				<div className="hidden flex-wrap gap-4 sm:flex sm:items-center">
-					{!isReady
-						? Array.from({ length: 4 }).map((_, index) => (
-								<Skeleton
-									className="h-7 w-24 rounded-md"
-									key={`media-type-pill-skeleton-${index}`}
-								/>
-							))
-						: visibleTypePills.map((item) => {
-								const isActive = type === item.type;
-								return (
-									<Button
-										className={cn(
-											"group text-xs",
-											isActive
-												? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
-												: "text-muted-foreground hover:text-foreground",
-										)}
-										key={item.type}
-										onClick={() => {
-											setType(item.type);
-										}}
-										size="sm"
-										variant="outline"
-									>
-										{item.label}
-										<span
-											className={cn(
-												"flex min-w-5 items-center justify-center rounded-full px-1 text-xs leading-none",
-												isActive
-													? "bg-primary-foreground/20 text-primary-foreground"
-													: "bg-secondary text-muted-foreground fine-hover:group-hover:text-foreground",
-											)}
-										>
-											{item.count}
-										</span>
-									</Button>
-								);
-							})}
-				</div>
-			</div>
-
-			{/* View switcher — icon buttons */}
-			<div
-				className={cn(
-					"shrink-0 items-center gap-1",
-					isMobile && type !== "movie" ? "hidden" : "flex",
-				)}
-			>
-				{viewOptions.map((option) => {
-					if (type !== "movie" && option.value === "calendar") {
-						return null;
-					}
-
-					if (
-						(isMobile &&
-							(option.value === "shelf" ||
-								option.value === "grid")) ||
-						(!isMobile && option.value === "list")
-					) {
-						return null;
-					}
-
-					const Icon = option.icon;
-					const isActive = view === option.value;
-					return (
-						<Tooltip key={`${option.value}_filter`}>
-							<TooltipTrigger
-								render={
-									<Button
-										className={cn(
-											isActive
-												? "text-primary-foreground"
-												: "text-muted-foreground hover:text-foreground",
-										)}
-										onClick={() => setView(option.value)}
-										title={option.label}
-										variant={
-											isActive ? "default" : "outline"
-										}
-										size="icon"
-									>
-										<Icon />
-										<span className="sr-only">
-											{option.label}
-										</span>
-									</Button>
-								}
-							/>
-							<TooltipContent>{option.label}</TooltipContent>
-						</Tooltip>
-					);
-				})}
-			</div>
+		<div className="ml-auto flex shrink-0 items-center gap-1">
+			{visibleOptions.map((option) => {
+				const Icon = option.icon;
+				const isActive = view === option.value;
+				return (
+					<Tooltip key={`${option.value}_filter`}>
+						<TooltipTrigger
+							render={
+								<Button
+									className={cn(
+										isActive
+											? "text-primary-foreground"
+											: "text-muted-foreground hover:text-foreground",
+									)}
+									onClick={() => setView(option.value)}
+									title={option.label}
+									variant={isActive ? "default" : "outline"}
+									size="icon"
+								>
+									<Icon />
+									<span className="sr-only">
+										{option.label}
+									</span>
+								</Button>
+							}
+						/>
+						<TooltipContent>{option.label}</TooltipContent>
+					</Tooltip>
+				);
+			})}
 		</div>
 	);
 }

@@ -11,8 +11,8 @@ export function ThemeModeToggle() {
 
 	return (
 		<Button onClick={toggleTheme} size="icon" variant="outline">
-			<SunIcon className="size-[1.1rem] scale-100 rotate-0 transition-all duration-300 dark:scale-0 dark:-rotate-90" />
-			<MoonIcon className="absolute size-[1.1rem] scale-0 rotate-90 transition-all duration-300 dark:scale-100 dark:rotate-0" />
+			<SunIcon className="size-4 dark:hidden" />
+			<MoonIcon className="absolute hidden size-4 dark:block" />
 			<span className="sr-only">Toggle theme</span>
 		</Button>
 	);

@@ -82,7 +82,7 @@ export default function MovieCalendarMobileDayEventsList({
 					>
 						<button
 							type="button"
-							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-foreground shadow-sm transition-all fine-hover:hover:bg-secondary fine-hover:hover:shadow-lg"
+							className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-foreground shadow-sm fine-hover:hover:bg-secondary"
 						>
 							<PlusIcon className="size-5" />
 						</button>
@@ -101,7 +101,7 @@ export default function MovieCalendarMobileDayEventsList({
 								<button
 									key={event.movieEventId}
 									onClick={() => setSelectedEvent(event)}
-									className="flex items-center gap-3 rounded-lg bg-card px-3 py-3 text-left shadow-sm transition-all fine-hover:hover:bg-secondary fine-hover:hover:shadow-lg"
+									className="flex items-center gap-3 rounded-lg bg-card px-3 py-3 text-left shadow-sm fine-hover:hover:bg-secondary"
 								>
 									<div
 										className={cn(

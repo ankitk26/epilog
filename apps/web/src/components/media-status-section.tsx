@@ -21,7 +21,7 @@ export default function MediaSectionByStatus(props: Props) {
 	const { view } = useMediaFilters();
 	const isMobile = useIsMobile();
 	const effectiveView =
-		isMobile && (view === "grid" || view === "shelf")
+		isMobile && view === "grid"
 			? "list"
 			: !isMobile && view === "list"
 				? "grid"
@@ -34,23 +34,16 @@ export default function MediaSectionByStatus(props: Props) {
 	useDialogHistory(!!selectedLog, () => setSelectedLog(null), "log-details");
 
 	return (
-		<section className="animate-reveal-up space-y-6">
-			{/* Section header — large uppercase title with count */}
-			<div className="flex items-end justify-between gap-4">
-				<div className="flex flex-col gap-1">
-					<h2 className="text-3xl font-medium tracking-tight text-foreground lg:text-4xl">
-						{props.section.title}
-					</h2>
-					<span className="section-label shrink-0 pl-1 whitespace-nowrap">
-						{props.logs.length} titles
-					</span>
-				</div>
-			</div>
-
+		<section className="animate-reveal-up">
+			{props.logs.length === 0 && (
+				<p className="text-xs text-muted-foreground">
+					Nothing here yet
+				</p>
+			)}
 			<div
 				className={
 					effectiveView === "list"
-						? "flex flex-col gap-8"
+						? "flex flex-col gap-4 sm:gap-8"
 						: "grid auto-rows-max grid-cols-2 items-start gap-8 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-[repeat(auto-fill,minmax(9rem,1fr))] lg:gap-8"
 				}
 			>

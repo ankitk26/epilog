@@ -105,7 +105,7 @@ export function MediaLogDialogHero({
 												<span>{creatorPrefix} </span>
 											)}
 											<Link
-												className="decoration-border underline-offset-2 transition-colors duration-150 hover:text-foreground hover:underline"
+												className="decoration-border underline-offset-2 hover:text-foreground hover:underline"
 												// creatorHref is an OpenLibrary
 												// author id ("OL382524A"); the
 												// Link builds the href and SPA
@@ -176,10 +176,10 @@ export function MediaLogStatusPicker({
 					<button
 						aria-checked={isActive}
 						className={cn(
-							"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm transition-colors duration-150 disabled:opacity-50",
+							"relative flex w-full cursor-pointer items-center gap-3 py-3 pr-4 pl-4 text-left text-sm disabled:opacity-50",
 							index > 0 && "border-t border-border",
 							isActive
-								? "bg-primary/[0.04]"
+								? "bg-primary/5"
 								: "fine-hover:hover:bg-secondary/60",
 						)}
 						disabled={disabled}
@@ -190,7 +190,7 @@ export function MediaLogStatusPicker({
 					>
 						<StatusIcon
 							className={cn(
-								"size-4 shrink-0 transition-colors duration-150",
+								"size-4 shrink-0",
 								isActive
 									? "text-primary"
 									: "text-muted-foreground",
@@ -199,7 +199,7 @@ export function MediaLogStatusPicker({
 						/>
 						<span
 							className={cn(
-								"flex-1 transition-colors duration-150",
+								"flex-1",
 								isActive
 									? "font-semibold text-foreground"
 									: "font-medium text-muted-foreground",
@@ -275,7 +275,7 @@ export function ReadingProgressSection({
 						className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
 						value={progressPercent}
 					/>
-					<span className="shrink-0 text-[10px] font-semibold text-muted-foreground tabular-nums">
+					<span className="shrink-0 text-xs font-semibold text-muted-foreground tabular-nums">
 						{progressPercent}%
 					</span>
 				</div>
