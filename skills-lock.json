@@ -3,9 +3,10 @@
 	"skills": {
 		"ui-sdk": {
 			"source": "vercel-labs/ui",
+			"commit": "06a7633f9543125163574d508a0bbdc3a173042d",
 			"sourceType": "github",
 			"skillPath": "packages/core/skills/ui-sdk/SKILL.md",
-			"computedHash": "7353586d36e12a3895bcec7d6d589ad26a18e7acff95b014ea63ccb12cfafc38"
+			"computedHash": "cabe635c8f279e77b50a265c499ea2e8ebd471574b96acfc61a11a147d553e6d"
 		}
 	}
 }

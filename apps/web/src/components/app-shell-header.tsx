@@ -5,6 +5,10 @@ import {
 } from "@phosphor-icons/react";
 import { formatForDisplay, useHotkey } from "@tanstack/react-hotkeys";
 import { Link, useNavigate } from "@tanstack/react-router";
+import {
+	MediaTypeNav,
+	MediaTypeNavUnderline,
+} from "@/components/media-type-nav-parts";
 import { useSearchSheet } from "@/components/search-sheet";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { useProfileMediaTypes } from "@/hooks/use-profile-media-types";
@@ -67,10 +71,15 @@ export default function AppShellHeader() {
 						epilog
 					</Link>
 
-					<nav
+					<MediaTypeNav
 						aria-label="Media types"
-						className="no-scrollbar hidden min-w-0 items-center gap-4 overflow-x-auto lg:flex"
+						className="relative no-scrollbar hidden min-w-0 items-center gap-4 overflow-x-auto pb-2 lg:flex"
+						value={type}
 					>
+						<MediaTypeNavUnderline
+							aria-hidden="true"
+							className="absolute [inset-inline-start:var(--media-type-nav-underline-inline-start)] [top:calc(var(--media-type-nav-underline-top)+var(--media-type-nav-underline-height)+2px)] h-0.5 w-(--media-type-nav-underline-width) bg-foreground opacity-0 transition-[inset-inline-start,width,opacity] duration-200 ease-out data-[positioned]:opacity-100"
+						/>
 						{mediaTypeLinks
 							.filter((item) =>
 								enabledMediaTypes.includes(item.type),
@@ -78,11 +87,14 @@ export default function AppShellHeader() {
 							.map((item) => (
 								<Link
 									className={cn(
-										"shrink-0 text-sm font-medium hover:text-foreground",
+										"shrink-0 text-sm font-medium no-underline hover:text-foreground",
 										item.type === type
-											? "text-foreground underline decoration-2 underline-offset-4"
-											: "text-muted-foreground no-underline",
+											? "text-foreground"
+											: "text-muted-foreground",
 									)}
+									data-active={
+										item.type === type ? "" : undefined
+									}
 									key={item.type}
 									search={{
 										type: item.type,
@@ -96,7 +108,7 @@ export default function AppShellHeader() {
 									{item.label}
 								</Link>
 							))}
-					</nav>
+					</MediaTypeNav>
 				</div>
 
 				<div className="flex items-center gap-2 sm:gap-3">

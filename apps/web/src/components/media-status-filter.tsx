@@ -1,12 +1,16 @@
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "@convex/_generated/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+	SegmentedControl,
+	SegmentedControlIndicator,
+	SegmentedControlItem,
+} from "@ui-sdk/react/segmented-control";
 import { useMediaFilters } from "@/hooks/use-media-filters";
 import { statusLabel } from "@/lib/media-labels";
 import { cn } from "@/lib/utils";
 import { shelfStatusesByMediaType } from "@/types";
 import type { LogStatus } from "@/types";
-import { Button } from "./ui/button";
 
 export default function MediaStatusFilter() {
 	const { type: mediaType, status, view, setStatus } = useMediaFilters();
@@ -31,21 +35,24 @@ export default function MediaStatusFilter() {
 	}));
 
 	return (
-		<div className="flex flex-wrap items-center gap-2">
+		<SegmentedControl
+			aria-label="Filter by status"
+			className="max-w-full gap-2 overflow-x-auto border-0 bg-transparent p-0 [--ui-background:var(--primary)] [--ui-foreground:var(--foreground)] [--ui-muted-foreground:var(--muted-foreground)]"
+			value={status}
+			onValueChange={(next) => {
+				if (next) {
+					setStatus(next);
+				}
+			}}
+		>
+			<SegmentedControlIndicator className="rounded-md transition-[top,left,width,height] duration-200 ease-out data-[activation-direction=none]:transition-none" />
 			{items.map((item) => {
 				const isActive = status === item.status;
 				return (
-					<Button
-						className={cn(
-							"group text-xs",
-							isActive
-								? "bg-primary! text-primary-foreground fine-hover:hover:text-primary-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						)}
+					<SegmentedControlItem
+						className="group flex-none gap-1 rounded-md text-xs data-checked:text-primary-foreground"
 						key={item.status}
-						onClick={() => setStatus(item.status)}
-						size="sm"
-						variant="outline"
+						value={item.status}
 					>
 						{item.label}
 						<span
@@ -58,9 +65,9 @@ export default function MediaStatusFilter() {
 						>
 							{item.count}
 						</span>
-					</Button>
+					</SegmentedControlItem>
 				);
 			})}
-		</div>
+		</SegmentedControl>
 	);
 }

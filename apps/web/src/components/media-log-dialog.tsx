@@ -5,9 +5,21 @@ import {
 	XIcon,
 } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
+import {
+	createRadioGroupController,
+	Radio,
+	RadioGroup,
+} from "@ui-sdk/react/radio";
+import { Toolbar, ToolbarButton, ToolbarGroup } from "@ui-sdk/react/toolbar";
 import { Image } from "@unpic/react";
-import type { ChangeEvent, FocusEvent, ReactNode } from "react";
-import { useState } from "react";
+import type {
+	ChangeEvent,
+	FocusEvent,
+	KeyboardEvent,
+	ReactNode,
+	Ref,
+} from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	BottomSheetDialogContent,
 	Dialog,
@@ -172,8 +184,91 @@ function MediaLogDialogForm({
 		onSubmit({ pageCount, pagesRead, status });
 	};
 
+	const statusListRef = useRef<HTMLDivElement>(null);
+	const posterActionRef = useRef<HTMLDivElement>(null);
+	const cancelRef = useRef<HTMLButtonElement>(null);
+	const saveRef = useRef<HTMLButtonElement>(null);
+	// The focus rule speaks in statuses: changed status targets Save,
+	// unchanged targets Cancel, and a Save that can't submit falls back too.
+	const statusChanged = status !== (initialStatus ?? null);
+
+	const focusActionRow = () => {
+		const target = statusChanged && canSubmit ? saveRef : cancelRef;
+		target.current?.focus();
+	};
+
+	const lastStatusRadio = () => {
+		const radios =
+			statusListRef.current?.querySelectorAll<HTMLButtonElement>(
+				"[data-slot='radio']:not([data-disabled])",
+			);
+		return radios?.[radios.length - 1] ?? null;
+	};
+
+	const handleStatusKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key !== "ArrowDown") return;
+		if (event.target === lastStatusRadio()) {
+			event.preventDefault();
+			focusActionRow();
+		}
+	};
+
+	const handleActionsKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === "ArrowUp") {
+			const lastRadio = lastStatusRadio();
+			if (lastRadio) {
+				event.preventDefault();
+				lastRadio.focus();
+			}
+			return;
+		}
+		// The poster action sits outside the toolbar, so left from the first
+		// action reaches it by hand.
+		if (event.key === "ArrowLeft" && posterActionRef.current) {
+			const first = event.currentTarget.querySelector<HTMLButtonElement>(
+				"[data-slot='toolbar-button']",
+			);
+			if (first && event.target === first) {
+				event.preventDefault();
+				posterActionRef.current
+					.querySelector<HTMLElement>("button, a")
+					?.focus();
+			}
+		}
+	};
+
+	const handlePosterActionKeyDown = (
+		event: KeyboardEvent<HTMLDivElement>,
+	) => {
+		if (event.key === "ArrowUp") {
+			const lastRadio = lastStatusRadio();
+			if (lastRadio) {
+				event.preventDefault();
+				lastRadio.focus();
+			}
+			return;
+		}
+		if (event.key === "ArrowRight") {
+			const first = event.currentTarget
+				.closest("form")
+				?.querySelector<HTMLButtonElement>(
+					"[data-slot='toolbar-button']",
+				);
+			if (first) {
+				event.preventDefault();
+				first.focus();
+			}
+		}
+	};
+
 	return (
-		<div className="relative flex min-h-0 flex-col overflow-y-auto">
+		<form
+			className="relative flex min-h-0 flex-col overflow-y-auto"
+			onSubmit={(event) => {
+				event.preventDefault();
+				handleSubmit();
+			}}
+		>
 			<DialogClose
 				render={
 					<Button
@@ -194,7 +289,14 @@ function MediaLogDialogForm({
 							imageUrl={media.imageUrl}
 							title={title}
 						/>
-						{posterAction}
+						{posterAction && (
+							<div
+								onKeyDown={handlePosterActionKeyDown}
+								ref={posterActionRef}
+							>
+								{posterAction}
+							</div>
+						)}
 					</div>
 				</aside>
 
@@ -215,6 +317,8 @@ function MediaLogDialogForm({
 							disabled={isSubmitting}
 							mediaType={media.type}
 							onChange={setStatus}
+							onKeyDown={handleStatusKeyDown}
+							ref={statusListRef}
 							value={status}
 						/>
 					</section>
@@ -263,55 +367,76 @@ function MediaLogDialogForm({
 						</ReadingProgressSection>
 					)}
 
-					<footer className="mt-auto flex items-center justify-between gap-3 pt-2">
-						{onDelete ? (
-							<Button
-								disabled={isSubmitting}
-								onClick={onDelete}
-								variant="destructive"
-							>
-								{isDeleting ? (
-									<SpinnerIcon className="size-4 animate-spin" />
-								) : (
-									<TrashSimpleIcon
-										className="size-3.5"
-										weight="bold"
+					<footer className="mt-auto pt-2">
+						<Toolbar
+							aria-label="Actions"
+							className="flex items-center justify-between gap-3 border-0 bg-transparent p-0"
+							onKeyDown={handleActionsKeyDown}
+						>
+							<ToolbarGroup className="flex items-center gap-2">
+								{onDelete && (
+									<ToolbarButton
+										render={
+											<Button
+												disabled={isSubmitting}
+												onClick={onDelete}
+												variant="destructive"
+											>
+												{isDeleting ? (
+													<SpinnerIcon className="size-4 animate-spin" />
+												) : (
+													<TrashSimpleIcon
+														className="size-3.5"
+														weight="bold"
+													/>
+												)}
+												{isDeleting
+													? "Deleting…"
+													: (deleteLabel ?? "Delete")}
+											</Button>
+										}
 									/>
 								)}
-								{isDeleting
-									? "Deleting…"
-									: (deleteLabel ?? "Delete")}
-							</Button>
-						) : (
-							<span />
-						)}
-
-						<div className="flex items-center gap-2">
-							<Button
-								disabled={isSubmitting}
-								onClick={() => onOpenChange(false)}
-								variant="outline"
-							>
-								Cancel
-							</Button>
-							<Button
-								disabled={isSubmitting || !canSubmit}
-								onClick={handleSubmit}
-							>
-								{isSubmitting ? (
-									<>
-										<SpinnerIcon className="size-4 animate-spin" />
-										{submittingLabel}
-									</>
-								) : (
-									submitLabel
-								)}
-							</Button>
-						</div>
+							</ToolbarGroup>
+							<ToolbarGroup className="flex items-center gap-2">
+								<ToolbarButton
+									render={
+										<Button
+											disabled={isSubmitting}
+											onClick={() => onOpenChange(false)}
+											ref={cancelRef}
+											variant="outline"
+										>
+											Cancel
+										</Button>
+									}
+								/>
+								<ToolbarButton
+									render={
+										<Button
+											disabled={
+												isSubmitting || !canSubmit
+											}
+											ref={saveRef}
+											type="submit"
+										>
+											{isSubmitting ? (
+												<>
+													<SpinnerIcon className="size-4 animate-spin" />
+													{submittingLabel}
+												</>
+											) : (
+												submitLabel
+											)}
+										</Button>
+									}
+								/>
+							</ToolbarGroup>
+						</Toolbar>
 					</footer>
 				</div>
 			</div>
-		</div>
+		</form>
 	);
 }
 
@@ -413,53 +538,80 @@ function MediaLogStatusList({
 	disabled,
 	mediaType,
 	onChange,
+	onKeyDown,
+	ref,
 	value,
 }: {
 	disabled?: boolean;
 	mediaType: MediaType;
 	onChange: (status: LogStatus) => void;
+	onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void;
+	ref?: Ref<HTMLDivElement>;
 	value: LogStatus | null;
 }) {
+	const [controller] = useState(() =>
+		createRadioGroupController<LogStatus>(),
+	);
+
+	// The dialog body mounts on every open, so this lands on the checked
+	// status (or the first one) right as the dialog appears.
+	useEffect(() => {
+		controller.focus();
+	}, [controller]);
+
 	return (
-		<div
+		<RadioGroup
 			aria-label="Status"
 			className="flex flex-col gap-1"
-			role="radiogroup"
+			controller={controller}
+			disabled={disabled}
+			loop={false}
+			onKeyDown={onKeyDown}
+			ref={ref}
+			value={value}
+			onValueChange={(next) => {
+				if (next) {
+					onChange(next);
+				}
+			}}
 		>
 			{shelfStatusesByMediaType[mediaType].map((status, index) => {
-				const isActive = value === status;
 				const StatusIcon = getStatusIcon(status);
 
 				return (
-					<button
-						aria-checked={isActive}
-						className={cn(
-							"flex h-10 items-center gap-3 rounded-md px-3 text-left text-sm disabled:opacity-50",
-							isActive
-								? "bg-primary text-primary-foreground"
-								: "text-muted-foreground fine-hover:hover:bg-secondary fine-hover:hover:text-foreground",
-						)}
-						disabled={disabled}
+					<Radio
 						key={status}
-						onClick={() => onChange(status)}
-						role="radio"
-						type="button"
-					>
-						<span className="w-4 text-xs tabular-nums opacity-70">
-							{index + 1}
-						</span>
-						<StatusIcon
-							className="size-4 shrink-0"
-							weight={isActive ? "fill" : "regular"}
-						/>
-						<span className="flex-1 truncate">
-							{statusLabel(status, mediaType)}
-						</span>
-						{isActive && <CheckIcon className="size-4 shrink-0" />}
-					</button>
+						render={(props, state) => (
+							<button
+								{...props}
+								className={cn(
+									"flex h-10 w-full items-center gap-3 rounded-md border-0 bg-transparent px-3 text-left text-sm",
+									state.checked
+										? "bg-primary text-primary-foreground"
+										: "text-muted-foreground fine-hover:hover:bg-secondary fine-hover:hover:text-foreground",
+								)}
+								type="button"
+							>
+								<span className="w-4 text-xs tabular-nums opacity-70">
+									{index + 1}
+								</span>
+								<StatusIcon
+									className="size-4 shrink-0"
+									weight={state.checked ? "fill" : "regular"}
+								/>
+								<span className="flex-1 truncate">
+									{statusLabel(status, mediaType)}
+								</span>
+								{state.checked && (
+									<CheckIcon className="size-4 shrink-0" />
+								)}
+							</button>
+						)}
+						value={status}
+					/>
 				);
 			})}
-		</div>
+		</RadioGroup>
 	);
 }
 

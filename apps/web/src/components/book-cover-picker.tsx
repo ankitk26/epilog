@@ -1,10 +1,15 @@
 import { CaretLeftIcon, SpinnerIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getBookEditionCovers } from "@/actions/get-book-editions";
 import BookCoverTile from "@/components/book-cover-tile";
+import { CoverGrid } from "@/components/cover-grid-parts";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+
+// The grid's tile values are strings, so the default-cover option (no
+// custom cover, selected is null) carries this sentinel.
+const DEFAULT_COVER = "default";
 
 type Props = {
 	active: boolean;
@@ -40,6 +45,16 @@ export default function BookCoverPicker({
 
 	const editionCount = editions?.length ?? 0;
 	const hasSelectionChanged = selected !== value;
+	const gridScrollRef = useRef<HTMLDivElement>(null);
+
+	// The cover view mounts per open; once the editions have rendered,
+	// put focus on the selected tile so arrows continue from there.
+	useEffect(() => {
+		if (isPending || !editions?.length) return;
+		gridScrollRef.current
+			?.querySelector<HTMLElement>("[aria-selected='true']")
+			?.focus();
+	}, [isPending, editions]);
 
 	return (
 		<div className="flex min-h-0 flex-1 flex-col">
@@ -63,7 +78,10 @@ export default function BookCoverPicker({
 				)}
 			</div>
 
-			<div className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4 sm:px-6">
+			<div
+				className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4 sm:px-6"
+				ref={gridScrollRef}
+			>
 				{isPending ? (
 					<div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
 						{Array.from({ length: 8 }).map((_, index) => (
@@ -78,17 +96,34 @@ export default function BookCoverPicker({
 						No other covers found for this book.
 					</p>
 				) : (
-					<div className="grid grid-cols-3 gap-x-3 gap-y-4 sm:grid-cols-5 lg:grid-cols-6">
+					<CoverGrid
+						aria-label="Choose a cover"
+						className="grid grid-cols-3 gap-x-3 gap-y-4 sm:grid-cols-5 lg:grid-cols-6"
+						value={selected ?? DEFAULT_COVER}
+						onValueChange={(next) =>
+							setSelected(next === DEFAULT_COVER ? null : next)
+						}
+						onApply={(next) => {
+							if (
+								isApplying ||
+								next === (value ?? DEFAULT_COVER)
+							) {
+								return;
+							}
+							onApply(next === DEFAULT_COVER ? null : next);
+						}}
+					>
 						{/* Default cover option resets customImage to null */}
 						<BookCoverTile
 							caption="Default"
-							isSelected={!selected}
-							onSelect={() => setSelected(null)}
 							src={defaultImage ?? null}
+							value={DEFAULT_COVER}
 						/>
 						{editions
 							.filter(
-								(edition) => edition.coverUrl !== defaultImage,
+								(edition) =>
+									edition.coverUrl !== null &&
+									edition.coverUrl !== defaultImage,
 							)
 							.map((edition) => (
 								<BookCoverTile
@@ -97,15 +132,12 @@ export default function BookCoverPicker({
 										edition.title ??
 										"Edition"
 									}
-									isSelected={selected === edition.coverUrl}
 									key={edition.id}
-									onSelect={() =>
-										setSelected(edition.coverUrl ?? null)
-									}
 									src={edition.coverUrl}
+									value={edition.coverUrl}
 								/>
 							))}
-					</div>
+					</CoverGrid>
 				)}
 			</div>
 
