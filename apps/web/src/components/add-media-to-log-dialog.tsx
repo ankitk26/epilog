@@ -56,6 +56,7 @@ export default function AddMediaToLogDialog({
 				return;
 			}
 
+			toast.success("Added to library");
 			onOpenChange(false);
 		},
 		onError: () => {

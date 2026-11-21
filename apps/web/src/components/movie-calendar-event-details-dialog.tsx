@@ -139,6 +139,7 @@ export default function MovieCalendarEventDetailsDialog({
 				return;
 			}
 
+			toast.success("Event date updated");
 			onOpenChange(false);
 		},
 		onError: () => {
@@ -149,6 +150,7 @@ export default function MovieCalendarEventDetailsDialog({
 	const deleteEventMutation = useMutation({
 		mutationFn: useConvexMutation(api.movieEvents.remove),
 		onSuccess: () => {
+			toast.success("Event removed");
 			onOpenChange(false);
 		},
 		onError: () => {

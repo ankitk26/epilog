@@ -74,13 +74,19 @@ function MediaLogDetailsDialogContent({
 
 	const updateMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.update),
-		onSuccess: () => onOpenChange(false),
+		onSuccess: () => {
+			toast.success("Log updated");
+			onOpenChange(false);
+		},
 		onError: () => toast.error("Something went wrong!"),
 	});
 
 	const removeMutation = useMutation({
 		mutationFn: useConvexMutation(api.logs.remove),
-		onSuccess: () => onOpenChange(false),
+		onSuccess: () => {
+			toast.success("Removed from library");
+			onOpenChange(false);
+		},
 		onError: () => toast.error("Something went wrong!"),
 	});
 

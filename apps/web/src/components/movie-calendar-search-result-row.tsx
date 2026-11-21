@@ -64,6 +64,7 @@ export default function MovieCalendarSearchResultRow({
 				return;
 			}
 
+			toast.success("Added to calendar");
 			closeDialog();
 		} catch {
 			toast.error("Something went wrong!");
