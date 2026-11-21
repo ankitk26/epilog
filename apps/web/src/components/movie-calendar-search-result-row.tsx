@@ -6,21 +6,11 @@ import { Image } from "@unpic/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { getTmdbMediaCreator } from "@/actions/get-tmdb-media-creator";
-import { buildSourceMediaId } from "@/lib/build-source-media-id";
-import { buildTmdbPosterImageUrl } from "@/lib/build-tmdb-poster-image-url";
-import { getTmdbMediaReleaseYear } from "@/lib/get-tmdb-media-release-year";
+import type { SearchMedia } from "@/types";
 import MediaTypeIcon from "./media-type-icon";
 
 type Props = {
-	movie: {
-		id: number;
-		poster_path?: string | null | undefined;
-		first_air_date?: string | null | undefined;
-		release_date?: string | null | undefined;
-		name?: string | null | undefined;
-		title?: string | null | undefined;
-		original_language?: string | null | undefined;
-	};
+	media: SearchMedia;
 	day: number;
 	month: number;
 	year: number;
@@ -28,18 +18,14 @@ type Props = {
 };
 
 export default function MovieCalendarSearchResultRow({
-	movie,
+	media,
 	day,
 	month,
 	year,
 	closeDialog,
 }: Props) {
-	const releaseYear = getTmdbMediaReleaseYear(
-		movie.release_date,
-		movie.first_air_date,
-	);
-
-	const posterImage = buildTmdbPosterImageUrl(movie.poster_path);
+	const releaseYear = media.releaseYear;
+	const posterImage = media.imageUrl;
 
 	const [isAdding, setIsAdding] = useState(false);
 	const addMovieEventMutation = useMutation({
@@ -57,7 +43,7 @@ export default function MovieCalendarSearchResultRow({
 				.toString()
 				.padStart(2, "0")}${day.toString().padStart(2, "0")}`;
 
-			const sourceMediaId = buildSourceMediaId("movie", movie.id);
+			const sourceMediaId = media.sourceId;
 			const creator = await getTmdbMediaCreator({
 				data: { sourceMediaId, type: "movie" },
 			});
@@ -65,7 +51,7 @@ export default function MovieCalendarSearchResultRow({
 			const response = await addMovieEventMutation.mutateAsync({
 				eventDate: formattedDate,
 				media: {
-					name: movie.name ?? movie.title ?? "N/A",
+					name: media.name,
 					releaseYear,
 					creator,
 					sourceMediaId,
@@ -100,7 +86,7 @@ export default function MovieCalendarSearchResultRow({
 						className="h-full w-full object-cover object-top"
 						height={120}
 						width={80}
-						alt={movie.name ?? "movie"}
+						alt={media.name}
 					/>
 				) : (
 					<div className="flex h-full w-full items-center justify-center">
@@ -117,7 +103,7 @@ export default function MovieCalendarSearchResultRow({
 						<SpinnerIcon className="size-3.5 animate-spin text-muted-foreground" />
 					)}
 					<h4 className="truncate text-sm font-normal text-foreground">
-						{movie.name ?? movie.title ?? "N/A"}
+						{media.name}
 					</h4>
 				</div>
 				{releaseYear && (

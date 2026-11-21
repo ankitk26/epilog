@@ -42,7 +42,7 @@ export default function MovieCalendarAddEventDialog({
 	const [query, setQuery] = useState("");
 	const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-	const { data: movieSearchResultsPanel, isFetching } = useQuery({
+	const { data: movieSearchResults, isFetching } = useQuery({
 		queryKey: ["search", "media-content", "movie", query],
 		queryFn: async () =>
 			await searchTmdbMoviesAndTv({
@@ -113,26 +113,23 @@ export default function MovieCalendarAddEventDialog({
 								<span className="text-sm">Searching…</span>
 							</div>
 						)}
-						{!isFetching && movieSearchResultsPanel && (
+						{!isFetching && movieSearchResults && (
 							<div className="flex flex-col gap-1">
-								{movieSearchResultsPanel.results.length ===
-									0 && (
+								{movieSearchResults.data.length === 0 && (
 									<p className="py-8 text-center text-sm text-muted-foreground">
 										No results found.
 									</p>
 								)}
-								{movieSearchResultsPanel.results.map(
-									(movie) => (
-										<MovieCalendarSearchResultRow
-											key={movie.id}
-											movie={movie}
-											day={day}
-											month={month}
-											year={year}
-											closeDialog={() => setIsOpen(false)}
-										/>
-									),
-								)}
+								{movieSearchResults.data.map((media) => (
+									<MovieCalendarSearchResultRow
+										key={media.sourceId}
+										media={media}
+										day={day}
+										month={month}
+										year={year}
+										closeDialog={() => setIsOpen(false)}
+									/>
+								))}
 							</div>
 						)}
 					</div>

@@ -10,12 +10,37 @@ export {
 	validStatusesByMediaType,
 } from "../lib/media-statuses";
 export type { LogStatus, MediaType } from "../lib/media-statuses";
-import { mediaStatusConfig } from "../lib/media-statuses";
+import { mediaStatusConfig, mediaTypes } from "../lib/media-statuses";
 import type { LogStatus } from "../lib/media-statuses";
 
 export const logStatuses = Object.keys(mediaStatusConfig).filter(
 	(status): status is LogStatus => status in mediaStatusConfig,
 );
+
+// The single uniform search contract: every search action (tmdb, mal,
+// open library, …) maps its provider payload into SearchMedia server-side
+// and returns { data: SearchMedia[] }. Clients never see provider-specific
+// fields, so swapping a provider never touches consumers.
+export const searchMediaAPIOutput = z.object({
+	imageUrl: z.string().nullable(),
+	name: z.string(),
+	releaseYear: z.number().nullable(),
+	sourceId: z.string(),
+	type: z.enum(mediaTypes),
+	creator: z.string().nullable(),
+	bookAuthorId: z.string().nullable(),
+	seriesName: z.string().nullable(),
+	seriesPosition: z.number().nullable(),
+	seriesTotal: z.number().nullable(),
+	seriesKey: z.string().nullable(),
+});
+
+export const searchMediaListAPIOutput = z.object({
+	data: z.array(searchMediaAPIOutput),
+});
+
+export type SearchMedia = z.infer<typeof searchMediaAPIOutput>;
+export type SearchMediaListOutput = z.infer<typeof searchMediaListAPIOutput>;
 
 export const mediaSearchAPIOutput = z.object({
 	results: z.array(

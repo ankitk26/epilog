@@ -1,6 +1,11 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
-import { type BookSearchOutput, openLibraryBookSearchAPIOutput } from "@/types";
+import { buildSourceMediaId } from "@/lib/build-source-media-id";
+import {
+	openLibraryBookSearchAPIOutput,
+	searchMediaAPIOutput,
+	searchMediaListAPIOutput,
+} from "@/types";
 
 const collectionPatterns =
 	/\b(box\s*set|collection|omnibus|volumes?|books?\s+1[-–]|complete\s+series|the\s+\d+\s+books)\b/i;
@@ -240,7 +245,21 @@ export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 		const results = seriesResults.slice(0, SERIES_SEARCH_LIMIT);
 		const allResults = [...directResults, ...results];
 
-		return {
-			data: allResults,
-		} satisfies BookSearchOutput;
+		return searchMediaListAPIOutput.parse({
+			data: allResults.map((book) =>
+				searchMediaAPIOutput.parse({
+					imageUrl: book.imageUrl,
+					name: book.title,
+					releaseYear: book.publishYear,
+					sourceId: buildSourceMediaId("book", book.id),
+					type: "book",
+					creator: book.author,
+					bookAuthorId: book.bookAuthorId,
+					seriesName: book.seriesName,
+					seriesPosition: book.seriesPosition,
+					seriesTotal: book.seriesTotal,
+					seriesKey: book.seriesKey,
+				}),
+			),
+		});
 	});

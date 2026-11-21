@@ -1,7 +1,9 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
-import { type MangaSearchOutput, mangaSearchAPIOutput } from "@/types";
+import { buildSourceMediaId } from "@/lib/build-source-media-id";
+import { standardizePersonName } from "@/lib/standardize-person-name";
+import { searchMediaAPIOutput, searchMediaListAPIOutput } from "@/types";
 import { malMangaSearchAPIOutput } from "@/types/mal";
 
 const MAL_API_URL = "https://api.myanimelist.net/v2/manga";
@@ -46,27 +48,35 @@ export const searchMalManga = createServerFn({ method: "GET" })
 			throw new Error("MyAnimeList search failed");
 		}
 
-		const mapped: MangaSearchOutput = {
+		return searchMediaListAPIOutput.parse({
 			data: rawContent.data
 				.filter(({ node }) => node.nsfw !== "black")
-				.map(({ node }) => ({
-					mal_id: node.id,
-					title: node.title,
-					title_english: node.alternative_titles?.en ?? null,
-					images: {
-						jpg: {
-							large_image_url: node.main_picture?.large ?? null,
-						},
-						webp: {
-							large_image_url: node.main_picture?.large ?? null,
-						},
-					},
-					published: { from: node.start_date ?? null },
-					authors: node.authors.map(({ node: author }) => ({
-						name: `${author.first_name} ${author.last_name}`.trim(),
-					})),
-				})),
-		};
+				.map(({ node }) => {
+					const author = node.authors[0]?.node;
+					const authorName = author
+						? standardizePersonName(
+								`${author.first_name} ${author.last_name}`.trim(),
+							)
+						: null;
 
-		return mangaSearchAPIOutput.parse(mapped);
+					return searchMediaAPIOutput.parse({
+						imageUrl: node.main_picture?.large ?? null,
+						name:
+							node.alternative_titles?.en?.trim() ||
+							node.title ||
+							"Untitled",
+						releaseYear: node.start_date
+							? new Date(node.start_date).getFullYear()
+							: null,
+						sourceId: buildSourceMediaId("manga", node.id),
+						type: "manga",
+						creator: authorName,
+						bookAuthorId: null,
+						seriesName: null,
+						seriesPosition: null,
+						seriesTotal: null,
+						seriesKey: null,
+					});
+				}),
+		});
 	});

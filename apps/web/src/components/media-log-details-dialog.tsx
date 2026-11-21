@@ -133,9 +133,7 @@ function MediaLogDetailsDialogContent({
 					onApply={handleApplyCover}
 					onBack={() => setView("main")}
 					value={customImage ?? null}
-					workId={
-						log.metadata.sourceMediaId.split(":").pop() ?? ""
-					}
+					workId={log.metadata.sourceMediaId.split(":").pop() ?? ""}
 				/>
 			</div>
 		) : undefined;

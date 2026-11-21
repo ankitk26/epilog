@@ -1,7 +1,8 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
 import z from "zod";
-import { type AnimeSearchOutput, animeSearchAPIOutput } from "@/types";
+import { buildSourceMediaId } from "@/lib/build-source-media-id";
+import { searchMediaAPIOutput, searchMediaListAPIOutput } from "@/types";
 import { malAnimeSearchAPIOutput } from "@/types/mal";
 
 const MAL_API_URL = "https://api.myanimelist.net/v2/anime";
@@ -46,19 +47,24 @@ export const searchMalAnime = createServerFn({ method: "GET" })
 			throw new Error("MyAnimeList search failed");
 		}
 
-		const mapped: AnimeSearchOutput = {
-			data: rawContent.data.map(({ node }) => ({
-				mal_id: node.id,
-				title: node.title,
-				title_english: node.alternative_titles?.en ?? null,
-				images: {
-					jpg: { large_image_url: node.main_picture?.large ?? null },
-					webp: { large_image_url: node.main_picture?.large ?? null },
-				},
-				aired: { from: node.start_date ?? null },
-				studios: node.studios,
-			})),
-		};
-
-		return animeSearchAPIOutput.parse(mapped);
+		return searchMediaListAPIOutput.parse({
+			data: rawContent.data.map(({ node }) =>
+				searchMediaAPIOutput.parse({
+					imageUrl: node.main_picture?.large ?? null,
+					name:
+						node.alternative_titles?.en ?? node.title ?? "Untitled",
+					releaseYear: node.start_date
+						? new Date(node.start_date).getFullYear()
+						: null,
+					sourceId: buildSourceMediaId("anime", node.id),
+					type: "anime",
+					creator: node.studios[0]?.name ?? null,
+					bookAuthorId: null,
+					seriesName: null,
+					seriesPosition: null,
+					seriesTotal: null,
+					seriesKey: null,
+				}),
+			),
+		});
 	});
