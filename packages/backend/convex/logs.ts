@@ -7,7 +7,6 @@ import {
 	validStatusesByMediaType,
 } from "./lib/mediaStatuses";
 import type { MediaType } from "./lib/mediaStatuses";
-import { isValidRating } from "./lib/ratings";
 import { getCurrentUserOrThrow } from "./model/users";
 
 const allStatusLiterals = v.union(
@@ -175,7 +174,6 @@ export const add = mutation({
 		status: v.optional(allStatusLiterals),
 		pageCount: v.optional(v.number()),
 		pagesRead: v.optional(v.number()),
-		rating: v.optional(v.number()),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -246,10 +244,6 @@ export const add = mutation({
 			}
 		}
 
-		if (args.rating !== undefined && !isValidRating(args.rating)) {
-			throw new Error("invalid rating");
-		}
-
 		// add log for media with chosen or default status, snapshotting the
 		// media's display fields so library queries don't need a join
 		const snapshotSource = existingMedia
@@ -284,7 +278,6 @@ export const add = mutation({
 				| "dropped",
 			updatedTime: Date.now(),
 			userId,
-			rating: args.rating,
 			pageCount:
 				status === "reading" || status === "paused"
 					? args.pageCount
@@ -390,7 +383,6 @@ export const update = mutation({
 		pageCount: v.optional(v.number()),
 		pagesRead: v.optional(v.number()),
 		customImage: v.optional(v.union(v.string(), v.null())),
-		rating: v.optional(v.union(v.number(), v.null())),
 	},
 	handler: async (ctx, args) => {
 		const userId = await getCurrentUserOrThrow(ctx);
@@ -426,14 +418,6 @@ export const update = mutation({
 			throw new Error("page count must be greater than 0");
 		}
 
-		if (
-			args.rating !== undefined &&
-			args.rating !== null &&
-			!isValidRating(args.rating)
-		) {
-			throw new Error("invalid rating");
-		}
-
 		const totalPages =
 			args.pageCount !== undefined
 				? args.pageCount
@@ -462,9 +446,6 @@ export const update = mutation({
 			...(pagesRead !== undefined && { pagesRead }),
 			...(args.customImage !== undefined && {
 				customImage: args.customImage,
-			}),
-			...(args.rating !== undefined && {
-				rating: args.rating ?? undefined,
 			}),
 		});
 	},

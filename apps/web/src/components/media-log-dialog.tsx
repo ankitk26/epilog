@@ -174,8 +174,6 @@ function MediaLogDialogForm({
 
 	return (
 		<div className="relative flex min-h-0 flex-col overflow-y-auto">
-			<MediaLogPosterBackdrop src={media.imageUrl} />
-
 			<DialogClose
 				render={
 					<Button
@@ -190,17 +188,13 @@ function MediaLogDialogForm({
 			</DialogClose>
 
 			<div className="relative grid gap-6 p-4 sm:gap-8 sm:p-6 md:grid-cols-[16rem_1fr] lg:grid-cols-[18rem_1fr]">
-				<aside className="flex gap-4 md:flex-col">
-					<div className="relative flex w-28 shrink-0 flex-col gap-2 md:w-full">
+				<aside className="flex justify-center gap-4 md:flex-col md:justify-start">
+					<div className="flex w-28 shrink-0 flex-col items-center gap-2 md:w-full md:items-start">
 						<MediaLogPoster
 							imageUrl={media.imageUrl}
 							title={title}
 						/>
-						{posterAction && (
-							<div className="absolute bottom-2 left-2">
-								{posterAction}
-							</div>
-						)}
+						{posterAction}
 					</div>
 				</aside>
 
@@ -317,24 +311,6 @@ function MediaLogDialogForm({
 					</footer>
 				</div>
 			</div>
-		</div>
-	);
-}
-
-export function MediaLogPosterBackdrop({ src }: { src?: string | null }) {
-	return (
-		<div
-			aria-hidden
-			className="pointer-events-none absolute inset-0 overflow-hidden"
-		>
-			{src && (
-				<img
-					alt=""
-					className="h-full w-full scale-110 object-cover opacity-40 blur-2xl"
-					src={src}
-				/>
-			)}
-			<div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/70 to-background" />
 		</div>
 	);
 }

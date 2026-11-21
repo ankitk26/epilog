@@ -11,6 +11,5 @@ export function toMediaCardMedia(log: Log): MediaCardMedia {
 		releaseYear: log.metadata.releaseYear,
 		creator: log.metadata.creator,
 		type: log.metadata.type,
-		rating: log.rating ?? null,
 	};
 }

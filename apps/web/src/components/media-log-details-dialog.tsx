@@ -7,7 +7,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import BookCoverPicker from "@/components/book-cover-picker";
 import MediaLogDialog, {
-	MediaLogPosterBackdrop,
 	type MediaLogDialogValues,
 } from "@/components/media-log-dialog";
 import { Button } from "@/components/ui/button";
@@ -126,21 +125,18 @@ function MediaLogDetailsDialogContent({
 
 	const coverPicker =
 		view === "covers" && log.metadata.sourceMediaId ? (
-			<div className="relative flex min-h-0 flex-1 flex-col">
-				<MediaLogPosterBackdrop src={posterUrl} />
-				<div className="relative flex min-h-0 flex-1 flex-col">
-					<BookCoverPicker
-						active
-						defaultImage={log.metadata.image}
-						isApplying={updateCoverMutation.isPending}
-						onApply={handleApplyCover}
-						onBack={() => setView("main")}
-						value={customImage ?? null}
-						workId={
-							log.metadata.sourceMediaId.split(":").pop() ?? ""
-						}
-					/>
-				</div>
+			<div className="flex min-h-0 flex-1 flex-col">
+				<BookCoverPicker
+					active
+					defaultImage={log.metadata.image}
+					isApplying={updateCoverMutation.isPending}
+					onApply={handleApplyCover}
+					onBack={() => setView("main")}
+					value={customImage ?? null}
+					workId={
+						log.metadata.sourceMediaId.split(":").pop() ?? ""
+					}
+				/>
 			</div>
 		) : undefined;
 
@@ -168,14 +164,13 @@ function MediaLogDetailsDialogContent({
 			posterAction={
 				canChangeCover ? (
 					<Button
-						className="gap-1 bg-background/85 px-2 text-xs backdrop-blur-sm hover:bg-background"
+						className="gap-1 text-xs"
 						onClick={() => setView("covers")}
 						size="sm"
 						variant="secondary"
 					>
 						<ImagesIcon className="size-3.5" />
-						<span className="hidden sm:inline">Change cover</span>
-						<span className="sr-only sm:hidden">Change cover</span>
+						Change cover
 					</Button>
 				) : undefined
 			}
