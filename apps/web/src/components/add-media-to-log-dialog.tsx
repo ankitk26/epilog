@@ -76,11 +76,13 @@ export default function AddMediaToLogDialog({
 				type: media.type,
 				image: media.imageUrl ?? "",
 				creator: media.creator ?? tmdbCreatorQuery.data ?? null,
+				// the uniform SearchMedia contract uses null for empty optional
+				// fields; the convex validators only accept undefined here.
 				bookAuthorId: media.bookAuthorId ?? undefined,
-				seriesName: media.seriesName,
-				seriesPosition: media.seriesPosition,
-				seriesTotal: media.seriesTotal,
-				seriesKey: media.seriesKey,
+				seriesName: media.seriesName ?? undefined,
+				seriesPosition: media.seriesPosition ?? undefined,
+				seriesTotal: media.seriesTotal ?? undefined,
+				seriesKey: media.seriesKey ?? undefined,
 			},
 			status: values.status,
 			...(values.pageCount !== undefined && {
