@@ -25,6 +25,7 @@ const DEFAULT_MEDIA_TYPE = defaultMediaFilters.type;
 
 type SearchSheetContextValue = {
 	open: () => void;
+	toggle: () => void;
 };
 
 const SearchSheetContext = createContext<SearchSheetContextValue | null>(null);
@@ -33,9 +34,10 @@ export function SearchSheetProvider({ children }: { children: ReactNode }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const open = useCallback(() => setIsOpen(true), []);
+	const toggle = useCallback(() => setIsOpen((isOpen) => !isOpen), []);
 
 	return (
-		<SearchSheetContext.Provider value={{ open }}>
+		<SearchSheetContext.Provider value={{ open, toggle }}>
 			{children}
 			<SearchSheetContent isOpen={isOpen} onOpenChange={setIsOpen} />
 		</SearchSheetContext.Provider>

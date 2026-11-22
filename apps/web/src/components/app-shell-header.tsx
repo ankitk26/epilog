@@ -44,9 +44,9 @@ export default function AppShellHeader() {
 	const { type, view } = useMediaFilters();
 	const { enabled: enabledMediaTypes } = useProfileMediaTypes();
 	const { data } = authClient.useSession();
-	const { open: openSearchSheet } = useSearchSheet();
+	const { toggle: toggleSearchSheet } = useSearchSheet();
 
-	useHotkey("Mod+K", openSearchSheet);
+	useHotkey("Mod+K", toggleSearchSheet);
 
 	const handleSignOut = async () => {
 		await navigate({ to: "/sign-in" });
@@ -117,7 +117,7 @@ export default function AppShellHeader() {
 							render={
 								<Button
 									aria-label="Search library"
-									onClick={openSearchSheet}
+									onClick={toggleSearchSheet}
 									size="icon"
 									variant="outline"
 								>
