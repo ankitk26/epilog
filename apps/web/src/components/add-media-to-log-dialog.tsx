@@ -102,8 +102,6 @@ export default function AddMediaToLogDialog({
 			initialPagesRead={0}
 			media={{
 				creator,
-				creatorHref:
-					mediaType === "book" ? (media.bookAuthorId ?? null) : null,
 				imageUrl: media.imageUrl,
 				name: media.name,
 				releaseYear: media.releaseYear,

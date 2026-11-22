@@ -4,7 +4,6 @@ import {
 	TrashSimpleIcon,
 	XIcon,
 } from "@phosphor-icons/react";
-import { Link } from "@tanstack/react-router";
 import {
 	createRadioGroupController,
 	Radio,
@@ -28,8 +27,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { skipDialogHistoryBack } from "@/hooks/use-dialog-history";
-import { creatorPhrase, creatorPhrasePrefix } from "@/lib/creator-phrase";
+import { creatorPhrase } from "@/lib/creator-phrase";
 import {
 	getStatusIcon,
 	shouldShowReleaseYear,
@@ -41,7 +39,6 @@ import { shelfStatusesByMediaType } from "@/types";
 
 export type MediaLogDialogMedia = {
 	creator?: string | null;
-	creatorHref?: string | null;
 	imageUrl: string | undefined | null;
 	name: string;
 	releaseYear: number | null;
@@ -303,9 +300,7 @@ function MediaLogDialogForm({
 				<div className="flex min-w-0 flex-col gap-6">
 					<MediaLogDialogHeader
 						creator={media.creator}
-						creatorHref={media.creatorHref}
 						mediaType={media.type}
-						onCreatorNavigate={() => onOpenChange(false)}
 						releaseYear={media.releaseYear}
 						statusNote={statusNote}
 						title={title}
@@ -470,17 +465,13 @@ function MediaLogPoster({
 
 function MediaLogDialogHeader({
 	creator,
-	creatorHref,
 	mediaType,
-	onCreatorNavigate,
 	releaseYear,
 	statusNote,
 	title,
 }: {
 	creator?: string | null;
-	creatorHref?: string | null;
 	mediaType: MediaType;
-	onCreatorNavigate?: () => void;
 	releaseYear?: number | null;
 	statusNote?: string;
 	title: string;
@@ -499,31 +490,7 @@ function MediaLogDialogHeader({
 						<span className="tabular-nums">{releaseYear}</span>
 					)}
 					{showYear && creator && " · "}
-					{creator &&
-						(creatorHref ? (
-							<>
-								{creatorPhrasePrefix(mediaType) && (
-									<span>
-										{creatorPhrasePrefix(mediaType)}{" "}
-									</span>
-								)}
-								<Link
-									className="font-medium text-foreground underline-offset-2 hover:underline"
-									onClick={() => {
-										skipDialogHistoryBack();
-										onCreatorNavigate?.();
-									}}
-									params={{
-										bookAuthorId: creatorHref,
-									}}
-									to="/authors/$bookAuthorId"
-								>
-									{creator}
-								</Link>
-							</>
-						) : (
-							creatorPhrase(mediaType, creator)
-						))}
+					{creator && creatorPhrase(mediaType, creator)}
 				</p>
 			)}
 

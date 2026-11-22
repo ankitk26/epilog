@@ -119,10 +119,6 @@ function MediaLogDetailsDialogContent({
 	const posterUrl = customImage ?? log.customImage ?? log.metadata.image;
 	const title = log.metadata.name || "Untitled";
 	const creator = log.metadata.creator;
-	const creatorHref =
-		mediaType === "book" && log.metadata.bookAuthorId
-			? log.metadata.bookAuthorId
-			: null;
 	const canChangeCover = mediaType === "book" && !!log.metadata.sourceMediaId;
 	const statusNote = statusPhrase(
 		asLogStatus(log.status),
@@ -154,7 +150,6 @@ function MediaLogDetailsDialogContent({
 			isSubmitting={isLoading}
 			media={{
 				creator,
-				creatorHref,
 				imageUrl: posterUrl,
 				name: title,
 				releaseYear: log.metadata.releaseYear,

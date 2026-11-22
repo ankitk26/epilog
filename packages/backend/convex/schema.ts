@@ -24,9 +24,9 @@ export default defineSchema({
 		image: v.optional(v.union(v.string(), v.null())),
 		releaseYear: v.union(v.number(), v.null()),
 		creator: v.optional(v.union(v.string(), v.null())),
-		// OpenLibrary author id (e.g. "OL382524A") for books, used to link
-		// logged books to the author page. Named book* so other media types
-		// may adopt namespaced ids later.
+		// OpenLibrary author id (e.g. "OL382524A") for books, kept for
+		// reference. Named book* so other media types may adopt namespaced
+		// ids later.
 		bookAuthorId: v.optional(v.string()),
 		sourceMediaId: v.string(),
 		type: v.union(
