@@ -73,7 +73,7 @@ export default function AppShellHeader() {
 
 					<MediaTypeNav
 						aria-label="Media types"
-						className="relative no-scrollbar hidden min-w-0 items-center gap-4 overflow-x-auto pb-2 lg:flex"
+						className="relative no-scrollbar hidden min-w-0 items-center gap-4 overflow-x-auto py-2 lg:flex"
 						value={type}
 					>
 						<MediaTypeNavUnderline
