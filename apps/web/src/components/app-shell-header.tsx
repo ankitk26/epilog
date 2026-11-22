@@ -126,10 +126,7 @@ export default function AppShellHeader() {
 							}
 						/>
 						<TooltipContent className="rounded-lg">
-							Search library
-							<kbd className="ml-2 rounded-md bg-background/20 px-2 py-1 text-xs font-medium">
-								{formatForDisplay("Mod+K")}
-							</kbd>
+							Search library ({formatForDisplay("Mod+K")})
 						</TooltipContent>
 					</Tooltip>
 
