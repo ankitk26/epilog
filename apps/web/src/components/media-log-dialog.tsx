@@ -288,6 +288,7 @@ function MediaLogDialogForm({
 						/>
 						{posterAction && (
 							<div
+								className="w-full"
 								onKeyDown={handlePosterActionKeyDown}
 								ref={posterActionRef}
 							>
@@ -485,12 +486,18 @@ function MediaLogDialogHeader({
 			</h2>
 
 			{(showYear || creator) && (
-				<p className="text-sm text-muted-foreground">
+				<p className="text-sm">
 					{showYear && (
-						<span className="tabular-nums">{releaseYear}</span>
+						<span className="text-muted-foreground tabular-nums">
+							{releaseYear}
+						</span>
 					)}
 					{showYear && creator && " · "}
-					{creator && creatorPhrase(mediaType, creator)}
+					{creator && (
+						<span className="font-medium text-foreground">
+							{creatorPhrase(mediaType, creator)}
+						</span>
+					)}
 				</p>
 			)}
 

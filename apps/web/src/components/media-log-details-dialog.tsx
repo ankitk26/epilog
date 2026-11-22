@@ -163,7 +163,7 @@ function MediaLogDetailsDialogContent({
 			posterAction={
 				canChangeCover ? (
 					<Button
-						className="gap-1 text-xs"
+						className="w-full gap-1 text-xs"
 						onClick={() => setView("covers")}
 						size="sm"
 						variant="secondary"

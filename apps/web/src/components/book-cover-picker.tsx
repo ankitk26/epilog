@@ -1,6 +1,6 @@
 import { CaretLeftIcon, SpinnerIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getBookEditionCovers } from "@/actions/get-book-editions";
 import BookCoverTile from "@/components/book-cover-tile";
 import { CoverGrid } from "@/components/cover-grid-parts";
@@ -46,6 +46,28 @@ export default function BookCoverPicker({
 	const editionCount = editions?.length ?? 0;
 	const hasSelectionChanged = selected !== value;
 	const gridScrollRef = useRef<HTMLDivElement>(null);
+	const skeletonGridRef = useRef<HTMLDivElement>(null);
+	const [skeletonColumns, setSkeletonColumns] = useState(6);
+
+	// Skeletons must fill whole rows, so count the columns the grid
+	// actually resolved instead of hardcoding per breakpoint.
+	useLayoutEffect(() => {
+		if (!isPending) return;
+		const grid = skeletonGridRef.current;
+		if (!grid) return;
+		const update = () => {
+			const columns = getComputedStyle(grid)
+				.gridTemplateColumns.split(" ")
+				.filter(Boolean).length;
+			if (columns > 0) {
+				setSkeletonColumns(columns);
+			}
+		};
+		update();
+		const observer = new ResizeObserver(update);
+		observer.observe(grid);
+		return () => observer.disconnect();
+	}, [isPending]);
 
 	// The cover view mounts per open; once the editions have rendered,
 	// put focus on the selected tile so arrows continue from there.
@@ -83,13 +105,18 @@ export default function BookCoverPicker({
 				ref={gridScrollRef}
 			>
 				{isPending ? (
-					<div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6">
-						{Array.from({ length: 8 }).map((_, index) => (
-							<Skeleton
-								key={`cover-skeleton-${index + 1}`}
-								className="aspect-[2/3] w-full rounded-lg"
-							/>
-						))}
+					<div
+						className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-6"
+						ref={skeletonGridRef}
+					>
+						{Array.from({ length: skeletonColumns * 2 }).map(
+							(_, index) => (
+								<Skeleton
+									key={`cover-skeleton-${index + 1}`}
+									className="aspect-[2/3] w-full rounded-lg"
+								/>
+							),
+						)}
 					</div>
 				) : !editions || editionCount === 0 ? (
 					<p className="py-8 text-center text-xs leading-relaxed text-muted-foreground">
