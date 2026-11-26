@@ -125,7 +125,7 @@ function ProgressMeter({ progress }: { progress: MediaCardProgressData }) {
 		<div className="flex items-center gap-2">
 			<Progress
 				aria-label={`Reading progress ${progress.percent}%`}
-				className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+				className="min-w-0 flex-1 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
 				value={progress.percent}
 			/>
 			<span className="shrink-0 text-xs font-semibold text-muted-foreground tabular-nums">

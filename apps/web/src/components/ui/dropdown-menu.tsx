@@ -142,7 +142,7 @@ function DropdownMenuSubContent({
 		<DropdownMenuContent
 			data-slot="dropdown-menu-sub-content"
 			className={cn(
-				"w-auto min-w-[96px] rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-panel",
+				"w-auto min-w-24 rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-panel",
 				className,
 			)}
 			align={align}

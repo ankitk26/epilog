@@ -643,7 +643,7 @@ function ReadingProgressSection({
 				<div className="flex w-full items-center gap-2">
 					<Progress
 						aria-label={`Reading progress ${progressPercent}%`}
-						className="min-w-0 flex-1 gap-0 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
+						className="min-w-0 flex-1 [&_[data-slot=progress-track]]:h-1.5 [&_[data-slot=progress-track]]:bg-secondary"
 						value={progressPercent}
 					/>
 					<span className="shrink-0 text-xs font-semibold text-muted-foreground tabular-nums">
