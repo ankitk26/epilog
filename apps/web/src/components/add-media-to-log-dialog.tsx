@@ -16,10 +16,6 @@ type Media = {
 	type: MediaType;
 	creator?: string | null;
 	bookAuthorId?: string | null;
-	seriesName?: string;
-	seriesPosition?: number;
-	seriesTotal?: number;
-	seriesKey?: string;
 };
 
 type Props = {
@@ -80,10 +76,6 @@ export default function AddMediaToLogDialog({
 				// the uniform SearchMedia contract uses null for empty optional
 				// fields; the convex validators only accept undefined here.
 				bookAuthorId: media.bookAuthorId ?? undefined,
-				seriesName: media.seriesName ?? undefined,
-				seriesPosition: media.seriesPosition ?? undefined,
-				seriesTotal: media.seriesTotal ?? undefined,
-				seriesKey: media.seriesKey ?? undefined,
 			},
 			status: values.status,
 			...(values.pageCount !== undefined && {

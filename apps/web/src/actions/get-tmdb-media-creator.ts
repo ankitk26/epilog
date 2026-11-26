@@ -1,6 +1,12 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
+import { Effect } from "effect";
 import z from "zod";
+import {
+	providerFetch,
+	ProviderUnavailable,
+	runProviderOrElse,
+} from "@/lib/provider-fetch";
 
 const tmdbMovieCreditsOutput = z.object({
 	crew: z
@@ -36,57 +42,72 @@ function extractTmdbId(sourceMediaId: string): string | null {
 	return last ?? null;
 }
 
-async function fetchMovieDirector(
-	sourceMediaId: string,
-): Promise<string | null> {
+function fetchMovieDirector(sourceMediaId: string) {
 	const tmdbId = extractTmdbId(sourceMediaId);
-	if (!tmdbId) return null;
+	if (!tmdbId) {
+		return Effect.succeed<string | null>(null);
+	}
 
 	const TMDB_TOKEN = process.env.TMDB_TOKEN;
 
-	const { data, error } = await betterFetch(
-		`https://api.themoviedb.org/3/movie/${tmdbId}/credits`,
-		{
+	if (!TMDB_TOKEN) {
+		return Effect.fail(
+			new ProviderUnavailable({
+				provider: "tmdb",
+				detail: "TMDB_TOKEN is not set",
+			}),
+		).pipe(Effect.as<string | null>(null));
+	}
+
+	return providerFetch("tmdb", () =>
+		betterFetch(`https://api.themoviedb.org/3/movie/${tmdbId}/credits`, {
 			method: "GET",
 			headers: {
 				authorization: `Bearer ${TMDB_TOKEN}`,
 			},
 			output: tmdbMovieCreditsOutput,
-		},
+		}),
+	).pipe(
+		Effect.map((data) => {
+			const director = data.crew.find(
+				(person) => person.job === "Director",
+			);
+			return director?.name ?? null;
+		}),
 	);
-
-	if (error || !data) {
-		console.error("TMDB movie credits error:", error);
-		return null;
-	}
-
-	const director = data.crew.find((person) => person.job === "Director");
-	return director?.name ?? null;
 }
 
-async function fetchTvCreator(sourceMediaId: string): Promise<string | null> {
+function fetchTvCreator(sourceMediaId: string) {
 	const tmdbId = extractTmdbId(sourceMediaId);
-	if (!tmdbId) return null;
+	if (!tmdbId) {
+		return Effect.succeed<string | null>(null);
+	}
 
 	const TMDB_TOKEN = process.env.TMDB_TOKEN;
 
-	const { data, error } = await betterFetch(
-		`https://api.themoviedb.org/3/tv/${tmdbId}`,
-		{
+	if (!TMDB_TOKEN) {
+		return Effect.fail(
+			new ProviderUnavailable({
+				provider: "tmdb",
+				detail: "TMDB_TOKEN is not set",
+			}),
+		).pipe(Effect.as<string | null>(null));
+	}
+
+	return providerFetch("tmdb", () =>
+		betterFetch(`https://api.themoviedb.org/3/tv/${tmdbId}`, {
 			method: "GET",
 			headers: {
 				authorization: `Bearer ${TMDB_TOKEN}`,
 			},
 			output: tmdbTvDetailsOutput,
-		},
+		}),
+	).pipe(
+		Effect.map(
+			(data) =>
+				data.networks[0]?.name ?? data.created_by[0]?.name ?? null,
+		),
 	);
-
-	if (error || !data) {
-		console.error("TMDB TV details error:", error);
-		return null;
-	}
-
-	return data.networks[0]?.name ?? data.created_by[0]?.name ?? null;
 }
 
 export const getTmdbMediaCreator = createServerFn({ method: "GET" })
@@ -97,9 +118,14 @@ export const getTmdbMediaCreator = createServerFn({ method: "GET" })
 		}),
 	)
 	.handler(async ({ data }) => {
+		// A creator name is optional decoration: any provider failure logs
+		// and degrades to null rather than failing the dialog that wants it.
 		if (data.type === "movie") {
-			return fetchMovieDirector(data.sourceMediaId);
+			return runProviderOrElse(
+				fetchMovieDirector(data.sourceMediaId),
+				null,
+			);
 		}
 
-		return fetchTvCreator(data.sourceMediaId);
+		return runProviderOrElse(fetchTvCreator(data.sourceMediaId), null);
 	});

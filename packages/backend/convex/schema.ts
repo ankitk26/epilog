@@ -36,10 +36,6 @@ export default defineSchema({
 			v.literal("book"),
 			v.literal("manga"),
 		),
-		seriesName: v.optional(v.string()),
-		seriesPosition: v.optional(v.number()),
-		seriesTotal: v.optional(v.number()),
-		seriesKey: v.optional(v.string()),
 	}).index("by_sourceId", ["sourceMediaId"]),
 
 	// Logs track a user's relationship with a piece of media.

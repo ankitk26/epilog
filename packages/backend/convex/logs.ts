@@ -166,10 +166,6 @@ export const add = mutation({
 			bookAuthorId: v.optional(v.string()),
 			sourceMediaId: v.string(),
 			type: mediaTypeLiteral,
-			seriesName: v.optional(v.string()),
-			seriesPosition: v.optional(v.number()),
-			seriesTotal: v.optional(v.number()),
-			seriesKey: v.optional(v.string()),
 		}),
 		status: v.optional(allStatusLiterals),
 		pageCount: v.optional(v.number()),
@@ -213,10 +209,6 @@ export const add = mutation({
 				bookAuthorId: args.media.bookAuthorId,
 				sourceMediaId: args.media.sourceMediaId,
 				type: args.media.type,
-				seriesName: args.media.seriesName,
-				seriesPosition: args.media.seriesPosition,
-				seriesTotal: args.media.seriesTotal,
-				seriesKey: args.media.seriesKey,
 			});
 			mediaId = newMediaId;
 		}

@@ -34,6 +34,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"convex": "catalog:",
+		"effect": "^4.1.6",
 		"lucide-react": "^1.33.0",
 		"next-themes": "catalog:",
 		"nitro": "3.0.260429-beta",
@@ -48,11 +49,13 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
+		"@effect/vitest": "^4.1.6",
 		"@epilog/config": "workspace:*",
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
 		"@vitejs/plugin-react": "^6.0.1",
-		"typescript": "catalog:"
+		"typescript": "catalog:",
+		"vitest": "^5.1.2"
 	}
 }

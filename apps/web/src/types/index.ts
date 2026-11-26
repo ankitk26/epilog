@@ -29,10 +29,6 @@ export const searchMediaAPIOutput = z.object({
 	type: z.enum(mediaTypes),
 	creator: z.string().nullable(),
 	bookAuthorId: z.string().nullable(),
-	seriesName: z.string().nullable(),
-	seriesPosition: z.number().nullable(),
-	seriesTotal: z.number().nullable(),
-	seriesKey: z.string().nullable(),
 });
 
 export const searchMediaListAPIOutput = z.object({
@@ -117,31 +113,7 @@ export const mangaSearchAPIOutput = z.object({
 export type MangaSearchOutput = z.infer<typeof mangaSearchAPIOutput>;
 
 /*
-export const bookSearchAPIOutput = z.object({
-	items: z
-		.array(
-			z.object({
-				id: z.string(),
-				volumeInfo: z.object({
-					title: z.string().nullable().optional(),
-					subtitle: z.string().nullable().optional(),
-					imageLinks: z
-						.object({
-							thumbnail: z.string().nullable().optional(),
-							small: z.string().nullable().optional(),
-							medium: z.string().nullable().optional(),
-							large: z.string().nullable().optional(),
-						})
-						.optional(),
-					publishedDate: z.string().nullable().optional(),
-				}),
-			}),
-		)
-		.optional()
-		.default([]),
-});
-export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
-*/
+ */
 
 export const openLibraryBookSearchAPIOutput = z.object({
 	numFound: z.number(),
@@ -154,9 +126,6 @@ export const openLibraryBookSearchAPIOutput = z.object({
 			author_key: z.array(z.string()).optional(),
 			cover_i: z.number().optional(),
 			first_publish_year: z.number().optional(),
-			series_key: z.array(z.string()).optional(),
-			series_name: z.array(z.string()).optional(),
-			series_position: z.array(z.string()).optional(),
 			editions: z
 				.object({
 					docs: z.array(
@@ -173,25 +142,6 @@ export const openLibraryBookSearchAPIOutput = z.object({
 		}),
 	),
 });
-
-export const bookSearchAPIOutput = z.object({
-	data: z.array(
-		z.object({
-			id: z.string(),
-			title: z.string(),
-			author: z.string().nullable(),
-			bookAuthorId: z.string().nullable(),
-			imageUrl: z.string().nullable(),
-			publishYear: z.number().nullable(),
-			seriesName: z.string().nullable(),
-			seriesPosition: z.number().nullable(),
-			seriesTotal: z.number().nullable(),
-			seriesKey: z.string().nullable(),
-		}),
-	),
-});
-
-export type BookSearchOutput = z.infer<typeof bookSearchAPIOutput>;
 
 export const openLibraryWorkEditionsAPIOutput = z.object({
 	entries: z

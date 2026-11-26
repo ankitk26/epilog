@@ -17,6 +17,7 @@ import type * as logs from "../logs.js";
 import type * as migrations_backfillLogMediaSnapshots from "../migrations/backfillLogMediaSnapshots.js";
 import type * as migrations_backfillMediaBookAuthorIds from "../migrations/backfillMediaBookAuthorIds.js";
 import type * as migrations_removeLogRatings from "../migrations/removeLogRatings.js";
+import type * as migrations_removeMediaSeriesFields from "../migrations/removeMediaSeriesFields.js";
 import type * as model_users from "../model/users.js";
 import type * as movieEvents from "../movieEvents.js";
 import type * as users from "../users.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   "migrations/backfillLogMediaSnapshots": typeof migrations_backfillLogMediaSnapshots;
   "migrations/backfillMediaBookAuthorIds": typeof migrations_backfillMediaBookAuthorIds;
   "migrations/removeLogRatings": typeof migrations_removeLogRatings;
+  "migrations/removeMediaSeriesFields": typeof migrations_removeMediaSeriesFields;
   "model/users": typeof model_users;
   movieEvents: typeof movieEvents;
   users: typeof users;

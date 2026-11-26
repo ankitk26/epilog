@@ -13,9 +13,6 @@ export type MediaCardMedia = {
 	releaseYear: number | null;
 	creator?: string | null;
 	secondaryText?: string | null;
-	seriesName?: string;
-	seriesPosition?: number;
-	seriesTotal?: number;
 	type: MediaType;
 };
 
@@ -119,18 +116,6 @@ function ReleaseYear({ media }: { media: MediaCardMedia }) {
 	);
 }
 
-function Series({ media }: { media: MediaCardMedia }) {
-	if (!media.seriesName) return null;
-
-	return (
-		<p className="line-clamp-1 text-xs text-muted-foreground">
-			{media.seriesPosition != null
-				? `Book ${media.seriesPosition} in ${media.seriesName}`
-				: media.seriesName}
-		</p>
-	);
-}
-
 function Footer({ children }: { children?: ReactNode }) {
 	return <div className="mt-auto min-h-6">{children}</div>;
 }
@@ -226,7 +211,6 @@ const MediaCard = {
 	LoggedBadge,
 	Progress: ProgressMeter,
 	ProgressFooter,
-	Series,
 };
 
 export default MediaCard;
@@ -237,5 +221,4 @@ export {
 	LoggedBadge as MediaCardLoggedBadge,
 	ProgressFooter as MediaCardProgressFooter,
 	ProgressMeter as MediaCardProgress,
-	Series as MediaCardSeries,
 };

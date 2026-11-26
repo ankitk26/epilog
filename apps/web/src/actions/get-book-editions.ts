@@ -1,5 +1,7 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
+import { Effect } from "effect";
+import { providerFetch, runProvider } from "@/lib/provider-fetch";
 import {
 	type BookEditionOutput,
 	openLibraryWorkEditionsAPIOutput,
@@ -32,30 +34,34 @@ function getEditionCoverUrl(entry: WorkEditionEntry): string | null {
 
 export const getBookEditionCovers = createServerFn({ method: "GET" })
 	.validator((data: { workId: string }) => data)
-	.handler(async ({ data }): Promise<BookEditionCover[]> => {
-		const { data: editions, error } = await betterFetch(
-			`https://openlibrary.org/works/${data.workId}/editions.json`,
-			{
-				method: "GET",
-				signal: AbortSignal.timeout(EDITIONS_TIMEOUT_MS),
-				output: openLibraryWorkEditionsAPIOutput,
-			},
-		);
+	.handler(
+		async ({ data }): Promise<BookEditionCover[]> =>
+			runProvider(
+				Effect.gen(function* () {
+					const editions = yield* providerFetch("openlibrary", () =>
+						betterFetch(
+							`https://openlibrary.org/works/${data.workId}/editions.json`,
+							{
+								method: "GET",
+								signal: AbortSignal.timeout(
+									EDITIONS_TIMEOUT_MS,
+								),
+								output: openLibraryWorkEditionsAPIOutput,
+							},
+						),
+					);
 
-		if (error || !editions) {
-			console.error("OpenLibrary editions API error:", error);
-			throw new Error("Open Library editions are unavailable");
-		}
+					// SAFETY: response shape is validated by openLibraryWorkEditionsAPIOutput.
+					const allEditions = (editions as BookEditionOutput).entries;
 
-		// SAFETY: response shape is validated by openLibraryWorkEditionsAPIOutput.
-		const allEditions = (editions as BookEditionOutput).entries;
-
-		return allEditions
-			.map((entry, index) => ({
-				id: entry.key ?? `edition-${index}`,
-				title: entry.title ?? null,
-				publicationDate: entry.publication_date ?? null,
-				coverUrl: getEditionCoverUrl(entry),
-			}))
-			.filter((edition) => edition.coverUrl !== null);
-	});
+					return allEditions
+						.map((entry, index) => ({
+							id: entry.key ?? `edition-${index}`,
+							title: entry.title ?? null,
+							publicationDate: entry.publication_date ?? null,
+							coverUrl: getEditionCoverUrl(entry),
+						}))
+						.filter((edition) => edition.coverUrl !== null);
+				}),
+			),
+	);

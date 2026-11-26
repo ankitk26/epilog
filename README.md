@@ -11,7 +11,6 @@ Track everything you watch and read — movies, TV, anime, books, and manga — 
 - Status-based logging (interest, to-read / watchlist, in-progress, finished, and dropped) for every media type
 - Reading progress for books (pages read / total page count)
 - Custom edition covers — pick a specific book edition and cover from its editions
-- Series tracking (series name, position, and total)
 
 ### Search & Discovery
 

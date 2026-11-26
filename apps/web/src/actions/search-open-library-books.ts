@@ -1,21 +1,21 @@
 import { betterFetch } from "@better-fetch/fetch";
 import { createServerFn } from "@tanstack/react-start";
+import { Effect } from "effect";
 import { buildSourceMediaId } from "@/lib/build-source-media-id";
+import { providerFetch, runProvider } from "@/lib/provider-fetch";
 import {
 	openLibraryBookSearchAPIOutput,
 	searchMediaAPIOutput,
 	searchMediaListAPIOutput,
 } from "@/types";
 
+const SEARCH_LIMIT = 20;
+const SEARCH_TIMEOUT_MS = 10_000;
+
 const collectionPatterns =
 	/\b(box\s*set|collection|omnibus|volumes?|books?\s+1[-–]|complete\s+series|the\s+\d+\s+books)\b/i;
 
 const latinTextPattern = /\p{Script=Latin}/u;
-
-const SEARCH_LIMIT = 20;
-const SERIES_SEARCH_LIMIT = 10;
-const MAX_SERIES_EXPANSIONS = 3;
-const SEARCH_TIMEOUT_MS = 10_000;
 
 const openLibrarySearchFields = [
 	"key",
@@ -24,9 +24,6 @@ const openLibrarySearchFields = [
 	"author_alternative_name",
 	"cover_i",
 	"first_publish_year",
-	"series_key",
-	"series_name",
-	"series_position",
 	"editions",
 	"editions.title",
 	"editions.cover_i",
@@ -40,9 +37,6 @@ type OpenLibraryBookDoc = {
 	author_alternative_name?: string[];
 	cover_i?: number;
 	first_publish_year?: number;
-	series_key?: string[];
-	series_name?: string[];
-	series_position?: string[];
 	editions?: {
 		docs: Array<{
 			title?: string;
@@ -83,8 +77,7 @@ function getAuthorName(book: {
 }
 
 function looksLikeCollection(book: OpenLibraryBookDoc) {
-	const position = book.series_position?.[0] ?? "";
-	return collectionPatterns.test(book.title) || /^\d+[-–]\d+$/.test(position);
+	return collectionPatterns.test(book.title);
 }
 
 function isEnglishEdition(edition: { language?: string[] }) {
@@ -126,38 +119,43 @@ function hasUsableEdition(book: OpenLibraryBookDoc): boolean {
 	return getSearchEditionTitle(book) !== null;
 }
 
+// OpenLibrary edition titles bake series info into the name
+// ("Golden Son (Red Rising, #2 of 3)"); the series feature is removed, so
+// strip trailing series parentheticals. Keep in sync with stripSeriesInfo
+// in packages/backend/convex/migrations/removeMediaSeriesFields.ts.
+const seriesSuffix =
+	/\s*\((?:[^()]*series[^()]*|[^()]*#\d+ of \d+[^()]*|[^()]*Book \d+[^()]*)\)\s*$/i;
+
+function stripSeriesInfo(name: string): string {
+	let out = name.trim();
+	for (;;) {
+		const next = out.replace(seriesSuffix, "").trim();
+		if (next === "" || next === out) {
+			return out;
+		}
+		out = next;
+	}
+}
+
 function mapOpenLibraryBook(book: OpenLibraryBookDoc) {
 	const coverId = getSearchEditionCoverId(book) ?? book.cover_i ?? null;
 	const imageUrl = coverId
 		? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
 		: null;
 
-	const seriesKey = book.series_key?.[0] ?? null;
-	const seriesName = book.series_name?.[0] ?? null;
-	const positionStr = book.series_position?.[0];
-	const seriesPosition =
-		positionStr && /^\d+$/.test(positionStr)
-			? parseInt(positionStr, 10)
-			: null;
-
 	return {
 		id: book.key.replace(/^\/works\//, ""),
-		title: getSearchEditionTitle(book) ?? book.title,
+		title: stripSeriesInfo(getSearchEditionTitle(book) ?? book.title),
 		author: getAuthorName(book),
 		bookAuthorId: book.author_key?.[0] ?? null,
 		imageUrl,
 		publishYear: book.first_publish_year ?? null,
-		seriesName,
-		seriesPosition,
-		seriesTotal: null,
-		seriesKey,
 	};
 }
 
-async function fetchOpenLibrarySearch(query: string) {
-	const { data, error } = await betterFetch(
-		"https://openlibrary.org/search.json",
-		{
+function fetchOpenLibrarySearch(query: string) {
+	return providerFetch("openlibrary", () =>
+		betterFetch("https://openlibrary.org/search.json", {
 			method: "GET",
 			signal: AbortSignal.timeout(SEARCH_TIMEOUT_MS),
 			query: {
@@ -166,100 +164,38 @@ async function fetchOpenLibrarySearch(query: string) {
 				fields: openLibrarySearchFields.join(","),
 			},
 			output: openLibraryBookSearchAPIOutput,
-		},
+		}),
 	);
-
-	if (error || !data) {
-		console.error("OpenLibrary API error:", error);
-		return null;
-	}
-
-	return data;
 }
 
 export const searchOpenLibraryBooks = createServerFn({ method: "GET" })
 	.validator((data: { searchQuery: string }) => data)
-	.handler(async ({ data }) => {
-		const initialSearch = await fetchOpenLibrarySearch(data.searchQuery);
-		if (!initialSearch) {
-			throw new Error("Open Library search is unavailable");
-		}
-
-		const initialBooks = initialSearch.docs.filter(
-			(book) => !looksLikeCollection(book) && hasUsableEdition(book),
-		);
-		const directResults = initialBooks.map(mapOpenLibraryBook);
-		const directResultIds = new Set(
-			directResults.map((result) => result.id),
-		);
-
-		const seriesNames = new Set<string>();
-		const seriesToExpand: string[] = [];
-		for (const book of initialBooks) {
-			const name = book.series_name?.[0];
-			if (name && !seriesNames.has(name)) {
-				seriesNames.add(name);
-				seriesToExpand.push(name);
-			}
-			if (seriesToExpand.length >= MAX_SERIES_EXPANSIONS) {
-				break;
-			}
-		}
-
-		const seriesResults: ReturnType<typeof mapOpenLibraryBook>[] = [];
-		if (seriesToExpand.length > 0) {
-			const seriesSearches = await Promise.all(
-				seriesToExpand.map((seriesName) =>
-					fetchOpenLibrarySearch(
-						`series:"${seriesName.replace(/"/g, '\\"')}"`,
-					),
-				),
-			);
-
-			for (const seriesSearch of seriesSearches) {
-				if (!seriesSearch) continue;
-
-				const seriesBooks = seriesSearch.docs
-					.filter(
-						(book) =>
-							!looksLikeCollection(book) &&
-							hasUsableEdition(book),
-					)
-					.map(mapOpenLibraryBook)
-					.filter((book) => !directResultIds.has(book.id));
-
-				seriesResults.push(...seriesBooks);
-			}
-		}
-
-		seriesResults.sort((a, b) => {
-			if (a.seriesName && b.seriesName && a.seriesName === b.seriesName) {
-				return (
-					(a.seriesPosition ?? Infinity) -
-					(b.seriesPosition ?? Infinity)
+	.handler(async ({ data }) =>
+		runProvider(
+			Effect.gen(function* () {
+				const initialSearch = yield* fetchOpenLibrarySearch(
+					data.searchQuery,
 				);
-			}
-			return 0;
-		});
 
-		const results = seriesResults.slice(0, SERIES_SEARCH_LIMIT);
-		const allResults = [...directResults, ...results];
+				const initialBooks = initialSearch.docs.filter(
+					(book) =>
+						!looksLikeCollection(book) && hasUsableEdition(book),
+				);
+				const directResults = initialBooks.map(mapOpenLibraryBook);
 
-		return searchMediaListAPIOutput.parse({
-			data: allResults.map((book) =>
-				searchMediaAPIOutput.parse({
-					imageUrl: book.imageUrl,
-					name: book.title,
-					releaseYear: book.publishYear,
-					sourceId: buildSourceMediaId("book", book.id),
-					type: "book",
-					creator: book.author,
-					bookAuthorId: book.bookAuthorId,
-					seriesName: book.seriesName,
-					seriesPosition: book.seriesPosition,
-					seriesTotal: book.seriesTotal,
-					seriesKey: book.seriesKey,
-				}),
-			),
-		});
-	});
+				return searchMediaListAPIOutput.parse({
+					data: directResults.map((book) =>
+						searchMediaAPIOutput.parse({
+							imageUrl: book.imageUrl,
+							name: book.title,
+							releaseYear: book.publishYear,
+							sourceId: buildSourceMediaId("book", book.id),
+							type: "book",
+							creator: book.author,
+							bookAuthorId: book.bookAuthorId,
+						}),
+					),
+				});
+			}),
+		),
+	);
