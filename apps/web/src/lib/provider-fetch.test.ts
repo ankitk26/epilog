@@ -5,21 +5,28 @@ import { assert, describe, it } from "@effect/vitest";
 import { Effect } from "effect";
 import {
 	isTransientProviderError,
+	type ProviderFetchFailure,
 	ProviderBadPayload,
 	ProviderRejected,
 	ProviderUnavailable,
 	providerFetch,
 	runProvider,
 	runProviderOrElse,
+	type ProviderResponse,
 } from "./provider-fetch";
+
+// What a flaky provider fails with before succeeding.
+type FakeFailure = ProviderFetchFailure | Error;
+
+interface FakeProviderFetch {
+	run: () => Promise<ProviderResponse<{ ok: true }>>;
+	attempts: () => number;
+}
 
 function flakyFetch(
 	failuresBeforeSuccess: number,
-	error: unknown,
-): {
-	run: () => Promise<{ data: { ok: true } | null; error: unknown }>;
-	attempts: () => number;
-} {
+	error: FakeFailure,
+): FakeProviderFetch {
 	let attempts = 0;
 	return {
 		run: () => {
@@ -169,7 +176,7 @@ describe("runProvider", () => {
 
 	it("throws a plain Error with the typed error as cause", () =>
 		Effect.gen(function* () {
-			const error = yield* Effect.promise(() =>
+			const outcome = yield* Effect.promise(() =>
 				runProvider(
 					Effect.fail(
 						new ProviderUnavailable({
@@ -178,16 +185,15 @@ describe("runProvider", () => {
 						}),
 					),
 				).then(
-					() => null,
-					(e: Error) => e,
+					(value) => ({ thrown: null, value }),
+					(thrown: Error) => ({ thrown, value: null }),
 				),
 			);
-			assert.instanceOf(error, Error);
-			assert.match(error?.message ?? "", /tmdb request failed/);
-			assert.strictEqual(
-				(error?.cause as ProviderUnavailable)._tag,
-				"ProviderUnavailable",
-			);
+			if (outcome.thrown === null) {
+				return assert.fail("expected runProvider to throw");
+			}
+			assert.match(outcome.thrown.message, /tmdb request failed/);
+			assert.ok(outcome.thrown.cause instanceof ProviderUnavailable);
 		}));
 });
 

@@ -33,6 +33,16 @@ export type ProviderError =
 	| ProviderRejected
 	| ProviderBadPayload;
 
+// The failure shape betterFetch reports when the provider answered: an
+// object carrying the HTTP `status`. Anything else means the request never
+// completed.
+export const providerFetchFailureSchema = z.object({ status: z.number() });
+export type ProviderFetchFailure = z.infer<typeof providerFetchFailureSchema>;
+
+// The response envelope betterFetch resolves with: `data` holds the
+// zod-validated payload, or `error` the failure above.
+export type ProviderResponse<B> = { data: B | null; error: unknown };
+
 // Retries only cover what a second attempt can fix: server-side failures
 // and rate limits. Client errors (4xx), payload mismatches, timeouts and
 // missing configuration are deterministic — retrying each wastes a
@@ -62,7 +72,7 @@ const describeCause = (cause: unknown): string => {
 // failures get retried with exponential backoff.
 export function providerFetch<B>(
 	provider: string,
-	run: () => Promise<{ data: B | null | undefined; error: unknown }>,
+	run: () => Promise<ProviderResponse<B>>,
 ): Effect.Effect<B, ProviderError> {
 	const attempt = Effect.gen(function* () {
 		const result = yield* Effect.tryPromise({
@@ -78,9 +88,11 @@ export function providerFetch<B>(
 		});
 
 		if (result.error || result.data == null) {
-			const status = (result.error as { status?: number } | undefined)
-				?.status;
-			if (typeof status === "number" && status >= 400 && status < 500) {
+			// Parse the failure at this boundary instead of asserting: only a
+			// well-formed 4xx response becomes a rejection.
+			const failure = providerFetchFailureSchema.safeParse(result.error);
+			const status = failure.success ? failure.data.status : undefined;
+			if (status !== undefined && status >= 400 && status < 500) {
 				return yield* new ProviderRejected({ provider, status });
 			}
 			return yield* new ProviderUnavailable({
@@ -144,8 +156,8 @@ export async function runProviderOrElse<A, F>(
 			Effect.tapError(logProviderError),
 			Effect.catchIf(
 				() => true,
-				() => Effect.succeed(fallback as A),
+				() => Effect.succeed(fallback),
 			),
 		),
-	).then((result) => result as A | F);
+	);
 }
